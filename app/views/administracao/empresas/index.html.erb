@@ -1,0 +1,31 @@
+
+<%=tabela_sitron("Empresas","Listagem de Empresas",@administracao_empresas) do %>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Cnpj</th>
+      <th>Responsável</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_empresas.each do |administracao_empresa| %>
+      <tr>
+        <td><%= administracao_empresa.nome %></td>
+        <td><%= administracao_empresa.cnpj %></td>
+        <td><%= administracao_empresa.responsavel_id %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_empresa ,:class=>"btn btn-success btn-sm"%></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_empresa_path(administracao_empresa),:class=>"btn btn-warning btn-sm" %></td>
+        <td><%= link_to link_icone('apagar'), administracao_empresa, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<%end%>
+
+<%= link_to 'New Empresa', new_administracao_empresa_path %>
+

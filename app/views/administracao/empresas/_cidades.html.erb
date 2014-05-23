@@ -1,0 +1,16 @@
+<%=simple_fields_for "administracao_empresa[endereco_attributes]" do |e|%>
+<%e.input :cidade_id,:collection=>@cidades,:prompt=>"Selecione a cidade",:input_html=>{:id=>"empresa_cidade_select"}%>
+<%end%>
+
+
+ <script type="text/javascript">
+$(function() {
+  $("#empresa_cidade_select").observe_field(0.25, function( ) {
+  $.get("/administracao/empresas/listar_bairros?cidade_id="+$("#empresa_cidade_select").val(), function(data) {
+// here check_login is the method in our controller.
+$("#bairros").html(data);
+});
+  });
+});
+</script>
+

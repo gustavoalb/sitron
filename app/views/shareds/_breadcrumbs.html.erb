@@ -1,0 +1,16 @@
+<% if @breadcrumbs.present? %>
+  <ol class="breadcrumb">
+    <% separator = divider.html_safe %>
+    <% @breadcrumbs.each do |crumb| %>
+      <li>
+         <%if crumb.options[:icon]%>
+         <i class="fa fa-<%=crumb.options[:icon].to_s%>"></i>
+         <%= link_to crumb.name, nil%>
+        <%else%>
+        <%= link_to crumb.name, nil, crumb.options%>
+        <%end%>
+      </li>
+    <% end %>
+  </ol>
+<% end %>
+

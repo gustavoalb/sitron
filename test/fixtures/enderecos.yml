@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  logradouro: MyString
+  numero: MyString
+  complemento: MyString
+  cep: MyString
+  bairro_id: 1
+  cidade_id: 1
+  estado_id: 1
+  latitude: 1.5
+  longitude: 1.5
+  enderecavel_id: 1
+  enderecavel_type: MyString
+
+two:
+  logradouro: MyString
+  numero: MyString
+  complemento: MyString
+  cep: MyString
+  bairro_id: 1
+  cidade_id: 1
+  estado_id: 1
+  latitude: 1.5
+  longitude: 1.5
+  enderecavel_id: 1
+  enderecavel_type: MyString

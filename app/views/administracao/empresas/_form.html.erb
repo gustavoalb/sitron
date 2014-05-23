@@ -1,0 +1,50 @@
+<%=form_sitron("Cadastro de Empresas","inclusão de empresa",6) do %>
+
+<%= simple_form_for @administracao_empresa,:html=>{:class=>"form-vertical"} do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :nome%>
+    <%= f.input :cnpj,input_html: {:class=>"cnpj"} %>
+    <%= f.input :responsavel_id,:input_html=>{:class=>"form-control "} %>
+
+	<%=f.fields_for :endereco do |endereco|%>
+
+	<%=endereco.input :tipo,:collection=>Endereco.tipos.keys.map {|tipo| [tipo.titleize,tipo]},:label=>"Tipo do Endereço",:input_html=>{:class=>"form-control"},:prompt=>"Selecione o tipo de Endereço"%>
+
+	<%= endereco.input :logradouro,:input_html=>{:class=>"form-control"} %>
+	<%= endereco.input :numero,:label=>"Número" %>
+	<%= endereco.input :complemento %>
+	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"} %>
+
+	<div id="cidades">
+	<%= endereco.input :cidade_id,:collection=>[],:prompt=>"Selecione a Cidade",:input_html=>{:id=>"imovel_cidade_select",class: "form-control "} %>
+	</div>
+
+	<div id="bairros">
+	<%= endereco.input :bairro_id,:collection=>[],:prompt=>"Selecione o Bairro" %>
+	</div>
+	<%= endereco.input :cep,:wrapper=>:pequenos,:label=>"CEP",input_html: {:class=>"cep"} %>
+	<%end%>
+<br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+  
+<%end%>
+
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+$(function() {
+  $("#administracao_empresa_endereco_attributes_estado_id").observe_field(0.25, function( ) {
+   $.get("/administracao/empresas/listar_cidades?estado_id="+$("#administracao_empresa_endereco_attributes_estado_id").val(), function(data) {
+// here check_login is the method in our controller.
+$("#cidades").html(data);
+});
+  });
+});
+</script>
+
+
+<%end%>
