@@ -1,0 +1,17 @@
+<%=form_sitron("Cadastro de AdministracaoConfiguracao","inclusão de administracao_configuracao",6) do %>
+
+
+<%= simple_form_for(@administracao_configuracao) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :index %>
+    <%= f.input :salvar_configuracao %>
+  </div>
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+<%end%>

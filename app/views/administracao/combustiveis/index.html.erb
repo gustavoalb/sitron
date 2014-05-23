@@ -1,0 +1,31 @@
+<%=tabela_sitron("Combustível","Listagem de Combustível",@administracao_combustiveis) do %>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Valor</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_combustiveis.each do |administracao_combustivel| %>
+      <tr>
+        <td><%= administracao_combustivel.nome %></td>
+        <td><%= administracao_combustivel.valor.real_contabil %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_combustivel,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_combustivel_path(administracao_combustivel),:class=>"btn btn-warning btn-sm" %></td>
+        <td><%= link_to link_icone('apagar'), administracao_combustivel, method: :delete, data: { confirm: 'Deseja realmente apagar?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<% end %>
+
+<br>
+
+
+<%= link_to link_icone('Cadastrar Combustível','plus'), new_administracao_combustivel_path, :class=>"btn btn-large btn-success" %>
+
+

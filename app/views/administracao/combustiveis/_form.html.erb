@@ -1,0 +1,17 @@
+<%=form_sitron("Cadastro de Combustível","inclusão de combustível",6) do %>
+
+
+<%= simple_form_for(@administracao_combustivel) do |f| %>
+  <%= f.error_notification %>
+
+  <div class="form-inputs">
+    <%= f.input :nome %>
+    <%= f.input :valor %>
+  </div>
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+<%end%>

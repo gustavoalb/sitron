@@ -1,0 +1,12 @@
+<p id="notice"><%%= notice %></p>
+
+<%%= titulo_pagina("Detalhes da <%= singular_table_name.camelize %>", @<%= singular_table_name %>.nome)%>
+
+<dl class="dl-horizontal"> 
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+  <dt><%= attribute.human_name %>:</dt>
+  <dd><%%= @<%= singular_table_name %>.<%= attribute.name %> %></dd>
+<% end -%>
+</dl>
+<%%= link_to link_icone('editar'), edit_<%= singular_table_name %>_path(@<%= singular_table_name %>),class: "btn btn-warning btn-sm" %> |
+<%%= link_to link_icone('voltar'), <%= index_helper %>_path, class: "btn btn-sm btn-default" %>

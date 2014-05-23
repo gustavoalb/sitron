@@ -1,0 +1,32 @@
+<%%=tabela_sitron("<%= singular_table_name.camelize %>","Listagem de <%=singular_table_name.camelize %>",@<%= plural_table_name %>) do %>
+
+<table class='table'>
+  <thead>
+    <tr>
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+      <th><%= attribute.human_name %></th>
+<% end -%>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <%% @<%= plural_table_name %>.each do |<%= singular_table_name %>| %>
+      <tr>
+<% attributes.reject(&:password_digest?).each do |attribute| -%>
+        <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
+<% end -%>
+        <td><%%= link_to link_icone('detalhes'), <%= singular_table_name %>,:class=>"btn btn-success btn-sm" %></td>
+        <td><%%= link_to link_icone('editar'), edit_<%= singular_table_name %>_path(<%= singular_table_name %>),class: "btn btn-warning btn-sm" %></td>
+        <td><%%= link_to link_icone('apagar'), <%= singular_table_name %>, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <%% end %>
+  </tbody>
+</table>
+<%% end %>
+
+<br>
+
+
+<%%= link_to link_icone('Cadastrar <%= singular_table_name.camelize %>','plus'), new_<%= singular_table_name %>_path, :class=>"btn btn-large btn-success" %>
+

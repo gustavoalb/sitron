@@ -1,0 +1,12 @@
+<p id="notice"><%= notice %></p>
+
+<%= titulo_pagina("Detalhes da AdministracaoConfiguracao", @administracao_configuracao.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Index:</dt>
+  <dd><%= @administracao_configuracao.index %></dd>
+  <dt>Salvar configuracao:</dt>
+  <dd><%= @administracao_configuracao.salvar_configuracao %></dd>
+</dl>
+<%= link_to link_icone('editar'), edit_administracao_configuracao_path(@administracao_configuracao),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_configuracoes_path, class: "btn btn-sm btn-default" %>

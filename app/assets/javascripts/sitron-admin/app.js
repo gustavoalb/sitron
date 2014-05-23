@@ -154,7 +154,14 @@ function change_layout() {
 function change_skin(cls) {
     $("body").removeClass("skin-blue skin-black");
     $("body").addClass(cls);
+    salvar_layout(cls);
 }
+
+function salvar_layout(cls){
+ $.post("/administracao/configuracoes/salvar_skin?skin="+cls,  function() { }, function() { }, "script")
+
+}
+
 /*END DEMO*/
 $(window).load(function() {
     /*! pace 0.4.17 */

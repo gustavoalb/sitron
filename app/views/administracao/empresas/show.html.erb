@@ -1,24 +1,67 @@
-<p id="notice"><%= notice %></p>
+<%= titulo_pagina("Detalhes da Empresa", @administracao_empresa.nome)%>
 
-<p>
-  <strong>Nome:</strong>
-  <%= @administracao_empresa.nome %>
-</p>
+<section class="content invoice">
+	<!-- title row -->
+	<div class="row">
+		<div class="col-xs-12">
+			<h2 class="page-header"><i class="fa fa-bank"></i> <%= @administracao_empresa.nome %> <small class="pull-right">Veículos:</small></h2>
+		</div><!-- /.col -->
+	</div>
+	<div class="row">
+		<div class="col-xs-6">
+			<p class="lead">
+				Informações
+			</p>
+			<div class="table-responsive">
+				<table class="table">
+					<tbody>
+						<tr>
+							<th style="width:50%">Nome</th>
+							<td><%= @administracao_empresa.nome %></td>
+						</tr>
+						<tr>
+							<th>CNPJ</th>
+							<td><%= @administracao_empresa.cnpj %></td>
+						</tr>
+						<tr>
+							<th>Endereço</th>
+							<td><%= @administracao_empresa.endereco_completo %></td>
+						</tr>
+						<tr>
+							<th>Veículos no Pátio</th>
+							<td>2</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class='col-xs-6'>
 
-<p>
-  <strong>Cnpj:</strong>
-  <%= @administracao_empresa.cnpj %>
-</p>
+			<div class="box box-solid box-danger">
+				<div class="box-header">
+					<h3 class="box-title">Problemas Ocorridos</h3>
+					<div class="box-tools pull-right">
+						<button class="btn btn-danger btn-sm" data-widget="collapse">
+							<i class="fa fa-minus"></i>
+						</button>
+						<button class="btn btn-danger btn-sm" data-widget="remove">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</div>
+				<div class="box-body">
+					Box class: <code>
+						.box.box-solid.box-danger</code>
+					<p>
+						amber, microbrewery abbey hydrometer, brewpub ale lauter tun saccharification oxidized barrel.
+						berliner weisse wort chiller adjunct hydrometer alcohol aau!
+						sour/acidic sour/acidic chocolate malt ipa ipa hydrometer.
+					</p>
+				</div><!-- /.box-body -->
+			</div>
+		</div>
 
-<p>
-  <strong>Endereco:</strong>
-  <%= @administracao_empresa.endereco_id %>
-</p>
+</section>
 
-<p>
-  <strong>Responsavel:</strong>
-  <%= @administracao_empresa.responsavel_id %>
-</p>
-
-<%= link_to 'Edit', edit_administracao_empresa_path(@administracao_empresa) %> |
-<%= link_to 'Back', administracao_empresas_path %>
+<%= link_to link_icone('editar'), edit_administracao_empresa_path(@administracao_empresa),:class=>"btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_empresas_path,:class=>"btn btn-sm btn-default" %>
