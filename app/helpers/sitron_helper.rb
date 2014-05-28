@@ -32,30 +32,81 @@ end
 def botoes_form(form)
 html=""
 
-html+="<div class='box-footer'>"
+html+="<div class='panel-footer'>"
+html+="<div class='row'>"
+html+="<div class='col-sm-6 col-sm-offset-3'>"
+html+="<div class='btn-toolbar'>"
 html+="#{form.submit "Salvar",:class=>"btn btn-primary"} ou #{link_to 'Cancelar',:back}"
 html+="</div>"
+html+="</div>"
+html+="</div>"
+html+="</div>"
 return raw(html)
 end
 
 
+def nav_item_menu(titulo,controller,icone,badge=nil,valor_badge=nil,&block)
+  html=""
+  if controller.is_a? Array
+    controller.each do |c|
+        if c == controller_name
+          html+="<li class='hasChild active'>"
+          html+="<a href='javascript:;''><i class='fa fa-#{icone}'></i> <span>#{titulo}</span> <span class='badge badge-#{badge}'>#{valor_badge}</span></a>"
+          break
+        else
+          html+="<li class='hasChild'>"
+          html+="<a href='javascript:;''><i class='fa fa-#{icone}'></i> <span>#{titulo}</span> <span class='badge badge-#{badge}'>#{valor_badge}</span></a>"
+        end
+    end
 
-def tabela_sitron(titulo,sub_titulo,objetos,&block)
-html = ""
-html+="<div class='box'>"
-html+="<div class='box-header'>"
-html+="<h3 class='box-title'>#{sub_titulo}</h3>"
-html+="<div class='box-tools'>"
- html+=paginate objetos 
-html+="</div>"
-html+="</div>"
-html+="<div class='box-body no-padding'>"
-html+=capture(&block)
-html+="</div>"
-html+="</div>"
+  else
 
-titulo_pagina(titulo,nil)
+     if controller == controller_name
+        html+="<li class='hasChild active'>"
+        html+="<a href='javascript:;''><i class='fa fa-#{icone}'></i> <span>#{titulo}</span> <span class='badge badge-#{badge}'>#{valor_badge}</span></a>"
+     else
+        html+="<li class='hasChild'>"
+        html+="<a href='javascript:;''><i class='fa fa-#{icone}'></i> <span>#{titulo}</span> <span class='badge badge-#{badge}'>#{valor_badge}</span></a>"
+     end
+  end
 
-return raw(html)
+
+
+  html+="<ul class='acc-menu'>"
+  html+=capture(&block)
+  html+="</ul>"
+  html+="</li>"
+
+  return raw(html)
 end
+
+def nav_item(url,titulo,controller,action,icone=nil)
+
+  html=""
+  if action == action and  controller_name == controller
+    html+="<li class='active'>#{link_to link_icone(titulo,icone),url,data: { no_turbolink: true }}</li>"
+  else
+    html+="<li>#{link_to link_icone(titulo,icone),url,data: { no_turbolink: true }}</li>"
+  end
+  raw(html)
+end
+
+
+
+
+
+def nav_item_submenu(titulo,controller,icone,badge=nil,valor_badge=nil,&block)
+  html=""
+
+
+
+  html+="<ul class='acc-menu active'>"
+  html+=capture(&block)
+  html+="</ul>"
+
+
+  return raw(html)
+end
+
+
 end

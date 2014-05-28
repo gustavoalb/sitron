@@ -1,4 +1,5 @@
-<%=tabela_sitron("Combustível","Listagem de Combustível",@administracao_combustiveis) do %>
+
+<%=titulo_pagina(link_icone("Combustíveis",'tint'),"Listagem de Combustíveis")%>
 
 <table class='table'>
   <thead>
@@ -13,19 +14,19 @@
     <% @administracao_combustiveis.each do |administracao_combustivel| %>
       <tr>
         <td><%= administracao_combustivel.nome %></td>
-        <td><%= administracao_combustivel.valor.real_contabil %></td>
+        <td><%= administracao_combustivel.valor.to_f.real_contabil %></td>
         <td><%= link_to link_icone('detalhes'), administracao_combustivel,:class=>"btn btn-success btn-sm" %></td>
-        <td><%= link_to link_icone('editar'), edit_administracao_combustivel_path(administracao_combustivel),:class=>"btn btn-warning btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_combustivel_path(administracao_combustivel),:class=>"btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
         <td><%= link_to link_icone('apagar'), administracao_combustivel, method: :delete, data: { confirm: 'Deseja realmente apagar?' },:class=>"btn btn-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-<% end %>
+
 
 <br>
 
 
-<%= link_to link_icone('Cadastrar Combustível','plus'), new_administracao_combustivel_path, :class=>"btn btn-large btn-success" %>
+<%= link_to link_icone('Cadastrar Combustível','plus'), new_administracao_combustivel_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
 
 

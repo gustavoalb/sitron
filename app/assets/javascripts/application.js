@@ -11,10 +11,10 @@
 // about supported directives.
 //
 //= require jquery
+//= require jquery.turbolinks
 //= require jquery_ujs
-//= require turbolinks
 //= require bootstrap
-//= require jquery.maskedinput.js
+//= require turbolinks
 //= require_tree .
 
 
@@ -23,14 +23,17 @@ jQuery(function($){
   $('.date').mask('11/11/1111');
   $('.time').mask('00:00:00');
   $('.date_time').mask('00/00/0000 00:00:00');
-  $('.cep').mask('99999-999');
+  $('.cep').mask('00000-000');
+  $('.ano').mask('0000');
   $('.fone').mask('(96)0000-0000');
+  $('.chapa').mask('SSS-0000', {translation: {'Z': {pattern: /[A-Z]/, optional: false}}});
   $('.phone_with_ddd').mask('(00) 0000-0000');
   $('.phone_us').mask('(000) 000-0000');
   $('.mixed').mask('AAA 000-S0S');
-  $('.cpf').mask('999.999.999-99', {reverse: true});
-  $('.cnpj').mask('99.9999.999/9999-99', {reverse: true});
-  $('.money').mask('000.000.000.000.000,00', {reverse: true});
+
+  $('.cpf').mask('000.000.000-00', {reverse: true});
+  $('.cnpj').mask('00.000.000/0000-00', {reverse: true});
+  $('.money').mask("#.##0,00", {reverse: true, maxlength: false});
   $('.money2').mask("#.##0,00", {reverse: true, maxlength: false});
   $('.ip_address').mask('0ZZ.0ZZ.0ZZ.0ZZ', {translation: {'Z': {pattern: /[0-9]/, optional: true}}});
   $('.ip_address').mask('099.099.099.099');
@@ -62,3 +65,4 @@ element.bind('keyup', function() {
 });
 
 };
+

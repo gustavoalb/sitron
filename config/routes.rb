@@ -3,6 +3,14 @@ Sitron::Application.routes.draw do
 
 
   namespace :administracao do
+    
+  end
+
+  namespace :administracao do
+    resources :modalidades
+  end
+
+  namespace :administracao do
     resources :empresas do 
      get "listar_cidades",on: :collection
      get "listar_bairros",on: :collection
@@ -11,6 +19,8 @@ Sitron::Application.routes.draw do
     resources :configuracoes do 
       post :salvar_skin,on: :collection
     end
+
+    resources :veiculos
   end
 
   root :to => "home#index"

@@ -1,5 +1,7 @@
+# -*- encoding : utf-8 -*-
 class Administracao::CombustiveisController < ApplicationController
   before_action :set_administracao_combustivel, only: [:show, :edit, :update, :destroy]
+  before_action :validar_dinheiro,only: [:update,:create]
 
   # GET /administracao/combustiveis
   # GET /administracao/combustiveis.json
@@ -62,9 +64,14 @@ class Administracao::CombustiveisController < ApplicationController
   end
 
   private
+
+    def validar_dinheiro
+    # params[:administracao_combustivel][:valor] = params[:administracao_combustivel][:valor].to_money
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_administracao_combustivel
       @administracao_combustivel = Administracao::Combustivel.find(params[:id])
+      @valor = @administracao_combustivel.valor.to_f
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

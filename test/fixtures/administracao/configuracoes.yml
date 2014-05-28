@@ -1,9 +1,8 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  index: MyString
-  salvar_configuracao: MyString
+  skin: MyString
+
 
 two:
-  index: MyString
-  salvar_configuracao: MyString
+  skin: MyString

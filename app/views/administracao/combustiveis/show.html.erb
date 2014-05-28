@@ -1,12 +1,10 @@
-<p id="notice"><%= notice %></p>
-
-<%= titulo_pagina("Detalhes da AdministracaoCombustivel", @administracao_combustivel.nome)%>
+<%=titulo_pagina(link_icone("Combustível",'tint'),"Detalhes do Combustível: #{@administracao_combustivel.nome}")%>
 
 <dl class="dl-horizontal"> 
   <dt>Nome:</dt>
   <dd><%= @administracao_combustivel.nome %></dd>
   <dt>Valor:</dt>
-  <dd><%= @administracao_combustivel.valor %></dd>
+  <dd><%= @administracao_combustivel.valor.to_f.real_contabil %></dd>
 </dl>
 <%= link_to link_icone('editar'), edit_administracao_combustivel_path(@administracao_combustivel),class: "btn btn-warning btn-sm" %> |
 <%= link_to link_icone('voltar'), administracao_combustiveis_path, class: "btn btn-sm btn-default" %>

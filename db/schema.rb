@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140523172711) do
+ActiveRecord::Schema.define(version: 20140526175329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,7 +38,8 @@ ActiveRecord::Schema.define(version: 20140523172711) do
 
   create_table "combustiveis", force: true do |t|
     t.string   "nome"
-    t.decimal  "valor",      precision: 18, scale: 2, default: 0.0
+    t.integer  "valor_centavos"
+    t.string   "valor_currency", default: "BRL", null: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -89,6 +90,18 @@ ActiveRecord::Schema.define(version: 20140523172711) do
 
   add_index "estados", ["sigla"], name: "index_estados_on_sigla", unique: true, using: :btree
 
+  create_table "modalidades", force: true do |t|
+    t.string   "nome"
+    t.integer  "periodo_diario",      default: 8
+    t.integer  "dias_mes",            default: 22
+    t.boolean  "com_motorista",       default: false
+    t.boolean  "com_combustivel",     default: false
+    t.boolean  "quilometragem_livre", default: false
+    t.boolean  "mes_completo",        default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
     t.string   "encrypted_password",     default: "", null: false
@@ -110,5 +123,35 @@ ActiveRecord::Schema.define(version: 20140523172711) do
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+
+  create_table "veiculos", force: true do |t|
+    t.integer  "tipo"
+    t.string   "placa"
+    t.string   "motor"
+    t.integer  "direcao"
+    t.integer  "marca"
+    t.string   "modelo"
+    t.integer  "capacidade_carga",       default: 0
+    t.integer  "capacidade_passageiros", default: 4
+    t.integer  "ano_fabricacao"
+    t.integer  "ano_modelo"
+    t.boolean  "intens_obrigatorios",    default: false
+    t.text     "observacao"
+    t.string   "qrcode"
+    t.string   "codigo_de_barras"
+    t.string   "gps_ip"
+    t.string   "gps_imei"
+    t.integer  "modalidade_id"
+    t.integer  "combustivel_id"
+    t.integer  "turno_id"
+    t.integer  "empresa_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "veiculos", ["combustivel_id"], name: "index_veiculos_on_combustivel_id", using: :btree
+  add_index "veiculos", ["empresa_id"], name: "index_veiculos_on_empresa_id", using: :btree
+  add_index "veiculos", ["modalidade_id"], name: "index_veiculos_on_modalidade_id", using: :btree
+  add_index "veiculos", ["turno_id"], name: "index_veiculos_on_turno_id", using: :btree
 
 end

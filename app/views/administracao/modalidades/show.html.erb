@@ -1,0 +1,21 @@
+<%= titulo_pagina("Detalhes da Modalidade", @administracao_modalidade.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Nome:</dt>
+  <dd><%= @administracao_modalidade.nome %></dd>
+  <dt>Periodo diario:</dt>
+  <dd><%= @administracao_modalidade.periodo_diario %></dd>
+  <dt>Dias mes:</dt>
+  <dd><%= @administracao_modalidade.dias_mes %></dd>
+  <dt>Com motorista:</dt>
+  <dd><%= @administracao_modalidade.com_motorista %></dd>
+  <dt>Com combustivel:</dt>
+  <dd><%= @administracao_modalidade.com_combustivel %></dd>
+  <dt>Quilometragem livre:</dt>
+  <dd><%= @administracao_modalidade.quilometragem_livre %></dd>
+  <dt>Mes completo:</dt>
+  <dd><%= @administracao_modalidade.mes_completo %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_modalidade_path(@administracao_modalidade),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_modalidades_path, class: "btn btn-sm btn-default" %>

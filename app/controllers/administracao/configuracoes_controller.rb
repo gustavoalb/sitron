@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::ConfiguracoesController < ApplicationController
   before_action :set_administracao_configuracao, only: [:show, :edit, :update, :destroy]
 

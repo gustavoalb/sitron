@@ -29,7 +29,9 @@ class ApplicationController < ActionController::Base
 
   def initialize_variaveis
       @estados = Estado.all.collect{|e|[e.nome,e.id]}
-      @empresas = Administracao::Empresa.all     
+      @empresas = Administracao::Empresa.all    
+      @modalidades = Administracao::Modalidade.all 
+      @combustiveis = Administracao::Combustivel.all
   end
 
 end

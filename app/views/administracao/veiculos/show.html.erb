@@ -1,0 +1,43 @@
+
+<%= titulo_pagina("Detalhes da AdministracaoVeiculo", @administracao_veiculo.tipo)%>
+<div class='row'>
+<div class='col-xs-6'>
+<dl class="dl-horizontal"> 
+
+  <dt>Tipo:</dt>
+  <dd><%= @administracao_veiculo.tipo.titleize %></dd>
+  <dt>Motor:</dt>
+  <dd><%= @administracao_veiculo.motor %></dd>
+  <dt>Diracao:</dt>
+  <dd><%= @administracao_veiculo.direcao.titleize %></dd>
+  <dt>Marca:</dt>
+  <dd><%= @administracao_veiculo.marca.titleize %></dd>
+  <dt>Modelo:</dt>
+  <dd><%= @administracao_veiculo.modelo %></dd>
+  <dt>Capacidade carga:</dt>
+  <dd><%= @administracao_veiculo.capacidade_carga %></dd>
+  <dt>Capacidade passageiros:</dt>
+  <dd><%= @administracao_veiculo.capacidade_passageiros %></dd>
+  <dt>Ano fabricacao:</dt>
+  <dd><%= @administracao_veiculo.ano_fabricacao %></dd>
+  <dt>Ano modelo:</dt>
+  <dd><%= @administracao_veiculo.ano_modelo %></dd>
+  <dt>Intens obrigatorios:</dt>
+  <dd><%= @administracao_veiculo.intens_obrigatorios %></dd>
+  <dt>Observacao:</dt>
+  <dd><%= @administracao_veiculo.observacao %></dd>
+  <dt>Modalidade:</dt>
+  <dd><%= @administracao_veiculo.modalidade.nome %></dd>
+  <dt>Combustivel:</dt>
+  <dd><%= @administracao_veiculo.combustivel.nome %></dd>
+  <dt>Códigos</dt>
+  <dd><%=image_tag(@administracao_veiculo.qrcode_url(:thumb),class: "img-responsive img-thumbnail")%></dd>
+  <dd><%=image_tag(@administracao_veiculo.codigo_de_barras_url(:thumbcb),class: "img-responsive img-thumbnail")%></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_veiculo_path(@administracao_veiculo),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_veiculos_path, class: "btn btn-sm btn-default" %>
+</div>
+
+
+</div>

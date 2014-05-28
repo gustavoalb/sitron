@@ -1,0 +1,38 @@
+<%=titulo_pagina(link_icone("Modalidades","tag"),"Listagem de Modalidades")%>
+
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Periodo diario</th>
+      <th>Dias mes</th>
+      <th>Com motorista</th>
+      <th>Com combustivel</th>
+      <th>Quilometragem livre</th>
+      <th>Mes completo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_modalidades.each do |administracao_modalidade| %>
+      <tr>
+        <td><%= administracao_modalidade.nome %></td>
+        <td><%= administracao_modalidade.periodo_diario %></td>
+        <td><%= administracao_modalidade.dias_mes %></td>
+        <td><%= administracao_modalidade.com_motorista %></td>
+        <td><%= administracao_modalidade.com_combustivel %></td>
+        <td><%= administracao_modalidade.quilometragem_livre %></td>
+        <td><%= administracao_modalidade.mes_completo %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_modalidade,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_modalidade_path(administracao_modalidade),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), administracao_modalidade, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar Modalidade','plus'), new_administracao_modalidade_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

@@ -23,6 +23,16 @@ gem 'nested_form'
 gem 'iconic'
 gem 'kaminari'
 gem 'therubyracer', :platform=>:ruby
+gem 'money-rails'
+gem 'monetize'
+gem 'jquery-turbolinks'
+
+gem 'carrierwave'
+gem 'mini_magick'
+gem 'chunky_png'
+gem 'rqrcode_png'
+gem 'rghost'
+gem 'rghost_barcode'
 
 group :development do
   gem 'better_errors'

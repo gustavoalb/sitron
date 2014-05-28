@@ -1,5 +1,3 @@
-<%%=tabela_sitron("<%= singular_table_name.camelize %>","Listagem de <%=singular_table_name.camelize %>",@<%= plural_table_name %>) do %>
-
 <table class='table'>
   <thead>
     <tr>
@@ -17,16 +15,14 @@
         <td><%%= <%= singular_table_name %>.<%= attribute.name %> %></td>
 <% end -%>
         <td><%%= link_to link_icone('detalhes'), <%= singular_table_name %>,:class=>"btn btn-success btn-sm" %></td>
-        <td><%%= link_to link_icone('editar'), edit_<%= singular_table_name %>_path(<%= singular_table_name %>),class: "btn btn-warning btn-sm" %></td>
+        <td><%%= link_to link_icone('editar'), edit_<%= singular_table_name %>_path(<%= singular_table_name %>),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
         <td><%%= link_to link_icone('apagar'), <%= singular_table_name %>, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
       </tr>
     <%% end %>
   </tbody>
 </table>
-<%% end %>
-
 <br>
 
 
-<%%= link_to link_icone('Cadastrar <%= singular_table_name.camelize %>','plus'), new_<%= singular_table_name %>_path, :class=>"btn btn-large btn-success" %>
 
+<%%= link_to link_icone('Cadastrar <%= singular_table_name.camelize %>','plus'), new_<%= singular_table_name %>_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

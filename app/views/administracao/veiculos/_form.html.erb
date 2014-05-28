@@ -1,0 +1,25 @@
+<%= simple_form_for @administracao_veiculo,html: {class: "form-horizontal"}  do |f| %>
+  <%= f.error_notification %>
+
+    <%= f.association :empresa,:collection=>@empresas.collect {|empresa| [empresa.nome,empresa.id]},:prompt=>"Selecione a Empresa" %>
+    <%=f.input :placa,input_html: {class: "chapa"}%>
+    <%= f.input :tipo,:collection=>Administracao::Veiculo.tipos.keys.map {|tipo| [tipo.titleize,tipo]},:prompt=>"Selecione o Tipo do Veículo" %>
+    <%= f.input :motor  %>
+    <%= f.input :direcao,:collection=>Administracao::Veiculo.direcoes.keys.map {|direcao| [direcao.titleize,direcao]},:prompt=>"Selecione o Tipo de Direção" %>
+    <%= f.input :marca,:collection=>Administracao::Veiculo.marcas.keys.map {|marca| [marca.titleize,marca]},:prompt=>"Selecione a Marca" %>
+    <%= f.input :modelo %>
+    <%= f.input :capacidade_carga %>
+    <%= f.input :capacidade_passageiros %>
+    <%= f.input :ano_fabricacao,input_html: {class: "ano"} %>
+    <%= f.input :ano_modelo,input_html: {class: "ano"} %>
+    <%= f.input :intens_obrigatorios,:as=>:inline_checkbox %>
+    <%= f.input :observacao %>
+    <%= f.association :modalidade,:collection=>@modalidades.collect{|modalidade|[modalidade.nome,modalidade.id]} %>
+    <%= f.association :combustivel,:collection=>@combustiveis.collect{|combustivel|[combustivel.nome,combustivel.id]} %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+

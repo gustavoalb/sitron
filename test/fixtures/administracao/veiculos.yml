@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  tipo: MyString
+  motor: MyString
+  diracao: MyString
+  marca: MyString
+  modelo: MyString
+  capacidade_carga: 1
+  capacidade_passageiros: 1
+  ano_fabricacao: 1
+  ano_modelo: 1
+  intens_obrigatorios: false
+  observacao: MyText
+  modalidade_id: 
+  combustivel_id: 
+  turno_id: 
+
+two:
+  tipo: MyString
+  motor: MyString
+  diracao: MyString
+  marca: MyString
+  modelo: MyString
+  capacidade_carga: 1
+  capacidade_passageiros: 1
+  ano_fabricacao: 1
+  ano_modelo: 1
+  intens_obrigatorios: false
+  observacao: MyText
+  modalidade_id: 
+  combustivel_id: 
+  turno_id: 

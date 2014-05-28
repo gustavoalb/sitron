@@ -1,18 +1,14 @@
-<%%=form_sitron("Cadastro de <%= singular_table_name.camelize %>","inclusão de <%= singular_table_name.downcase %>",6) do %>
-
-
 <%%= simple_form_for(@<%= singular_table_name %>) do |f| %>
   <%%= f.error_notification %>
 
-  <div class="form-inputs">
+
   <%- attributes.each do |attribute| -%>
     <%%= f.<%= attribute.reference? ? :association : :input %> :<%= attribute.name %> %>
   <%- end -%>
-  </div>
+
 
     <br/><br/><br/>
     <%%=botoes_form(f)%>
 
 <%% end %>
 
-<%%end%>

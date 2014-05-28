@@ -1,6 +1,5 @@
-<h1>Editing <%= singular_table_name %></h1>
+<%%=titulo_pagina("<%= singular_table_name.camelize %>","Editar ")%>
 
 <%%= render 'form' %>
 
-<%%= link_to 'Show', @<%= singular_table_name %> %> |
-<%%= link_to 'Back', <%= index_helper %>_path %>
+<%%= link_to link_icone('detalhes'), @<%= singular_table_name %>,class: "bnt btn-success btn-sm" %> 

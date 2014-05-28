@@ -1,34 +1,15 @@
+
 <%content_for :dashboard do%>
-<div class="col-lg-3 col-xs-6">
-	<!-- small box -->
-	<div class="small-box bg-yellow">
-		<div class="inner">
-			<h3>
-				<%=User.all.count%>
-			</h3>
-			<p>
-				Usuários Registrados
-			</p>
-		</div>
-		<div class="icon">
-			<i class="ion ion-person"></i>
-		</div>
-		<a href="#" class="small-box-footer">
-			Mostrar Todos <i class="fa fa-arrow-circle-right"></i>
-		</a>
-	</div>
-</div><!-- ./col -->
 
-
-<%=icone_dash("Veículos no Pátio","3","model-s","Ver Todos","arrow-circle-right",'#','red')%>
-<%=icone_dash("Veículos Disponíveis","1","model-s","Ver Todos","arrow-circle-right",'#','green')%>
-<%=icone_dash("Requisições de Transporte (RST)","3","clipboard","Ver Todos","arrow-circle-right",'#','aqua')%>
-<%=icone_dash("Rotas","40","map","Listar Rotas","arrow-circle-right",'#','aqua')%>
-<%=icone_dash("Problemas Ocorridos","6","thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'#','red')%>
+<%=icone_dash("Usuários Registrados",User.all.count,"person","Ver Todos","arrow-circle-right",'green')%>
+<%=icone_dash("Veículos no Pátio","3","model-s","Ver Todos","arrow-circle-right",'orange')%>
+<%=icone_dash("Veículos Disponíveis","1","model-s","Ver Todos","arrow-circle-right",'success')%>
+<%=icone_dash("Requisições de Transporte (RST)","3","clipboard","Ver Todos","arrow-circle-right",'primary')%>
+<%=icone_dash("Rotas","40","map","Listar Rotas","arrow-circle-right",'sky')%>
+<%=icone_dash("Problemas Ocorridos","6","thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'danger')%>
 
 <%end%>
 
-<%=titulo_pagina("Inicio","dashboard")%>
 
 <%content_for :dashboard_user do%>
 

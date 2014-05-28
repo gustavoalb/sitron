@@ -1,6 +1,20 @@
-<h1>Editing administracao_combustivel</h1>
+<%=titulo_pagina(link_icone("Combustível",'tint'),"Editar o Combustível: #{@administracao_combustivel.nome}")%>
 
-<%= render 'form' %>
+<%= simple_form_for(@administracao_combustivel) do |f| %>
+  <%= f.error_notification %>
 
-<%= link_to 'Show', @administracao_combustivel %> |
-<%= link_to 'Back', administracao_combustiveis_path %>
+    <div class='row'>
+    <div class='col-xs-6'>
+    <%= f.input :nome %>
+    </div>
+    <div class='col-xs-4'>
+    <%= f.input :valor,input_html: {class: 'money',value:@valor} %>
+    </div>
+   </div>
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+
+

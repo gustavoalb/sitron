@@ -1,17 +1,12 @@
-<%=form_sitron("Cadastro de Empresas","inclusão de empresa",6) do %>
 
-<%= simple_form_for @administracao_empresa,:html=>{:class=>"form-vertical"} do |f| %>
+<%= simple_form_for @administracao_empresa,:html=>{:class=>"form-horizontal"} do |f| %>
   <%= f.error_notification %>
-
 
     <%= f.input :nome%>
     <%= f.input :cnpj,input_html: {:class=>"cnpj"} %>
     <%= f.input :responsavel_id,:input_html=>{:class=>"form-control "} %>
 
 	<%=f.fields_for :endereco do |endereco|%>
-
-	<%=endereco.input :tipo,:collection=>Endereco.tipos.keys.map {|tipo| [tipo.titleize,tipo]},:label=>"Tipo do Endereço",:input_html=>{:class=>"form-control"},:prompt=>"Selecione o tipo de Endereço"%>
-
 	<%= endereco.input :logradouro,:input_html=>{:class=>"form-control"} %>
 	<%= endereco.input :numero,:label=>"Número" %>
 	<%= endereco.input :complemento %>
@@ -27,11 +22,10 @@
 	<%= endereco.input :cep,:wrapper=>:pequenos,:label=>"CEP",input_html: {:class=>"cep"} %>
 	<%end%>
 <br/><br/><br/>
-    <%=botoes_form(f)%>
+
+<%=botoes_form(f)%>
 
 <% end %>
-  
-<%end%>
 
 
 <%content_for :scripts do%>
@@ -45,6 +39,4 @@ $("#cidades").html(data);
   });
 });
 </script>
-
-
 <%end%>

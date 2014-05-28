@@ -1,0 +1,15 @@
+<%= simple_form_for @administracao_modalidade,html: {class: "form-horizontal"} do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :nome %>
+    <%= f.input :periodo_diario %>
+    <%= f.input :dias_mes,:as=>:integer %>
+    <%= f.input :com_motorista,:as=>:inline_checkbox,:label=>"Com Motorista?" %>
+    <%= f.input :com_combustivel,:as=>:inline_checkbox,:label=>"Com Combustível?" %>
+    <%= f.input :quilometragem_livre,:as=>:inline_checkbox,:label=>"Quilometragem Livre?" %>
+
+    <%=botoes_form(f)%>
+
+<% end %>
+

@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  periodo_diario: 1
+  dias_mes: 1
+  com_motorista: false
+  com_combustivel: false
+  quilometragem_livre: false
+  mes_completo: false
+
+two:
+  nome: MyString
+  periodo_diario: 1
+  dias_mes: 1
+  com_motorista: false
+  com_combustivel: false
+  quilometragem_livre: false
+  mes_completo: false

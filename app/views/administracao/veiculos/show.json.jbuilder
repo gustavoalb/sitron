@@ -1,0 +1,1 @@
+json.extract! @administracao_veiculo, :id, :tipo, :motor, :diracao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id, :created_at, :updated_at

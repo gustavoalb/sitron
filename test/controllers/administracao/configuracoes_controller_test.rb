@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'test_helper'
 
 class Administracao::ConfiguracoesControllerTest < ActionController::TestCase
@@ -18,7 +19,7 @@ class Administracao::ConfiguracoesControllerTest < ActionController::TestCase
 
   test "should create administracao_configuracao" do
     assert_difference('Administracao::Configuracao.count') do
-      post :create, administracao_configuracao: { index: @administracao_configuracao.index, salvar_configuracao: @administracao_configuracao.salvar_configuracao }
+      post :create, administracao_configuracao: { index: @administracao_configuracao.skin, salvar_configuracao: @administracao_configuracao.salvar_configuracao }
     end
 
     assert_redirected_to administracao_configuracao_path(assigns(:administracao_configuracao))
@@ -35,7 +36,7 @@ class Administracao::ConfiguracoesControllerTest < ActionController::TestCase
   end
 
   test "should update administracao_configuracao" do
-    patch :update, id: @administracao_configuracao, administracao_configuracao: { index: @administracao_configuracao.index, salvar_configuracao: @administracao_configuracao.salvar_configuracao }
+    patch :update, id: @administracao_configuracao, administracao_configuracao: { index: @administracao_configuracao.skin, salvar_configuracao: @administracao_configuracao.salvar_configuracao }
     assert_redirected_to administracao_configuracao_path(assigns(:administracao_configuracao))
   end
 

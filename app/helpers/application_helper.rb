@@ -16,16 +16,23 @@ module ApplicationHelper
 
   def titulo_pagina(titulo,sub_titulo)
     html = ""
+    html2 = ""
     html += "#{titulo}"
-    html += "<small>#{sub_titulo}</small>"
-    content_for :titulo do 
-      raw(html)                            
+    html2 += "#{sub_titulo}"
+
+    content_for :titulo do
+      raw(html)
     end
+
+    content_for :sub_titulo do
+      raw(html2)
+    end
+
   end
 
 
   def link_icone(texto,icone=nil,local=nil)
-  if icone 
+  if icone
     if local
       if local=='direita'
         html="#{texto} <i class='fa fa-#{icone}'></i>"
@@ -36,7 +43,7 @@ module ApplicationHelper
      html="<i class='fa fa-#{icone}'></i> #{texto}"
    end
  else
-  case texto 
+  case texto
   when 'detalhes'
     html="<i class='fa fa-eye'></i> Detalhes"
   when 'editar'
@@ -61,7 +68,7 @@ end
 
 
   def link_icone_ion(texto,icone=nil,local=nil)
-  if icone 
+  if icone
     if local
       if local=='direita'
         html="#{texto} <i class='ion ion-#{icone}'></i>"
@@ -72,7 +79,7 @@ end
      html="<i class='ion ion-#{icone}'></i> #{texto}"
    end
  else
-  case texto 
+  case texto
   when 'detalhes'
     html="<i class='ion ion-eye-open'></i> Detalhes"
   when 'editar'
@@ -98,23 +105,38 @@ end
 
 
 
-def icone_dash(titulo,contador,icone_ion,titulo_link,icone,link,color)
+def icone_dash(titulo,contador,icone_ion,link_titulo,icone,color)
 html = ""
-html+="<div class='col-lg-3 col-xs-6'>"
-html+="<div class='small-box bg-#{color}'>"
-html+="<div class='inner'>"
-html+="<h3>#{contador}</h3>"
-html+="<p>#{titulo}</p>"
-html+="</div>"
-html+="<div class='icon'>"
+html+="<div class='col-md-3 col-xs-12 col-sm-6'>"
+html+="<a class='info-tiles tiles-#{color}' href='#'>"
+html+="<div class='tiles-heading'>#{titulo}</div>"
+html+="<div class='tiles-body-alt'>"
 html+="<i class='ion ion-#{icone_ion}'></i>"
+html+="<div class='text-center'>#{contador}</div>"
+html+="<small>+8.7% from last period</small>"
 html+="</div>"
-html+="#{link_to link_icone(titulo_link,icone,'direita'),link,:class=>'small-box-footer'}"
+html+="<div class='tiles-footer'>Mais Informações</div>"
+html+="</a>"
 html+="</div>"
-html+="</div>"
+
 return raw(html)
 end
 
+
+
+
+
+
+
+
+
+
+def yield_or(name, content = nil, &block)
+  if content_for?(name)
+    content_for(name)
+  else
+    block_given? ? capture(&block) : content
+   end
 end
 
-
+end
