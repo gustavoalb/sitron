@@ -1,0 +1,3 @@
+<%=simple_fields_for "administracao_departamento[endereco_attributes]" do |e|%>
+<%e.input :bairro_id,:collection=>@bairros,:prompt=>"Selecione o Bairro",:input_html=>{:class=>"span4 chosen chzn-done"}%>
+<%end%>

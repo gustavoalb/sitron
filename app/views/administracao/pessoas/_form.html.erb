@@ -1,0 +1,35 @@
+
+<%= simple_form_for(@administracao_pessoa,html: {class: "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :nome %>
+    <%= f.input :cpf, input_html: {class: "cpf"} %>
+    <%= f.input :email, as: :email %>
+    <%= f.input :matricula %>
+    <%= f.association :entidade,collection: @empresas.collect{|e| [e.nome, e.id] } %>
+    <div id='departamentos'>
+     <%= f.input :departamento,input_html: {readonly: true} %>
+    </div>
+    <%= f.association :cargo %>
+
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+$(function() {
+  $("#administracao_pessoa_entidade_id").observe_field(0.25, function( ) {
+   $.get("/administracao/pessoas/listar_departamentos?empresa_id="+$("#administracao_pessoa_entidade_id").val(), function(data) {
+// here check_login is the method in our controller.
+$("#departamentos").html(data);
+});
+  });
+});
+</script>
+<%end%>

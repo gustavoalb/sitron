@@ -31,5 +31,13 @@ module Sitron
      config.i18n.default_locale = "pt-BR"
      
      config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+
+
+  config.middleware.use FayeRails::Middleware, mount: '/faye', :timeout => 25 do
+    map '/patio' => RealtimePatioController  
+    map :default => :block
+   end
+     config.middleware.delete Rack::Lock
+
   end
 end

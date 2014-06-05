@@ -1,11 +1,15 @@
 # -*- encoding : utf-8 -*-
 class Endereco < ActiveRecord::Base
 
+	attr_accessor :nome_responsavel,:cidade_nome,:bairro_nome
+
 	belongs_to :enderecavel,:polymorphic=>true
 	belongs_to :bairro
 	belongs_to :cidade
 	belongs_to :estado
 
+   geocoded_by :endereco_completo
+   after_validation :geocode
 
 	enum tipo:  [
 		"Outros",
@@ -54,5 +58,8 @@ class Endereco < ActiveRecord::Base
 		"Viela",
 		"Vila"
 	]
+def endereco_completo
+["#{logradouro},#{numero}", cidade.nome, estado.sigla, 'BR'].compact.join(', ')   
+end
 
 end

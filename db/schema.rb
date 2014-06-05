@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140526175329) do
+ActiveRecord::Schema.define(version: 20140604183241) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,15 @@ ActiveRecord::Schema.define(version: 20140526175329) do
   end
 
   add_index "bairros", ["nome"], name: "index_bairros_on_nome", using: :btree
+
+  create_table "cargos", force: true do |t|
+    t.string   "nome"
+    t.integer  "entidade_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "cargos", ["entidade_id"], name: "index_cargos_on_entidade_id", using: :btree
 
   create_table "cidades", force: true do |t|
     t.string   "nome"
@@ -50,6 +59,18 @@ ActiveRecord::Schema.define(version: 20140526175329) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "departamentos", force: true do |t|
+    t.string   "nome"
+    t.string   "descricao"
+    t.integer  "entidade_id"
+    t.integer  "responsavel_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "departamentos", ["entidade_id"], name: "index_departamentos_on_entidade_id", using: :btree
+  add_index "departamentos", ["responsavel_id"], name: "index_departamentos_on_responsavel_id", using: :btree
 
   create_table "empresas", force: true do |t|
     t.string   "nome"
@@ -101,6 +122,88 @@ ActiveRecord::Schema.define(version: 20140526175329) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "patios", force: true do |t|
+    t.datetime "data_entrada"
+    t.integer  "veiculo_id"
+    t.integer  "motorista_id"
+    t.integer  "empresa_id"
+    t.datetime "data_saida"
+    t.string   "state"
+    t.integer  "position"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "patios", ["empresa_id"], name: "index_patios_on_empresa_id", using: :btree
+  add_index "patios", ["motorista_id"], name: "index_patios_on_motorista_id", using: :btree
+  add_index "patios", ["veiculo_id"], name: "index_patios_on_veiculo_id", using: :btree
+
+  create_table "pessoas", force: true do |t|
+    t.string   "nome"
+    t.string   "cpf"
+    t.string   "email"
+    t.string   "matricula"
+    t.integer  "cargo_id"
+    t.integer  "entidade_id"
+    t.integer  "user_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "departamento_id"
+  end
+
+  add_index "pessoas", ["cargo_id"], name: "index_pessoas_on_cargo_id", using: :btree
+  add_index "pessoas", ["departamento_id"], name: "index_pessoas_on_departamento_id", using: :btree
+  add_index "pessoas", ["entidade_id"], name: "index_pessoas_on_entidade_id", using: :btree
+  add_index "pessoas", ["user_id"], name: "index_pessoas_on_user_id", using: :btree
+
+  create_table "requisicoes", force: true do |t|
+    t.string   "numero"
+    t.string   "motivo"
+    t.string   "descricao"
+    t.integer  "requisitante_id"
+    t.date     "data_ida"
+    t.time     "hora_ida"
+    t.date     "data_volta"
+    t.time     "hora_volta"
+    t.string   "periodo"
+    t.boolean  "periodo_longo"
+    t.datetime "inicio"
+    t.datetime "fim"
+    t.integer  "posto_id"
+    t.integer  "preferencia_id"
+    t.string   "state"
+    t.float    "distancia"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
+  add_index "requisicoes", ["preferencia_id"], name: "index_requisicoes_on_preferencia_id", using: :btree
+  add_index "requisicoes", ["requisitante_id"], name: "index_requisicoes_on_requisitante_id", using: :btree
+
+  create_table "requisicoes_rotas", force: true do |t|
+    t.integer "rota_id"
+    t.integer "requisicao_id"
+  end
+
+  add_index "requisicoes_rotas", ["requisicao_id"], name: "index_requisicoes_rotas_on_requisicao_id", using: :btree
+  add_index "requisicoes_rotas", ["rota_id"], name: "index_requisicoes_rotas_on_rota_id", using: :btree
+
+  create_table "rotas", force: true do |t|
+    t.string   "destino"
+    t.string   "roteavel_type"
+    t.integer  "roteavel_id"
+    t.string   "tempo_previsto"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.boolean  "rota_longa"
+    t.boolean  "intermunicipal"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "rotas", ["roteavel_id"], name: "index_rotas_on_roteavel_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false

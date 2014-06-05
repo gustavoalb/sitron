@@ -3,6 +3,7 @@ class Administracao::Veiculo < ActiveRecord::Base
   belongs_to :modalidade
   belongs_to :combustivel
   belongs_to :empresa
+  has_many :patios
 
   mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
@@ -19,7 +20,7 @@ class Administracao::Veiculo < ActiveRecord::Base
  after_validation :gerar_code,:gerar_codigo_barras
 
  def para_qrcode
-  qrcode = "id = '#{self.id}' AND empresa = '#{self.empresa.id}' AND placa = '#{self.placa}'"
+  qrcode = "id = '#{self.id}' AND empresa = '#{self.empresa.id}"
   return qrcode
     
  end
@@ -27,7 +28,7 @@ class Administracao::Veiculo < ActiveRecord::Base
 
  def para_codigo_de_barras
 
-  code = "#{self.id}-#{self.empresa.id}-#{self.placa}"
+  code = "#{self.id}&#{self.empresa.id}&#{self.placa}"
   code2 = Base64.encode64(code)
   
   return code2
@@ -40,7 +41,7 @@ private
 
 def gerar_code
  
- qr = RQRCode::QRCode.new(self.para_qrcode, :size => 10, :level => :h )
+ qr = RQRCode::QRCode.new(self.para_qrcode, :size => 4, :level => :h )
  png = qr.to_img 
  caminho=%(#{Rails.root}/tmp/#{self.id}.png)
  png.resize(900, 900).save(caminho)

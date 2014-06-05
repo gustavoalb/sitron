@@ -1,0 +1,27 @@
+<dl class="dl-horizontal"> 
+  <dt>Numero:</dt>
+  <dd><%= @requisicao.numero %></dd>
+  <dt>Tipo deslocamento:</dt>
+  <dd><%= @requisicao.tipo_deslocamento %></dd>
+  <dt>Descricao:</dt>
+  <dd><%= @requisicao.descricao %></dd>
+  <dt>Requisitante:</dt>
+  <dd><%= @requisicao.requisitante.nome %></dd>
+  <dt>Data:</dt>
+  <dd><%= @requisicao.data_ida.to_s_br %></dd>
+  <dt>Hora:</dt>
+  <dd><%= @requisicao.hora_ida %></dd>
+  <dt>Periodo:</dt>
+  <dd><%= @requisicao.periodo %></dd>
+  <dt>Periodo longo:</dt>
+  <dd><%= @requisicao.periodo_longo %></dd>
+  <dt>Inicio:</dt>
+  <dd><%= @requisicao.inicio %></dd>
+  <dt>Fim:</dt>
+  <dd><%= @requisicao.fim %></dd>
+  <dt>Posto:</dt>
+  <dd><%= @requisicao.posto %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_requisicao_path(@requisicao),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), requisicoes_path, class: "btn btn-sm btn-default" %>

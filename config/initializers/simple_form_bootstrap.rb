@@ -8,7 +8,7 @@ SimpleForm.setup do |config|
     b.use :label
     b.wrapper tag: 'div', class: 'col-sm-6' do |ba|
       ba.use :input
-      ba.use :error, wrap_with: { tag: 'span', class: 'help-inline text-red' }
+      ba.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
       ba.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
     end
   end
@@ -22,7 +22,7 @@ SimpleForm.setup do |config|
         prepend.use :input
       end
       input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
-      input.use :error, wrap_with: { tag: 'span', class: 'help-inline text-red' }
+      input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
 
@@ -35,7 +35,7 @@ SimpleForm.setup do |config|
         append.use :input
       end
       input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
-      input.use :error, wrap_with: { tag: 'span', class: 'help-inline text-red' }
+      input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
 
@@ -50,7 +50,7 @@ SimpleForm.setup do |config|
         append.use :input
       end
       input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
-      input.use :error, wrap_with: { tag: 'span', class: 'help-inline text-red' }
+      input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
 
@@ -64,7 +64,7 @@ SimpleForm.setup do |config|
         append.use :input
       end
       input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
-      input.use :error, wrap_with: { tag: 'span', class: 'help-inline text-red' }
+      input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
 
@@ -74,7 +74,7 @@ SimpleForm.setup do |config|
      b.use :placeholder
      b.use :input
      b.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
-     b.use :error, wrap_with: { tag: 'span', class: 'help-inline text-red' }
+     b.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
  end
 
   # Wrappers for forms and inputs using the Twitter Bootstrap toolkit.

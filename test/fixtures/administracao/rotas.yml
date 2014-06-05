@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  destino: MyString
+  entidade_id: 
+  tempo_previsto: MyString
+  latitude: 1.5
+  longitude: 1.5
+  rota_longa: false
+  intermunicipal: false
+
+two:
+  destino: MyString
+  entidade_id: 
+  tempo_previsto: MyString
+  latitude: 1.5
+  longitude: 1.5
+  rota_longa: false
+  intermunicipal: false

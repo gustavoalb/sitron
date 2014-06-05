@@ -1,0 +1,17 @@
+<%= titulo_pagina("Detalhes da AdministracaoPessoa", @administracao_pessoa.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Nome:</dt>
+  <dd><%= @administracao_pessoa.nome %></dd>
+  <dt>Cpf:</dt>
+  <dd><%= @administracao_pessoa.cpf %></dd>
+  <dt>Email:</dt>
+  <dd><%= @administracao_pessoa.email %></dd>
+  <dt>Matricula:</dt>
+  <dd><%= @administracao_pessoa.matricula %></dd>
+  <dt>Cargo:</dt>
+  <dd><%= @administracao_pessoa.cargo %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_pessoa_path(@administracao_pessoa),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_pessoas_path, class: "btn btn-sm btn-default" %>

@@ -10238,6 +10238,15 @@ body.collapse-leftbar #search.keep-open form button[type="submit"] {
   background-color: #85c744;
   border-color: #85c744;
 }
+.panel-default {
+  border-color: #e6e7e8;
+}
+.panel-default{
+  color: #ffffff;
+  background-color: #bebebe;
+  border-color: #e6e7e8;
+}
+
 .panel-success .panel-body {
   border-top: 2px solid #85c744;
 }

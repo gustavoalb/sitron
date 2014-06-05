@@ -1,11 +1,11 @@
 
 <%content_for :dashboard do%>
 
-<%=icone_dash("Usuários Registrados",User.all.count,"person","Ver Todos","arrow-circle-right",'green')%>
-<%=icone_dash("Veículos no Pátio","3","model-s","Ver Todos","arrow-circle-right",'orange')%>
-<%=icone_dash("Veículos Disponíveis","1","model-s","Ver Todos","arrow-circle-right",'success')%>
-<%=icone_dash("Requisições de Transporte (RST)","3","clipboard","Ver Todos","arrow-circle-right",'primary')%>
-<%=icone_dash("Rotas","40","map","Listar Rotas","arrow-circle-right",'sky')%>
+<%=icone_dash("Usuários Registrados",User.all.count,"person","Ver Todos","arrow-circle-right",'green',users_url)%>
+<%=icone_dash("Veículos no Pátio",Administracao::Patio.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'orange',patio_index_url)%>
+<%=icone_dash("Veículos Disponíveis",Administracao::Patio.disponivel.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'success')%>
+<%=icone_dash("Requisições de Transporte (RST)",Requisicao.count,"clipboard","Ver Todos","arrow-circle-right",'primary')%>
+<%=icone_dash("Rotas",Administracao::Rota.count,"map","Listar Rotas","arrow-circle-right",'sky')%>
 <%=icone_dash("Problemas Ocorridos","6","thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'danger')%>
 
 <%end%>

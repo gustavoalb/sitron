@@ -105,15 +105,15 @@ end
 
 
 
-def icone_dash(titulo,contador,icone_ion,link_titulo,icone,color)
+def icone_dash(titulo,contador,icone_ion,link_titulo,icone,color,link=nil,subtitulo=nil)
 html = ""
 html+="<div class='col-md-3 col-xs-12 col-sm-6'>"
-html+="<a class='info-tiles tiles-#{color}' href='#'>"
+html+="<a class='info-tiles tiles-#{color}' href='#{link}'>"
 html+="<div class='tiles-heading'>#{titulo}</div>"
 html+="<div class='tiles-body-alt'>"
 html+="<i class='ion ion-#{icone_ion}'></i>"
 html+="<div class='text-center'>#{contador}</div>"
-html+="<small>+8.7% from last period</small>"
+html+="<small>#{subtitulo}</small>"
 html+="</div>"
 html+="<div class='tiles-footer'>Mais Informações</div>"
 html+="</a>"

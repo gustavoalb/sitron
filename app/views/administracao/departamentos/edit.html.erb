@@ -1,0 +1,52 @@
+<%=titulo_pagina("AdministracaoDepartamento","Editar ")%>
+
+<%= simple_form_for(@administracao_departamento,html: {class: "form-horizontal"}) do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :nome %>
+    <%= f.input :descricao %>
+    <%= f.association :entidade,:collection=>@empresas.collect{|e|[e.nome,e.id]} %>
+
+
+    <%=f.fields_for :endereco do |endereco|%>
+	<%= endereco.input :logradouro,:input_html=>{:class=>"form-control"} %>
+	<%= endereco.input :numero,:label=>"Número",input_html: {:"data-trigger"=> "hover",:"data-original-title"=>"Tooltip text goes here. Tooltip text goes here."} %>
+	<%= endereco.input :complemento %>
+	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"} %>
+
+	<div id="cidades">
+	<%= endereco.input :cidade_nome,:input_html=>{:value=>f.object.endereco.cidade.nome},:readonly=>true,:label=>"Cidade" %>
+	</div>
+
+	<div id="bairros">
+		<%= endereco.input :bairro_nome,:input_html=>{:value=>f.object.endereco.bairro.nome},:readonly=>true,:label=>"Bairro" %>
+	</div>
+	<%= endereco.input :cep,:wrapper=>:pequenos,:label=>"CEP",input_html: {:class=>"cep"} %>
+	<%end%>
+    <%#= f.association :responsavel %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+
+
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+$(function() {
+  $("#administracao_departamento_endereco_attributes_estado_id").observe_field(0.25, function( ) {
+   $.get("/administracao/departamentos/listar_cidades?estado_id="+$("#administracao_departamento_endereco_attributes_estado_id").val(), function(data) {
+// here check_login is the method in our controller.
+$("#cidades").html(data);
+});
+  });
+});
+</script>
+<%end%>
+
+
+<%= link_to link_icone('detalhes'), @administracao_departamento,class: "bnt btn-success btn-sm" %> 

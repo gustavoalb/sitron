@@ -9,7 +9,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0',          group: :doc
-gem 'spring',        group: :development
+#gem 'spring',        group: :development
 gem 'font-awesome-rails'
 gem 'brazilian-rails'
 gem 'ionicons-rails'
@@ -26,13 +26,24 @@ gem 'therubyracer', :platform=>:ruby
 gem 'money-rails'
 gem 'monetize'
 gem 'jquery-turbolinks'
-
+gem 'jquery-ui-rails'
+gem "geocoder"
+gem 'rails3-jquery-autocomplete'
+gem "rails-bootstrap-daterangepicker"
+gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails',
+                              :git => 'git://github.com/tispratik/bootstrap-timepicker-rails.git'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'chunky_png'
 gem 'rqrcode_png'
 gem 'rghost'
 gem 'rghost_barcode'
+gem 'faye-rails'# => , '~> 1.0.6'
+gem 'momentjs-rails'
+gem 'acts_as_list'
+gem 'gon'
+gem 'state_machine'
+gem "resque", "~> 2.0.0.pre.1", git: "https://github.com/resque/resque.git"
 
 group :development do
   gem 'better_errors'
@@ -48,3 +59,5 @@ end
 group :production do
   gem 'passenger'
 end
+
+gem "brakeman", :require => false

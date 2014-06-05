@@ -1,0 +1,19 @@
+<%= titulo_pagina("Detalhes da AdministracaoRota", @administracao_rota.destino)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Destino:</dt>
+  <dd><%= @administracao_rota.destino %></dd>
+  <dt>Tempo previsto:</dt>
+  <dd><%= @administracao_rota.tempo_previsto %></dd>
+  <dt>Latitude:</dt>
+  <dd><%= @administracao_rota.latitude %></dd>
+  <dt>Longitude:</dt>
+  <dd><%= @administracao_rota.longitude %></dd>
+  <dt>Rota longa:</dt>
+  <dd><%= @administracao_rota.rota_longa %></dd>
+  <dt>Intermunicipal:</dt>
+  <dd><%= @administracao_rota.intermunicipal %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_rota_path(@administracao_rota),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_rotas_path, class: "btn btn-sm btn-default" %>

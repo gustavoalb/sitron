@@ -1,0 +1,11 @@
+<%= titulo_pagina(link_icone("Cargos","suitcase"), @administracao_cargo.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Nome:</dt>
+  <dd><%= @administracao_cargo.nome %></dd>
+  <dt>Entidade:</dt>
+  <dd><%= @administracao_cargo.entidade %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_cargo_path(@administracao_cargo),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_cargos_path, class: "btn btn-sm btn-default" %>

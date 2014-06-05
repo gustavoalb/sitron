@@ -1,0 +1,31 @@
+<%= simple_form_for @administracao_rota,:html=>{class: "form-horizontal"} do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :destino,:label=>"Descrição da Rota" %>
+    <%=f.input :roteavel_type,collection: [['Departamentos','Administracao::Departamento'],['Escolas','Administracao::Escola'],['Entidades','Administracao::Empresa']],:label=>"Tipo do Destino",:prompt=>"Selecione o Tipo de Destino"%>
+    <div id='tipo_destino'>
+          <%=f.input :roteavel_id,:collection=>[],:label=>"Destino da Rota"%>
+    </div>
+    <%= f.input :tempo_previsto %>
+    <%= f.input :rota_longa,:as=>:inline_checkbox,:label=>"A Rota é Longa?" %>
+    <%= f.input :intermunicipal,:as=>:inline_checkbox,:label=>"A Rota é Intermunicipal?" %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+$(function() {
+  $("#administracao_rota_roteavel_type").observe_field(0.25, function( ) {
+   $.get("/administracao/rotas/tipo_destino?tipod="+$("#administracao_rota_roteavel_type").val(), function(data) {
+// here check_login is the method in our controller.
+$("#tipo_destino").html(data);
+});
+  });
+});
+</script>
+<%end%>

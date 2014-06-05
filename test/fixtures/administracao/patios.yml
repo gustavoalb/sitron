@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  data_entrada: 2014-05-28 10:27:31
+  veiculo_id: 
+  motorista_id: 
+  data_saida: 2014-05-28 10:27:31
+
+two:
+  data_entrada: 2014-05-28 10:27:31
+  veiculo_id: 
+  motorista_id: 
+  data_saida: 2014-05-28 10:27:31

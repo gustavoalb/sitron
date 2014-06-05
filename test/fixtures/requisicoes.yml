@@ -1,0 +1,29 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  numero: MyString
+  tipo_deslocamento: MyString
+  descricao: MyString
+  requisitante_id: 
+  data: 2014-05-30
+  hora: 2014-05-30 16:53:29
+  periodo: MyString
+  periodo_longo: false
+  inicio: 2014-05-30 16:53:29
+  fim: 2014-05-30 16:53:29
+  posto_id: 
+  prefencia_id: 
+
+two:
+  numero: MyString
+  tipo_deslocamento: MyString
+  descricao: MyString
+  requisitante_id: 
+  data: 2014-05-30
+  hora: 2014-05-30 16:53:29
+  periodo: MyString
+  periodo_longo: false
+  inicio: 2014-05-30 16:53:29
+  fim: 2014-05-30 16:53:29
+  posto_id: 
+  prefencia_id: 

@@ -1,0 +1,35 @@
+<%=titulo_pagina(link_icone("Rotas",'compass'),"Rotas Cadastradas")%>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Destino</th>
+      <th>Tempo previsto</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
+      <th>Rota longa</th>
+      <th>Intermunicipal</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_rotas.each do |administracao_rota| %>
+      <tr>
+        <td><%= administracao_rota.destino %></td>
+        <td><%= administracao_rota.tempo_previsto %></td>
+        <td><%= administracao_rota.latitude %></td>
+        <td><%= administracao_rota.longitude %></td>
+        <td><%= administracao_rota.rota_longa %></td>
+        <td><%= administracao_rota.intermunicipal %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_rota,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_rota_path(administracao_rota),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), administracao_rota, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar Rota','plus'), new_administracao_rota_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

@@ -1,0 +1,27 @@
+<%=titulo_pagina(link_icone("Cargos","suitcase"),"Listagem de Cargos")%>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Entidade</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_cargos.each do |administracao_cargo| %>
+      <tr>
+        <td><%= administracao_cargo.nome %></td>
+        <td><%= administracao_cargo.entidade %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_cargo,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_cargo_path(administracao_cargo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), administracao_cargo, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar AdministracaoCargo','plus'), new_administracao_cargo_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

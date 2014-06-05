@@ -4,6 +4,8 @@ class Administracao::EmpresasController < ApplicationController
 
   # GET /administracao/empresas
   # GET /administracao/empresas.json
+  autocomplete :pessoa, :nome,:class_name=>"Administracao::Pessoa"
+
   add_breadcrumb "Listagem de Empresas",:administracao_empresas_url
   def index
     @administracao_empresas = Administracao::Empresa.page params[:page]

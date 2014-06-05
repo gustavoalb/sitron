@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   private
 
   def user_not_authorized
-    flash[:alert] = "Access denied."
+    flash[:alert] = "Você não tem acesso à esta área."
     redirect_to (request.referrer || root_path)
   end
 
@@ -32,6 +32,8 @@ class ApplicationController < ActionController::Base
       @empresas = Administracao::Empresa.all    
       @modalidades = Administracao::Modalidade.all 
       @combustiveis = Administracao::Combustivel.all
+      @rotas = Administracao::Rota.all
+
   end
 
 end

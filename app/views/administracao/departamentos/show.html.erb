@@ -1,0 +1,15 @@
+<%= titulo_pagina(link_icone("Departamento",'sitemap'), @administracao_departamento.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Nome:</dt>
+  <dd><%= @administracao_departamento.nome %></dd>
+  <dt>Descricao:</dt>
+  <dd><%= @administracao_departamento.descricao %></dd>
+  <dt>Entidade:</dt>
+  <dd><%= @administracao_departamento.entidade %></dd>
+  <dt>Responsavel:</dt>
+  <dd><%= @administracao_departamento.responsavel %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_departamento_path(@administracao_departamento),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_departamentos_path, class: "btn btn-sm btn-default" %>

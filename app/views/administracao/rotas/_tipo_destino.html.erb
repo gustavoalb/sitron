@@ -1,0 +1,3 @@
+<%=simple_fields_for "administracao_rota" do |e|%>
+<%=e.input :roteavel_id,:collection=>@roteaveis,:label=>"Destino da Rota",:prompt=>"Selecione o Destino",:input_html=>{:class=>"span4 chosen chzn-done"}%>
+<%end%>

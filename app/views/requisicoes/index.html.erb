@@ -1,0 +1,34 @@
+
+<%content_for :dashboard do%>
+
+<%=titulo_pagina(link_icone("Requisições",'thumbs-up'),"Listagem de Requisições de Serviço de Transporte")%>
+
+
+<%@requisicoes.each do |req|%>
+<div class="panel-group panel-<%=req.panel%>" id="accordion">
+<%=item_requisicao('accordion',"req_#{req.id}","Motivo: #{req.motivo} -  Status: #{status_requisicao(req)} - Data da Requisição: #{req.created_at.to_s_br} - Distância em Quilômetros: #{req.distancia.round(2)}") do%>
+
+<div class="list-group"> 
+<a href="#" class="list-group-item"><span class="badge"></span> Numero: <%=req.numero%> </a> 
+<a href="#" class="list-group-item"><span class="badge"></span> <i class="fa fa-reorder"></i> Motivos: <%=req.motivo%> </a> 
+<a href="#" class="list-group-item"><span class="badge"></span> <i class="fa fa-compass"></i> Rotas: <%=req.rotas_requisicao%> </a> 
+<a href="#" class="list-group-item"><span class="badge badge-<%=req.panel%>"><%=req.state.upcase%></span> <i class="fa fa-info"></i> Status </a> 
+<a href="#" class="list-group-item">
+<%=link_to "Cancelar Requisicao","#",:class=>"btn btn-sky" unless req.confirmada? or req.cancelada?%>
+<%= link_to link_icone('editar'), edit_requisicao_path(req),class: "btn btn-warning",data: { no_turbolink: true }  %>
+<%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger" %>
+</a> 
+
+</div>
+<%end%>
+</div>
+<%end%>
+
+
+
+<%= link_to link_icone('Requisição de Transporte - Simples','thumbs-up'), new_requisicao_path, :class=>"btn btn-large btn-green",data: { no_turbolink: true }  %>
+
+<%= link_to link_icone('Requisição de Transporte - Agendar','calendar'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
+
+
+<%end%>
