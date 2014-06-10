@@ -8,6 +8,12 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 user = CreateAdminService.new.call
 puts 'CREATED ADMIN USER: ' << user.email
+
+Tipo.create(:nome=>"Passeio")
+Tipo.create(:nome=>"Utilitário")
+Tipo.create(:nome=>"Motocicleta")
+Tipo.create(:nome=>"Carga")
+Tipo.create(:nome=>"Coletivo")
 # Environment variables (ENV['...']) can be set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
  Estado.delete_all
@@ -98,3 +104,87 @@ c.bairros.create(:nome=>"Vila Tropical")
 c.bairros.create(:nome=>"Zerão")
 
 puts "Cadastrados os Bairros de Macapá"
+
+puts "Cadastrando Latitude e Longitude das Cidades"
+
+c = Cidade.where(:nome=>"Amapá").first                    
+c.latitude=2.05333  
+c.longitude=-50.79306 
+c.save!
+
+c = Cidade.where(:nome=>"Calçoene").first                 
+c.latitude=2.4975   
+c.longitude=-50.94861 
+c.save!
+
+c = Cidade.where(:nome=>"Cutias").first                    
+c.latitude=0.98611  
+c.longitude=-50.80222 
+c.save!
+
+
+c = Cidade.where(:nome=>"Ferreira Gomes").first           
+c.latitude=0.85833  
+c.longitude=-51.18 
+c.save!
+
+c = Cidade.where(:nome=>"Itaubal").first                  
+c.latitude=0.71167  
+c.longitude=-50.8 
+c.save!
+
+c = Cidade.where(:nome=>"Laranjal do Jari").first         
+c.latitude=-1.12    
+c.longitude=-52 
+c.save!
+
+c = Cidade.where(:nome=>"Macapá").first                   
+c.latitude=0.03889  
+c.longitude=-51.06639 
+c.save!
+
+c = Cidade.where(:nome=>"Mazagão").first                  
+c.latitude=-0.115   
+c.longitude=-51.28944
+c.save!
+
+c = Cidade.where(:nome=>"Oiapoque").first                 
+c.latitude=3.84306  
+c.longitude=-51.835 
+c.save!
+
+c = Cidade.where(:nome=>"Pedra Branca do Amapari").first  
+c.latitude=0.77806  
+c.longitude=-51.94361 
+c.save!
+
+c = Cidade.where(:nome=>"Porto Grande").first             
+c.latitude=0.71333  
+c.longitude=-51.41333 
+c.save!
+
+c = Cidade.where(:nome=>"Pracuúba").first                 
+c.latitude=1.74333  
+c.longitude=-50.79139 
+c.save!
+
+c = Cidade.where(:nome=>"Santana").first                  
+c.latitude=-0.05833 
+c.longitude=-51.18167 
+c.save!
+
+c = Cidade.where(:nome=>"Serra do Navio").first           
+c.latitude=0.89556  
+c.longitude=-52.00222 
+c.save!
+
+c = Cidade.where(:nome=>"Tartarugalzinho").first          
+c.latitude=1.50556  
+c.longitude=-50.91194 
+c.save!
+
+c = Cidade.where(:nome=>"Vitória do Jari").first          
+c.latitude=-0.91722 
+c.longitude=-52.40806 
+c.save!
+

@@ -34,7 +34,7 @@ module PatioHelper
 		html+="<div class='pull-right'><span class='badge'>#{patio.position}</span><span class='badge'>#{veiculo.placa}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
-		html+="<div class='tiles-footer'>#{veiculo.tipo.titleize}-#{veiculo.modelo.titleize}</div>"
+		html+="<div class='tiles-footer'>#{veiculo.tipo.nome}-#{veiculo.modelo.titleize}</div>"
 		html+="</a>"
 		html+="</div>"
 		return raw(html)
@@ -66,7 +66,7 @@ module PatioHelper
 		html+="<div class='pull-right'><span class='badge'>#{patio.position}</span><span class='badge'>#{veiculo.placa}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
-		html+="<div class='tiles-footer'>#{veiculo.tipo.titleize}-#{veiculo.modelo.titleize}</div>"
+		html+="<div class='tiles-footer'>#{veiculo.tipo.nome}-#{veiculo.modelo.titleize}</div>"
 		html+="</a>"
 		html+="</div>"
 	end
@@ -85,7 +85,7 @@ module PatioHelper
 		html+="<a href='#' class='shortcut-tiles tiles-success'>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='fa fa-car'></i></div>"
-		html+="<div class='pull-right'><span class='badge'>#{patio.position}</span><span class='badge'>#{veiculo.tipo.titleize}</span><span class='badge'>#{veiculo.placa}</span></div>"
+		html+="<div class='pull-right'><span class='badge'>#{patio.position}</span><span class='badge'>#{veiculo.tipo.nome}</span><span class='badge'>#{veiculo.placa}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
 		html+="<div class='tiles-footer'>#{veiculo.empresa.nome}</div>"

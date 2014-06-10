@@ -3,9 +3,17 @@ class PatioController < ApplicationController
   
   def index
 
-  	@patios = Administracao::Patio.order("position ASC")
+  	@patios = Administracao::Patio.na_data(Time.zone.now).order("position ASC")
   	
   end
+
+
+    def entrada
+
+    @patios = Administracao::Patio.na_data(Time.zone.now).order("position ASC")
+    
+  end
+
 
 
 def ordernar_veiculo
@@ -20,12 +28,10 @@ end
 
 def adicionar_posto
   codigo = params[:posto][:codigo_de_barras]
-  dados = Base64.decode64(codigo)
-  id = dados.split('&').first.to_i
-  veiculo = Administracao::Veiculo.find(id)
-  
+  veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
   @patio = Administracao::Patio.create(:veiculo_id=>veiculo.id,:empresa_id=> veiculo.empresa_id,:data_entrada=>Time.now)
-  @patios = Administracao::Patio.order("position ASC")
+  @patios = Administracao::Patio.na_data(Time.zone.now).order("position ASC")
+
 
 end
 

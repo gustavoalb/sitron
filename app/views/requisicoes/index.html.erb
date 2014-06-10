@@ -1,28 +1,32 @@
-
-<%content_for :dashboard do%>
-
 <%=titulo_pagina(link_icone("Requisições",'thumbs-up'),"Listagem de Requisições de Serviço de Transporte")%>
 
-
-<%@requisicoes.each do |req|%>
-<div class="panel-group panel-<%=req.panel%>" id="accordion">
-<%=item_requisicao('accordion',"req_#{req.id}","Motivo: #{req.motivo} -  Status: #{status_requisicao(req)} - Data da Requisição: #{req.created_at.to_s_br} - Distância em Quilômetros: #{req.distancia.round(2)}") do%>
-
-<div class="list-group"> 
-<a href="#" class="list-group-item"><span class="badge"></span> Numero: <%=req.numero%> </a> 
-<a href="#" class="list-group-item"><span class="badge"></span> <i class="fa fa-reorder"></i> Motivos: <%=req.motivo%> </a> 
-<a href="#" class="list-group-item"><span class="badge"></span> <i class="fa fa-compass"></i> Rotas: <%=req.rotas_requisicao%> </a> 
-<a href="#" class="list-group-item"><span class="badge badge-<%=req.panel%>"><%=req.state.upcase%></span> <i class="fa fa-info"></i> Status </a> 
-<a href="#" class="list-group-item">
-<%=link_to "Cancelar Requisicao","#",:class=>"btn btn-sky" unless req.confirmada? or req.cancelada?%>
-<%= link_to link_icone('editar'), edit_requisicao_path(req),class: "btn btn-warning",data: { no_turbolink: true }  %>
-<%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger" %>
-</a> 
-
-</div>
-<%end%>
-</div>
-<%end%>
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Motivo</th>
+            <th>Data da Requisição</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%@requisicoes.each do |req|%>
+        <tr class="<%=even_odd(req.id)%> gradeX">
+        <td  class="sorting_1"><%=req.numero%></td>
+            <td><%=req.motivo%></td>
+            <td><%=req.created_at.to_s_br%></td>
+            <td class="center"> <%=req.state.upcase%></td>
+            <td>
+                <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
+                <%= link_to link_icone('editar'), edit_requisicao_path(req),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
+                <%=link_to "Cancelar","#",:class=>"btn btn-sky btn-xs" unless req.confirmada? or req.cancelada?%>
+                <%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger btn-xs" %>
+            </td>
+        </tr>
+        <%end%>
+    </tbody>
+</table>
 
 
 
@@ -31,4 +35,25 @@
 <%= link_to link_icone('Requisição de Transporte - Agendar','calendar'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
 
 
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+	$(document).ready(function() {
+    $('.datatables').dataTable({
+        "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+        "sPaginationType": "bootstrap",
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ registros por página",
+            "sSearch": "",
+            "sInfo": "Exibindo página _PAGE_ de _PAGES_"
+        }
+    });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+});
+
+</script>
 <%end%>
+
+    

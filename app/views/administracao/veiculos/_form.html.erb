@@ -3,7 +3,7 @@
 
     <%= f.association :empresa,:collection=>@empresas.collect {|empresa| [empresa.nome,empresa.id]},:prompt=>"Selecione a Empresa" %>
     <%=f.input :placa,input_html: {class: "chapa"}%>
-    <%= f.input :tipo,:collection=>Administracao::Veiculo.tipos.keys.map {|tipo| [tipo.titleize,tipo]},:prompt=>"Selecione o Tipo do Veículo" %>
+    <%= f.association :tipo,:collection=>Tipo.all.collect {|tipo| [tipo.nome,tipo.id]},:prompt=>"Selecione o Tipo do Veículo" %>
     <%= f.input :motor  %>
     <%= f.input :direcao,:collection=>Administracao::Veiculo.direcoes.keys.map {|direcao| [direcao.titleize,direcao]},:prompt=>"Selecione o Tipo de Direção" %>
     <%= f.input :marca,:collection=>Administracao::Veiculo.marcas.keys.map {|marca| [marca.titleize,marca]},:prompt=>"Selecione a Marca" %>

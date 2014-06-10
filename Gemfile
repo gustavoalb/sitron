@@ -32,6 +32,7 @@ gem 'rails3-jquery-autocomplete'
 gem "rails-bootstrap-daterangepicker"
 gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails',
                               :git => 'git://github.com/tispratik/bootstrap-timepicker-rails.git'
+
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'chunky_png'
@@ -43,8 +44,13 @@ gem 'momentjs-rails'
 gem 'acts_as_list'
 gem 'gon'
 gem 'state_machine'
-gem "resque", "~> 2.0.0.pre.1", git: "https://github.com/resque/resque.git"
 
+#gem "resque", "~> 2.0.0.pre.1", git: "https://github.com/resque/resque.git"
+gem 'sidekiq'
+gem 'delayed_job_active_record'
+gem "delayed_cron",'0.2.0', :path => "#{File.expand_path(__FILE__)}/../vendor/gems/delayed_cron-0.2.0"
+gem 'rufus-scheduler'
+gem 'clockwork'
 group :development do
   gem 'better_errors'
   gem 'binding_of_caller', :platforms=>[:mri_21]
@@ -61,3 +67,11 @@ group :production do
 end
 
 gem "brakeman", :require => false
+gem 'gmaps4rails'
+gem 'underscore-rails'
+gem 'markaby',:require =>false
+gem 'memoist'
+gem 'event-calendar',	:require => "event_calendar"
+gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-rails.git'
+gem 'thinreports-rails'	
+gem 'ean'

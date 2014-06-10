@@ -1,0 +1,133 @@
+=round(!radius)
+  :-khtml-border-radius= !radius
+  :-moz-border-radius= !radius
+  :-webkit-border-radius= !radius
+  :border-radius= !radius
+
+=unround_left()
+  :-khtml-border-radius-bottomleft= 0px
+  :-moz-border-radius-bottomleft= 0px
+  :-webkit-border-bottom-left-radius= 0px
+  :border-bottom-left-radius= 0px
+  :-khtml-border-radius-topleft= 0px
+  :-moz-border-radius-topleft= 0px
+  :-webkit-border-top-left-radius= 0px
+  :border-top-left-radius= 0px
+
+=unround_right()
+  :-khtml-border-radius-bottomright= 0px
+  :-moz-border-radius-bottomright= 0px
+  :-webkit-border-bottom-right-radius= 0px
+  :border-bottom-right-radius= 0px
+  :-khtml-border-radius-topright= 0px
+  :-moz-border-radius-topright= 0px
+  :-webkit-border-top-right-radius= 0px
+  :border-top-right-radius= 0px
+
+.event_calendar
+  
+  table
+    border-collapse: collapse
+    margin: 0
+    width: 100%
+    
+    td
+      border-bottom: 0px solid transparent !important
+      width: 14.285%
+  
+  .days
+    position: relative
+  
+    table.grid
+      z-index: 1
+  
+    .events
+      left: 0px
+      position: absolute
+      table-layout: fixed
+      text-align: left
+      top: 0px
+      z-index: 2
+    
+      td
+        border-bottom-width: 0px
+        border-left-width: 0px
+        border-color: transparent
+        overflow: hidden
+        padding: 0
+        text-overflow: ellipsis
+        white-space: nowrap
+      
+        a
+          background-color: transparent
+          cursor: pointer
+          display: block
+          padding: 1px 3px
+          text-decoration: none
+        
+        .fields
+          display: none
+    
+      tr.grid td
+        border-top-width: 0px
+        height: 0px
+
+
+
+
+!border_color = #D4D5D4
+!border_width = 1px
+
+!event_background_color = #9AAC9A
+!event_hover_background_color = #6F7F6F
+!event_color = #FFF
+!event_spacing = 3px
+
+!grid_background_color = #FEFFFE
+!grid_height = 125px
+
+!header_label_background_color = #2F302F
+!header_label_color = #FFF
+
+!label_background_color = #EBEDE2
+!label_color = #000
+
+.event_calendar
+  border-bottom= !border_width "solid" !border_color
+  
+  table td
+    border-color= !border_color
+    border-width= !border_width
+  
+  .navigation td
+    border-color: transparent
+  
+  table.grid
+    background-color= !grid_background_color
+    height= !grid_height
+  
+  .label
+    background-color= !label_background_color
+    border-top-width= !border_width
+    color= !label_color
+  
+  .header .label
+    background-color= !header_label_background_color
+    color= !header_label_color
+  
+  .days .events td
+    border-top-width= !event_spacing
+    
+    a
+      background-color= !event_background_color
+      color= !event_color
+      +round(5px)
+    
+    &:hover a, &.hover a
+      background-color= !event_hover_background_color
+    
+    &.continuation a
+      +unround_left()
+    
+    &.continued a
+      +unround_right()

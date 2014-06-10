@@ -5,7 +5,7 @@
 <dl class="dl-horizontal"> 
 
   <dt>Tipo:</dt>
-  <dd><%= @administracao_veiculo.tipo.titleize %></dd>
+  <dd><%= @administracao_veiculo.tipo.nome %></dd>
   <dt>Motor:</dt>
   <dd><%= @administracao_veiculo.motor %></dd>
   <dt>Diracao:</dt>
@@ -32,7 +32,7 @@
   <dd><%= @administracao_veiculo.combustivel.nome %></dd>
   <dt>Códigos</dt>
   <dd><%=image_tag(@administracao_veiculo.qrcode_url(:thumb),class: "img-responsive img-thumbnail")%></dd>
-  <dd><%=image_tag(@administracao_veiculo.codigo_de_barras_url(:thumbcb),class: "img-responsive img-thumbnail")%></dd>
+  <dd><%=image_tag(@administracao_veiculo.codigo_de_barras_url,class: "img-responsive img-thumbnail")%></dd>
 </dl>
 
 <%= link_to link_icone('editar'), edit_administracao_veiculo_path(@administracao_veiculo),class: "btn btn-warning btn-sm" %> |

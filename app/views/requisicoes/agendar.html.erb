@@ -2,11 +2,12 @@
 <%= f.error_notification %>
     <%= f.input :motivo,:label=>"Motivo da Requisição" %>
     <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
-    <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {multiple:""},:hint=>"Marque Várias Rotas segurando a tecla CTRL ou SHIFT",label: "Rota a ser seguida"%>
     <%=f.input :inicio,:input_html=>{:readonly=>true},as: :string,hint: "Clique no campo para selecionar a data de Ida e Volta"%>
     <%=f.input :fim,:input_html=>{:readonly=>true},as: :string,hint: "Este campo será preenchido automaticamente"%>
+<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota desejada",:label=>"Rota Desejada"%>
 
-    <br/><br/><br/>
+<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione as Pessoas",:label=>"Pessoas incluídas"%>
+<br/><br/><br/>
     <%=botoes_form(f)%>
 
 <% end %>
@@ -21,17 +22,56 @@ $('#requisicao_inicio').daterangepicker(
                 toLabel: 'Até',
                 weekLabel: 'W',
                 customRangeLabel: 'Calendário'},
-                timePicker: true, timePickerIncrement: 15, format: 'MM/DD/YYYY H:mm',timePicker12Hour: false,
-      ranges: {
-         'Um dia Saindo Amanhã': [moment().add('days',1), moment().add('days',2)],
-         'Dois dias Saindo Amanhã': [moment().add('days',1), moment().add('days',3)]
-      },
-      startDate: moment().subtract('days', 29),
-      endDate: moment()
+                timePicker: true, timePickerIncrement: 15, format: 'DD/MM/YYYY H:mm',timePicker12Hour: false,
+
+      startDate: moment(),
+      endDate: moment().add('minutes',15)
     },
     function(start, end) {
-        $('#requisicao_inicio').val(start.format('MM/DD/YYYY H:mm'));
-        $('#requisicao_fim').val(end.format('MM/DD/YYYY H:mm'));
+        $('#requisicao_inicio').val(start.format('DD/MM/YYYY H:mm'));
+        $('#requisicao_fim').val(end.format('DD/MM/YYYY H:mm'));
     }
 );
+</script>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.multiselect_pessoa').multiselect({
+      enableFiltering: true,
+      nonSelectedText: 'Nenhuma pessoa Selecionada',
+      onChange: function(option, checked) {
+    // Get selected options.
+    var selectedOptions = $('.multiselect_pessoa option:selected');
+
+    if (selectedOptions.length >= 5) {
+    // Disable all other checkboxes.
+    var nonSelectedOptions = $('.multiselect_pessoa option').filter(function() {
+      return !$(this).is(':selected');
+    });
+
+    var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+    nonSelectedOptions.each(function() {
+      var input = $('input[value="' + $(this).val() + '"]');
+      input.prop('disabled', true);
+      input.parent('li').addClass('disabled');
+    });
+}
+else {
+    // Enable all checkboxes.
+    var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+    $('.multiselect_pessoa option').each(function() {
+      var input = $('input[value="' + $(this).val() + '"]');
+      input.prop('disabled', false);
+      input.parent('li').addClass('disabled');
+    });
+}
+}
+});
+    $('.multiselect_rota').multiselect({
+      enableFiltering: true,
+       nonSelectedText: 'Selecione ao Menos uma Rota'
+    });
+  });
 </script>

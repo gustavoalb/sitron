@@ -9,8 +9,8 @@ class CreateEnderecos < ActiveRecord::Migration
       t.integer :bairro_id
       t.integer :cidade_id
       t.integer :estado_id
-      t.float :latitude
-      t.float :longitude
+      t.float :latitude,default: 0.6123044764332252
+      t.float :longitude,default: -51.3437641853028
       t.integer :enderecavel_id
       t.string :enderecavel_type
 

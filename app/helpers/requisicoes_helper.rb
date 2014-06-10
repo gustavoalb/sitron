@@ -50,4 +50,14 @@ return raw(html)
 
 end
 
+
+def even_odd(req)
+  html=""
+  if req.even?
+  	html+="even"
+  else
+  	html+="odd"
+  end
+  return raw(html)
+end
 end

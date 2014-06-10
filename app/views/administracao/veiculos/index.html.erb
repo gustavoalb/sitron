@@ -1,3 +1,16 @@
+                  <div class="options">
+                    <div class="btn-toolbar">
+                        <div class="btn-group hidden-xs">
+                            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-barcode"></i><span class="hidden-sm"> Impressão de Códigos </span><span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li><%=link_to "Todos",imprimir_codigos_administracao_veiculos_path%></li>
+                                <li><a href="#">Excel File (*.xlsx)</a></li>
+                                <li><a href="#">PDF File (*.pdf)</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
 <%=titulo_pagina(link_icone("Veículos",'car'),"Listagem de Veículos")%>
 
 <table class='table'>
@@ -18,7 +31,7 @@
     <% @administracao_veiculos.each do |administracao_veiculo| %>
       <tr>
         <td><%= administracao_veiculo.modalidade.nome %></td>
-        <td><%= administracao_veiculo.tipo.titleize %></td>
+        <td><%= administracao_veiculo.tipo.nome %></td>
         <td><%= administracao_veiculo.marca.titleize %></td>
         <td><%= administracao_veiculo.modelo %></td>
         <td><%= administracao_veiculo.capacidade_passageiros %></td>

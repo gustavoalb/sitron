@@ -38,18 +38,41 @@ class Administracao::RotasController < ApplicationController
   end
 
   def tipo_destino 
-   tipod = params[:tipod]
+   tipod = params[:tipo_destino]
    
    case tipod 
     when 'Administracao::Departamento'
-    @roteaveis = Administracao::Departamento.all.collect{|d|[d.nome,d.id]}
+    @roteaveis = Administracao::Departamento.all
     when 'Administracao::Escola'
-    @roteaveis = Administracao::Departamento.all.collect{|d|[d.nome,d.id]}
+    @roteaveis = Administracao::Departamento.all
     when 'Administracao::Empresa'
-    @roteaveis =   @empresas.collect {|e|[e.nome,e.id]}
+    @roteaveis =   @empresas
     end
 
-    render :partial=>"tipo_destino",:locals=>{:roteaveis=>@roteaveis}
+   # render :partial=>"tipo_destino",:locals=>{:roteaveis=>@roteaveis}
+
+   response = []
+    @roteaveis.each do |roteavel|
+        response << {:id => roteavel.id, :n => roteavel.nome}
+    end
+    render :json => {:response => response.compact}.as_json
+   end
+
+
+
+
+   def destino 
+    destino_id = params[:destino_id]
+    classe = params[:classe] 
+    @destino = classe.constantize.find(destino_id)
+
+   # render :partial=>"mapa",:locals=>{:destino=>@destino}
+
+   response = []
+  
+   response << {:latitude => @destino.endereco.latitude, :longitude => @destino.endereco.longitude}
+   render :json => {:response => response.compact}.as_json
+    
    end
 
   # PATCH/PUT /administracao/rotas/1

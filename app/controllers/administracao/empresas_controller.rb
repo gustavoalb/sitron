@@ -92,6 +92,6 @@ class Administracao::EmpresasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_empresa_params
-      params.require(:administracao_empresa).permit(:nome, :cnpj, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep])
+      params.require(:administracao_empresa).permit(:nome, :cnpj, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
     end
 end

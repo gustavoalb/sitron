@@ -1,27 +1,72 @@
-<%= simple_form_for @requisicao,html: {class: 'well form-horizontal'} do |f| %>
+<%= simple_nested_form_for @requisicao,html: {class: 'well form-horizontal'} do |f| %>
 <%= f.error_notification %>
-    <%= f.input :motivo,:label=>"Motivo da Requisição" %>
-    <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
-    <%= f.input :data_ida,input_html: {class: "datepicker",value: Time.now.to_date.to_s_br},as: :string,:label=>"Para a Data"  %>
-    <%= f.input :hora_ida,input_html: {id: "timepicker",value: Time.now.hour},as: :string,:label=>"Na Hora"  %>
-    <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {multiple:""},:hint=>"Marque Várias Rotas segurando a tecla CTRL ou SHIFT"%>
+<%= f.input :motivo,:label=>"Motivo da Requisição" %>
+<%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
+<%= f.input :data_ida,input_html: {class: "datepicker",value: Time.now.to_date.to_s_br},as: :string,:label=>"Para a Data"  %>
+<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{Time.now.hour}:#{Time.now.min}:00"},as: :string,:label=>"Na Hora"  %>
+<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota desejada",:label=>"Rota Desejada"%>
 
-    <br/><br/><br/>
-    <%=botoes_form(f)%>
+<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione as Pessoas",:label=>"Pessoas incluídas"%>
+
+<%=f.association :preferencia,:collection=>Tipo.all.collect {|t|[t.nome,t.id]},:label=>"Tipo de Veículo Preferêncial",:prompt=>"Selecione o tipo de veículo"%>
+
+
+<br/><br/><br/>
+<%=botoes_form(f)%>
 
 <% end %>
 
 <script type="text/javascript">
-    
 
-$('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR'}); 
-$('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
-'disableTimeRanges': [
-        ['0am', '7am'],
-    ]
 
-});
+	$('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR'}); 
+	$('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+		'disableTimeRanges': [
+		['0am', '7am'],
+		]
+
+	});
 
 
 </script>
 
+
+<script type="text/javascript">
+	$(document).ready(function() {
+		$('.multiselect_pessoa').multiselect({
+			enableFiltering: true,
+			nonSelectedText: 'Nenhuma pessoa Selecionada',
+			onChange: function(option, checked) {
+    // Get selected options.
+    var selectedOptions = $('.multiselect_pessoa option:selected');
+
+    if (selectedOptions.length >= 5) {
+    // Disable all other checkboxes.
+    var nonSelectedOptions = $('.multiselect_pessoa option').filter(function() {
+    	return !$(this).is(':selected');
+    });
+
+    var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+    nonSelectedOptions.each(function() {
+    	var input = $('input[value="' + $(this).val() + '"]');
+    	input.prop('disabled', true);
+    	input.parent('li').addClass('disabled');
+    });
+}
+else {
+    // Enable all checkboxes.
+    var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+    $('.multiselect_pessoa option').each(function() {
+    	var input = $('input[value="' + $(this).val() + '"]');
+    	input.prop('disabled', false);
+    	input.parent('li').addClass('disabled');
+    });
+}
+}
+});
+		$('.multiselect_rota').multiselect({
+			enableFiltering: true,
+			 nonSelectedText: 'Selecione ao Menos uma Rota'
+		});
+	});
+</script>

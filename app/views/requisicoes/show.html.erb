@@ -1,27 +1,71 @@
+<%=titulo_pagina("Detalhes da Requisição - #{@requisicao.numero}","Detalhes")%>
+<div class='row'>
+<div class="col-md-3">
 <dl class="dl-horizontal"> 
   <dt>Numero:</dt>
   <dd><%= @requisicao.numero %></dd>
-  <dt>Tipo deslocamento:</dt>
-  <dd><%= @requisicao.tipo_deslocamento %></dd>
-  <dt>Descricao:</dt>
-  <dd><%= @requisicao.descricao %></dd>
   <dt>Requisitante:</dt>
   <dd><%= @requisicao.requisitante.nome %></dd>
   <dt>Data:</dt>
   <dd><%= @requisicao.data_ida.to_s_br %></dd>
   <dt>Hora:</dt>
-  <dd><%= @requisicao.hora_ida %></dd>
-  <dt>Periodo:</dt>
-  <dd><%= @requisicao.periodo %></dd>
-  <dt>Periodo longo:</dt>
-  <dd><%= @requisicao.periodo_longo %></dd>
+  <dd><%= @requisicao.hora_ida.strftime("%H:%M") %></dd>
   <dt>Inicio:</dt>
-  <dd><%= @requisicao.inicio %></dd>
+  <dd><%= @requisicao.inicio.to_s_br %></dd>
   <dt>Fim:</dt>
-  <dd><%= @requisicao.fim %></dd>
+  <dd><%= @requisicao.fim.to_s_br %></dd>
+  <dt>Status:</dt>
+  <dd><%= @requisicao.state.upcase %></dd>
   <dt>Posto:</dt>
   <dd><%= @requisicao.posto %></dd>
 </dl>
-
+<br/>
 <%= link_to link_icone('editar'), edit_requisicao_path(@requisicao),class: "btn btn-warning btn-sm" %> |
 <%= link_to link_icone('voltar'), requisicoes_path, class: "btn btn-sm btn-default" %>
+
+</div>
+<div class="col-md-6">
+  <div style='width: 100%;'>
+    <div id="directions" style='width: 100%; height: 400px;'></div>
+  </div>
+</div>
+<div class="col-md-3">
+<div id='directions-panel'>
+</div>
+</div>
+</div>
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+var directionsDisplay = new google.maps.DirectionsRenderer();
+var directionsService = new google.maps.DirectionsService();
+
+function calcRoute() {
+  
+  var origin      = new google.maps.LatLng(<%=@requisicao.requisitante.departamento.endereco.latitude%>, <%=@requisicao.requisitante.departamento.endereco.longitude%>);
+  var destination = new google.maps.LatLng(<%=@requisicao.rotas.first.latitude%>,<%=@requisicao.rotas.first.longitude%>);
+
+  var request = {
+      origin:      origin,
+      destination: destination,
+      waypoints: [{location: '0.6123044764332252,-51.3437641853028'}],
+      travelMode:  google.maps.TravelMode.DRIVING
+  };
+  directionsService.route(request, function(response, status) {
+    if (status == google.maps.DirectionsStatus.OK) {
+      directionsDisplay.setDirections(response);
+    }
+  });
+}
+
+calcRoute();
+
+var handler = Gmaps.build('Google');
+handler.buildMap({ internal: {id: 'directions'}}, function(){
+  directionsDisplay.setMap(handler.getMap());
+  directionsDisplay.setPanel(document.getElementById('directions-panel'));
+
+});
+</script>
+
+<%end%>

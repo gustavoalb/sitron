@@ -22,6 +22,25 @@ class Administracao::VeiculosController < ApplicationController
   def edit
   end
 
+  def imprimir_codigos
+    report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
+    report.start_new_page
+ #  report.page.values printed_at: Time.zone.now
+  @veiculos = Administracao::Veiculo.all
+  @veiculos.each do  |v|
+    report.list.add_row do |row|
+       row.values valor: "Veículo: #{v.placa.upcase}"
+       row.values empresa: "Empresa: #{v.empresa.nome.upcase}"
+       row.values codigo: v.codigo_de_barras.file.file
+     end
+    end
+
+  send_data report.generate, filename: 'codigos.pdf', 
+   type: 'application/pdf', 
+   disposition: 'attachment'
+
+  end
+
   # POST /administracao/veiculos
   # POST /administracao/veiculos.json
   def create
@@ -70,6 +89,6 @@ class Administracao::VeiculosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_veiculo_params
-      params.require(:administracao_veiculo).permit(:placa,:tipo, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode)
+      params.require(:administracao_veiculo).permit(:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode)
     end
 end

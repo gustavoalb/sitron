@@ -2,6 +2,7 @@
 #require 'resque/server' 
 Sitron::Application.routes.draw do
 
+  match '/calendario(/:year(/:month))' => 'calendario#index', :as => :calendario, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/},:via=>:get
  #mount Resque::Server => "/internal/resque"
 
 
@@ -25,12 +26,14 @@ Sitron::Application.routes.draw do
      get "listar_cidades",on: :collection
      get "listar_bairros",on: :collection
      get 'autocomplete_pessoa_nome',on: :collection
+     get 'lat_lng_cidade',on: :collection
     end
   end
 
   namespace :administracao do
     resources :rotas do 
       get "tipo_destino",on: :collection
+      get "destino",on: :collection
     end
   end
 
@@ -38,9 +41,12 @@ Sitron::Application.routes.draw do
 
   get 'patio/index'
 
+
   resources :patio do 
     post :ordernar_veiculo
     post :adicionar_posto,on: :collection
+    get  :entrada,on: :collection
+    get  :saida,on: :collection
   end
 
   namespace :administracao do
@@ -52,13 +58,16 @@ Sitron::Application.routes.draw do
      get "listar_cidades",on: :collection
      get "listar_bairros",on: :collection
      get 'autocomplete_pessoa_nome',on: :collection
+     get 'lat_lng_cidade',on: :collection
     end
     resources :combustiveis
     resources :configuracoes do 
       post :salvar_skin,on: :collection
     end
 
-    resources :veiculos
+    resources :veiculos do 
+      get :imprimir_codigos, on: :collection
+    end
   end
 
   root :to => "home#index"

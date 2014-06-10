@@ -1,28 +1,43 @@
-<%=titulo_pagina("AdministracaoDepartamento","Editar ")%>
+<style>
+  .gllpMap  { width: 100%; height: 600px; }
+  .gllpMap img { 
+    max-width: none;
+  }
+
+  .gllpMap label { 
+    width: auto; display:inline; 
+  } 
+
+</style>
+
+
+<div class="row">
+
+<fieldset class="gllpLatlonPicker">
+
+<div class="col-md-5">
 
 <%= simple_form_for(@administracao_departamento,html: {class: "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
-
-
-    <%= f.input :nome %>
-    <%= f.input :descricao %>
-    <%= f.association :entidade,:collection=>@empresas.collect{|e|[e.nome,e.id]} %>
-
+	    <%= f.input :nome %>
+    <%= f.association :entidade,:collection=>@empresas.collect {|e|[e.nome,e.id]} %>
+    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id"},:label=>"Nome do Responsável"%>
+    <%=f.input :responsavel_id,as: :hidden%>
 
     <%=f.fields_for :endereco do |endereco|%>
-	<%= endereco.input :logradouro,:input_html=>{:class=>"form-control"} %>
-	<%= endereco.input :numero,:label=>"Número",input_html: {:"data-trigger"=> "hover",:"data-original-title"=>"Tooltip text goes here. Tooltip text goes here."} %>
-	<%= endereco.input :complemento %>
 	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"} %>
 
 	<div id="cidades">
-	<%= endereco.input :cidade_nome,:input_html=>{:value=>f.object.endereco.cidade.nome},:readonly=>true,:label=>"Cidade" %>
+	<%= endereco.input :cidade_id,:collection=>[],:prompt=>"Selecione a Cidade",:input_html=>{:id=>"departamento_cidade_select",class: "gllpUpdateButton"} %>
 	</div>
 
 	<div id="bairros">
-		<%= endereco.input :bairro_nome,:input_html=>{:value=>f.object.endereco.bairro.nome},:readonly=>true,:label=>"Bairro" %>
+	<%= endereco.input :bairro_id,:collection=>[],:prompt=>"Selecione o Bairro" %>
 	</div>
-	<%= endereco.input :cep,:wrapper=>:pequenos,:label=>"CEP",input_html: {:class=>"cep"} %>
+    <%= endereco.input :endereco,:input_html=>{:class=>"gllpLocationName",:id => 'gmaps-input-address',:readonly=>true} %>
+
+	<%= endereco.input :latitude,:input_html=>{:class=>"gllpLatitude",:readonly=>true},:as=>:string%>
+    <%= endereco.input :longitude,:input_html=>{:class=>"gllpLongitude",:readonly=>true},:as=>:string%>
 	<%end%>
     <%#= f.association :responsavel %>
 
@@ -31,22 +46,59 @@
     <%=botoes_form(f)%>
 
 <% end %>
+</div>
 
+    <div class='col-md-7'>
+         <div class="gllpMap" id='map_conteiner'>Rota no Mapa</div>
 
+      <input type="hidden" class="gllpZoom" value="13"/>
+
+    </div>
+
+  </fieldset>
+
+</div>
 
 
 <%content_for :scripts do%>
+
+
+
 <script type="text/javascript">
 $(function() {
   $("#administracao_departamento_endereco_attributes_estado_id").observe_field(0.25, function( ) {
-   $.get("/administracao/departamentos/listar_cidades?estado_id="+$("#administracao_departamento_endereco_attributes_estado_id").val(), function(data) {
-// here check_login is the method in our controller.
-$("#cidades").html(data);
-});
+  getCidadesByEstadoId($("#administracao_departamento_endereco_attributes_estado_id").val(),$("#administracao_departamento_endereco_attributes_estado_id").val());
   });
 });
 </script>
+
+
+
+<script type="text/javascript">
+  $(function() {
+    $("#departamento_cidade_select").observe_field(0.25, function( ) {
+    getLatitudeLongitudeByCidadeId($("#departamento_cidade_select").val());
+     });
+  });
+</script>
+
+
+ <script type="text/javascript">
+$(function() {
+  $("#departamento_cidade_select").observe_field(0.25, function( ) {
+  $.get("/administracao/departamentos/listar_bairros?cidade_id="+$("#departamento_cidade_select").val(), function(data) {
+// here check_login is the method in our controller.
+$("#bairros").html(data);
+});
+   getLatitudeLongitudeByCidadeId($("#departamento_cidade_select").val());
+  });
+});
+</script>
+
+
+
+
+
+
 <%end%>
 
-
-<%= link_to link_icone('detalhes'), @administracao_departamento,class: "bnt btn-success btn-sm" %> 

@@ -8,8 +8,11 @@ class Endereco < ActiveRecord::Base
 	belongs_to :cidade
 	belongs_to :estado
 
-   geocoded_by :endereco_completo
-   after_validation :geocode
+
+
+   #geocoded_by :endereco_completo
+ #  after_validation :reverse_geocode
+ #  reverse_geocoded_by :latitude, :longitude, :address => :logradouro
 
 	enum tipo:  [
 		"Outros",

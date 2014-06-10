@@ -1,0 +1,80 @@
+
+
+<script type="text/javascript">
+	$(function() {
+  var faye_client = new Faye.Client('http://127.0.0.1:3000/faye');
+  faye_client.subscribe("/patio", function(data) {
+    //alert(data.split('&'));
+   location.reload();
+   
+  
+  });
+}); 
+
+</script>
+
+<%=titulo_pagina("Pátio - #{Time.now.to_date.to_s_br}","Postos no Pátio no dia #{Time.now.strftime("%d do mês %m de %Y")}")%>
+
+
+<%=simple_form_for :posto,url: adicionar_posto_patio_index_url,remote: true do |f|%>
+<%=f.input :codigo_de_barras%>
+<%=f.submit "Enviar",class: "btn btn-sm"%>
+<%end%>
+<hr/>
+<div id='mensagem'></div>
+<hr/>
+<div class='row'>
+	<div class='col-md-10'>
+	    <div id='patio'>
+		<%@patios.each do |p|%>
+		<%=veiculo_patio('#','success',p,p.veiculo)%>
+		<%end%>
+		</div>
+	</div>
+
+	<div class='col-md-2'>
+		<h3>Legenda</h3>
+		<div class="panel">
+			<div class="list-group"> 	
+				<a href="#" class="list-group-item"><span class="label label-success"><i class="fa fa-car"></i></span> Aguardando</a> 
+				<a href="#" class="list-group-item"><span class="label label-primary"><i class="fa fa-car"></i></span> Próximo de Sair</a>
+				<a href="#" class="list-group-item"><span class="label label-warning"><i class="fa fa-car"></i></span> Em Trânsito</a>
+				<a href="#" class="list-group-item"><span class="label label-danger"><i class="fa fa-car"></i></span> Com Problemas</a>
+				<a href="#" class="list-group-item"><span class="label label-info"><i class="fa fa-car"></i></span> Agendado</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
+<% content_for :scripts do %>
+<%= javascript_tag do %>
+// Sorting the list
+
+$(document).ready(function(){
+$('#patio').sortable({
+axis: 'y',
+dropOnEmpty: false,
+handle: '.handle',
+cursor: 'crosshair',
+items: 'li',
+opacity: 0.4,
+scroll: true,
+update: function(){
+$.ajax({
+type: 'post',
+data: $('#patio').sortable('serialize'),
+dataType: 'script',
+complete: function(request){
+$('#patio').effect('highlight');
+},
+url: "<%=patio_ordernar_veiculo_path(:patio_id=>1)%>"})
+}
+});
+});
+<% end %>
+<script type="text/javascript">
+	$( "#posto_codigo_de_barras" ).focus();
+</script>
+<% end %>

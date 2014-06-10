@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140604183241) do
+ActiveRecord::Schema.define(version: 20140609155830) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,6 +41,8 @@ ActiveRecord::Schema.define(version: 20140604183241) do
     t.boolean  "capital",    default: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "latitude",   default: 0.6123044764332252
+    t.float    "longitude",  default: -51.3437641853028
   end
 
   add_index "cidades", ["nome"], name: "index_cidades_on_nome", using: :btree
@@ -59,6 +61,22 @@ ActiveRecord::Schema.define(version: 20140604183241) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "delayed_jobs", force: true do |t|
+    t.integer  "priority",   default: 0, null: false
+    t.integer  "attempts",   default: 0, null: false
+    t.text     "handler",                null: false
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
 
   create_table "departamentos", force: true do |t|
     t.string   "nome"
@@ -89,12 +107,13 @@ ActiveRecord::Schema.define(version: 20140604183241) do
     t.integer  "bairro_id"
     t.integer  "cidade_id"
     t.integer  "estado_id"
-    t.float    "latitude"
-    t.float    "longitude"
+    t.float    "latitude",         default: 0.6123044764332252
+    t.float    "longitude",        default: -51.3437641853028
     t.integer  "enderecavel_id"
     t.string   "enderecavel_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "endereco"
   end
 
   add_index "enderecos", ["latitude"], name: "index_enderecos_on_latitude", using: :btree
@@ -110,6 +129,18 @@ ActiveRecord::Schema.define(version: 20140604183241) do
   end
 
   add_index "estados", ["sigla"], name: "index_estados_on_sigla", unique: true, using: :btree
+
+  create_table "events", force: true do |t|
+    t.string   "name"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.boolean  "all_day",       default: false
+    t.string   "color"
+    t.integer  "requisicao_id"
+    t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "modalidades", force: true do |t|
     t.string   "nome"
@@ -157,6 +188,14 @@ ActiveRecord::Schema.define(version: 20140604183241) do
   add_index "pessoas", ["entidade_id"], name: "index_pessoas_on_entidade_id", using: :btree
   add_index "pessoas", ["user_id"], name: "index_pessoas_on_user_id", using: :btree
 
+  create_table "pessoas_requisicoes", force: true do |t|
+    t.integer "pessoa_id"
+    t.integer "requisicao_id"
+  end
+
+  add_index "pessoas_requisicoes", ["pessoa_id"], name: "index_pessoas_requisicoes_on_pessoa_id", using: :btree
+  add_index "pessoas_requisicoes", ["requisicao_id"], name: "index_pessoas_requisicoes_on_requisicao_id", using: :btree
+
   create_table "requisicoes", force: true do |t|
     t.string   "numero"
     t.string   "motivo"
@@ -176,6 +215,7 @@ ActiveRecord::Schema.define(version: 20140604183241) do
     t.float    "distancia"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "agenda",          default: false
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
@@ -189,6 +229,14 @@ ActiveRecord::Schema.define(version: 20140604183241) do
 
   add_index "requisicoes_rotas", ["requisicao_id"], name: "index_requisicoes_rotas_on_requisicao_id", using: :btree
   add_index "requisicoes_rotas", ["rota_id"], name: "index_requisicoes_rotas_on_rota_id", using: :btree
+
+  create_table "requisicoes_tipos", force: true do |t|
+    t.integer "tipo_id"
+    t.integer "requisicao_id"
+  end
+
+  add_index "requisicoes_tipos", ["requisicao_id"], name: "index_requisicoes_tipos_on_requisicao_id", using: :btree
+  add_index "requisicoes_tipos", ["tipo_id"], name: "index_requisicoes_tipos_on_tipo_id", using: :btree
 
   create_table "rotas", force: true do |t|
     t.string   "destino"
@@ -204,6 +252,12 @@ ActiveRecord::Schema.define(version: 20140604183241) do
   end
 
   add_index "rotas", ["roteavel_id"], name: "index_rotas_on_roteavel_id", using: :btree
+
+  create_table "tipos", force: true do |t|
+    t.string   "nome"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "email",                  default: "", null: false
@@ -250,11 +304,14 @@ ActiveRecord::Schema.define(version: 20140604183241) do
     t.integer  "empresa_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tipo_id"
+    t.string   "codigo"
   end
 
   add_index "veiculos", ["combustivel_id"], name: "index_veiculos_on_combustivel_id", using: :btree
   add_index "veiculos", ["empresa_id"], name: "index_veiculos_on_empresa_id", using: :btree
   add_index "veiculos", ["modalidade_id"], name: "index_veiculos_on_modalidade_id", using: :btree
+  add_index "veiculos", ["tipo_id"], name: "index_veiculos_on_tipo_id", using: :btree
   add_index "veiculos", ["turno_id"], name: "index_veiculos_on_turno_id", using: :btree
 
 end

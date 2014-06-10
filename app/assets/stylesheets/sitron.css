@@ -9901,7 +9901,7 @@ body.collapse-leftbar #search.keep-open form button[type="submit"] {
   color: #333333;
 }
 .navbar-inverse {
-  background-color: #313338;
+  background-color: red;
   border-color: #191a1d;
 }
 .navbar-inverse .navbar-brand {
