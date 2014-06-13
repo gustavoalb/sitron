@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  texto: MyString
+  motivo: MyString
+  state: MyString
+  origem_id: 
+  entidade_id: 
+  posto_id: 
+
+two:
+  texto: MyString
+  motivo: MyString
+  state: MyString
+  origem_id: 
+  entidade_id: 
+  posto_id: 

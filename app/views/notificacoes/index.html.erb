@@ -1,0 +1,34 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Texto</th>
+      <th>Motivo</th>
+      <th>State</th>
+      <th>Origem</th>
+      <th>Entidade</th>
+      <th>Posto</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @notificacoes.each do |notificacao| %>
+      <tr>
+        <td><%= notificacao.texto %></td>
+        <td><%= notificacao.motivo %></td>
+        <td><%= notificacao.state %></td>
+        <td><%= notificacao.origem %></td>
+        <td><%= notificacao.entidade %></td>
+        <td><%= notificacao.posto %></td>
+        <td><%= link_to link_icone('detalhes'), notificacao,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_notificacao_path(notificacao),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), notificacao, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar Notificacao','plus'), new_notificacao_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

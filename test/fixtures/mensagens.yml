@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  texto: MyString
+  remetente_id: 
+  destinatario_id: 
+  tipo_usuario: MyString
+  lido: false
+  objeto_id: 1
+  objeto_type: MyString
+
+two:
+  texto: MyString
+  remetente_id: 
+  destinatario_id: 
+  tipo_usuario: MyString
+  lido: false
+  objeto_id: 1
+  objeto_type: MyString

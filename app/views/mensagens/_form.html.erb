@@ -1,0 +1,15 @@
+<%= simple_form_for @mensagem,html: {class: "form-horizontal"} do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :texto %>
+    <%= f.input :remetente_id,input_html: {value: current_user.id},as: :hidden %>
+    <%= f.association :destinatario %>
+
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+

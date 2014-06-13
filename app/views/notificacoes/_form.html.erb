@@ -1,0 +1,54 @@
+<%= simple_form_for @notificacao,html: {class: "form-horizontal"} do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :texto,input_html: {:onkeypress=>"return check(event)"} %>
+    <%= f.input :motivo %>
+    <%= f.input :state %>
+    <%= f.association :origem %>
+    <%= f.association :entidade %>
+    <%= f.association :posto %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+
+<%content_for :scripts do%>
+
+
+<script language="javascript" type="text/javascript">
+
+function check(e) {
+    var keynum
+    var keychar
+    var numcheck
+    // For Internet Explorer
+    if (window.event) {
+        keynum = e.keyCode;
+    }
+    // For Netscape/Firefox/Opera
+    else if (e.which) {
+        keynum = e.which;
+    }
+    keychar = String.fromCharCode(keynum);
+    //List of special characters you want to restrict
+    if (keychar == ";") {
+         
+
+    } else {
+
+    	if (keychar == ":") {
+    		alert('fim');
+         }
+         else {
+           
+        
+    }
+    }
+}
+</script>
+
+<%end%>
