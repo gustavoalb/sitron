@@ -48,7 +48,6 @@ function calcRoute() {
   var request = {
       origin:      origin,
       destination: destination,
-      waypoints: [{location: '0.6123044764332252,-51.3437641853028'}],
       travelMode:  google.maps.TravelMode.DRIVING
   };
   directionsService.route(request, function(response, status) {

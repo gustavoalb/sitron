@@ -10,14 +10,16 @@ class Requisicao < ActiveRecord::Base
   has_and_belongs_to_many :pessoas,:class_name=>"Administracao::Pessoa"
   belongs_to :preferencia,:class_name=>"Tipo"
   has_one :event, dependent: :destroy
+  has_many :mensagens,:as=>:objeto
   attr_accessor :req_agenda
 
   scope :aguardando,->{where(:state=>"aguardando").order("created_at ASC ")}
   scope :validas,->{where("inicio > (SELECT CURRENT_TIMESTAMP)")}
 
-  after_create :numero_requisicao
+  after_create :numero_requisicao,:enviar_mensagem
   after_create :evento
   after_validation :setar_distancia
+
 
   def rotas_requisicao
     
@@ -197,6 +199,10 @@ end
 
 def evento
   self.create_event(:name=>self.motivo,:start_at=>self.inicio,:end_at=>self.fim)
+end
+
+def enviar_mensagem
+  self.mensagens.create(texto: "Nova requisição de Serviço",tipo_usuario: "administrador")
 end
 
 end

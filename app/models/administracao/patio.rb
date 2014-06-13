@@ -4,7 +4,7 @@ class Administracao::Patio < ActiveRecord::Base
   belongs_to :motorista
   belongs_to :empresa
   validates_presence_of :veiculo,:empresa
-  validates_uniqueness_of :veiculo_id,:scope=>[:empresa_id,:data_entrada]
+  validates_uniqueness_of :veiculo_id
 
   scope :na_data,lambda{|data| where("DATE_PART('DAY',data_entrada) = ? and DATE_PART('MONTH',data_entrada)=? and DATE_PART('YEAR',data_entrada)=?",data.day,data.month,data.year)}
   scope :disponivel, ->{ where(state: "estacionado")}

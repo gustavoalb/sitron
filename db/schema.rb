@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140609155830) do
+ActiveRecord::Schema.define(version: 20140611152501) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -142,6 +142,22 @@ ActiveRecord::Schema.define(version: 20140609155830) do
     t.datetime "updated_at"
   end
 
+  create_table "mensagens", force: true do |t|
+    t.string   "texto"
+    t.integer  "remetente_id"
+    t.integer  "destinatario_id"
+    t.string   "tipo_usuario"
+    t.boolean  "lido",            default: false
+    t.integer  "objeto_id"
+    t.string   "objeto_type"
+    t.string   "state"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "mensagens", ["destinatario_id"], name: "index_mensagens_on_destinatario_id", using: :btree
+  add_index "mensagens", ["remetente_id"], name: "index_mensagens_on_remetente_id", using: :btree
+
   create_table "modalidades", force: true do |t|
     t.string   "nome"
     t.integer  "periodo_diario",      default: 8
@@ -153,6 +169,22 @@ ActiveRecord::Schema.define(version: 20140609155830) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "notificacoes", force: true do |t|
+    t.string   "texto"
+    t.string   "motivo"
+    t.string   "state"
+    t.integer  "origem_id"
+    t.integer  "entidade_id"
+    t.integer  "posto_id"
+    t.integer  "tipo"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "notificacoes", ["entidade_id"], name: "index_notificacoes_on_entidade_id", using: :btree
+  add_index "notificacoes", ["origem_id"], name: "index_notificacoes_on_origem_id", using: :btree
+  add_index "notificacoes", ["posto_id"], name: "index_notificacoes_on_posto_id", using: :btree
 
   create_table "patios", force: true do |t|
     t.datetime "data_entrada"

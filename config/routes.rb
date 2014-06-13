@@ -2,6 +2,12 @@
 #require 'resque/server' 
 Sitron::Application.routes.draw do
 
+  resources :notificacoes
+
+  resources :mensagens do 
+   post :marcar_lida,on: :collection
+  end
+
   match '/calendario(/:year(/:month))' => 'calendario#index', :as => :calendario, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/},:via=>:get
  #mount Resque::Server => "/internal/resque"
 
@@ -47,6 +53,7 @@ Sitron::Application.routes.draw do
     post :adicionar_posto,on: :collection
     get  :entrada,on: :collection
     get  :saida,on: :collection
+    post :remover_posto, on: :collection
   end
 
   namespace :administracao do

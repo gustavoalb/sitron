@@ -7,7 +7,7 @@ attr_reader :user, :record
   end
 
   def index?
-    @user.admin?
+    @user.administrador?
   end
 
   def update?
@@ -15,6 +15,6 @@ attr_reader :user, :record
   end
 
   def destroy?
-    @user.admin?
+    @user.administrador?
   end
 end
