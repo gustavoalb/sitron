@@ -189,15 +189,18 @@ c.longitude=-52.40806
 c.save!
 
 m1 = Administracao::Modalidade.create(:nome=>"VEÍCULOS PARA PRESTAÇÃO CONTINUADA DO SERVIÇO", periodo_diario: 8, dias_mes: 22, com_motorista: true, com_combustivel: true, quilometragem_livre: true, mes_completo: false)
-m1.lotes.create(:nome=>"Lote 01",:numero_postos=>8,:tipo=>"Passeio")
-m1.lotes.create(:nome=>"Lote 02",:numero_postos=>6,:tipo=>"Pickup")
-m1.lotes.create(:nome=>"Lote 03",:numero_postos=>1,:tipo=>"Kombi")
-m1.lotes.create(:nome=>"Lote 04",:numero_postos=>2,:tipo=>"Caminhão")
-m1.lotes.create(:nome=>"Lote 05",:numero_postos=>3,:tipo=>"Motocicleta")
-m1.lotes.create(:nome=>"Lote 06",:numero_postos=>1,:tipo=>"Van")
+m1.lotes.create(:nome=>"Lote 01",:numero_postos=>8,:tipo=>"Passeio",:descricao=>"Tipo passeio, motor 1.0 gasolina ou álcool; capacidade 05 pessoas, 04 passageiros e 01 motorista; vidros e travas elétricos nas 04 portas, com disponibilidade para 08 (oito) horas de trabalho de segunda a sexta.")
+m1.lotes.create(:nome=>"Lote 02",:numero_postos=>6,:tipo=>"Pick-up",:descricao=>"Veículo utilitário e de passageiros, carroceria pick-up, com cabine dupla; movido a diesel;tração 4x4;")
+m1.lotes.create(:nome=>"Lote 03",:numero_postos=>1,:tipo=>"Kombi",:descricao=>"Veículo coletivo tipo Kombi; gasolina ou álcool, 03 portas, capacidade para 08 ou mais pessoas")
+m1.lotes.create(:nome=>"Lote 04",:numero_postos=>2,:tipo=>"Caminhão",:descricao=>"Veículo de carga, tipo Caminhão, motor a diesel; 04 cilindros;categoria básica com capacidade para 10 a 12 toneladas;")
+m1.lotes.create(:nome=>"Lote 05",:numero_postos=>3,:tipo=>"Motocicleta",:descricao=>"Veículo tipo Motocicleta")
+m1.lotes.create(:nome=>"Lote 06",:numero_postos=>1,:tipo=>"Van",:descricao=>"Veículo coletivo, tipo Van; motor a diesel; 03 portas laterais; com capacidade mínima de 16 dezesseis lugares; 15 passageiros e um motorista")
 
 m2 = Administracao::Modalidade.create(nome: "VEÍCULOS PARA PRESTAÇÃO CONTINUADA DO SERVIÇO", periodo_diario: 24, dias_mes: 30, com_motorista: false, com_combustivel: false, quilometragem_livre: true, mes_completo: false)
-m2.lotes.create(:nome=>"Lote 01",:numero_postos=>2,:tipo=>"Passeio")
-m2.lotes.create(:nome=>"Lote 02",:numero_postos=>2,:tipo=>"Pickup")
-m2.lotes.create(:nome=>"Lote 03",:numero_postos=>1,:tipo=>"Kombi")
+m2.lotes.create(:nome=>"Lote 01",:numero_postos=>2,:tipo=>"Passeio",:descricao=>"Tipo passeio, motor 1.0 gasolina ou álcool; capacidade 05 pessoas, 04 passageiros e 01 motorista; vidros e travas elétricos nas 04 portas, com disponibilidade para 08 (oito) horas de trabalho de segunda a sexta.")
+m2.lotes.create(:nome=>"Lote 02",:numero_postos=>2,:tipo=>"Pick-up",:descricao=>"Veículo utilitário e de passageiros, carroceria pick-up, com cabine dupla; movido a diesel;tração 4x4;")
+m2.lotes.create(:nome=>"Lote 03",:numero_postos=>1,:tipo=>"Kombi",:descricao=>"Veículo coletivo tipo Kombi; gasolina ou álcool, 03 portas, capacidade para 08 ou mais pessoas")
+
+
+
 

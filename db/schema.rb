@@ -158,6 +158,7 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.integer  "numero_postos"
     t.string   "tipo"
     t.string   "cor"
+    t.string   "descricao"
     t.integer  "modalidade_id"
     t.datetime "created_at"
     t.datetime "updated_at"

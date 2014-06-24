@@ -5,6 +5,7 @@ class CreateAdministracaoLotes < ActiveRecord::Migration
       t.integer :numero_postos
       t.string  :tipo
       t.string :cor
+      t.string :descricao
       t.belongs_to :modalidade,index: true
 
       t.timestamps

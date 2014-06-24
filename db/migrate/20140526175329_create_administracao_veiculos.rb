@@ -10,7 +10,7 @@ class CreateAdministracaoVeiculos < ActiveRecord::Migration
       t.string :modelo
       t.integer :capacidade_carga,default: 0
       t.integer :capacidade_passageiros,default: 4
-      t.integer :ano_fabricacao
+      t.integer :ano_fabricacao,defult: 2001
       t.integer :ano_modelo
       t.boolean :itens_obrigatorios,default: false
       t.text :observacao
