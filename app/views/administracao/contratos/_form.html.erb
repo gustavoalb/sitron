@@ -1,0 +1,13 @@
+<%= simple_form_for @administracao_contrato,html: {class: "form-horizontal"} do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :numero %>
+    <%= f.association :empresa,collection: @empresas.collect{|e|[e.nome,e.id]} %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+

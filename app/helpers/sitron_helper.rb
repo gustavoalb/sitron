@@ -81,12 +81,13 @@ def nav_item_menu(titulo,controller,icone,badge=nil,valor_badge=nil,&block)
 end
 
 def nav_item(url,titulo,controller,action,icone=nil)
+  icone = "<i class='fa fa-#{icone}'></i>"
 
   html=""
   if action == action and  controller_name == controller
-    html+="<li class='active'>#{link_to link_icone(titulo,icone),url,data: { no_turbolink: true }}</li>"
+    html+="<li class='active'><a href='#{url}' data-no-turbolink='true'>#{icone} <span>#{titulo}</span></a></li>"
   else
-    html+="<li>#{link_to link_icone(titulo,icone),url,data: { no_turbolink: true }}</li>"
+    html+="<li class=""><a href='#{url}' data-no-turbolink='true'>#{icone} <span>#{titulo}</span></a></li>"
   end
   raw(html)
 end

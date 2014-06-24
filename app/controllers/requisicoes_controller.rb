@@ -104,6 +104,6 @@ class RequisicoesController < ApplicationController
     
     # Never trust parameters from the scary internet, only allow the white list through.
     def requisicao_params
-      params.require(:requisicao).permit(:numero, :motivo, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:rota_ids=>[],:pessoa_ids=>[])
+      params.require(:requisicao).permit(:numero, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:motivo_id,:rota_ids=>[],:pessoa_ids=>[])
     end
 end

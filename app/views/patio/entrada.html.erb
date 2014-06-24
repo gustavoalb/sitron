@@ -2,33 +2,77 @@
 
 <script type="text/javascript">
 	$(function() {
-  var faye_client = new Faye.Client('http://127.0.0.1:3000/faye');
-  faye_client.subscribe("/patio", function(data) {
+		var faye_client = new Faye.Client('http://127.0.0.1:3000/faye');
+		faye_client.subscribe("/patio", function(data) {
     //alert(data.split('&'));
-   location.reload();
-   
-  
-  });
-}); 
+    location.reload();
+
+
+});
+	}); 
 
 </script>
 
-<%=titulo_pagina("Pátio - #{Time.now.to_date.to_s_br}","Postos no Pátio no dia #{Time.now.strftime("%d do mês %m de %Y")}")%>
+<%=titulo_pagina("Pátio - #{Time.now.to_date.to_s_br}","Postos no Pátio no dia #{Time.now.strftime("%d do mês de %B de %Y")}")%>
 
 
-<%=simple_form_for :posto,url: adicionar_posto_patio_index_url,remote: true do |f|%>
-<%=f.input :codigo_de_barras%>
-<%=f.submit "Enviar",class: "btn btn-sm"%>
-<%end%>
-<hr/>
-<div id='mensagem'></div>
-<hr/>
+<div class='row'>
+<div class="tab-container tab-danger">
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#entrada_veiculo" data-toggle="tab">Entrada de Veículo</a></li>
+		<li class=""><a href="#saida_servico" data-toggle="tab">Saída para Serviço</a></li>
+		<li class=""><a href="#volta_servico" data-toggle="tab">Volta de Serviço</a></li>
+	    <li class=""><a href="#saida_veiculo" data-toggle="tab">Saída de Veículo	</a></li>
+	</ul>
+	<div class="tab-content">
+		<div class="tab-pane active" id="entrada_veiculo">
+		<p>
+			<%=simple_form_for :posto,url: adicionar_posto_patio_index_url,remote: true do |f|%>
+			<%=f.input :codigo_de_barras,:label=>"Código do Posto de Serviço"%>
+			<%=f.submit "Enviar",class: "btn btn-sm"%>
+			<%end%>
+			</p>
+		</div>
+
+		<div class="tab-pane" id="saida_servico">
+		<p>
+			<%=simple_form_for :posto,url: saida_servico_patio_index_url,remote: true do |f|%>
+			<%=f.input :codigo_de_barras,:label=>"Código do Posto de Serviço",input_html:{id: "codigo_saida_servico"}%>
+			<%=f.submit "Enviar",class: "btn btn-sm"%>
+			<%end%>
+          </p>
+		</div>
+ 
+		   <div class="tab-pane" id="volta_servico">
+		    <p>
+			<%=simple_form_for :posto,url: chegada_servico_patio_index_url,remote: true do |f|%>
+			<%=f.input :codigo_de_barras,:label=>"Código do Posto de Serviço",input_html: {:id=>"codigo_chegada_servico"}%>
+			<%=f.submit "Enviar",class: "btn btn-sm"%>
+			<%end%>
+            </p>
+		</div>
+
+				   <div class="tab-pane" id="saida_veiculo">
+				<p>
+			<%=simple_form_for :posto,url: adicionar_posto_patio_index_url,remote: true do |f|%>
+			<%=f.input :codigo_de_barras,:label=>"Código do Posto de Serviço"%>
+			<%=f.submit "Enviar",class: "btn btn-sm"%>
+			<%end%>
+
+               </p>
+		</div>
+	</div>
+</div>
+</div>
+
+
+
 <div class='row'>
 	<div class='col-md-10'>
-	    <div id='patio'>
-		<%@patios.each do |p|%>
-		<%=veiculo_patio('#','success',p,p.veiculo)%>
-		<%end%>
+		<div id='patio'>
+			<%@postos.each do |p|%>
+			<%=veiculo_posto('#','success',p,p.veiculo)%>
+			<%end%>
 		</div>
 	</div>
 
@@ -46,7 +90,9 @@
 	</div>
 </div>
 
+<div class='row'>
 
+</div>
 
 <% content_for :scripts do %>
 <%= javascript_tag do %>

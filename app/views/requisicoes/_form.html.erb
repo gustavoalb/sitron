@@ -1,6 +1,6 @@
 <%= simple_nested_form_for @requisicao,html: {class: 'well form-horizontal'} do |f| %>
 <%= f.error_notification %>
-<%= f.input :motivo,:label=>"Motivo da Requisição" %>
+<%= f.association :motivo,:collection=>Administracao::Motivo.all.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição' %>
 <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
 <%= f.input :data_ida,input_html: {class: "datepicker",value: Time.now.to_date.to_s_br},as: :string,:label=>"Para a Data"  %>
 <%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{Time.now.hour}:#{Time.now.min}:00"},as: :string,:label=>"Na Hora"  %>

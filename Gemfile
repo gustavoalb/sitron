@@ -32,6 +32,7 @@ gem 'rails3-jquery-autocomplete'
 gem "rails-bootstrap-daterangepicker"
 gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails',
                               :git => 'git://github.com/tispratik/bootstrap-timepicker-rails.git'
+gem 'bootstrap-select-rails'
 
 gem 'carrierwave'
 gem 'mini_magick'
@@ -74,4 +75,5 @@ gem 'memoist'
 gem 'event-calendar',	:require => "event_calendar"
 gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-rails.git'
 gem 'thinreports-rails'	
+gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'

@@ -6,9 +6,9 @@
   <dt>Descricao:</dt>
   <dd><%= @administracao_departamento.descricao %></dd>
   <dt>Entidade:</dt>
-  <dd><%= @administracao_departamento.entidade %></dd>
+  <dd><%= @administracao_departamento.entidade.nome %></dd>
   <dt>Responsavel:</dt>
-  <dd><%= @administracao_departamento.responsavel %></dd>
+  <dd><%= @administracao_departamento.responsavel.nome %></dd>
 </dl>
 
 <%= link_to link_icone('editar'), edit_administracao_departamento_path(@administracao_departamento),class: "btn btn-warning btn-sm" %> |

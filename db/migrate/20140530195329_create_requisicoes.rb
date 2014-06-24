@@ -2,7 +2,7 @@ class CreateRequisicoes < ActiveRecord::Migration
   def change
     create_table :requisicoes do |t|
       t.string :numero
-      t.string :motivo
+      t.belongs_to :motivo,index: true
       t.string :descricao
       t.belongs_to :requisitante, index: true
       t.date :data_ida

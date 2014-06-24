@@ -2,6 +2,14 @@
 #require 'resque/server' 
 Sitron::Application.routes.draw do
 
+  namespace :administracao do
+    resources :motivos
+  end
+
+  namespace :administracao do
+    resources :contratos
+  end
+
   resources :notificacoes
 
   resources :mensagens do 
@@ -48,12 +56,15 @@ Sitron::Application.routes.draw do
   get 'patio/index'
 
 
-  resources :patio do 
-    post :ordernar_veiculo
-    post :adicionar_posto,on: :collection
-    get  :entrada,on: :collection
-    get  :saida,on: :collection
-    post :remover_posto, on: :collection
+  resources :patio,only: [:index] do 
+    post  :ordernar_veiculo
+    post  :adicionar_posto,on: :collection
+    get   :entrada,on: :collection
+    get   :saida,on: :collection
+    post  :saida_servico,on: :collection
+    post  :chegada_servico,on: :collection
+    post  :saida_veiculo,on: :collection
+    post  :remover_posto, on: :collection
   end
 
   namespace :administracao do
@@ -74,6 +85,7 @@ Sitron::Application.routes.draw do
 
     resources :veiculos do 
       get :imprimir_codigos, on: :collection
+       get "listar_lotes",on: :collection
     end
   end
 

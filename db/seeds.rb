@@ -10,10 +10,10 @@ user = CreateAdminService.new.call
 puts 'CREATED ADMIN USER: ' << user.email
 
 Tipo.create(:nome=>"Passeio")
-Tipo.create(:nome=>"Utilitário")
+Tipo.create(:nome=>"Pickup")
 Tipo.create(:nome=>"Motocicleta")
-Tipo.create(:nome=>"Carga")
-Tipo.create(:nome=>"Coletivo")
+Tipo.create(:nome=>"Caminhão")
+Tipo.create(:nome=>"Kombi")
 # Environment variables (ENV['...']) can be set in the file config/application.yml.
 # See http://railsapps.github.io/rails-environment-variables.html
  Estado.delete_all
@@ -187,4 +187,17 @@ c = Cidade.where(:nome=>"Vitória do Jari").first
 c.latitude=-0.91722 
 c.longitude=-52.40806 
 c.save!
+
+m1 = Administracao::Modalidade.create(:nome=>"VEÍCULOS PARA PRESTAÇÃO CONTINUADA DO SERVIÇO", periodo_diario: 8, dias_mes: 22, com_motorista: true, com_combustivel: true, quilometragem_livre: true, mes_completo: false)
+m1.lotes.create(:nome=>"Lote 01",:numero_postos=>8,:tipo=>"Passeio")
+m1.lotes.create(:nome=>"Lote 02",:numero_postos=>6,:tipo=>"Pickup")
+m1.lotes.create(:nome=>"Lote 03",:numero_postos=>1,:tipo=>"Kombi")
+m1.lotes.create(:nome=>"Lote 04",:numero_postos=>2,:tipo=>"Caminhão")
+m1.lotes.create(:nome=>"Lote 05",:numero_postos=>3,:tipo=>"Motocicleta")
+m1.lotes.create(:nome=>"Lote 06",:numero_postos=>1,:tipo=>"Van")
+
+m2 = Administracao::Modalidade.create(nome: "VEÍCULOS PARA PRESTAÇÃO CONTINUADA DO SERVIÇO", periodo_diario: 24, dias_mes: 30, com_motorista: false, com_combustivel: false, quilometragem_livre: true, mes_completo: false)
+m2.lotes.create(:nome=>"Lote 01",:numero_postos=>2,:tipo=>"Passeio")
+m2.lotes.create(:nome=>"Lote 02",:numero_postos=>2,:tipo=>"Pickup")
+m2.lotes.create(:nome=>"Lote 03",:numero_postos=>1,:tipo=>"Kombi")
 

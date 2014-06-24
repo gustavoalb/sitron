@@ -1,9 +1,9 @@
-<%titulo_pagina("Sistema On-Line de Gestão de Transporte","SITRON")%>
+<%titulo_pagina("Sistema de Gestão de Transporte On-Line","SITRON")%>
 <%content_for :dashboard do%>
 
 <%=icone_dash("Usuários Registrados",User.all.count,"person","Ver Todos","arrow-circle-right",'green',users_url)%>
-<%=icone_dash("Postos no Pátio",Administracao::Patio.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'orange',patio_index_url)%>
-<%=icone_dash("Postos Disponíveis",Administracao::Patio.disponivel.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'success')%>
+<%=icone_dash("Postos no Pátio",Posto.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'orange',patio_index_url)%>
+<%=icone_dash("Postos Disponíveis",Posto.disponivel.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'success')%>
 <%=icone_dash("Requisições de Transporte (RST)",Requisicao.count,"clipboard","Ver Todos","arrow-circle-right",'primary')%>
 <%=icone_dash("Rotas",Administracao::Rota.count,"map","Listar Rotas","arrow-circle-right",'sky')%>
 <%=icone_dash("Problemas Ocorridos","6","thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'danger')%>

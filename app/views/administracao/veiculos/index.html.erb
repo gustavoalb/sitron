@@ -13,15 +13,13 @@
 
 <%=titulo_pagina(link_icone("Veículos",'car'),"Listagem de Veículos")%>
 
-<table class='table'>
+<table class='table DTTT_selectable'>
   <thead>
     <tr>
       <th>Modalidade</th>
       <th>Tipo</th>
-      <th>Marca</th>
-      <th>Modelo</th>
       <th>Capacidade passageiros</th>
-      <th>Intens obrigatorios</th>
+      <th>Itens obrigatorios</th>
       <th>Combustivel</th>
       <th colspan="3"></th>
     </tr>
@@ -31,11 +29,9 @@
     <% @administracao_veiculos.each do |administracao_veiculo| %>
       <tr>
         <td><%= administracao_veiculo.modalidade.nome %></td>
-        <td><%= administracao_veiculo.tipo.nome %></td>
-        <td><%= administracao_veiculo.marca.titleize %></td>
-        <td><%= administracao_veiculo.modelo %></td>
+        <td><%= administracao_veiculo.lote.tipo %></td>
         <td><%= administracao_veiculo.capacidade_passageiros %></td>
-        <td><%= administracao_veiculo.intens_obrigatorios %></td>
+        <td><%= administracao_veiculo.itens_obrigatorios %></td>
         <td><%= administracao_veiculo.combustivel.nome %></td>
         <td><%= link_to link_icone('detalhes'), administracao_veiculo,:class=>"btn btn-success btn-sm" %></td>
         <td><%= link_to link_icone('editar'), edit_administracao_veiculo_path(administracao_veiculo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>

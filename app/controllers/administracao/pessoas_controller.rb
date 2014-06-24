@@ -76,6 +76,6 @@ class Administracao::PessoasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_pessoa_params
-      params.require(:administracao_pessoa).permit(:nome, :cpf, :email, :matricula, :cargo_id,:departamento_id)
+      params.require(:administracao_pessoa).permit(:nome, :cpf, :email, :matricula, :cargo_id,:departamento_id,:empresa_id)
     end
 end

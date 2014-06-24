@@ -1,0 +1,28 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Numero</th>
+      <th>Empresa</th>
+      <th>Lei</th>
+      <th>Artigo</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_contratos.each do |administracao_contrato| %>
+      <tr>
+        <td><%= administracao_contrato.numero %></td>
+        <td><%= administracao_contrato.empresa.nome %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_contrato,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_contrato_path(administracao_contrato),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), administracao_contrato, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar AdministracaoContrato','plus'), new_administracao_contrato_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

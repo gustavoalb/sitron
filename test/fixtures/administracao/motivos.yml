@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nome: MyString
+  tipo_id: 
+  carga: false
+  passageiro: false
+  entrega_documento: false
+  interior: false
+  viagem_longa: false
+
+two:
+  nome: MyString
+  tipo_id: 
+  carga: false
+  passageiro: false
+  entrega_documento: false
+  interior: false
+  viagem_longa: false

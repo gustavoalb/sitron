@@ -25,6 +25,7 @@
 //= require jquery_nested_form
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
+//= require bootstrap-select
 
 
 
@@ -40,7 +41,7 @@ jQuery(function($){
   $('.cep').mask('00000-000');
   $('.ano').mask('0000');
   $('.fone').mask('(96)0000-0000');
-  $('.chapa').mask('SSS-0000', {translation: {'Z': {pattern: /[A-Z]/, optional: false}}});
+  $('.chapa').mask('SSS-0000', {translation: {'S': {pattern: /[A-Z]/, optional: false}}});
   $('.phone_with_ddd').mask('(00) 0000-0000');
   $('.phone_us').mask('(000) 000-0000');
   $('.mixed').mask('AAA 000-S0S');
@@ -94,6 +95,19 @@ function getDestinosByTipoId(tipo_destino) {
 
 
 
+function getLotesByModalidadeId(modalidade) {
+  $.getJSON("/administracao/veiculos/listar_lotes?modalidade_id="+modalidade, function(j) {
+    var options = '<option value="">Selecione o Lote</option>';
+    $.each(j.response, function(i, item) {
+      options += '<option value="' + item.id + '">' + item.n + '</option>';
+    });
+    $("#administracao_veiculo_lote_id").html(options);
+  });
+}
+
+
+
+
 function getCidadesByEstadoId(estado_id) {
   $.getJSON("/administracao/departamentos/listar_cidades?estado_id="+estado_id, function(j) {
     var options = '<option value="">Selecione a Cidade</option>';
@@ -103,6 +117,8 @@ function getCidadesByEstadoId(estado_id) {
     $("#departamento_cidade_select").html(options);
   });
 }
+
+
 
 
 
@@ -149,4 +165,5 @@ function getLatitudeLongitudeByCidadeBId(cidade_id) {
     $("#administracao_empresa_endereco_attributes_latitude").val(latitude);
   });
 }
+
 

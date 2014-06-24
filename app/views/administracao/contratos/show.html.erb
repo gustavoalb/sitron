@@ -1,0 +1,12 @@
+<%= titulo_pagina("Detalhes do Contratos", @administracao_contrato.numero)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Numero:</dt>
+  <dd><%= @administracao_contrato.numero %></dd>
+  <dt>Empresa:</dt>
+  <dd><%= @administracao_contrato.empresa.nome %></dd>
+
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_contrato_path(@administracao_contrato),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_contratos_path, class: "btn btn-sm btn-default" %>

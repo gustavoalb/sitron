@@ -12,7 +12,7 @@ class CreateAdministracaoVeiculos < ActiveRecord::Migration
       t.integer :capacidade_passageiros,default: 4
       t.integer :ano_fabricacao
       t.integer :ano_modelo
-      t.boolean :intens_obrigatorios,default: false
+      t.boolean :itens_obrigatorios,default: false
       t.text :observacao
       t.string :qrcode
       t.string :codigo_de_barras

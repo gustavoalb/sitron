@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requisicao_id: 
+  veiculo_id: 
+  user_id: 
+  saida: 2014-06-17 10:27:13
+  chegada: 2014-06-17 10:27:13
+  gasto_combustivel: 1.5
+  valor_combustivel: 
+  distancia: 1.5
+  atendido: false
+  problema: false
+  imediato: false
+
+two:
+  requisicao_id: 
+  veiculo_id: 
+  user_id: 
+  saida: 2014-06-17 10:27:13
+  chegada: 2014-06-17 10:27:13
+  gasto_combustivel: 1.5
+  valor_combustivel: 
+  distancia: 1.5
+  atendido: false
+  problema: false
+  imediato: false

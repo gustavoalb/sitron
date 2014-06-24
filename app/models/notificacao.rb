@@ -2,6 +2,7 @@ class Notificacao < ActiveRecord::Base
 	belongs_to :origem,:class_name=>"User"
 	belongs_to :entidade,class_name: "Administracao::Empresa"
 	belongs_to :posto,class_name: "Administracao::Veiculo"
+	belongs_to :objeto,:polymorphic=>true
     scope :nao_vista,->{where(:state=>:nao_vista)}
 	enum tipo: [:erro,:aviso,:problema,:motorista,:veiculo,:empresa,:sistema]
 

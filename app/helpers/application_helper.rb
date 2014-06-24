@@ -146,13 +146,13 @@ def tempo_relativo(start_time)
   hora = ''
   case diff_seconds
     when 0 .. 59
-      hora =  "#{diff_seconds.round(2)} segs"
+      hora =  "#{diff_seconds.round(1)} segs"
     when 60 .. (3600-1)
-      hora =  "#{(diff_seconds/60).round(2)} mins"
+      hora =  "#{(diff_seconds/60).round(1)} mins"
     when 3600 .. (3600*24-1)
-      hora =  "#{(diff_seconds/3600).round(2)} horas"
+      hora =  "#{(diff_seconds/3600).round(1)} horas"
     when (3600*24) .. (3600*24*30) 
-      hora =  "#{(diff_seconds/(3600*24)).round(2)} dias"
+      hora =  "#{(diff_seconds/(3600*24)).round(1)} dias"
     else
       hora =  start_time.strftime("%m/%d/%Y")
   end
