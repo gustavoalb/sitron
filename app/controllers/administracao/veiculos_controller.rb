@@ -40,14 +40,14 @@ def imprimir_codigos
  @veiculos = Administracao::Veiculo.all
  @veiculos.each do  |v|
   report.list.add_row do |row|
-   row.values lote: "#{v.lote.upcase}"
+   row.values lote: "#{v.lote.nome.upcase}"
    row.values empresa: "#{v.empresa.nome.upcase}"
    row.values codigo: v.codigo_de_barras.file.file
    row.values codigo_texto: v.codigo
    row.values contrato: "#{v.contrato.numero}"
    row.values modalidade: v.modalidade.nome
 
-   row.values lote_s: "#{v.lote.upcase}"
+   row.values lote_s: "#{v.lote.nome.upcase}"
    row.values empresa_s: "#{v.empresa.nome.upcase}"
    row.values codigo_s: v.codigo_de_barras_s.file.file
    row.values codigo_texto_s: v.codigo_s
