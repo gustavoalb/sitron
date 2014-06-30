@@ -23,6 +23,8 @@ Sitron::Application.routes.draw do
   resources :requisicoes do 
     get :agendar,on: :collection
     post :agendar_requisicao,on: :collection
+    get :requisicao_imediata,on: :collection
+    post :agendar_requisicao_imediata,on: :collection
   end
 
   namespace :administracao do

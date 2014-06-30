@@ -2,10 +2,11 @@ class Requisicao < ActiveRecord::Base
 	belongs_to :requisitante,:class_name=>"Administracao::Pessoa"
 	belongs_to :posto
   belongs_to :motivo,:class_name=>"Administracao::Motivo"
-	has_and_belongs_to_many :rotas,:class_name=>"Administracao::Rota"
-	validates_presence_of :data_ida,:hora_ida,:motivo_id
-	validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
+  has_and_belongs_to_many :rotas,:class_name=>"Administracao::Rota"
+  validates_presence_of :data_ida,:hora_ida,:motivo_id
+  validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
+  #validate :hora
   #validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
   has_and_belongs_to_many :tipos
   has_and_belongs_to_many :pessoas,:class_name=>"Administracao::Pessoa"
@@ -13,7 +14,7 @@ class Requisicao < ActiveRecord::Base
   has_one :event, dependent: :destroy
   has_many :mensagens,:as=>:objeto
   has_many :notificacoes,:as=>:objeto
- 
+
   attr_accessor :req_agenda
 
   scope :aguardando,->{where(:state=>"aguardando").order("created_at ASC ")}
@@ -21,10 +22,15 @@ class Requisicao < ActiveRecord::Base
   
   scope :validas,->{where("inicio > (SELECT CURRENT_TIMESTAMP)")}
 
-
   after_create :numero_requisicao,:enviar_mensagem,:criar_notificacao
   after_create :evento
   after_validation :setar_distancia
+
+  def hora
+    if self.data_ida==Date.today and self.hora_ida < Time.now+1.hour
+      errors.add(:hora_ida,"Tempo mínimo entre o requerimento e a hora de partida é de 1 hora")
+    end
+  end
 
 
   def rotas_requisicao
@@ -76,98 +82,60 @@ class Requisicao < ActiveRecord::Base
 
 
 
-    state :aguardando do
+   state :aguardando do
 
-      def panel
-        'info'
-      end
-
-      def color
-        '#2bbce0'
-      end
-
+    def panel
+      'info'
     end
 
-
-    state :confirmada do
-      def panel
-        'success'
-      end
-
-      def color
-        '#85c744'
-      end
-
+    def color
+      '#2bbce0'
     end
-
-
-    state :cancelada do
-
-      def panel
-        'danger'
-      end
-
-      def color
-        '#e73c3c'
-      end
-
-    end
-
-
-    state :agendada do
-      def panel
-        'default'
-      end
-
-      def color
-        '#aeafb1'
-      end
-    end
-
 
   end
 
 
+  state :confirmada do
+    def panel
+      'success'
+    end
 
-  def self.processar_fila
+    def color
+      '#85c744'
+    end
 
-    @patio = ""
-    @requisicoes = ""
-    @patio = Administracao::Patio.na_data(Time.zone.now).all 
-    @requisicoes = Requisicao.aguardando.validas.all
-
+  end
 
 
-    @requisicoes.each do |req|  #faz a varredura nas requisições
+  state :cancelada do
 
-     total_passageiros = 1+req.pessoas.count
-       if req.tipos.count > 0 #se existe uma preferencia por veiculo
+    def panel
+      'danger'
+    end
 
-        @patio.each do |patio|
+    def color
+      '#e73c3c'
+    end
 
-             if req.tipos.include patio.veiculo.tipo #encontrar o veiculo apropriado pelo tipo
+  end
 
-             elsif total_passageiros <= patio.veiculo.capacidade_passageiros.to_i #encontrar o veiculo apropriado pela capacidade 
-              puts "Foi Aqui que Parou!"
-            else
 
-            end
+  state :agendada do
+    def panel
+      'default'
+    end
 
-          end 
-
-        else
-          @patio.each do |patio|
-           if total_passageiros <= patio.veiculo.capacidade_passageiros.to_i #encontrar o veiculo apropriado pela capacidade
-            #  patio.ligar
-            #  req.confirmar
-            puts "Foi Aqui"
-          end
-
-        end
-        
-      end 
+    def color
+      '#aeafb1'
     end
   end
+
+
+end
+
+
+
+
 
 
 

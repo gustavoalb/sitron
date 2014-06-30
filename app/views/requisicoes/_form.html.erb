@@ -2,13 +2,11 @@
 <%= f.error_notification %>
 <%= f.association :motivo,:collection=>Administracao::Motivo.all.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição' %>
 <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
-<%= f.input :data_ida,input_html: {class: "datepicker",value: Time.now.to_date.to_s_br},as: :string,:label=>"Para a Data"  %>
-<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{Time.now.hour}:#{Time.now.min}:00"},as: :string,:label=>"Na Hora"  %>
+<%= f.input :data_ida,input_html: {readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string,:label=>"Para a Data"  %>
+<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
 <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota desejada",:label=>"Rota Desejada"%>
 
 <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione as Pessoas",:label=>"Pessoas incluídas"%>
-
-<%=f.association :preferencia,:collection=>Tipo.all.collect {|t|[t.nome,t.id]},:label=>"Tipo de Veículo Preferêncial",:prompt=>"Selecione o tipo de veículo"%>
 
 
 <br/><br/><br/>
@@ -19,7 +17,10 @@
 <script type="text/javascript">
 
 
-	$('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR'}); 
+	$('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR',
+        'disableDateRanges': [
+        ['01/01/1000', 'Date.today'],
+        ]}); 
 	$('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
 		'disableTimeRanges': [
 		['0am', '7am'],

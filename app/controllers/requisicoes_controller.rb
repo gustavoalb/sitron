@@ -25,6 +25,11 @@ class RequisicoesController < ApplicationController
     @pessoas = Administracao::Pessoa.all
   end
 
+  def requisicao_imediata
+    @requisicao = Requisicao.new
+    @pessoas = Administracao::Pessoa.all
+  end
+
 
   # GET /requisicoes/1/edit
   def edit
@@ -61,7 +66,7 @@ class RequisicoesController < ApplicationController
     @requisicao.inicio = data
 
     respond_to do |format|
-      if @requisicao.save!
+      if @requisicao.save
         format.html { redirect_to @requisicao, notice: 'A Requisicao foi Criada com Sucesso' }
         format.json { render :show, status: :created, location: @requisicao }
       else
