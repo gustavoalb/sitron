@@ -1,5 +1,6 @@
 class Administracao::PessoasController < ApplicationController
   before_action :set_administracao_pessoa, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /administracao/pessoas
   # GET /administracao/pessoas.json

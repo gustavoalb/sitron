@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
-  enum role: [:funcionario, :motorista, :admin]
+  enum role: [:admin, :useget, :coordenador, :req_especial, :aut_especial]
   
   after_initialize :set_default_role, :if => :new_record?
 
@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   has_one :configuracao,:class_name=>"Administracao::Configuracao"
 
   def set_default_role
-    self.role ||= :funcionario
+    self.role ||= :coordenador
   end
 
 end

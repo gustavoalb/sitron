@@ -31,7 +31,7 @@ gem "geocoder"
 gem 'rails3-jquery-autocomplete'
 gem "rails-bootstrap-daterangepicker"
 gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails',
-                              :git => 'git://github.com/tispratik/bootstrap-timepicker-rails.git'
+                              :git => 'https://github.com/tispratik/bootstrap-timepicker-rails.git'
 gem 'carrierwave'
 gem 'mini_magick'
 gem 'chunky_png'
@@ -61,3 +61,5 @@ group :production do
 end
 
 gem "brakeman", :require => false
+
+gem 'cancan'
