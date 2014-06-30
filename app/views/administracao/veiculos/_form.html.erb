@@ -1,21 +1,23 @@
 <%= simple_form_for @administracao_veiculo,html: {class: "form-horizontal"}  do |f| %>
   <%= f.error_notification %>
 
-    <%= f.association :empresa,:collection=>@empresas.collect {|empresa| [empresa.nome,empresa.id]},:prompt=>"Selecione a Empresa" %>
-    <%=f.input :placa,input_html: {class: "chapa"}%>
-    <%= f.input :tipo,:collection=>Administracao::Veiculo.tipos.keys.map {|tipo| [tipo.titleize,tipo]},:prompt=>"Selecione o Tipo do Veículo" %>
-    <%= f.input :motor  %>
-    <%= f.input :direcao,:collection=>Administracao::Veiculo.direcoes.keys.map {|direcao| [direcao.titleize,direcao]},:prompt=>"Selecione o Tipo de Direção" %>
-    <%= f.input :marca,:collection=>Administracao::Veiculo.marcas.keys.map {|marca| [marca.titleize,marca]},:prompt=>"Selecione a Marca" %>
-    <%= f.input :modelo %>
+    <%= f.association :empresa,:collection=>@empresas.collect {|empresa| [empresa.nome,empresa.id]},:prompt=>"Selecione a Empresa",input_html: {class: "selectpicker",:'data-width'=>"100%"} %>
+    <%= f.association :modalidade,:collection=>@modalidades.collect{|modalidade|[modalidade.inf_modalidade,modalidade.id]},:prompt=>"Selecione a Modalidade do Veículo",input_html: {class: "selectpicker",:'data-width'=>"100%"} %>
+    <%= f.association :contrato,:collection=>Administracao::Contrato.all.map {|contrato| ["C#{contrato.numero}",contrato.id]},:prompt=>"Selecione o Número do Contrato",input_html: {class: "selectpicker",:'data-width'=>"100%"} %>
+    <%= f.association :lote,:prompt=>"Selecione o Lote",input_html: {class: "selectpicker",:'data-width'=>"100%"} %>
+     <%#=f.input :placa,input_html: {class: "chapa"},:hint=>"Caracteres em Maiúsculos"%>
+    <%#= f.association :tipo,:collection=>Tipo.all.collect {|tipo| [tipo.nome,tipo.id]},:prompt=>"Selecione o Tipo do Veículo" ,input_html: {class: "selectpicker",:'data-width'=>"100%"}%>
+    <%#= f.input :motor  %>
+    <%#= f.input :direcao,:collection=>Administracao::Veiculo.direcoes.keys.map {|direcao| [direcao.titleize,direcao]},:prompt=>"Selecione o Tipo de Direção",input_html: {class: "selectpicker",:'data-width'=>"100%"} %>
+    <%#= f.input :marca,:collection=>Administracao::Veiculo.marcas.keys.map {|marca| [marca.titleize,marca]},:prompt=>"Selecione a Marca" ,input_html: {class: "selectpicker",:'data-width'=>"100%"}%>
+    <%#= f.input :modelo %>
     <%= f.input :capacidade_carga %>
     <%= f.input :capacidade_passageiros %>
     <%= f.input :ano_fabricacao,input_html: {class: "ano"} %>
-    <%= f.input :ano_modelo,input_html: {class: "ano"} %>
-    <%= f.input :intens_obrigatorios,:as=>:inline_checkbox %>
+    <%#= f.input :ano_modelo,input_html: {class: "ano"} %>
+    <%= f.input :itens_obrigatorios,:as=>:inline_checkbox %>
     <%= f.input :observacao %>
-    <%= f.association :modalidade,:collection=>@modalidades.collect{|modalidade|[modalidade.nome,modalidade.id]} %>
-    <%= f.association :combustivel,:collection=>@combustiveis.collect{|combustivel|[combustivel.nome,combustivel.id]} %>
+    <%= f.association :combustivel,:collection=>@combustiveis.collect{|combustivel|[combustivel.nome,combustivel.id]},input_html: {class: "selectpicker",:'data-width'=>"100%"},prompt: "Selecione o Tipo de Combustível" %>
 
 
     <br/><br/><br/>
@@ -23,3 +25,13 @@
 
 <% end %>
 
+
+
+
+<script type="text/javascript">
+  $(function() {
+    $("#administracao_veiculo_modalidade_id").observe_field(0.25, function( ) {
+    getLotesByModalidadeId($("#administracao_veiculo_modalidade_id").val());
+   });
+  });
+</script>

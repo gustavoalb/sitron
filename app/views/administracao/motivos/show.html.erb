@@ -1,0 +1,21 @@
+<%= titulo_pagina("Detalhes da AdministracaoMotivo", @administracao_motivo.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Nome:</dt>
+  <dd><%= @administracao_motivo.nome %></dd>
+  <dt>Tipo:</dt>
+  <dd><%= @administracao_motivo.tipo %></dd>
+  <dt>Carga:</dt>
+  <dd><%= @administracao_motivo.carga %></dd>
+  <dt>Passageiro:</dt>
+  <dd><%= @administracao_motivo.passageiro %></dd>
+  <dt>Entrega documento:</dt>
+  <dd><%= @administracao_motivo.entrega_documento %></dd>
+  <dt>Interior:</dt>
+  <dd><%= @administracao_motivo.interior %></dd>
+  <dt>Viagem longa:</dt>
+  <dd><%= @administracao_motivo.viagem_longa %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_motivo_path(@administracao_motivo),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_motivos_path, class: "btn btn-sm btn-default" %>

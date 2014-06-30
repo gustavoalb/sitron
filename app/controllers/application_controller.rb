@@ -6,7 +6,9 @@ class ApplicationController < ActionController::Base
   
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :authenticate_user!
   before_action :initialize_variaveis
+  before_action :mensagens
   add_breadcrumb("Início",nil,:icon=>"dashboard")
 
   protected
@@ -34,6 +36,11 @@ class ApplicationController < ActionController::Base
       @combustiveis = Administracao::Combustivel.all
       @rotas = Administracao::Rota.all
 
+  end
+
+  def mensagens
+    @mensagensb = Mensagem.para_o_usuario(current_user).nao_lidas|Mensagem.tipo_usuario(current_user.role).nao_lidas if current_user
+    @notificacoesb = Notificacao.nao_vista.all if current_user and current_user.administrador?
   end
 
 end

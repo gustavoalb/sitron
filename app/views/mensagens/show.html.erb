@@ -1,0 +1,21 @@
+<%= titulo_pagina("Detalhes da Mensagem", @mensagem.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Texto:</dt>
+  <dd><%= @mensagem.texto %></dd>
+  <dt>Remetente:</dt>
+  <dd><%= @mensagem.remetente %></dd>
+  <dt>Destinatario:</dt>
+  <dd><%= @mensagem.destinatario %></dd>
+  <dt>Tipo usuario:</dt>
+  <dd><%= @mensagem.tipo_usuario %></dd>
+  <dt>Lido:</dt>
+  <dd><%= @mensagem.lido %></dd>
+  <dt>Objeto:</dt>
+  <dd><%= @mensagem.objeto_id %></dd>
+  <dt>Objeto type:</dt>
+  <dd><%= @mensagem.objeto_type %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_mensagem_path(@mensagem),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), mensagens_path, class: "btn btn-sm btn-default" %>

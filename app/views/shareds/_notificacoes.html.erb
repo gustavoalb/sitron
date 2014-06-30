@@ -1,0 +1,23 @@
+<li class="dropdown">
+	<a href="#" class="hasnotifications dropdown-toggle" data-toggle='dropdown' id="woo"><i class="fa fa-bell"></i><span class="badge"><%=@notificacoesb.count%></span></a>
+
+	<ul class="dropdown-menu notifications arrow" id="woo2">
+		<li class="dd-header">
+			<span>Você tem <%=@notificacoesb.count%> <%="nova".pluralize(@notificacoesb.count)%> <%="notificação".pluralize(@notificacoesb.count)%></span>
+			<span><a href="#">Marcar tudo como Lida</a></span>
+		</li>
+		<div class="scrollthis">
+		    <%@notificacoesb.each do |n|%>
+			<li>
+				<a href="#" class="notification-success active">
+					<span class="hora"><%=tempo_relativo(n.created_at)%></span>
+					<i class="fa fa-thumbs-up"></i>
+					<span class="msg"><%=n.texto%></span>
+				</a>
+			</li>
+			<%end%>
+			
+		</div>
+		<li class="dd-footer"><a href="#">View All Notifications</a></li>
+	</ul>
+</li>	

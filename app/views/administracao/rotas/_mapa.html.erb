@@ -1,0 +1,7 @@
+<fieldset class="gllpLatlonPicker">
+<%=simple_fields_for "administracao_rota" do |e|%>
+<%=e.input :latitude,:input_html=>{:class=>"gllpLatitude",:readonly=>true,:value=>@destino.endereco.latitude},:as=>:string%>
+<%=e.input :longitude,:input_html=>{:class=>"gllpLongitude",:readonly=>true,:value=>@destino.endereco.longitude},:as=>:string%>
+<%end%>
+
+</fieldset>

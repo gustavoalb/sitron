@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  numero: MyString
+  empresa_id: 
+  lei: MyString
+  artigo: MyString
+
+two:
+  numero: MyString
+  empresa_id: 
+  lei: MyString
+  artigo: MyString

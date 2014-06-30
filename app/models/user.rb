@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
   
-  enum role: [:admin, :useget, :coordenador, :req_especial, :aut_especial]
+  enum role: [:administrador,:funcionario, :motorista]
   
   after_initialize :set_default_role, :if => :new_record?
 

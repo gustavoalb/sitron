@@ -3,7 +3,7 @@ class Administracao::Rota < ActiveRecord::Base
 
   has_and_belongs_to_many :requisicoes,:class_name=>"Requisicao"
 
-after_validation :setar_rota
+#after_validation :setar_rota
 
 private
   def setar_rota

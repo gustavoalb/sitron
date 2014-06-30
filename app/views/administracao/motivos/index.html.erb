@@ -1,0 +1,37 @@
+<%=titulo_pagina(link_icone("Motivos para Requisição",'comment'),"Listagem de Motivos")%>
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Nome</th>
+      <th>Tipo</th>
+      <th>Carga</th>
+      <th>Passageiro</th>
+      <th>Entrega documento</th>
+      <th>Interior</th>
+      <th>Viagem longa</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_motivos.each do |administracao_motivo| %>
+      <tr>
+        <td><%= administracao_motivo.nome %></td>
+        <td><%= administracao_motivo.tipo.nome %></td>
+        <td><%= administracao_motivo.carga %></td>
+        <td><%= administracao_motivo.passageiro %></td>
+        <td><%= administracao_motivo.entrega_documento %></td>
+        <td><%= administracao_motivo.interior %></td>
+        <td><%= administracao_motivo.viagem_longa %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_motivo,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_motivo_path(administracao_motivo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), administracao_motivo, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar Motivo','plus'), new_administracao_motivo_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

@@ -3,6 +3,8 @@ class Administracao::DepartamentosController < ApplicationController
 
   # GET /administracao/departamentos
   # GET /administracao/departamentos.json
+    autocomplete :pessoa, :nome,:class_name=>"Administracao::Pessoa"
+
   def index
     @administracao_departamentos = Administracao::Departamento.all
   end
@@ -43,8 +45,14 @@ class Administracao::DepartamentosController < ApplicationController
 
    def listar_cidades
     @estado = Estado.find(params[:estado_id])
-    @cidades = @estado.cidades.all.collect{|c|[c.nome,c.id]}
-    render :partial=>"cidades",:locals=>{:endereco=>@endereco,:cidades=>@cidades}
+    @cidades = @estado.cidades.all
+    #render :partial=>"cidades",:locals=>{:endereco=>@endereco,:cidades=>@cidades}
+
+    response = []
+    @cidades.each do |cidade|
+        response << {:id => cidade.id, :n => cidade.nome}
+    end
+    render :json => {:response => response.compact}.as_json
   end
 
 
@@ -81,6 +89,19 @@ class Administracao::DepartamentosController < ApplicationController
     end
   end
 
+
+  def lat_lng_cidade
+    @cidade = Cidade.find(params[:cidade_id])
+
+   # render :partial=>"mapa",:locals=>{:destino=>@destino}
+
+   response = []
+  
+   response << {:latitude => @cidade.latitude, :longitude => @cidade.longitude}
+   render :json => {:response => response.compact}.as_json
+    
+   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_administracao_departamento
@@ -89,6 +110,6 @@ class Administracao::DepartamentosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_departamento_params
-      params.require(:administracao_departamento).permit(:nome, :descricao, :entidade_id, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep])
+      params.require(:administracao_departamento).permit(:nome, :descricao, :entidade_id, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
     end
 end

@@ -1,3 +1,43 @@
+
 <%=simple_fields_for "administracao_rota" do |e|%>
-<%=e.input :roteavel_id,:collection=>@roteaveis,:label=>"Destino da Rota",:prompt=>"Selecione o Destino",:input_html=>{:class=>"span4 chosen chzn-done"}%>
+<%=e.input :roteavel_id,:collection=>@roteaveis.collect {|r|[r.nome,r.id]},:label=>"Destino da Rota",:prompt=>"Selecione o Destino",:input_html=>{:class=>"gllpUpdateButton",:id=>"rota_id"}%>
 <%end%>
+
+<div id='mapa'></div>
+
+
+
+
+
+<script type="text/javascript">
+
+function submitRequest(buttonId) {
+    if (document.getElementById(buttonId) == null
+            || document.getElementById(buttonId) == undefined) {
+        return;
+    }
+    if (document.getElementById(buttonId).dispatchEvent) {
+        var e = document.createEvent("MouseEvents");
+        e.initEvent("click", true, true);
+        document.getElementById(buttonId).dispatchEvent(e);
+    } else {
+        document.getElementById(buttonId).click();
+    }
+
+};
+
+$(function() {
+  $("#rota_id").observe_field(0.25, function( ) {
+   $.get("/administracao/rotas/destino?rota_id="+$("#rota_id").val()+"&classe=<%=@roteaveis.first.class%>", function(data) {
+// here check_login is the method in our controller.
+$("#mapa").html(data);
+});
+//  submitRequest("botao");
+  });
+});
+
+
+
+
+</script>
+

@@ -22,6 +22,46 @@ class Administracao::VeiculosController < ApplicationController
   def edit
   end
 
+  def listar_lotes
+    m = Administracao::Modalidade.find(params[:modalidade_id])
+    @lotes = m.lotes.order('nome ASC')
+
+   response = []
+   @lotes.each do |lote|
+    response << {:id => lote.id, :n => "#{lote.nome} - #{lote.tipo}"}
+  end
+  render :json => {:response => response.compact}.as_json
+end
+
+def imprimir_codigos
+  report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
+  report.start_new_page
+ #  report.page.values printed_at: Time.zone.now
+ @veiculos = Administracao::Veiculo.all
+ @veiculos.each do  |v|
+  report.list.add_row do |row|
+   row.values lote: "#{v.lote.nome.upcase}"
+   row.values empresa: "#{v.empresa.nome.upcase}"
+   row.values codigo: v.codigo_de_barras.file.file
+   row.values codigo_texto: v.codigo
+   row.values contrato: "#{v.contrato.numero}"
+   row.values modalidade: v.modalidade.nome
+
+   row.values lote_s: "#{v.lote.nome.upcase}"
+   row.values empresa_s: "#{v.empresa.nome.upcase}"
+   row.values codigo_s: v.codigo_de_barras_s.file.file
+   row.values codigo_texto_s: v.codigo_s
+   row.values contrato_s: "#{v.contrato.numero}"
+   row.values modalidade_s: v.modalidade.nome
+ end
+end
+
+send_data report.generate, filename: 'codigos.pdf', 
+type: 'application/pdf', 
+disposition: 'attachment'
+
+end
+
   # POST /administracao/veiculos
   # POST /administracao/veiculos.json
   def create
@@ -70,6 +110,6 @@ class Administracao::VeiculosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_veiculo_params
-      params.require(:administracao_veiculo).permit(:placa,:tipo, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode)
+      params.require(:administracao_veiculo).permit(:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode,:contrato_id,:lote_id)
     end
-end
+  end

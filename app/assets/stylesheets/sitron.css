@@ -8407,7 +8407,7 @@ header #leftmenu-trigger {
   background: #f7f8fa !important;
 }
 .dropdown-menu.notifications li .time,
-.dropdown-menu.messages li .time {
+.dropdown-menu.messages li .hora {
   color: #b3b3b3;
   font-size: 0.85em;
   white-space: nowrap;
@@ -8524,7 +8524,7 @@ header #leftmenu-trigger {
   display: inline;
   width: 210px;
 }
-.dropdown-menu.notifications li .time {
+.dropdown-menu.notifications li .hora {
   float: right;
 }
 .dropdown-menu.messages li a {
@@ -8549,7 +8549,7 @@ header #leftmenu-trigger {
 .dropdown-menu.messages li a .msg {
   padding-top: 5px;
 }
-.dropdown-menu.messages li .time {
+.dropdown-menu.messages li .hora {
   float: right;
 }
 .dropdown-menu.messages li img {
@@ -9901,7 +9901,7 @@ body.collapse-leftbar #search.keep-open form button[type="submit"] {
   color: #333333;
 }
 .navbar-inverse {
-  background-color: #313338;
+  background-color: red;
   border-color: #191a1d;
 }
 .navbar-inverse .navbar-brand {
@@ -11701,7 +11701,7 @@ body.collapse-leftbar #search.keep-open form button[type="submit"] {
 }
 .panel-comments li .content .time,
 .panel-threads li .content .time,
-.panel-users li .content .time {
+.panel-users li .content .hora {
   float: right;
   color: #aeafb1;
   font-size: 12px;
@@ -11748,7 +11748,7 @@ body.collapse-leftbar #search.keep-open form button[type="submit"] {
 .panel-userprofile li .content {
   margin-left: 45px;
 }
-.panel-userprofile li .content .time {
+.panel-userprofile li .content .hora {
   float: right;
   color: #aeafb1;
   font-size: 12px;

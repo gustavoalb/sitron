@@ -16,11 +16,18 @@ class RequisicoesController < ApplicationController
   # GET /requisicoes/new
   def new
     @requisicao = Requisicao.new
+    @pessoas = Administracao::Pessoa.all
   end
 
 
   def agendar
     @requisicao = Requisicao.new
+    @pessoas = Administracao::Pessoa.all
+  end
+
+  def requisicao_imediata
+    @requisicao = Requisicao.new
+    @pessoas = Administracao::Pessoa.all
   end
 
 
@@ -33,16 +40,17 @@ class RequisicoesController < ApplicationController
   def agendar_requisicao
 
     @requisicao = Requisicao.new(requisicao_params)
-    @requisicao.data_ida = @requisicao.inicio.to_date
-    @requisicao.hora_ida = @requisicao.inicio.to_time
+    @requisicao.data_ida = @requisicao.inicio.to_date #if params[requisicao_params[:inicio]]
+    @requisicao.hora_ida = @requisicao.inicio.to_time #if params[requisicao_params[:inicio]]
     @requisicao.periodo_longo = true
-
+    
     respond_to do |format|
-      if @requisicao.save
+      if @requisicao.save!
         @requisicao.agendar
         format.html { redirect_to @requisicao, notice: 'A Requisição foi agendada com sucesso.' }
         format.json { render :show, status: :created, location: @requisicao }
       else
+        @pessoas = Administracao::Pessoa.all
         format.html { render :agendar }
         format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
@@ -51,12 +59,18 @@ class RequisicoesController < ApplicationController
 
     def create
     @requisicao = Requisicao.new(requisicao_params)
+    date_and_time = '%m-%d-%Y %H:%M:%S %Z'
+    data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
+
+    #data = DateTime.strptime("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]} Brasilia",date_and_time)
+    @requisicao.inicio = data
 
     respond_to do |format|
       if @requisicao.save
         format.html { redirect_to @requisicao, notice: 'A Requisicao foi Criada com Sucesso' }
         format.json { render :show, status: :created, location: @requisicao }
       else
+        @pessoas = Administracao::Pessoa.all
         format.html { render :new }
         format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
@@ -92,9 +106,9 @@ class RequisicoesController < ApplicationController
     def set_requisicao
       @requisicao = Requisicao.find(params[:id])
     end
-
+    
     # Never trust parameters from the scary internet, only allow the white list through.
     def requisicao_params
-      params.require(:requisicao).permit(:numero, :motivo, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :prefencia_id,:rota_ids=>[])
+      params.require(:requisicao).permit(:numero, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:motivo_id,:rota_ids=>[],:pessoa_ids=>[])
     end
 end

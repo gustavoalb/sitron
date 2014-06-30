@@ -5,7 +5,7 @@ class CreateAdminService
         user.password = Rails.application.secrets.admin_password
         user.cpf = Rails.application.secrets.admin_cpf
         user.password_confirmation = Rails.application.secrets.admin_password
-        user.admin!
+        user.administrador!
       end
   end
 end

@@ -1,0 +1,19 @@
+<%= titulo_pagina("Detalhes da Notificacao", @notificacao.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Texto:</dt>
+  <dd><%= @notificacao.texto %></dd>
+  <dt>Motivo:</dt>
+  <dd><%= @notificacao.motivo %></dd>
+  <dt>State:</dt>
+  <dd><%= @notificacao.state %></dd>
+  <dt>Origem:</dt>
+  <dd><%= @notificacao.origem %></dd>
+  <dt>Entidade:</dt>
+  <dd><%= @notificacao.entidade %></dd>
+  <dt>Posto:</dt>
+  <dd><%= @notificacao.posto %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_notificacao_path(@notificacao),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), notificacoes_path, class: "btn btn-sm btn-default" %>

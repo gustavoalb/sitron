@@ -37,7 +37,7 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
   # Create different versions of your uploaded files:
 
   version :thumb do
-    process :resize_to_fill => [50,50]
+    process :resize_to_fill => [95,50]
   end
 
     version :thumbcb do
@@ -47,7 +47,7 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
 
 
   version :placa do
-    process :resize_to_fill => [600,600]
+    process :resize_to_fill => [600,317]
   end
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:

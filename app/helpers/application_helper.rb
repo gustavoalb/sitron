@@ -139,4 +139,24 @@ def yield_or(name, content = nil, &block)
    end
 end
 
+
+
+def tempo_relativo(start_time)
+  diff_seconds = Time.now - start_time
+  hora = ''
+  case diff_seconds
+    when 0 .. 59
+      hora =  "#{diff_seconds.round(1)} segs"
+    when 60 .. (3600-1)
+      hora =  "#{(diff_seconds/60).round(1)} mins"
+    when 3600 .. (3600*24-1)
+      hora =  "#{(diff_seconds/3600).round(1)} horas"
+    when (3600*24) .. (3600*24*30) 
+      hora =  "#{(diff_seconds/(3600*24)).round(1)} dias"
+    else
+      hora =  start_time.strftime("%m/%d/%Y")
+  end
+  return hora
+end
+
 end

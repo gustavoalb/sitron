@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  entrada: 2014-06-17 10:46:14
+  veiculo_id: 
+  saida: 2014-06-17 10:46:14
+  state: MyString
+  position: 1
+
+two:
+  entrada: 2014-06-17 10:46:14
+  veiculo_id: 
+  saida: 2014-06-17 10:46:14
+  state: MyString
+  position: 1

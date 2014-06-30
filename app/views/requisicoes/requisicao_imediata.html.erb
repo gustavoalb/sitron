@@ -1,0 +1,73 @@
+<%= simple_form_for @requisicao,html: {class: 'well form-horizontal'},url: agendar_requisicao_imediata_requisicoes_url do |f| %>
+<%= f.error_notification %>
+<%= f.association :motivo,:collection=>Administracao::Motivo.all.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição' %>
+<%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
+<%= f.input :data_ida,input_html: {readonly: true,value: Time.now.to_date.to_s_br},as: :string,:label=>"Para a Data"  %>
+<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
+<%= f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota desejada",:label=>"Rota Desejada"%>
+
+<%= f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione as Pessoas",:label=>"Pessoas incluídas"%>
+
+
+<br/><br/><br/>
+<%=botoes_form(f)%>
+
+<% end %>
+
+<script type="text/javascript">
+
+
+  $('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR',
+        'disableDateRanges': [
+        ['01/01/1000', '<%= Date.today %>'],
+        ]}); 
+  $('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+    'disableTimeRanges': [
+    ['0am', '7am'],
+    ]
+
+  });
+
+
+</script>
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    $('.multiselect_pessoa').multiselect({
+      enableFiltering: true,
+      nonSelectedText: 'Nenhuma pessoa Selecionada',
+      onChange: function(option, checked) {
+    // Get selected options.
+    var selectedOptions = $('.multiselect_pessoa option:selected');
+
+    if (selectedOptions.length >= 5) {
+    // Disable all other checkboxes.
+    var nonSelectedOptions = $('.multiselect_pessoa option').filter(function() {
+      return !$(this).is(':selected');
+    });
+
+    var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+    nonSelectedOptions.each(function() {
+      var input = $('input[value="' + $(this).val() + '"]');
+      input.prop('disabled', true);
+      input.parent('li').addClass('disabled');
+    });
+}
+else {
+    // Enable all checkboxes.
+    var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+    $('.multiselect_pessoa option').each(function() {
+      var input = $('input[value="' + $(this).val() + '"]');
+      input.prop('disabled', false);
+      input.parent('li').addClass('disabled');
+    });
+}
+}
+});
+    $('.multiselect_rota').multiselect({
+      enableFiltering: true,
+       nonSelectedText: 'Selecione ao Menos uma Rota'
+    });
+  });
+</script>

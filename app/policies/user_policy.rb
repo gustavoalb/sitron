@@ -8,15 +8,15 @@ class UserPolicy
   end
 
   def index?
-    @user.admin?
+    @user.administrador?
   end
 
   def update?
-    @user.admin?
+    @user.administrador?
   end
 
   def destroy?
-    @user.admin?
+    @user.administrador?
   end
 
 end

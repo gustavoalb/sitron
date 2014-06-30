@@ -27,3 +27,4 @@
 
 
 <%= link_to link_icone('Cadastrar Empresa','plus'), new_administracao_empresa_url, :class=>"btn btn-large btn-success",data: { no_turbolink: true } %>
+<%=paginate @administracao_empresas%>
