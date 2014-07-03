@@ -1,34 +1,20 @@
 class Ability
   include CanCan::Ability
   def initialize(user)
-    if user.admin?
+    if user.administrador?
       can :manage, :all
-      #can [:read,:update],Pessoa,{:id=>user.pessoa_id}
     end
 
     if user.useget?
       can :manage, :all
-      #can [:read,:update],Pessoa,{:id=>user.pessoa_id}
-
+      cannot :manage, :requisicao_imediata, Requisicao
     end
 
     if user.coordenador?
-      can :manage, :all
-      #can [:read,:update],Pessoa,{:id=>user.pessoa_id}
+      can :manage, User, {:id=>user.id}
+      can :manage, Requisicao, {:requisitante_id=>user.id}
+      cannot :manage, :requisicao_imediata, Requisicao
+      can :manage, Administracao::Pessoa, {:departamento_id=>user.pessoa.departamento_id}
     end
-
-    if user.req_especial?
-      can :manage, :all
-      #can [:read,:update],Pessoa,{:id=>user.pessoa_id}
-    end
-
-    if user.aut_especial?
-      can :manage, :all
-      #can [:read,:update],Pessoa,{:id=>user.pessoa_id}
-    end
-   
-
-    
-
   end
 end

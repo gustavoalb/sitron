@@ -110,6 +110,6 @@ class Administracao::DepartamentosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_departamento_params
-      params.require(:administracao_departamento).permit(:nome, :descricao, :entidade_id, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
+      params.require(:administracao_departamento).permit(:nome, :descricao, :entidade_id, :responsavel_id, endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
     end
 end

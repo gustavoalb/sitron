@@ -1,0 +1,46 @@
+<%=titulo_pagina(link_icone("Usuarios","users"),"Editar Usuario")%>
+
+<%= simple_nested_form_for @usuario, html: {class: "form-horizontal"}, :url => usuario_path(@usuario), :validate=>true do |f| %>
+  <%= f.error_notification %>
+
+  	<h5>Dados do Usuario</h5>
+  	<%= f.input :email %>
+    <%= f.input :password, :required => true, :input_html=>{:class=>'input-medium'}, :label=>"Senha" %>
+    <%= f.input :password_confirmation, :required => true, :input_html=>{:class=>'input-medium'}, :label=>"Confirmar Senha" %>
+    
+    <%= f.input :role, :collection => User.roles.keys.map {|role| [role.titleize,role]}, :input_html => {:class=>"input-medium"}, :label=>"Permissoes", :required => true%>
+    
+    <h5>Dados da Pessoa</h5>
+    <%= f.fields_for :pessoa, :html => { :class => 'form-horizontal' }, :validate=>true do |fp| %>
+	    <%= fp.input :id, :value=>@pessoa.id, as: :hidden %>
+      <%= fp.input :nome %>
+	    <%= fp.input :cpf, input_html: {class: "cpf"} %>
+	    <%= fp.input :email, as: :email %>
+	    <%= fp.input :matricula %>
+	    <%= fp.association :entidade, collection: @empresas.collect{|e| [e.nome, e.id] } %>
+	    <div id='departamentos'>
+	     <%= fp.association :departamento, input_html: {readonly: true} %>
+	    </div>
+	    <%= fp.association :cargo %>
+	  <% end %>
+
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+$(function() {
+  $("#user_pessoa_attributes_entidade_id").observe_field(0.25, function( ) {
+   $.get("/usuarios/listar_departamentos?empresa_id="+$("#user_pessoa_attributes_entidade_id").val(), function(data) {
+// here check_login is the method in our controller.
+$("#departamentos").html(data);
+});
+  });
+});
+</script>
+<%end%>

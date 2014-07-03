@@ -40,7 +40,8 @@ class ApplicationController < ActionController::Base
 
   def mensagens
     @mensagensb = Mensagem.para_o_usuario(current_user).nao_lidas|Mensagem.tipo_usuario(current_user.role).nao_lidas if current_user
-    @notificacoesb = Notificacao.nao_vista.all if current_user and current_user.administrador?
+    #@notificacoesb = Notificacao.nao_vista.all if current_user and current_user.administrador?
+    @notificacoesb = Notificacao.nao_vista.all if current_user
   end
 
 end
