@@ -124,6 +124,7 @@ GEM
       activesupport (>= 3.0.0)
     builder (3.2.2)
     cancan (1.6.10)
+    cancancan (1.8.4)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -387,6 +388,7 @@ DEPENDENCIES
   brazilian-rails
   breadcrumbs_on_rails (= 2.3.0)!
   cancan
+  cancancan
   carrierwave
   chunky_png
   clockwork

@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 class Administracao::EmpresasController < ApplicationController
   before_action :set_administracao_empresa, only: [:show, :edit, :update, :destroy]
+  before_action :load_empresa, only: :create
+  load_and_authorize_resource :class=>"Administracao::Empresa", except: :create
 
   # GET /administracao/empresas
   # GET /administracao/empresas.json
@@ -8,7 +10,7 @@ class Administracao::EmpresasController < ApplicationController
 
   add_breadcrumb "Listagem de Empresas",:administracao_empresas_url
   def index
-    @administracao_empresas = Administracao::Empresa.page params[:page]
+    @administracao_empresas = Administracao::Empresa.accessible_by(current_ability).page params[:page]
   end
 
   # GET /administracao/empresas/1
@@ -33,7 +35,7 @@ class Administracao::EmpresasController < ApplicationController
     @administracao_empresa = Administracao::Empresa.new(administracao_empresa_params)
 
     respond_to do |format|
-      if @administracao_empresa.save
+      if @administracao_empresa.save!
         format.html { redirect_to @administracao_empresa, notice: 'Empresa was successfully created.' }
         format.json { render :show, status: :created, location: @administracao_empresa }
       else
@@ -92,6 +94,11 @@ class Administracao::EmpresasController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_empresa_params
-      params.require(:administracao_empresa).permit(:nome, :cnpj, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
+      params.require(:administracao_empresa).permit(:nome, :cnpj, :responsavel_id, endereco_attributes: [:logradouro,:numero,
+        :complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
+    end
+
+    def load_empresa
+      @administracao_empresa = Administracao::Empresa.new(administracao_empresa_params)
     end
 end

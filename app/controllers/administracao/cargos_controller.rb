@@ -1,10 +1,17 @@
 class Administracao::CargosController < ApplicationController
   before_action :set_administracao_cargo, only: [:show, :edit, :update, :destroy]
+  before_action :load_cargo, only: :create
+  before_action do  
+    resource = controller_name.singularize.to_sym
+    method = "#{resource}_params"
+    params[resource] &&= send(method) if respond_to?(method, true)
+  end   
+  load_and_authorize_resource :class=>"Administracao::Cargo", except: :create
 
   # GET /administracao/cargos
   # GET /administracao/cargos.json
   def index
-    @administracao_cargos = Administracao::Cargo.all
+    @administracao_cargos = Administracao::Cargo.accessible_by(current_ability)
   end
 
   # GET /administracao/cargos/1
@@ -71,4 +78,9 @@ class Administracao::CargosController < ApplicationController
     def administracao_cargo_params
       params.require(:administracao_cargo).permit(:nome, :entidade_id)
     end
+
+    def load_cargo
+      @administracao_cargo = Administracao::Cargo.new(administracao_cargo_params)
+    end
+
 end

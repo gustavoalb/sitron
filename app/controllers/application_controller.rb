@@ -9,7 +9,14 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_user!
   before_action :initialize_variaveis
   before_action :mensagens
+  
+
+  
+
+
   add_breadcrumb("Início",nil,:icon=>"dashboard")
+
+
 
   protected
 

@@ -1,11 +1,13 @@
 # -*- encoding : utf-8 -*-
 class Administracao::ConfiguracoesController < ApplicationController
   before_action :set_administracao_configuracao, only: [:show, :edit, :update, :destroy]
+  before_action :load_configuracao, only: :create
+  load_and_authorize_resource :class=>"Administracao::Configuracao", except: :create
 
   # GET /administracao/configuracoes
   # GET /administracao/configuracoes.json
   def index
-    @administracao_configuracoes = Administracao::Configuracao.all
+    @administracao_configuracoes = Administracao::Configuracao.accessible_by(current_ability)
   end
 
   # GET /administracao/configuracoes/1
@@ -81,5 +83,9 @@ class Administracao::ConfiguracoesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_configuracao_params
       params.require(:administracao_configuracao).permit(:skin,:user_id)
+    end
+
+    def load_configuracao
+      @administracao_configuracao = Administracao::Configuracao.new(administracao_configuracao_params )
     end
 end

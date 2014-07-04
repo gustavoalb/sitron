@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class UsuariosController < ApplicationController
   before_action :load_user, only: :create
-	load_and_authorize_resource :class=>"User"
+	load_and_authorize_resource :class=>"User", except: :create
   # GET /usuarios
   # GET /usuarios.json
   def index
@@ -108,7 +108,7 @@ class UsuariosController < ApplicationController
   end
 
   def load_user
-      @usuario = User.new(user_params)
-    end
+    @usuario = User.new(user_params)
+  end
 
 end

@@ -82,7 +82,7 @@ end
 
 def nav_item(url,titulo,controller,action,icone=nil)
   icone = "<i class='fa fa-#{icone}'></i>"
-
+   
   html=""
   if action == action and  controller_name == controller
     html+="<li class='active'><a href='#{url}' data-no-turbolink='true'>#{icone} <span>#{titulo}</span></a></li>"
