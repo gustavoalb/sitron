@@ -77,7 +77,7 @@ gem 'underscore-rails'
 gem 'markaby',:require =>false
 gem 'memoist'
 gem 'event-calendar',	:require => "event_calendar"
-gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-rails.git'
+gem 'jquery-datatables-rails', :git=> 'https://github.com/rweng/jquery-datatables-rails.git'
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'
