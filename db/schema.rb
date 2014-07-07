@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620190305) do
+ActiveRecord::Schema.define(version: 20140704125434) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.integer  "responsavel_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "nome_responsavel"
   end
 
   create_table "enderecos", force: true do |t|
@@ -118,8 +119,8 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.integer  "bairro_id"
     t.integer  "cidade_id"
     t.integer  "estado_id"
-    t.float    "latitude",         default: 0.6123044764332252
-    t.float    "longitude",        default: -51.3437641853028
+    t.float    "latitude"
+    t.float    "longitude"
     t.integer  "enderecavel_id"
     t.string   "enderecavel_type"
     t.datetime "created_at"
@@ -299,6 +300,7 @@ ActiveRecord::Schema.define(version: 20140620190305) do
 
   create_table "requisicoes", force: true do |t|
     t.string   "numero"
+    t.string   "motivo"
     t.string   "descricao"
     t.integer  "requisitante_id"
     t.date     "data_ida"
@@ -316,7 +318,6 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "agenda",          default: false
-    t.integer  "motivo_id"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
@@ -419,7 +420,7 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.integer  "capacidade_passageiros", default: 4
     t.integer  "ano_fabricacao"
     t.integer  "ano_modelo"
-    t.boolean  "itens_obrigatorios",     default: false
+    t.boolean  "intens_obrigatorios",    default: false
     t.text     "observacao"
     t.string   "qrcode"
     t.string   "codigo_de_barras"

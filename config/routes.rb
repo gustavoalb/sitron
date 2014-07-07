@@ -2,6 +2,12 @@
 #require 'resque/server' 
 Sitron::Application.routes.draw do
 
+  resources :usuarios do
+
+    get :listar_departamentos, on: :collection
+
+  end
+
   namespace :administracao do
     resources :motivos
   end

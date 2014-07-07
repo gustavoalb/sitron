@@ -1,10 +1,12 @@
 class Administracao::ContratosController < ApplicationController
   before_action :set_administracao_contrato, only: [:show, :edit, :update, :destroy]
+  before_action :load_contrato, only: :create
+  load_and_authorize_resource :class=>"Administracao::Contrato", except: :create
 
   # GET /administracao/contratos
   # GET /administracao/contratos.json
   def index
-    @administracao_contratos = Administracao::Contrato.all
+    @administracao_contratos = Administracao::Contrato.accessible_by(current_ability)
   end
 
   # GET /administracao/contratos/1
@@ -70,5 +72,9 @@ class Administracao::ContratosController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_contrato_params
       params.require(:administracao_contrato).permit(:numero, :empresa_id, :lei, :artigo)
+    end
+
+    def load_contrato
+      @administracao_contrato = Administracao::Contrato.new(administracao_contrato_params)
     end
 end

@@ -1,11 +1,13 @@
 class RequisicoesController < ApplicationController
   before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
+  before_action :load_requisicao, only: :create
+  load_and_authorize_resource :class=>"Requisicao", except: :create
 
   # GET /requisicoes
   # GET /requisicoes.json
   add_breadcrumb "Requisições de Transporte"
   def index
-    @requisicoes = Requisicao.all
+    @requisicoes = Requisicao.accessible_by(current_ability)
   end
 
   # GET /requisicoes/1
@@ -102,13 +104,17 @@ class RequisicoesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_requisicao
-      @requisicao = Requisicao.find(params[:id])
-    end
-    
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def requisicao_params
-      params.require(:requisicao).permit(:numero, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:motivo_id,:rota_ids=>[],:pessoa_ids=>[])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_requisicao
+    @requisicao = Requisicao.find(params[:id])
+  end
+  
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def requisicao_params
+    params.require(:requisicao).permit(:numero, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:motivo_id,:rota_ids=>[],:pessoa_ids=>[])
+  end
+
+  def load_requisicao
+    @requisicao = Requisicao.new(requisicao_params)
+  end
 end

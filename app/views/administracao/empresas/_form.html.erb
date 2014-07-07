@@ -14,12 +14,12 @@
 <div id='row'>
 <fieldset class="gllpLatlonPicker">
 <div class="col-md-5">
-<%= simple_form_for @administracao_empresa,:html=>{:class=>"form-horizontal"} do |f| %>
+<%= simple_nested_form_for @administracao_empresa,:html=>{:class=>"form-horizontal"} do |f| %>
   <%= f.error_notification %>
 
     <%= f.input :nome%>
     <%= f.input :cnpj,input_html: {:class=>"cnpj"} %>
-    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_empresas_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_empresa_responsavel_id"},:label=>"Nome do Responsável"%>
+    <%= f.input :responsavel_id, :url=>autocomplete_pessoa_nome_administracao_empresas_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_empresa_responsavel_id"},:label=>"Nome do Responsável"%>
 	 <%=f.fields_for :endereco do |endereco|%>
     	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"} %>
 

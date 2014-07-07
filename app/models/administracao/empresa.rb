@@ -1,21 +1,21 @@
 # -*- encoding : utf-8 -*-
 class Administracao::Empresa < ActiveRecord::Base
-	 paginates_per 10	
+	paginates_per 10	
 	self.table_name =  "empresas"
-	attr_accessor :nome_responsavel
+	#attr_accessor :nome_responsavel
 
 	has_one :endereco,:as=>:enderecavel
 	belongs_to :responsavel,:class_name=>"Pessoa"
-    has_many :departamentos,:foreign_key=>"entidade_id"
-    has_one :rota, :as=>:roteavel
+  has_many :departamentos,:foreign_key=>"entidade_id"
+  has_one :rota, :as=>:roteavel
   
 
 	validates_presence_of :nome,:cnpj#,:responsavel_id
 	validates_uniqueness_of :cnpj
 	
 
-	  after_create :adicionar_rota
-      after_update :editar_rota
+	after_create :adicionar_rota
+  after_update :editar_rota
 
 
 

@@ -2,11 +2,13 @@
 class Administracao::CombustiveisController < ApplicationController
   before_action :set_administracao_combustivel, only: [:show, :edit, :update, :destroy]
   before_action :validar_dinheiro,only: [:update,:create]
+  before_action :load_combustivel, only: :create
+  load_and_authorize_resource :class=>"Administracao::Combustivel", except: :create
 
   # GET /administracao/combustiveis
   # GET /administracao/combustiveis.json
   def index
-    @administracao_combustiveis = Administracao::Combustivel.page params[:page]
+    @administracao_combustiveis = Administracao::Combustivel.accessible_by(current_ability).page params[:page]
   end
 
   # GET /administracao/combustiveis/1
@@ -78,4 +80,9 @@ class Administracao::CombustiveisController < ApplicationController
     def administracao_combustivel_params
       params.require(:administracao_combustivel).permit(:nome, :valor)
     end
+
+    def load_combustivel
+      @administracao_combustivel = Administracao::Combustivel.new(administracao_combustivel_params)
+    end
+
 end

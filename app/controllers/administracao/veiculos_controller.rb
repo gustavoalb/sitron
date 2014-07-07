@@ -1,11 +1,14 @@
 # -*- encoding : utf-8 -*-
 class Administracao::VeiculosController < ApplicationController
   before_action :set_administracao_veiculo, only: [:show, :edit, :update, :destroy]
+  before_action :load_veiculo, only: :create
+  load_and_authorize_resource :class=>"Administracao::Veiculo", except: :create
+
 
   # GET /administracao/veiculos
   # GET /administracao/veiculos.json
   def index
-    @administracao_veiculos = Administracao::Veiculo.all
+    @administracao_veiculos = Administracao::Veiculo.accessible_by(current_ability)
   end
 
   # GET /administracao/veiculos/1
@@ -111,5 +114,9 @@ end
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_veiculo_params
       params.require(:administracao_veiculo).permit(:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode,:contrato_id,:lote_id)
+    end
+
+    def load_veiculo
+      @administracao_veiculo = Administracao::Veiculo.new(administracao_veiculo_params)
     end
   end
