@@ -8,7 +8,7 @@ gem 'coffee-rails', '~> 4.0.0'
 gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
-gem 'sdoc', '~> 0.4.0', :group=>:doc
+gem 'sdoc', '~> 0.4.0', group: :doc
 #gem 'spring',        group: :development
 gem 'font-awesome-rails'
 gem 'brazilian-rails'
@@ -77,7 +77,7 @@ gem 'underscore-rails'
 gem 'markaby',:require =>false
 gem 'memoist'
 gem 'event-calendar',	:require => "event_calendar"
-gem 'jquery-datatables-rails', :git=> 'https://github.com/rweng/jquery-datatables-rails.git'
+gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-rails.git'
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'
