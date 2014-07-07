@@ -47,7 +47,7 @@ test:
   database: sitron_test
   pool:     5
   username: postgres
-  password: 12345678
+  password: malocasoft
   template: template0
 
 production:
@@ -57,5 +57,5 @@ production:
   database: sitron_production
   pool:     5
   username: postgres
-  password: 12345678
+  password: malocasoft
   template: template0
