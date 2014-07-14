@@ -1,10 +1,12 @@
 class Administracao::PessoasController < ApplicationController
   before_action :set_administracao_pessoa, only: [:show, :edit, :update, :destroy]
+  before_action :load_pessoa, only: :create
+  load_and_authorize_resource :class=>"Administracao::Pessoa", except: :create
 
   # GET /administracao/pessoas
   # GET /administracao/pessoas.json
   def index
-    @administracao_pessoas = Administracao::Pessoa.all
+    @administracao_pessoas = Administracao::Pessoa.accessible_by(current_ability)
   end
 
   # GET /administracao/pessoas/1
@@ -78,4 +80,8 @@ class Administracao::PessoasController < ApplicationController
     def administracao_pessoa_params
       params.require(:administracao_pessoa).permit(:nome, :cpf, :email, :matricula, :cargo_id,:departamento_id,:empresa_id)
     end
+
+    def load_pessoa
+    @pessoa = Administracao::Pessoa.new(administracao_pessoa_params)
+  end
 end

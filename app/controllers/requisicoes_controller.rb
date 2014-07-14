@@ -1,11 +1,13 @@
 class RequisicoesController < ApplicationController
   before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
+  before_action :load_requisicao, only: :create
+  load_and_authorize_resource :class=>"Requisicao", except: :create
 
   # GET /requisicoes
   # GET /requisicoes.json
   add_breadcrumb "Requisições de Transporte"
   def index
-    @requisicoes = Requisicao.all
+    @requisicoes = Requisicao.accessible_by(current_ability)
   end
 
   # GET /requisicoes/1
@@ -61,9 +63,11 @@ class RequisicoesController < ApplicationController
     @requisicao = Requisicao.new(requisicao_params)
     date_and_time = '%m-%d-%Y %H:%M:%S %Z'
     data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
-
+    data_retorno = Time.zone.parse("#{requisicao_params[:data_volta].gsub('/','-')} #{requisicao_params[:hora_volta]}")
     #data = DateTime.strptime("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]} Brasilia",date_and_time)
     @requisicao.inicio = data
+    @requisicao.fim = data_retorno
+    @requisicao.requisitante_id = current_user.pessoa.id
 
     respond_to do |format|
       if @requisicao.save
@@ -102,13 +106,18 @@ class RequisicoesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_requisicao
-      @requisicao = Requisicao.find(params[:id])
-    end
-    
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def requisicao_params
-      params.require(:requisicao).permit(:numero, :descricao, :requisitante_id, :data_ida, :hora_ida, :periodo, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:motivo_id,:rota_ids=>[],:pessoa_ids=>[])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_requisicao
+    @requisicao = Requisicao.find(params[:id])
+  end
+  
+  # Never trust parameters from the scary internet, only allow the white list through.
+  def requisicao_params
+    params.require(:requisicao).permit(:numero, :descricao, :numero_passageiros,:requisitante_id, :data_ida, :hora_ida, :periodo,:tipo_requisicao, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:data_volta,:hora_volta,:motivo_id,:rota_ids=>[],:pessoa_ids=>[])
+  end
+
+  def load_requisicao
+    @requisicao = Requisicao.new(requisicao_params)
+  end
+
 end

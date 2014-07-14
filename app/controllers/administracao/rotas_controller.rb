@@ -1,10 +1,12 @@
 class Administracao::RotasController < ApplicationController
   before_action :set_administracao_rota, only: [:show, :edit, :update, :destroy]
+  before_action :load_rota, only: :create
+  load_and_authorize_resource :class=>"Administracao::Rota", except: :create
 
   # GET /administracao/rotas
   # GET /administracao/rotas.json
   def index
-    @administracao_rotas = Administracao::Rota.all
+    @administracao_rotas = Administracao::Rota.accessible_by(current_ability)
   end
 
   # GET /administracao/rotas/1
@@ -108,5 +110,9 @@ class Administracao::RotasController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_rota_params
       params.require(:administracao_rota).permit(:destino, :entidade_id, :tempo_previsto, :latitude, :longitude, :rota_longa, :intermunicipal,:roteavel_id,:roteavel_type)
+    end
+
+    def load_rota
+      @administracao_rota = Administracao::Rota.new(administracao_rota_params)
     end
   end

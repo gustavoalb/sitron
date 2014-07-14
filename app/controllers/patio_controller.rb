@@ -54,12 +54,15 @@ class PatioController < ApplicationController
 
   def saida_servico 
     codigo = params[:posto][:codigo_de_barras]
+    
     veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
+
     @patio = Administracao::Patio.na_data(Time.zone.now).first
     @posto = @patio.postos.na_data(Time.zone.now).proximo_de_sair.where(:veiculo_id=>veiculo.id).first
     @postos = @patio.postos.na_data(Time.zone.now).order("position ASC")
    
     if @posto 
+      
       @requisicao = Requisicao.confirmada.where(:posto_id=>@posto.id).first
 
       if @requisicao

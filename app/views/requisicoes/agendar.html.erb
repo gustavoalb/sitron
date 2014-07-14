@@ -1,9 +1,14 @@
+<%=titulo_pagina(link_icone("Requisição Sitron",'thumbs-up'),link_icone("Serviço Agendado",'calendar'))%>
+
 <%= simple_form_for @requisicao,html: {class: 'well form-horizontal'},url: agendar_requisicao_requisicoes_url do |f| %>
 <%= f.error_notification %>
 <%= f.association :motivo,:collection=>Administracao::Motivo.all.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição' %>
 <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
-<%= f.input :inicio,:input_html=>{:readonly=>true},as: :string,hint: "Clique no campo para selecionar a data de Ida e Volta"%>
-<%= f.input :fim,:input_html=>{:readonly=>true},as: :string,hint: "Este campo será preenchido automaticamente"%>
+<%= f.input :inicio,:input_html=>{:readonly=>true},as: :string,hint: "Clique no campo para selecionar a data de Ida e Volta",:label=>"Saída"%>
+<%= f.input :fim,:input_html=>{:readonly=>true},as: :string,hint: "Este campo será preenchido automaticamente",:label=>"Previsão de Retorno"  %>
+
+<%=f.input :numero_passageiros,:as=>:integer,:label=>"Número de Passageiros",input_html: {id: "npassageiros"}%>
+
 <%= f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota desejada",:label=>"Rota Desejada"%>
 
 <%= f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione as Pessoas",:label=>"Pessoas incluídas"%>
@@ -18,11 +23,11 @@
   {
     locale: {applyLabel: 'Aplicar',
     cancelLabel: 'Cancel',
-    fromLabel: 'De',
-    toLabel: 'Até',
+    fromLabel: 'Saída',
+    toLabel: 'Retorno',
     weekLabel: 'W',
     customRangeLabel: 'Calendário'},
-    timePicker: true, timePickerIncrement: 15, format: 'DD/MM/YYYY H:mm',timePicker12Hour: false,minDate: "<%=Date.tomorrow.to_s_br%>",
+    timePicker: true, timePickerIncrement: 15, format: 'DD/MM/YYYY H:mm',timePicker12Hour: false,minDate: "<%=Time.now.to_s_br%>",
 
     startDate: moment(),
     endDate: moment().add('minutes',15)
@@ -37,15 +42,23 @@
 
 
 <script type="text/javascript">
+   var np = 0
+    $("#npassageiros").change(function(){ 
+        var np = 0
+         np = $("#npassageiros").val();
+    });
+   
+
   $(document).ready(function() {
     $('.multiselect_pessoa').multiselect({
       enableFiltering: true,
       nonSelectedText: 'Nenhuma pessoa Selecionada',
+            maxHeight: 150,
       onChange: function(option, checked) {
     // Get selected options.
     var selectedOptions = $('.multiselect_pessoa option:selected');
 
-    if (selectedOptions.length >= 5) {
+    if (selectedOptions.length >= $("#npassageiros").val()) {
     // Disable all other checkboxes.
     var nonSelectedOptions = $('.multiselect_pessoa option').filter(function() {
       return !$(this).is(':selected');
@@ -57,8 +70,8 @@
       input.prop('disabled', true);
       input.parent('li').addClass('disabled');
     });
-  }
-  else {
+}
+else {
     // Enable all checkboxes.
     var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
     $('.multiselect_pessoa option').each(function() {
@@ -66,12 +79,12 @@
       input.prop('disabled', false);
       input.parent('li').addClass('disabled');
     });
-  }
+}
 }
 });
-$('.multiselect_rota').multiselect({
-  enableFiltering: true,
-  nonSelectedText: 'Selecione ao Menos uma Rota'
-});
-});
+    $('.multiselect_rota').multiselect({
+      enableFiltering: true,
+       nonSelectedText: 'Selecione ao Menos uma Rota'
+    });
+  });
 </script>

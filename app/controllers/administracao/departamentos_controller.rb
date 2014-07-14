@@ -1,12 +1,14 @@
 class Administracao::DepartamentosController < ApplicationController
   before_action :set_administracao_departamento, only: [:show, :edit, :update, :destroy]
+  before_action :load_departamento, only: :create
+  load_and_authorize_resource :class=>"Administracao::Departamento", except: :create
 
   # GET /administracao/departamentos
   # GET /administracao/departamentos.json
-    autocomplete :pessoa, :nome,:class_name=>"Administracao::Pessoa"
+  autocomplete :pessoa, :nome,:class_name=>"Administracao::Pessoa"
 
   def index
-    @administracao_departamentos = Administracao::Departamento.all
+    @administracao_departamentos = Administracao::Departamento.accessible_by(current_ability)
   end
 
   # GET /administracao/departamentos/1
@@ -110,6 +112,10 @@ class Administracao::DepartamentosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_departamento_params
-      params.require(:administracao_departamento).permit(:nome, :descricao, :entidade_id, :responsavel_id,endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
+      params.require(:administracao_departamento).permit(:nome, :descricao, :entidade_id, :responsavel_id, endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
+    end
+
+    def load_departamento
+      @administracao_departamento = Administracao::Departamento.new(administracao_departamento_params)
     end
 end

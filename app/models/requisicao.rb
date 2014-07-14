@@ -6,6 +6,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :data_ida,:hora_ida,:motivo_id
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
+  validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
   #validate :hora
   #validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
   has_and_belongs_to_many :tipos
@@ -24,7 +25,9 @@ class Requisicao < ActiveRecord::Base
 
   after_create :numero_requisicao,:enviar_mensagem,:criar_notificacao
   after_create :evento
-  after_validation :setar_distancia
+  #after_validation :setar_distancia
+  enum tipo_requisicao: [:normal,:imediata,:agendada]
+  
 
   def hora
     if self.data_ida==Date.today and self.hora_ida < Time.now+1.hour
@@ -143,49 +146,52 @@ end
 
 
 
-  private
+private
 
 
-  def numero_requisicao
-    if self.id < 10
-     self.numero = "RST000000#{self.id}"
-   elsif self.id < 100
-     self.numero = "RST00000#{self.id}"
-   elsif self.id < 1000 
-     self.numero = "RST0000#{self.id}"
-   elsif self.id < 10000
-     self.numero = "RST000#{self.id}"
-   elsif self.id < 100000
-     self.numero = "RST00#{self.id}"
-   else
-     self.numero = "RST#{self.id}"
-   end
-   self.save
+def numero_requisicao
+  if self.id < 10
+   self.numero = "RST000000#{self.id}"
+ elsif self.id < 100
+   self.numero = "RST00000#{self.id}"
+ elsif self.id < 1000 
+   self.numero = "RST0000#{self.id}"
+ elsif self.id < 10000
+   self.numero = "RST000#{self.id}"
+ elsif self.id < 100000
+   self.numero = "RST00#{self.id}"
+ else
+   self.numero = "RST#{self.id}"
+ end
+ self.save
+end
+
+
+
+
+def setar_distancia
+ @distancia = 0.0
+
+ requisitante = self.requisitante
+
+ lat_origem = requisitante.departamento.endereco.latitude
+ lng_origem = requisitante.departamento.endereco.longitude
+ self.rotas.each do |r|
+   lat_destino = r.latitude
+   lng_destino = r.longitude
+   dist = Geocoder::Calculations.distance_between([lat_origem,lng_origem], [lat_destino,lng_destino])
+   @distancia += dist
+ end
+ self.distancia = @distancia
+
+ if self.fim.nil?
+   @tempo = ((self.distancia.to_f*60)/50).round(2)
+   self.fim = self.inicio+@tempo.hour 
  end
 
+end
 
-
-
- def setar_distancia
-   @distancia = 0.0
-   lat_origem = self.requisitante.departamento.endereco.latitude
-   lng_origem = self.requisitante.departamento.endereco.longitude
-   self.rotas.each do |r|
-     lat_destino = r.latitude
-     lng_destino = r.longitude
-     dist = Geocoder::Calculations.distance_between([lat_origem,lng_origem], [lat_destino,lng_destino])
-     @distancia += dist
-   end
-   self.distancia = @distancia
-
-   if self.fim.nil?
-     @tempo = ((self.distancia.to_f*60)/50).round(2)
-     self.fim = self.inicio+@tempo.hour 
-   end
-
- end
-
- def evento
+def evento
   self.create_event(:name=>self.motivo,:start_at=>self.inicio,:end_at=>self.fim)
 end
 

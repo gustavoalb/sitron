@@ -1,0 +1,3 @@
+<%=simple_fields_for "user[pessoa_attributes]" do |e|%>
+<%e.input :departamento_id,:collection=>@departamentos.collect {|d|[d.nome,d.id]},:prompt=>"Selecione o Departamento",:input_html=>{:class=>"span4 chosen chzn-done"}%>
+<%end%>

@@ -1,11 +1,13 @@
 # -*- encoding : utf-8 -*-
 class Administracao::ModalidadesController < ApplicationController
   before_action :set_administracao_modalidade, only: [:show, :edit, :update, :destroy]
+  before_action :load_modalidade, only: :create
+  load_and_authorize_resource :class=>"Administracao::Modalidade", except: :create
 
   # GET /administracao/modalidades
   # GET /administracao/modalidades.json
   def index
-    @administracao_modalidades = Administracao::Modalidade.all
+    @administracao_modalidades = Administracao::Modalidade.accessible_by(current_ability)
   end
 
   # GET /administracao/modalidades/1
@@ -71,5 +73,9 @@ class Administracao::ModalidadesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_modalidade_params
       params.require(:administracao_modalidade).permit(:nome, :periodo_diario, :dias_mes, :com_motorista, :com_combustivel, :quilometragem_livre, :mes_completo)
+    end
+
+    def load_modalidade
+      @administracao_modalidade = Administracao::Modalidade.new(administracao_modalidade_params)
     end
 end

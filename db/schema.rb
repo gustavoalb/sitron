@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140620190305) do
+ActiveRecord::Schema.define(version: 20140713152115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.integer  "responsavel_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "nome_responsavel"
   end
 
   create_table "enderecos", force: true do |t|
@@ -315,8 +316,10 @@ ActiveRecord::Schema.define(version: 20140620190305) do
     t.float    "distancia"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "agenda",          default: false
+    t.boolean  "agenda",             default: false
     t.integer  "motivo_id"
+    t.integer  "tipo_requisicao"
+    t.integer  "numero_passageiros", default: 1
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree

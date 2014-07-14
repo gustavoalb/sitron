@@ -1,10 +1,11 @@
 class Administracao::MotivosController < ApplicationController
   before_action :set_administracao_motivo, only: [:show, :edit, :update, :destroy]
-
+  before_action :load_motivo, only: :create
+  load_and_authorize_resource :class=>"Administracao::Motivo", except: :create
   # GET /administracao/motivos
   # GET /administracao/motivos.json
   def index
-    @administracao_motivos = Administracao::Motivo.all
+    @administracao_motivos = Administracao::Motivo.accessible_by(current_ability)
   end
 
   # GET /administracao/motivos/1
@@ -71,4 +72,9 @@ class Administracao::MotivosController < ApplicationController
     def administracao_motivo_params
       params.require(:administracao_motivo).permit(:nome, :tipo_id, :carga, :passageiro, :entrega_documento, :interior, :viagem_longa)
     end
+
+    def load_motivo
+      @administracao_motivo = Administracao::Motivo.new(administracao_motivo_params)
+    end
+
 end

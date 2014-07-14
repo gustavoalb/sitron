@@ -30,8 +30,8 @@ gem 'jquery-ui-rails'
 gem "geocoder"
 gem 'rails3-jquery-autocomplete'
 gem "rails-bootstrap-daterangepicker"
-gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails',
-                              :git => 'git://github.com/tispratik/bootstrap-timepicker-rails.git'
+gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails', :git => 'https://github.com/tispratik/bootstrap-timepicker-rails.git'
+
 gem 'bootstrap-select-rails'
 
 gem 'carrierwave'
@@ -68,6 +68,10 @@ group :production do
 end
 
 gem "brakeman", :require => false
+
+
+gem 'cancan'
+
 gem 'gmaps4rails'
 gem 'underscore-rails'
 gem 'markaby',:require =>false
@@ -77,3 +81,6 @@ gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'
+
+gem 'cancancan'
+

@@ -14,7 +14,7 @@
         <%@requisicoes.each do |req|%>
         <tr class="<%=even_odd(req.id)%> gradeX">
         <td  class="sorting_1"><%=req.numero%></td>
-            <td><%=req.motivo%></td>
+            <td><%=req.motivo.nome  %></td>
             <td><%=req.created_at.to_s_br%></td>
             <td class="center"> <%=req.state.upcase%></td>
             <td>
@@ -33,9 +33,9 @@
 <%= link_to link_icone('Requisição de Transporte - Dia Seguinte','thumbs-up'), new_requisicao_path, :class=>"btn btn-large btn-green",data: { no_turbolink: true }  %>
 
 
-<%= link_to link_icone('Requisição de Transporte - Imediata','bolt'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
+<%= link_to link_icone('Requisição de Transporte - Imediata','bolt'), requisicao_imediata_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
 
-<%= link_to link_icone('','calendar'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
+<%= link_to link_icone('Agendamento de Viagem','calendar'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
 
 <%content_for :scripts do%>
 <script type="text/javascript">
