@@ -4,4 +4,10 @@ class Gerencia::ControleRequisicoesController < ApplicationController
   	@postos = Posto.disponivel.na_data(Time.zone.now).order("position ASC")
   	
   end
+
+  def definir_posto
+    
+  render :nothing=>true
+
+  end
 end

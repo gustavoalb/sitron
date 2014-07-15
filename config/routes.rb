@@ -8,6 +8,7 @@ Sitron::Application.routes.draw do
 
   namespace :gerencia do
     get 'controle_requisicoes/index'
+    post 'controle_requisicoes/definir_posto'
   end
 
   resources :usuarios do
