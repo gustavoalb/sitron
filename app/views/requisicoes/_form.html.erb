@@ -1,23 +1,41 @@
+<script type="text/javascript">
+
+</script>
 <%= simple_nested_form_for @requisicao,html: {class: 'well form-horizontal'} do |f| %>
 <%= f.error_notification %>
-<%= f.association :motivo,:collection=>Administracao::Motivo.all.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição' %>
-<%= f.input :tipo_requisicao,input_html: {value: "normal",readonly: true},as: :string%>
+<%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao"}%>
+<div id="div_carga">
+</div>
+<%= f.input :tipo_requisicao,input_html: {value: "normal",readonly: true},as: :hidden%>
 <%= f.input :data_ida,input_html: {readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string,:label=>"Saída"  %>
 <%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
 <%= f.input :data_volta,input_html: {readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
 <%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
 
-<%=f.input :numero_passageiros,:as=>:integer,:label=>"Número de Passageiros",input_html: {id: "npassageiros"}%>
+<%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros"%>
 
-<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota desejada",:label=>"Rota Desejada"%>
+<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
 
-<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione as Pessoas",:label=>"Pessoas"%>
+<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione os Passageiros",:label=>"Passageiros"%>
 
 
 <br/><br/><br/>
 <%=botoes_form(f)%>
 
 <% end %>
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+$(function() {
+  $("#motivo_requisicao").observe_field(0.25, function( ) {
+   $.get("/requisicoes/tipo_carga/?motivo_id="+$("#motivo_requisicao").val(), function(data) {
+// here check_login is the method in our controller.
+$("#div_carga").html(data);
+});
+  });
+});
+</script>
+<%end%>
 
 <script type="text/javascript">
 
@@ -91,3 +109,5 @@ else {
 		});
 	});
 </script>
+
+

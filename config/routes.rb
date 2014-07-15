@@ -23,6 +23,7 @@ Sitron::Application.routes.draw do
   end
 
   match '/calendario(/:year(/:month))' => 'calendario#index', :as => :calendario, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/},:via=>:get
+  #match '/requisicoes/tipo_carga/?motivo_id=:id', :controller=>'requisicoes', :action => 'tipo_carga',:via=>"post"
  #mount Resque::Server => "/internal/resque"
 
 
@@ -31,6 +32,7 @@ Sitron::Application.routes.draw do
     post :agendar_requisicao,on: :collection
     get :requisicao_imediata,on: :collection
     post :agendar_requisicao_imediata,on: :collection
+    get :tipo_carga,:on=>:collection
   end
 
   namespace :administracao do

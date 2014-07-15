@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140713152115) do
+ActiveRecord::Schema.define(version: 20140715162956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -206,6 +206,7 @@ ActiveRecord::Schema.define(version: 20140713152115) do
     t.integer  "lote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "urgente",           default: false
   end
 
   add_index "motivos", ["lote_id"], name: "index_motivos_on_lote_id", using: :btree
@@ -319,7 +320,8 @@ ActiveRecord::Schema.define(version: 20140713152115) do
     t.boolean  "agenda",             default: false
     t.integer  "motivo_id"
     t.integer  "tipo_requisicao"
-    t.integer  "numero_passageiros", default: 1
+    t.integer  "numero_passageiros"
+    t.integer  "tipo_carga"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree

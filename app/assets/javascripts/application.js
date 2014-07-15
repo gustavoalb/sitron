@@ -167,3 +167,7 @@ function getLatitudeLongitudeByCidadeBId(cidade_id) {
 }
 
 
+ function updateCountdown() {
+    // 160 is the max message length
+    var remaining = 160 - jQuery('.mensagem').val().length;
+    jQuery('.contagem_caracteres').text(remaining + ' caracteres sobrando.');}

@@ -59,7 +59,7 @@ class RequisicoesController < ApplicationController
     end
   end
 
-    def create
+  def create
     @requisicao = Requisicao.new(requisicao_params)
     date_and_time = '%m-%d-%Y %H:%M:%S %Z'
     data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
@@ -102,6 +102,17 @@ class RequisicoesController < ApplicationController
     respond_to do |format|
       format.html { redirect_to requisicoes_url, notice: 'Requisicao was successfully destroyed.' }
       format.json { head :no_content }
+    end
+  end
+
+  def tipo_carga
+    if params[:motivo_id] and !params[:motivo_id].blank?
+      @motivo = Administracao::Motivo.find(params[:motivo_id])
+    end
+    if @motivo and @motivo.carga?
+      render :partial=>"partial_carga"
+    elsif !@motivo or !@motivo.carga? or params[:motivo_id].blank?
+      render :nothing=>true
     end
   end
 

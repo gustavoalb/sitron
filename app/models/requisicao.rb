@@ -26,7 +26,7 @@ class Requisicao < ActiveRecord::Base
   after_create :numero_requisicao,:enviar_mensagem,:criar_notificacao
   after_create :evento
   #after_validation :setar_distancia
-  enum tipo_requisicao: [:normal,:imediata,:agendada]
+  enum tipo_requisicao: [:normal,:urgente,:agendada]
   
 
   def hora

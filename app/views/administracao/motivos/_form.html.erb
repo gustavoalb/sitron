@@ -1,18 +1,26 @@
+<script type="text/javascript">
+$('#administracao_motivo_carga').change(function() {
+    $.ajax({
+        url: "occupation",
+        type: "GET",
+    })
+});
+</script>   
 <%= simple_form_for(@administracao_motivo,html: {class: 'form-horizontal'}) do |f| %>
-  <%= f.error_notification %>
+<%= f.error_notification %>
 
 
-    <%= f.input :nome %>
-    <%= f.association :tipo,:collection=>Tipo.all.collect{|t|[t.nome,t.id]} %>
-    <%= f.input :carga,as: :inline_checkbox,:label=>"Carga?" %>
-    <%= f.input :passageiro,as: :inline_checkbox,:label=>"Passageiro?" %>
-    <%= f.input :entrega_documento,as: :inline_checkbox,:label=>"Entrega de Documento?" %>
-    <%= f.input :interior,as: :inline_checkbox,:label=>"Para o Interior?" %>
-    <%= f.input :viagem_longa,as: :inline_checkbox,:label=>"Viagem Longa?" %>
+<%= f.input :nome %>
+<%= f.association :tipo,:collection=>Tipo.all.collect{|t|[t.nome,t.id]} %>
+<%= f.input :carga,as: :inline_checkbox,:label=>"Carga",:input_html=>{:id=>:porra}%>
+<%= f.input :passageiro,as: :inline_checkbox,:label=>"Passageiro" %>
+<%= f.input :entrega_documento,as: :inline_checkbox,:label=>"Entrega de Documento" %>
+<%= f.input :interior,as: :inline_checkbox,:label=>"Para o Interior" %>
+<%= f.input :viagem_longa,as: :inline_checkbox,:label=>"Viagem Longa" %>
 
 
-    <br/><br/><br/>
-    <%=botoes_form(f)%>
+<br/><br/><br/>
+<%=botoes_form(f)%>
 
 <% end %>
 

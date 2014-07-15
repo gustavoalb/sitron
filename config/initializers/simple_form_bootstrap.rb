@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 # Use this setup block to configure all options available in SimpleForm.
 SimpleForm.setup do |config|
+  config.boolean_style = :inline
 
   config.wrappers :bootstrap, tag: 'div', class: 'form-group', error_class: 'has-error' do |b|
     b.use :html5
