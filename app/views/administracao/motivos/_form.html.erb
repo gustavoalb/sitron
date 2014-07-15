@@ -1,14 +1,16 @@
+
 <%= simple_form_for(@administracao_motivo,html: {class: 'form-horizontal'}) do |f| %>
   <%= f.error_notification %>
 
 
     <%= f.input :nome %>
-    <%= f.association :tipo,:collection=>Tipo.all.collect{|t|[t.nome,t.id]} %>
-    <%= f.input :carga,as: :inline_checkbox,:label=>"Carga?" %>
-    <%= f.input :passageiro,as: :inline_checkbox,:label=>"Passageiro?" %>
-    <%= f.input :entrega_documento,as: :inline_checkbox,:label=>"Entrega de Documento?" %>
-    <%= f.input :interior,as: :inline_checkbox,:label=>"Para o Interior?" %>
-    <%= f.input :viagem_longa,as: :inline_checkbox,:label=>"Viagem Longa?" %>
+    <%= f.association :tipo,:collection=>Tipo.all.collect{|t|[t.nome,t.id]},:prompt=>"Selecione o Tipo de Posto" %>
+    <%=f.input :tipo_requisicao, :collection => Requisicao.tipo_requisicoes.keys.map {|role| [role.titleize,role]},:prompt=>"Selecione o Tipo de Requisicao"%>
+    <%= f.input :carga,as: :inline_checkbox,:label=>"Carga" %>
+    <%= f.input :passageiro,as: :inline_checkbox,:label=>"Passageiro" %>
+    <%= f.input :entrega_documento,as: :inline_checkbox,:label=>"Entrega de Documento" %>
+    <%= f.input :interior,as: :inline_checkbox,:label=>"Para o Interior" %>
+    <%= f.input :viagem_longa,as: :inline_checkbox,:label=>"Viagem Longa" %>
 
 
     <br/><br/><br/>

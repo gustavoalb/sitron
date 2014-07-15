@@ -6,8 +6,8 @@ class Administracao::Empresa < ActiveRecord::Base
 
 	has_one :endereco,:as=>:enderecavel
 	belongs_to :responsavel,:class_name=>"Pessoa"
-  has_many :departamentos,:foreign_key=>"entidade_id"
-  has_one :rota, :as=>:roteavel
+    has_many :departamentos,:foreign_key=>"entidade_id"
+    has_one :rota, :as=>:roteavel
   
 
 	validates_presence_of :nome,:cnpj#,:responsavel_id

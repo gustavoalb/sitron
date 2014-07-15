@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140713152115) do
+ActiveRecord::Schema.define(version: 20140715120051) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,6 +133,19 @@ ActiveRecord::Schema.define(version: 20140713152115) do
   add_index "enderecos", ["longitude"], name: "index_enderecos_on_longitude", using: :btree
   add_index "enderecos", ["numero"], name: "index_enderecos_on_numero", using: :btree
 
+  create_table "escolas", force: true do |t|
+    t.integer  "municipio_id"
+    t.integer  "dependencia_administrativa"
+    t.integer  "zona"
+    t.string   "codigo"
+    t.string   "nome"
+    t.string   "telefone"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "escolas", ["municipio_id"], name: "index_escolas_on_municipio_id", using: :btree
+
   create_table "estados", force: true do |t|
     t.string   "sigla"
     t.string   "nome"
@@ -206,6 +219,7 @@ ActiveRecord::Schema.define(version: 20140713152115) do
     t.integer  "lote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "tipo_requisicao"
   end
 
   add_index "motivos", ["lote_id"], name: "index_motivos_on_lote_id", using: :btree

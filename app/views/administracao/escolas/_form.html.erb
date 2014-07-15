@@ -1,0 +1,17 @@
+<%= simple_form_for(@administracao_escola) do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.association :municipio %>
+    <%= f.input :dependencia_administrativa %>
+    <%= f.input :zona %>
+    <%= f.input :codigo %>
+    <%= f.input :nome %>
+    <%= f.input :telefone %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+
