@@ -38,8 +38,8 @@ Sitron::Application.routes.draw do
   resources :requisicoes do 
     get :agendar,on: :collection
     post :agendar_requisicao,on: :collection
-    get :requisicao_imediata,on: :collection
-    post :agendar_requisicao_imediata,on: :collection
+    get :requisicao_urgente,on: :collection
+    post :agendar_requisicao_urgente,on: :collection
     get :tipo_carga,:on=>:collection
   end
 

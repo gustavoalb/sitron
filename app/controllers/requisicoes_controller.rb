@@ -27,7 +27,7 @@ class RequisicoesController < ApplicationController
     @pessoas = Administracao::Pessoa.all
   end
 
-  def requisicao_imediata
+  def requisicao_urgente
     @requisicao = Requisicao.new
     @pessoas = Administracao::Pessoa.all
   end
@@ -68,6 +68,9 @@ class RequisicoesController < ApplicationController
     @requisicao.inicio = data
     @requisicao.fim = data_retorno
     @requisicao.requisitante_id = current_user.pessoa.id
+    @tipo = @requisicao.tipo_requisicao
+
+
 
     respond_to do |format|
       if @requisicao.save
@@ -75,18 +78,24 @@ class RequisicoesController < ApplicationController
         format.json { render :show, status: :created, location: @requisicao }
       else
         @pessoas = Administracao::Pessoa.all
-        format.html { render :new }
-        format.json { render json: @requisicao.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+        if @tipo=="normal"
+          format.html { render :new }
+        elsif @tipo=="agendada"
+          format.html { render :agendar }
+        elsif @tipo=="urgente"
+         format.html { render :requisicao_urgente }
+       end
+       format.json { render json: @requisicao.errors, status: :unprocessable_entity }
+     end
+   end
+ end
 
   # PATCH/PUT /requisicoes/1
   # PATCH/PUT /requisicoes/1.json
   def update
     respond_to do |format|
       if @requisicao.update(requisicao_params)
-        format.html { redirect_to @requisicao, notice: 'Requisicao was successfully updated.' }
+        format.html { redirect_to @requisicao, notice: 'Requisicao atualizada com sucesso.' }
         format.json { render :show, status: :ok, location: @requisicao }
       else
         format.html { render :edit }

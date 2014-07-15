@@ -7,6 +7,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
+  validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
   #validate :hora
   #validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
   has_and_belongs_to_many :tipos

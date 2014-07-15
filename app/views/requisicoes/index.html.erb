@@ -33,7 +33,7 @@
 <%= link_to link_icone('Requisição de Transporte - Dia Seguinte','thumbs-up'), new_requisicao_path, :class=>"btn btn-large btn-green",data: { no_turbolink: true }  %>
 
 
-<%= link_to link_icone('Requisição de Transporte - Urgente','bolt'), requisicao_imediata_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true } if can?(:requisicao_imediata,Requisicao) %>
+<%= link_to link_icone('Requisição de Transporte - Urgente','bolt'), requisicao_urgente_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true } if can?(:requisicao_urgente,Requisicao) %>
 
 
 <%= link_to link_icone('Agendamento de Viagem','calendar'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>

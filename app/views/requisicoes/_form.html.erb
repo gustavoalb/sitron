@@ -12,7 +12,7 @@
 <%= f.input :data_volta,input_html: {readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
 <%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
 
-<%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros"%>
+<%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
 
 <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
 
@@ -63,51 +63,92 @@ $("#div_carga").html(data);
 
 
 <script type="text/javascript">
-   var np = 0
-    $("#npassageiros").change(function(){ 
-        var np = 0
-         np = $("#npassageiros").val();
-    });
-   
+ var np = 0
+ 
+ $("#npassageiros").change(function(){ 
+  var np = 0
+  np = $("#npassageiros").val();
+});
 
-	$(document).ready(function() {
-		$('.multiselect_pessoa').multiselect({
-			enableFiltering: true,
-			nonSelectedText: 'Nenhuma pessoa Selecionada',
-            maxHeight: 150,
-			onChange: function(option, checked) {
+
+ $(document).ready(function() {
+  $('.multiselect_pessoa').multiselect({
+    enableFiltering: true,
+    nonSelectedText: 'Nenhum passageiro Selecionado',
+    maxHeight: 150,
+    numberDisplayed:0,
+     buttonText: function(options, select) {
+    if (options.length == 0) {
+      return this.nonSelectedText + ' <b class="caret"></b>';
+    }
+    else {
+      if (options.length > this.numberDisplayed) {
+        return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+      }
+      else {
+        var selected = '';
+        options.each(function() {
+          var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+
+          selected += "Selecionados" + ', ';
+        });
+        return selected.substr(0, selected.length - 2) + ' <b class="caret">Selecionado</b>';
+      }
+    }
+  },
+    onChange: function(option, checked) {
     // Get selected options.
     var selectedOptions = $('.multiselect_pessoa option:selected');
 
     if (selectedOptions.length >= $("#npassageiros").val()) {
     // Disable all other checkboxes.
     var nonSelectedOptions = $('.multiselect_pessoa option').filter(function() {
-    	return !$(this).is(':selected');
+      return !$(this).is(':selected');
     });
 
     var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
     nonSelectedOptions.each(function() {
-    	var input = $('input[value="' + $(this).val() + '"]');
-    	input.prop('disabled', true);
-    	input.parent('li').addClass('disabled');
+      var input = $('input[value="' + $(this).val() + '"]');
+      input.prop('disabled', true);
+      input.parent('li').addClass('disabled');
     });
-}
-else {
+  }
+  else {
     // Enable all checkboxes.
     var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
     $('.multiselect_pessoa option').each(function() {
-    	var input = $('input[value="' + $(this).val() + '"]');
-    	input.prop('disabled', false);
-    	input.parent('li').addClass('disabled');
+      var input = $('input[value="' + $(this).val() + '"]');
+      input.prop('disabled', false);
+      input.parent('li').addClass('disabled');
     });
-}
+  }
 }
 });
-		$('.multiselect_rota').multiselect({
-			enableFiltering: true,
-			 nonSelectedText: 'Selecione ao Menos uma Rota'
-		});
-	});
+$('.multiselect_rota').multiselect({
+  enableFiltering: true,
+  numberDisplayed:0,
+  nonSelectedText: 'Selecione ao Menos uma Rota',
+  buttonText: function(options, select) {
+    if (options.length == 0) {
+      return this.nonSelectedText + ' <b class="caret"></b>';
+    }
+    else {
+      if (options.length > this.numberDisplayed) {
+        return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+      }
+      else {
+        var selected = '';
+        options.each(function() {
+          var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+
+          selected += "Selecionados" + ', ';
+        });
+        return selected.substr(0, selected.length - 2) + ' <b class="caret">Selecionado</b>';
+      }
+    }
+  }
+});
+});
 </script>
 
 
