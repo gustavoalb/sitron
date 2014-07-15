@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  municipio_id: 
+  dependencia_administrativa: 1
+  zona: 1
+  codigo: MyString
+  nome: MyString
+  telefone: MyString
+
+two:
+  municipio_id: 
+  dependencia_administrativa: 1
+  zona: 1
+  codigo: MyString
+  nome: MyString
+  telefone: MyString

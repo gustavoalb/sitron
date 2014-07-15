@@ -26,6 +26,7 @@
 //= require dataTables/jquery.dataTables
 //= require dataTables/jquery.dataTables.bootstrap3
 //= require bootstrap-select
+// require bootbox
 
 
 

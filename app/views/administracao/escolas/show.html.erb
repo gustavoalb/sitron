@@ -1,0 +1,19 @@
+<%= titulo_pagina("Detalhes da AdministracaoEscola", @administracao_escola.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Municipio:</dt>
+  <dd><%= @administracao_escola.municipio %></dd>
+  <dt>Dependencia administrativa:</dt>
+  <dd><%= @administracao_escola.dependencia_administrativa %></dd>
+  <dt>Zona:</dt>
+  <dd><%= @administracao_escola.zona %></dd>
+  <dt>Codigo:</dt>
+  <dd><%= @administracao_escola.codigo %></dd>
+  <dt>Nome:</dt>
+  <dd><%= @administracao_escola.nome %></dd>
+  <dt>Telefone:</dt>
+  <dd><%= @administracao_escola.telefone %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_escola_path(@administracao_escola),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_escolas_path, class: "btn btn-sm btn-default" %>

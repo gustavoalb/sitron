@@ -1,0 +1,72 @@
+<%=titulo_pagina(link_icone("Controle de Requisições","random"),"Requisições Imediatas")%>
+
+<table class="table table-striped table-bordered datatables dataTable">
+	<tr>
+		<th>Id</th>
+		<th>Requisitante</th>
+		<th>Saída</th>
+		<th>Ações</th>
+	</tr>
+
+	<%@requisicoes.each do |r|%>
+
+	<tr>
+		<td><%=r.id%></td>
+		<td><%=r.requisitante.nome%></td>
+		<td><%=r.data_ida.to_s_br%> <%=r.hora_ida.strftime("%H:%M")%></td>
+		<td>
+    <div class="btn-group">
+        <%=link_to link_icone("Detalhes","eye"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
+		<%=link_to link_icone("Definir Posto","car"), "#p_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-green"  %>
+        <%=link_to link_icone("Cancelar","recycle"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-brown"  %>
+         <%=link_to link_icone("Alterar","edit"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-inverse"  %>
+        </div>
+		</td>
+	</tr>
+
+   <%=modal("p_#{r.id}", "Definir o Posto para a Requisição #{r.id}",r) do %>
+      <%= simple_form_for :requisicao,:html=>{:class=>"form-horizontal"} do |f| %>
+         <%=f.input :posto,:collection=>@postos.collect {|p|[p.tipo.nome,p.id]}%>
+          <br/>	
+         	<%=botoes_form_modal(f,"Definir Posto")%>
+
+      <%end%>
+   <%end%>
+
+
+
+
+	<%end%>
+</table>
+
+<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Launch demo modal</a>
+
+<!-- Modal -->
+<div style="display: none;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Selecione o Posto</h4>
+			</div>
+			<div class="modal-body">
+
+				<p>Postos Disponíveis</p>
+
+
+				<% @postos.each do |p|%>
+
+
+				<%end%>
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				<button type="button" class="btn btn-primary">Salvar Requisição</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+

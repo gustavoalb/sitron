@@ -4,4 +4,7 @@ class Administracao::Motivo < ActiveRecord::Base
   scope :urgentes,->{where("urgente = true")}
   scope :normais,->{where("urgente = false")}
   enum tipo_carga: ["Mobiliário Escolar","Livros Didáticos","ETC"]
+
+
+  
 end

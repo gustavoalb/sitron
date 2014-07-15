@@ -1,0 +1,3 @@
+<%=simple_fields_for :requisicao do |f|%>
+<%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.map, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
+<%end%>

@@ -45,6 +45,22 @@ return raw(html)
 end
 
 
+def botoes_form_modal(form,titulo)
+html=""
+
+html+="<div class='panel-footer'>"
+html+="<div class='row'>"
+html+="<div class='col-sm-6 col-sm-offset-3'>"
+html+="<div class='btn-toolbar'>"
+html+="#{form.submit titulo,:class=>"btn btn-primary"}"
+html+="</div>"
+html+="</div>"
+html+="</div>"
+html+="</div>"
+return raw(html)
+end
+
+
 def nav_item_menu(titulo,controller,icone,badge=nil,valor_badge=nil,&block)
   html=""
   if controller.is_a? Array
