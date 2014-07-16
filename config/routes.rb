@@ -9,6 +9,7 @@ Sitron::Application.routes.draw do
   namespace :gerencia do
     get 'controle_requisicoes/index'
     post 'controle_requisicoes/definir_posto'
+    post 'controle_requisicoes/cancelar_requisicao'
   end
 
   resources :usuarios do
@@ -84,6 +85,7 @@ Sitron::Application.routes.draw do
     post  :chegada_servico,on: :collection
     post  :saida_veiculo,on: :collection
     post  :remover_posto, on: :collection
+    
   end
 
   namespace :administracao do

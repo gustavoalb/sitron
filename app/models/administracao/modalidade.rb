@@ -7,12 +7,8 @@ class Administracao::Modalidade < ActiveRecord::Base
 		code =  self.id.to_s
 		case code.chars.count
 		when 1
-			code_mod = "0000#{code}"
-		when 2
-			code_mod = "000#{code}"
-		when 3
 			code_mod = "00#{code}"
-		when 4
+		when 2
 			code_mod = "0#{code}"
 		else
 			code_mod = "#{code}"

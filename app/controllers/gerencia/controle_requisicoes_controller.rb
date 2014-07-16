@@ -1,13 +1,35 @@
 class Gerencia::ControleRequisicoesController < ApplicationController
   def index
   	@requisicoes = Requisicao.aguardando.all
-  	@postos = Posto.disponivel.na_data(Time.zone.now).order("position ASC")
+  	@postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
   	
   end
 
   def definir_posto
-    
-  render :nothing=>true
+     @requisicao = Requisicao.find(params[:requisicao][:id])
+     @posto = Posto.ativo.find(params[:requisicao][:posto])
+
+     @requisicao.posto = @posto
+     @requisicao.confirmar
+     @posto.ligar
+
+
+     respond_to do |format|
+      if @requisicao.save
+        format.html { redirect_to gerencia_controle_requisicoes_index_url, notice: 'Posto Definido com Sucesso' }
+      else
+        format.html { redirect_to gerencia_controle_requisicoes_index_url, alert: 'Ocorreu um problema, por favor tente novamente.'  }
+        format.json { render json: @administracao_rota.errors, status: :unprocessable_entity }
+      end
+    end
 
   end
+
+
+  def cancelar_requisicao
+      @requisicao = Requisicao.find(params[:requisicao])
+      @requisicao.cancelar
+
+      redirect_to gerencia_controle_requisicoes_index_url, alert: "A requisição #{@requisicao.id} de #{@requisicao.requisitante.nome} foi cancelada"
+   end
 end

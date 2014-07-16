@@ -4,8 +4,10 @@ class Posto < ActiveRecord::Base
   belongs_to :contrato,:class_name=>"Administracao::Contrato"
   belongs_to :empresa,:class_name=>"Administracao::Empresa"
   belongs_to :lote,:class_name=>"Administracao::Lote"
-  acts_as_list scope: [:lote]
+  acts_as_list scope: [:lote,:data_entrada]
   validates_presence_of :codigo
+
+  validates_uniqueness_of :codigo,conditions: -> { where(data_entrada: Time.zone.now.to_date) }
 
   #enum lote:  [:"Lote 01",:"Lote 02",:"Lote 03",:"Lote 04",:"Lote 05",:"Lote 06",:"Lote 07",:"Lote 08",:"Lote ùnico"]
 
@@ -14,6 +16,7 @@ class Posto < ActiveRecord::Base
   scope :disponivel, ->{ where(state: "estacionado")}
   scope :em_transito, ->{ where(state: "em_transito")}
   scope :proximo_de_sair,->{where(state: "saida_proxima")}
+  scope :ativo, -> {where("state not in ('liberado')")}
 
  state_machine :initial => :estacionado do
 
@@ -39,10 +42,11 @@ class Posto < ActiveRecord::Base
      	transition :com_problema => :estacionado
      end
 
-     event :agendar do 
-     	transition :estacionado => :agendado
-     end
 
+
+     event :sair_do_patio do
+        transition any => :liberado
+     end
 
 
     state :estacionado do
@@ -51,11 +55,6 @@ class Posto < ActiveRecord::Base
       end
     end
 
-    state :agendado do
-      def status
-        'Agendado'
-      end
-    end
 
 
 

@@ -11,8 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140715162956) do
-
+ActiveRecord::Schema.define(version: 20140716130954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,6 +69,8 @@ ActiveRecord::Schema.define(version: 20140715162956) do
     t.string   "artigo"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "inicio_vigencia"
+    t.date     "fim_vigencia"
   end
 
   add_index "contratos", ["empresa_id"], name: "index_contratos_on_empresa_id", using: :btree
@@ -220,11 +221,8 @@ ActiveRecord::Schema.define(version: 20140715162956) do
     t.integer  "lote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-<<<<<<< HEAD
-    t.boolean  "urgente",           default: false
-=======
     t.integer  "tipo_requisicao"
->>>>>>> 00372a695b9ebe3ccc96bd5f4bebc5dd1e04fd7e
+    t.boolean  "urgente",           default: false
   end
 
   add_index "motivos", ["lote_id"], name: "index_motivos_on_lote_id", using: :btree
@@ -308,6 +306,7 @@ ActiveRecord::Schema.define(version: 20140715162956) do
     t.string   "codigo_substituto"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.date     "data_entrada"
   end
 
   add_index "postos", ["contrato_id"], name: "index_postos_on_contrato_id", using: :btree

@@ -18,8 +18,7 @@
     <div class="btn-group">
         <%=link_to link_icone("Detalhes","eye"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
 		<%=link_to link_icone("Definir Posto","car"), "#p_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-green"  %>
-        <%=link_to link_icone("Cancelar","recycle"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-brown"  %>
-         <%=link_to link_icone("Alterar","edit"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-inverse"  %>
+        <%=link_to link_icone("Cancelar","recycle"), gerencia_controle_requisicoes_cancelar_requisicao_url(:requisicao=>r.id), data: { confirm: 'Você tem Certeza que deseja Cancelar esta requisicao?' },:class=>"btn btn-xs btn-brown",:method=>:post  %>
         </div>
 		</td>
 	</tr>
@@ -39,35 +38,4 @@
 
 	<%end%>
 </table>
-
-<a data-toggle="modal" href="#myModal" class="btn btn-primary btn-lg">Launch demo modal</a>
-
-<!-- Modal -->
-<div style="display: none;" class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title">Selecione o Posto</h4>
-			</div>
-			<div class="modal-body">
-
-				<p>Postos Disponíveis</p>
-
-
-				<% @postos.each do |p|%>
-
-
-				<%end%>
-
-
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-				<button type="button" class="btn btn-primary">Salvar Requisição</button>
-			</div>
-		</div><!-- /.modal-content -->
-	</div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
 

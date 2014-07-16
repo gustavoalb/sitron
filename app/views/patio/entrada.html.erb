@@ -50,10 +50,10 @@
             </p>
 		</div>
 
-				   <div class="tab-pane" id="saida_veiculo">
+		   <div class="tab-pane" id="saida_veiculo">
 				<p>
-			<%=simple_form_for :posto,url: adicionar_posto_patio_index_url,remote: true do |f|%>
-			<%=f.input :codigo_de_barras,:label=>"Código do Posto de Serviço"%>
+			<%=simple_form_for :posto,url: remover_posto_patio_index_url,remote: true do |f|%>
+			<%=f.input :codigo_de_barras,:label=>"Código do Posto de Serviço",input_html: {:id=>"codigo_remover_posto"}%>
 			<%=f.submit "Enviar",class: "btn btn-sm"%>
 			<%end%>
 

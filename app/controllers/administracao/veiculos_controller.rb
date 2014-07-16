@@ -37,26 +37,27 @@ class Administracao::VeiculosController < ApplicationController
 end
 
 def imprimir_codigos
+  i = 1
+  n = 1
   report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
   report.start_new_page
  #  report.page.values printed_at: Time.zone.now
  @veiculos = Administracao::Veiculo.all
  @veiculos.each do  |v|
   report.list.add_row do |row|
-   row.values lote: "#{v.lote.nome.upcase}"
    row.values empresa: "#{v.empresa.nome.upcase}"
    row.values codigo: v.codigo_de_barras.file.file
    row.values codigo_texto: v.codigo
    row.values contrato: "#{v.contrato.numero}"
-   row.values modalidade: v.modalidade.nome
+   row.values vigencia: v.contrato.vigencia
 
-   row.values lote_s: "#{v.lote.nome.upcase}"
-   row.values empresa_s: "#{v.empresa.nome.upcase}"
-   row.values codigo_s: v.codigo_de_barras_s.file.file
-   row.values codigo_texto_s: v.codigo_s
-   row.values contrato_s: "#{v.contrato.numero}"
-   row.values modalidade_s: v.modalidade.nome
- end
+   row.values empresa_n: "#{v.empresa.nome.upcase}"
+   row.values codigo_n: v.codigo_de_barras.file.file
+   row.values codigo_texto_n: v.codigo
+   row.values contrato_n: "#{v.contrato.numero}"
+   row.values vigencia_n: v.contrato.vigencia
+  end
+
 end
 
 send_data report.generate, filename: 'codigos.pdf', 

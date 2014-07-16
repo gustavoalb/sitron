@@ -6,6 +6,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :data_ida,:hora_ida,:motivo_id
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
+  validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
   #validate :hora
@@ -64,75 +65,89 @@ class Requisicao < ActiveRecord::Base
 
   state_machine :initial => :aguardando do
 
-    event :confirmar do
-      transition [:aguardando,:agendada] => :confirmada
-    end
-
-    event :cancelar do
-      transition any => :cancelada
-    end
-
-    event :agendar do
-      transition any => :agendada
-    end
-
-    event :finalizar do 
-      transition :confirmada => :finalizada
-    end
-
-    event :aguardar  do
-     transition any => :aguardando
+  after_transition :confirmada => :saindo do |r, transition|
+     r.data_ida = Time.zone.now.to_date
+     r.hora_ida = Time.zone.now
    end
 
-
-
-   state :aguardando do
-
-    def panel
-      'info'
-    end
-
-    def color
-      '#2bbce0'
-    end
-
+   after_transition :em_curso => :finalizada do |r, transition|
+    r.data_volta = Time.zone.now.to_date
+    r.hora_volta = Time.zone.now
   end
 
-
-  state :confirmada do
-    def panel
-      'success'
-    end
-
-    def color
-      '#85c744'
-    end
-
+  event :confirmar do
+    transition [:aguardando,:agendada] => :confirmada
   end
 
-
-  state :cancelada do
-
-    def panel
-      'danger'
-    end
-
-    def color
-      '#e73c3c'
-    end
-
+  event :sair do
+    transition any => :saindo
   end
 
-
-  state :agendada do
-    def panel
-      'default'
-    end
-
-    def color
-      '#aeafb1'
-    end
+  event :cancelar do
+    transition any => :cancelada
   end
+
+  event :agendar do
+    transition any => :agendada
+  end
+
+  event :finalizar do 
+    transition :saindo => :finalizada
+  end
+
+  event :aguardar  do
+   transition any => :aguardando
+ end
+
+
+
+ state :aguardando do
+
+  def panel
+    'info'
+  end
+
+  def color
+    '#2bbce0'
+  end
+
+end
+
+
+state :confirmada do
+  def panel
+    'success'
+  end
+
+  def color
+    '#85c744'
+  end
+
+end
+
+
+state :cancelada do
+
+  def panel
+    'danger'
+  end
+
+  def color
+    '#e73c3c'
+  end
+
+end
+
+
+state :agendada do
+  def panel
+    'default'
+  end
+
+  def color
+    '#aeafb1'
+  end
+end
 
 
 end

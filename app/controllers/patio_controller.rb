@@ -3,19 +3,20 @@ class PatioController < ApplicationController
 
   def index
 
-  	@postos = Posto.na_data(Time.zone.now).order("position ASC")
+  	@postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
   	
   end
 
 
   def entrada
 
-   @postos = Posto.na_data(Time.zone.now).order("lote_id, position ASC")
+   @postos = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
     
   end
 
+
   def saida
-    @postos = Posto.na_data(Time.zone.now).order("position ASC")
+    @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
   end
 
 
@@ -37,9 +38,9 @@ class PatioController < ApplicationController
 
     @patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
 
-    @posto = Posto.create(:codigo=>codigo,:entrada=>Time.now,:patio=>@patio,:modalidade_id=>veiculo.modalidade_id,:empresa_id=>veiculo.empresa_id,:contrato_id=>veiculo.contrato_id,:lote=>veiculo.lote)
+    @posto = Posto.create(:codigo=>codigo,:entrada=>Time.zone.now,:veiculo_id=>veiculo.id,:data_entrada=>Time.zone.now.to_date,:patio=>@patio,:modalidade_id=>veiculo.modalidade_id,:empresa_id=>veiculo.empresa_id,:contrato_id=>veiculo.contrato_id,:lote=>veiculo.lote)
 
-    @postos = Posto.na_data(Time.zone.now).order("position ASC")
+    @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
 
   end
 
@@ -47,9 +48,17 @@ class PatioController < ApplicationController
   def remover_posto
     codigo = params[:posto][:codigo_de_barras]
     veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
+    
+    @patio = Administracao::Patio.na_data(Time.zone.now).first
+
+    @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")  
+
     @posto = Posto.where(:veiculo_id=>veiculo.id).first
-    @posto.destroy
-    @postos = Posto.na_data(Time.zone.now).order("position ASC")
+    
+    @posto.sair_do_patio
+   
+    
+
   end
 
   def saida_servico 
@@ -58,8 +67,8 @@ class PatioController < ApplicationController
     veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
 
     @patio = Administracao::Patio.na_data(Time.zone.now).first
-    @posto = @patio.postos.na_data(Time.zone.now).proximo_de_sair.where(:veiculo_id=>veiculo.id).first
-    @postos = @patio.postos.na_data(Time.zone.now).order("position ASC")
+    @posto = @patio.postos.ativo.na_data(Time.zone.now).proximo_de_sair.where(:veiculo_id=>veiculo.id).first
+    @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")
    
     if @posto 
       
@@ -69,7 +78,7 @@ class PatioController < ApplicationController
         @servico = Administracao::Servico.new(:requisicao_id=>@requisicao.id, :veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id, :empresa_id=>@posto.veiculo.empresa_id, :contrato_id=>@posto.veiculo.contrato_id,:lote=>@posto.veiculo.lote, :saida=> Time.zone.now,:valor_combustivel_centavos=>2.30)
         if @servico.save!
           @posto.sair
-          @requisicao.confirmar
+          @requisicao.sair
         end
       end
     end
@@ -85,8 +94,8 @@ def chegada_servico
   codigo = params[:posto][:codigo_de_barras]
   veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
   @patio = Administracao::Patio.na_data(Time.zone.now).first
-  @posto = @patio.postos.na_data(Time.zone.now).em_transito.where(:veiculo_id=>veiculo.id).first
-  @postos = @patio.postos.na_data(Time.zone.now).order("position ASC")
+  @posto = @patio.postos.ativo.na_data(Time.zone.now).em_transito.where(:veiculo_id=>veiculo.id).first
+  @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")
 
   if @posto 
      
@@ -94,12 +103,13 @@ def chegada_servico
 
       if @requisicao
         @servico = Administracao::Servico.where(:requisicao_id=>@requisicao.id, :veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id).first
+        
         @servico.chegada = Time.zone.now
         @servico.atendido = true
 
         if @servico.save
           @posto.estacionar
-          #@requisicao.fechar
+          @requisicao.finalizar
         end
 
       end

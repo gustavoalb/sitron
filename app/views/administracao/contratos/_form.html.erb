@@ -4,10 +4,26 @@
 
     <%= f.input :numero %>
     <%= f.association :empresa,collection: @empresas.collect{|e|[e.nome,e.id]} %>
-
+    <%= f.input :inicio_vigencia,:label=>"Início da Vigência",input_html: {class: "datepicker",readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string%>
+    <%= f.input :fim_vigencia,:label=>"Fim da Vigência",input_html: {class: "datepicker",readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string%>
 
     <br/><br/><br/>
     <%=botoes_form(f)%>
 
 <% end %>
 
+<script type="text/javascript">
+
+
+  $('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR',
+    'disableDateRanges': [
+    ['01/01/1000', '<%= Date.today %>'],
+    ]}); 
+  $('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+    'disableTimeRanges': [
+    ['0am', '7am'],
+    ]
+
+  });
+
+  </script>
