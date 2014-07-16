@@ -11,18 +11,11 @@
   <dt>Data:</dt>
   <dd><%= @requisicao.data_ida.to_s_br %></dd>
   <dt>Hora:</dt>
-  <dd><%= @requisicao.hora_ida.strftime("%H:%M") %></dd>
-  <dt>Inicio:</dt>
-  <dd><%= @requisicao.inicio.to_s_br %></dd>
-  <dt>Fim:</dt>
-  <dd><%= @requisicao.fim.to_s_br %></dd>
+  <dd><%= @requisicao.hora_ida.in_time_zone("Brasilia").strftime("%H:%M:%S") %></dd>
   <dt>Status:</dt>
   <dd><%= @requisicao.state.upcase %></dd>
-  <dt>Posto:</dt>
-  <dd><%= @requisicao.posto %></dd>
 </dl>
 <br/>
-<%= link_to link_icone('editar'), edit_requisicao_path(@requisicao),class: "btn btn-warning btn-sm" %> |
 <%= link_to link_icone('voltar'), requisicoes_path, class: "btn btn-sm btn-default" %>
 
 </div>

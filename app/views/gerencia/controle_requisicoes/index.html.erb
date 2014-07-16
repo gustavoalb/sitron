@@ -13,7 +13,7 @@
 	<tr>
 		<td><%=r.id%></td>
 		<td><%=r.requisitante.nome%></td>
-		<td><%=r.data_ida.to_s_br%> <%=r.hora_ida.strftime("%H:%M")%></td>
+		<td><%=r.data_ida.to_s_br%> <%=r.hora_ida.in_time_zone("Brasilia").strftime("%H:%M")%></td>
 		<td>
     <div class="btn-group">
         <%=link_to link_icone("Detalhes","eye"), "#modal_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>

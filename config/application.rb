@@ -26,8 +26,8 @@ module Sitron
     # config.i18n.load_path += Dir[Rails.root.join('my', 'locales', '*.{rb,yml}').to_s]
     # config.i18n.default_locale = :de
     config.autoload_paths += %W(#{config.root}/lib)
-     config.encoding = "utf-8"
-     config.time_zone = 'Brasilia'
+    config.encoding = "utf-8"
+    config.time_zone = 'Brasilia'
     config.i18n.enforce_available_locales = false
     config.i18n.available_locales = ["pt-BR"]
     config.i18n.default_locale = :'pt-BR'

@@ -18,6 +18,14 @@ class Requisicao < ActiveRecord::Base
   has_many :mensagens,:as=>:objeto
   has_many :notificacoes,:as=>:objeto
 
+  before_validation :on => :create 
+  
+  def atualizar_state
+
+  self.send(:initialize_state_machines, :dynamic => :force)
+
+  end
+
   attr_accessor :req_agenda
 
   scope :aguardando,->{where(:state=>"aguardando").order("created_at ASC ")}
@@ -65,24 +73,12 @@ class Requisicao < ActiveRecord::Base
 
   state_machine :initial => :aguardando do
 
-  after_transition :confirmada => :saindo do |r, transition|
-     r.data_ida = Time.zone.now.to_date
-     r.hora_ida = Time.zone.now
-   end
-
-   after_transition :em_curso => :finalizada do |r, transition|
-    r.data_volta = Time.zone.now.to_date
-    r.hora_volta = Time.zone.now
-  end
 
   event :confirmar do
     transition [:aguardando,:agendada] => :confirmada
   end
 
-  event :sair do
-    transition any => :saindo
-  end
-
+ 
   event :cancelar do
     transition any => :cancelada
   end
@@ -92,7 +88,7 @@ class Requisicao < ActiveRecord::Base
   end
 
   event :finalizar do 
-    transition :saindo => :finalizada
+    transition :confirmada => :finalizada
   end
 
   event :aguardar  do
@@ -140,6 +136,17 @@ end
 
 
 state :agendada do
+  def panel
+    'default'
+  end
+
+  def color
+    '#aeafb1'
+  end
+end
+
+
+state :finalizada do
   def panel
     'default'
   end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140716130954) do
+ActiveRecord::Schema.define(version: 20140716194919) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -321,9 +321,7 @@ ActiveRecord::Schema.define(version: 20140716130954) do
     t.string   "descricao"
     t.integer  "requisitante_id"
     t.date     "data_ida"
-    t.time     "hora_ida"
     t.date     "data_volta"
-    t.time     "hora_volta"
     t.string   "periodo"
     t.boolean  "periodo_longo"
     t.datetime "inicio"
@@ -339,6 +337,8 @@ ActiveRecord::Schema.define(version: 20140716130954) do
     t.integer  "tipo_requisicao"
     t.integer  "numero_passageiros"
     t.integer  "tipo_carga"
+    t.time     "hora_ida"
+    t.time     "hora_volta"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
