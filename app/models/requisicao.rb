@@ -33,7 +33,7 @@ class Requisicao < ActiveRecord::Base
   
   scope :validas,->{where("inicio > (SELECT CURRENT_TIMESTAMP)")}
 
-  after_create :numero_requisicao,:enviar_mensagem,:criar_notificacao
+  after_create :numero_requisicao,:criar_notificacao
   after_create :evento
   #after_validation :setar_distancia
   enum tipo_requisicao: [:normal,:urgente,:agendada]
@@ -218,9 +218,7 @@ def evento
   self.create_event(:name=>self.motivo,:start_at=>self.inicio,:end_at=>self.fim)
 end
 
-def enviar_mensagem
-  self.mensagens.create(texto: "Nova requisição de Serviço",tipo_usuario: "administrador")
-end
+
 
 def criar_notificacao
   self.notificacoes.create(texto: "Nova requisição de Serviço de Transporte")

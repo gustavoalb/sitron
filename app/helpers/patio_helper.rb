@@ -31,7 +31,7 @@ module PatioHelper
 		html+="<a href='#{url}' class='shortcut-tiles tiles-#{@tile}'>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
-		html+="<div class='pull-right'><span class='badge'>#{posto.lote.nome}</span> <span class='badge'>#{posto.position}</span></div>"
+		html+="<div class='pull-right'><span class='badge'>#{posto.lote.tipo}</span> <span class='badge'>#{posto.position}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
 		html+="<div class='tiles-footer'>#{posto.contrato.numero}</div>"

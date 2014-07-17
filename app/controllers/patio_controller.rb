@@ -53,7 +53,7 @@ def remover_posto
 
   @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")  
 
-  @posto = Posto.where(:veiculo_id=>veiculo.id).first
+  @posto = @patio.postos.where(:veiculo_id=>veiculo.id).first
 
   @posto.sair_do_patio
 

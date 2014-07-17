@@ -1,55 +1,43 @@
-<table class='table'>
-  <thead>
-    <tr>
-      <th>Texto</th>
-      <th>Remetente</th>
-      <th>Destinatario</th>
-      <th>Tipo usuario</th>
-      <th>Lido</th>
-      <th>Objeto</th>
-      <th>Objeto type</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @mensagens.each do |mensagem| %>
-      <tr>
-        <td><%= mensagem.texto %></td>
-        <td><%= mensagem.remetente %></td>
-        <td><%= mensagem.destinatario %></td>
-        <td><%= mensagem.tipo_usuario %></td>
-        <td><%= mensagem.lido %></td>
-        <td><%= mensagem.objeto_id %></td>
-        <td><%= mensagem.objeto_type %></td>
-        <td><%= link_to link_icone('detalhes'), mensagem,:class=>"btn btn-success btn-sm" %></td>
-        <td><%= link_to link_icone('editar'), edit_mensagem_path(mensagem),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), mensagem, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
-      </tr>
-    <% end %>
-  </tbody>
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+    <thead>
+        <tr>
+            <th>Remetente</th>
+            <th>Data do Envio</th>
+            <th>Lida?</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%@mensagens.each do |req|%>
+        <tr class="<%=even_odd(req.id)%> gradeX">
+        <td  class="sorting_1"><%=req.remetente.nome if req.remetente%></td>
+            <td><%=req.created_at.to_s_br%></td>
+            <td></td>
+      
+        </tr>
+        <%end%>
+    </tbody>
 </table>
-<br>
-
 
 
 <%= link_to link_icone('Cadastrar Mensagem','plus'), new_mensagem_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
-<div tabindex="5000" style="overflow-y: hidden;" class="panel-chat" id="chat">
-  <div class="chat-message me">
-    <div class="chat-contact">
-      <img src="assets/demo/avatar/avatar00_0002_scottwills_cat.png" alt="">
-    </div>
-    <div class="chat-text">
-      Enviado por: Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, esse, nobis aut odit dignissimos alias.
-    </div>
-  </div>
 
-  <div class="chat-message chat-primary">
-    <div class="chat-contact">
-      <img src="assets/demo/avatar/potter.png" alt="">
-    </div>
-    <div class="chat-text">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, esse, nobis aut odit dignissimos alias.
-    </div>
-  </div>
-</div>
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+        "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+        "sPaginationType": "bootstrap",
+        "oLanguage": {
+            "sLengthMenu": "_MENU_ registros por página",
+            "sSearch": "",
+            "sInfo": "Exibindo página _PAGE_ de _PAGES_"
+        }
+    });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+});
+
+</script>
+<%end%>
