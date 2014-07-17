@@ -37,6 +37,8 @@ class Gerencia::ControleRequisicoesController < ApplicationController
       @requisicao = Requisicao.find(params[:requisicao])
       @requisicao.cancelar
 
+      Mensagem.create(:remetente=>current_user,:texto=>"Sua Requisição #{ActionController::Base.helpers.link_to @requisicao.id,requisicao_url(@requisicao.id)} foi cancelada, você precisa criar outra requisicao",:destinatario=>@requisicao.requisitante.user)
+
       redirect_to gerencia_controle_requisicoes_index_url, alert: "A requisição #{@requisicao.id} de #{@requisicao.requisitante.nome} foi cancelada"
    end
 end

@@ -23,12 +23,15 @@ module NotificacoesHelper
 		retur raw(icons)
 	end
 
-	def link_notificacoes
-		 if current_page?(gerencia_controle_requisicoes_index_path)
+	def link_page(link_atual)
+         link = ''
+		 if current_page?(link_atual)
 		 	link = "#"
 		 else
-		 	link = gerencia_controle_requisicoes_index_path
+		 	link = link_atual
 		 end
+
+		 return link
 	end
 
 end

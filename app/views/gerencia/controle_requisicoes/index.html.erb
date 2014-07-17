@@ -26,7 +26,7 @@
    <%=modal("p_#{r.id}", "Definir o Posto para a Requisição #{r.id}",r) do %>
       <%= simple_form_for :requisicao,:html=>{:class=>"form-horizontal"},:url=>gerencia_controle_requisicoes_definir_posto_url do |f| %>
           <%=f.input :id,:input_html=>{:value=>r.id},as: :hidden%>
-         <%=f.input :posto,:collection=>@postos.collect {|p|["#{p.lote.nome} - #{p.lote.tipo}",p.id]}%>
+         <%=f.input :posto,:collection=>@postos.collect {|p|["#{info_posto(p)}",p.id]},:label=>"Postos Disponíveis"%>
           <br/>	
          	<%=botoes_form_modal(f,"Definir Posto")%>
 
