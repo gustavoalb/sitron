@@ -34,7 +34,7 @@ module PatioHelper
 		html+="<div class='pull-right'><span class='badge'>#{posto.lote.tipo}</span> <span class='badge'>#{posto.position}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
-		html+="<div class='tiles-footer'>#{posto.contrato.numero}</div>"
+		html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
 		html+="</a>"
 		html+="</div>"
 		return raw(html)
@@ -66,13 +66,20 @@ module PatioHelper
 			html+="<div class='pull-right'><span class='badge'>#{posto.lote.nome}</span> <span class='badge'>#{posto.position}</span></div>"
 			html+="<div class='pull-right'></div>"
 			html+="</div>"
-			html+="<div class='tiles-footer'>#{posto.contrato.numero}</div>"
+			html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
 			html+="</a>"
 			html+="</div>"
 		end
 		return raw(html)
 	end
 
+
+def info_posto(posto)
+    v = posto.veiculo
+    m = v.modalidade
+	return "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}#{posto.position}/#{v.lote.numero_postos}"
+
+end
 
 
 

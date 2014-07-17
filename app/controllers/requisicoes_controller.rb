@@ -15,6 +15,35 @@ class RequisicoesController < ApplicationController
   def show
   end
 
+  def imprimir_requisicao
+    @requisicao = Requisicao.find(params[:requisicao_id])
+    @posto = @requisicao.posto
+    @veiculo = @posto.veiculo
+
+    report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'comprovante_requisicao.tlf')
+    report.start_new_page
+
+    report.list.add_row do |row|
+       row.values numero_contrato: @veiculo.contrato.numero
+       row.values nome_empresa: @veiculo.empresa.nome
+       row.values periodo_vigencia: @veiculo.contrato.vigencia
+       row.values setor_nome: @requisicao.requisitante.departamento.nome
+       row.values data_atual: Time.now.to_s_br
+       row.values local_atual: @requisicao.requisitante.departamento.endereco.cidade.nome
+       row.values roteiro_cumprido: @requisicao.rotas_requisicao
+       row.values servidores_nome: @requisicao.servidores_nome
+       row.values roteiro_cumprido_2: @requisicao.rotas_requisicao
+       row.values servidores_nome_2: @requisicao.servidores_nome
+       row.values numero_de_servidores: @requisicao.pessoas.count
+       row.values codigo: @posto.veiculo.codigo_de_barras.file.file
+
+    end
+
+     send_data report.generate, filename: 'requisicao.pdf', 
+     type: 'application/pdf', 
+     disposition: 'attachment'
+  end
+
   # GET /requisicoes/new
   def new
     @requisicao = Requisicao.new

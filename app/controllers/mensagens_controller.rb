@@ -23,6 +23,12 @@ class MensagensController < ApplicationController
   # GET /mensagens/new
   def new
     @mensagem = Mensagem.new
+    @destinatarios = User.all.collect{|u| ["#{u.pessoa.nome} - #{u.role.upcase}",u.id]}
+  end
+
+  def ler
+    @mensagem = Mensagem.find(params[:mensagem_id])
+    @mensagem.ler
   end
 
   # GET /mensagens/1/edit
@@ -36,7 +42,7 @@ class MensagensController < ApplicationController
 
     respond_to do |format|
       if @mensagem.save
-        format.html { redirect_to @mensagem, notice: 'Mensagem was successfully created.' }
+        format.html { redirect_to mensagens_url, notice: 'Sua Mensagem foi enviada! ' }
         format.json { render :show, status: :created, location: @mensagem }
       else
         format.html { render :new }

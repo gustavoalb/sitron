@@ -53,8 +53,20 @@ class Requisicao < ActiveRecord::Base
     self.rotas.each do |r|
       ary.push r.destino
     end
-    ary.compact.join(',')
+    ary.compact.join(', ')
   end
+
+
+  def servidores_nome
+
+    ary = []
+    
+    self.pessoas.each do |p|
+      ary.push p.nome
+    end
+    ary.compact.join(', ')
+  end
+
 
 
   def tempo_trajeto

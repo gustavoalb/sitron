@@ -18,7 +18,7 @@ class Administracao::Departamento < ActiveRecord::Base
 	private
 
 	def adicionar_rota
-		rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"Rota para o Departamento #{self.nome}")
+		rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
     end
 
     def editar_rota

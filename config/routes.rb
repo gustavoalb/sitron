@@ -33,6 +33,7 @@ Sitron::Application.routes.draw do
 
   resources :mensagens do 
    post :marcar_lida,on: :collection
+   get :ler
   end
 
   match '/calendario(/:year(/:month))' => 'calendario#index', :as => :calendario, :constraints => {:year => /\d{4}/, :month => /\d{1,2}/},:via=>:get
@@ -46,6 +47,7 @@ Sitron::Application.routes.draw do
     get :requisicao_urgente,on: :collection
     post :agendar_requisicao_urgente,on: :collection
     get :tipo_carga,:on=>:collection
+    get :imprimir_requisicao
   end
 
   namespace :administracao do

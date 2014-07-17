@@ -10,16 +10,20 @@
     <tbody>
         <%@mensagens.each do |req|%>
         <tr class="<%=even_odd(req.id)%> gradeX">
-            <td  class="sorting_1"><%=req.remetente.nome if req.remetente%></td>
+        <td  class="sorting_1"><%=m_lida(req)%><%=remetente(req)%></td>
             <td><%=req.created_at.to_s_br%></td>
-            <td></td>   
+            <td>
+              <%=link_to link_icone("Ler Mensagem","envelope-o"), mensagem_ler_url(req),:class=>"btn  btn-success-alt btn-xs"%>
+
+            </td>
+    
         </tr>
         <%end%>
     </tbody>
 </table>
 
 
-<%= link_to link_icone('Cadastrar Mensagem','plus'), new_mensagem_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+<%= link_to link_icone('Nova Mensagem','plus'), new_mensagem_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
 
 <%content_for :scripts do%>
 <script type="text/javascript">
