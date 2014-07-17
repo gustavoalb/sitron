@@ -2,9 +2,9 @@
   <%= f.error_notification %>
 
 
-    <%= f.input :texto %>
+    <%= f.input :texto,input_html: {:class=>"col-sm-3 control-label"},as: :text	 %>
     <%= f.input :remetente_id,input_html: {value: current_user.id},as: :hidden %>
-    <%= f.association :destinatario %>
+    <%= f.association :destinatario,:collection=>@destinatarios %>
 
 
 

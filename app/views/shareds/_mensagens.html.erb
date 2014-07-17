@@ -9,25 +9,38 @@
           <ul class="dropdown-menu messages arrow">
 
              <li class="dd-header">
-                <span>Você tem <%=@mensagensb.count%> <%="nova".pluralize(@mensagensb.count)%> <%="mensagem ".pluralize(@mensagensb.count)%></span>
-                <span><%=link_to "Marcar tudo como lida",marcar_lida_mensagens_url,:method=>:post,:remote=>true%></span>
+                
+                <%if @mensagensb.count > 0%>
+                <span>
+                Você tem <%=@mensagensb.count%> <%="nova".pluralize(@mensagensb.count)%> <%="mensagem ".pluralize(@mensagensb.count)%>
+                 </span>
+                <span>
+                <%=link_to "Marcar tudo como lida",marcar_lida_mensagens_url,:method=>:post,:remote=>true%>
+                </span>
+                <%else%>
+                  <span>
+                  Nenhuma nova Mensagem
+                  </span>
+                <%end%>
+
+               
             </li>
             <div class="scrollthis">
             <div id="lista_mensagens">
             <%@mensagensb.each do |m|%>
-            <li><a href="#" class="active">
+            <li><a href="/mensagens/<%=m.id%>/ler" class="active">
                 <span class="hora"><%=tempo_relativo(m.created_at)%></span>
                 <%if m.remetente -%>
                 <img src="assets/demo/avatar/paton.png" alt="avatar" />
-                <div><span class="name">Polly Paton</span><span class="msg">Uploaded all the files to server. Take a look.</span></div>
+                <div><span class="name"><%=remetente(m)%></span><span class="msg"><%=m.texto.truncate(10)%></span></div>
                 <%else -%>
-                <div><span class="name">AVISO</span><span class="msg"><%=m.texto%></span></div>
+                <div><span class="name"><%=remetente(m)%></span><span class="msg"><%=m.texto.truncate(10)%></span></div>
                 <%end -%>
             </a></li>
             <%end%>
             </div>
            
         </div>
-        <li class="dd-footer"><a href="/mensagens">Ver Todas as Mensagens</a></li>
+        <li class="dd-footer"><%=link_to "Ver todas as mensagens",mensagens_url%></li>
     </ul>
 </li>

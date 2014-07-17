@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   
   enum role: [:administrador, :useget, :coordenador]
   
+  
   after_initialize :set_default_role, :if => :new_record?
 
   validates_uniqueness_of :email

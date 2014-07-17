@@ -20,8 +20,9 @@
             <td>
                 <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
                 <%= link_to link_icone('editar'), edit_requisicao_path(req),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
-                <%=link_to "Cancelar","#",:class=>"btn btn-sky btn-xs" unless req.confirmada? or req.cancelada?%>
-                <%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger btn-xs" %>
+                <%=link_to "Cancelar","#",:class=>"btn btn-sky btn-xs" unless req.confirmada? or req.cancelada? or req.finalizada? %>
+                <%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger btn-xs" unless req.finalizada? or req.confirmada?%>
+                <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada?%>
             </td>
         </tr>
         <%end%>

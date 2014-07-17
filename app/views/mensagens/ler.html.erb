@@ -1,0 +1,7 @@
+<%=titulo_pagina(link_icone("Ler Mensagem","envelope-o"),link_icone("Mensagem de: #{remetente(@mensagem)}",'check'))%>
+
+<div class="well well-lg tooltips" data-trigger="hover" data-original-title=".well.well-lg">
+						<%=@mensagem.texto%>
+										</div>
+
+										<%=link_to "Voltar",:back,:class=>"btn btn-success btn-sm"%>
