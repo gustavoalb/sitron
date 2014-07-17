@@ -16,13 +16,13 @@ class Requisicao < ActiveRecord::Base
   belongs_to :preferencia,:class_name=>"Tipo"
   has_one :event, dependent: :destroy
   has_many :mensagens,:as=>:objeto
-  has_many :notificacoes,:as=>:objeto
+  has_many :notificacoes,:as=>:objeto, dependent: :destroy
 
   before_validation :on => :create 
   
   def atualizar_state
 
-  self.send(:initialize_state_machines, :dynamic => :force)
+    self.send(:initialize_state_machines, :dynamic => :force)
 
   end
 
@@ -74,87 +74,87 @@ class Requisicao < ActiveRecord::Base
   state_machine :initial => :aguardando do
 
 
-  event :confirmar do
-    transition [:aguardando,:agendada] => :confirmada
+    event :confirmar do
+      transition [:aguardando,:agendada] => :confirmada
+    end
+
+    
+    event :cancelar do
+      transition any => :cancelada
+    end
+
+    event :agendar do
+      transition any => :agendada
+    end
+
+    event :finalizar do 
+      transition :confirmada => :finalizada
+    end
+
+    event :aguardar  do
+     transition any => :aguardando
+   end
+
+
+
+   state :aguardando do
+
+    def panel
+      'info'
+    end
+
+    def color
+      '#2bbce0'
+    end
+
   end
 
- 
-  event :cancelar do
-    transition any => :cancelada
+
+  state :confirmada do
+    def panel
+      'success'
+    end
+
+    def color
+      '#85c744'
+    end
+
   end
 
-  event :agendar do
-    transition any => :agendada
+
+  state :cancelada do
+
+    def panel
+      'danger'
+    end
+
+    def color
+      '#e73c3c'
+    end
+
   end
 
-  event :finalizar do 
-    transition :confirmada => :finalizada
+
+  state :agendada do
+    def panel
+      'default'
+    end
+
+    def color
+      '#aeafb1'
+    end
   end
 
-  event :aguardar  do
-   transition any => :aguardando
- end
 
+  state :finalizada do
+    def panel
+      'default'
+    end
 
-
- state :aguardando do
-
-  def panel
-    'info'
+    def color
+      '#aeafb1'
+    end
   end
-
-  def color
-    '#2bbce0'
-  end
-
-end
-
-
-state :confirmada do
-  def panel
-    'success'
-  end
-
-  def color
-    '#85c744'
-  end
-
-end
-
-
-state :cancelada do
-
-  def panel
-    'danger'
-  end
-
-  def color
-    '#e73c3c'
-  end
-
-end
-
-
-state :agendada do
-  def panel
-    'default'
-  end
-
-  def color
-    '#aeafb1'
-  end
-end
-
-
-state :finalizada do
-  def panel
-    'default'
-  end
-
-  def color
-    '#aeafb1'
-  end
-end
 
 
 end
@@ -221,7 +221,9 @@ end
 
 
 def criar_notificacao
-  self.notificacoes.create(texto: "Nova requisição de Serviço de Transporte")
+  if self.tipo_requisicao=="urgente"
+    self.notificacoes.create(texto: "Nova requisição de Serviço de Transporte")
+  end
 end
 
 end

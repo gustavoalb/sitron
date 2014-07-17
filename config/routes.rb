@@ -8,6 +8,7 @@ Sitron::Application.routes.draw do
 
   namespace :gerencia do
     get 'controle_requisicoes/index'
+    get 'controle_requisicoes/detalhes_requisicao'
     post 'controle_requisicoes/definir_posto'
     post 'controle_requisicoes/cancelar_requisicao'
   end
@@ -26,7 +27,9 @@ Sitron::Application.routes.draw do
     resources :contratos
   end
 
-  resources :notificacoes
+  resources :notificacoes do
+    post :marcar_vista, :on=>:collection
+  end
 
   resources :mensagens do 
    post :marcar_lida,on: :collection

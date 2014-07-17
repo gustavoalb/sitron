@@ -26,6 +26,13 @@ class Gerencia::ControleRequisicoesController < ApplicationController
   end
 
 
+  def detalhes_requisicao
+     @requisicao = Requisicao.find(params[:requisicao_id])
+     @notificacao = Notificacao.find(params[:notificacao_id])
+     @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
+   end
+
+
   def cancelar_requisicao
       @requisicao = Requisicao.find(params[:requisicao])
       @requisicao.cancelar

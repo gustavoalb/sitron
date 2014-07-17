@@ -1,23 +1,31 @@
 <li class="dropdown">
-	<a href="#" class="hasnotifications dropdown-toggle" data-toggle='dropdown' id="woo"><i class="fa fa-bell"></i><span class="badge"><%=@notificacoesb.count%></span></a>
+  <a href="#" class="hasnotifications dropdown-toggle" data-toggle='dropdown' id='notificacoes'><i class="fa fa-bell"></i>
+    <%if @notificacoesb.count > 0%>
+    <div id='contador'>
+      <span class="badge"><%=@notificacoesb.count%></span>
+    </div>
+    <%end%>
+  </a>
+  <ul class="dropdown-menu messages arrow">
 
-	<ul class="dropdown-menu notifications arrow" id="woo2">
-		<li class="dd-header">
-			<span>Você tem <%=@notificacoesb.count%> <%="nova".pluralize(@notificacoesb.count)%> <%="notificação".pluralize(@notificacoesb.count)%></span>
-			<span><a href="#">Marcar tudo como Lida</a></span>
-		</li>
-		<div class="scrollthis">
-		    <%@notificacoesb.each do |n|%>
-			<li>
-				<a href="#" class="notification-success active">
-					<span class="hora"><%=tempo_relativo(n.created_at)%></span>
-					<i class="fa fa-thumbs-up"></i>
-					<span class="msg"><%=n.texto%></span>
-				</a>
-			</li>
-			<%end%>
-			
-		</div>
-		<li class="dd-footer"><a href="#">View All Notifications</a></li>
-	</ul>
-</li>	
+   <li class="dd-header">
+    <span>Você tem <%=@notificacoesb.count%> <%="nova".pluralize(@notificacoesb.count)%> <%="mensagem ".pluralize(@notificacoesb.count)%></span>
+    <span><%=link_to "Marcar tudo como visto",marcar_vista_notificacoes_url,:method=>:post,:remote=>true%></span>
+  </li>
+  <div class="scrollthis">
+    <div id="lista_notificacoes">
+     <%@notificacoesb.each do |n|%>
+     <li>
+      <a href="<%= gerencia_controle_requisicoes_detalhes_requisicao_path(:requisicao_id=>n.objeto.id,:notificacao_id=>n.id)%>" class="notification-success active">
+        <span class="hora"><%=tempo_relativo(n.created_at)%></span>
+        <i class="fa fa-thumbs-up"></i>
+        <span class="msg"><%=n.texto%></span>
+      </a>
+    </li>
+    <%end%>
+  </div>
+  
+</div>
+<li class="dd-footer"><a href="<%= link_notificacoes%>">Ver Todas as Requisições imediatas</a></li>
+</ul>
+</li>

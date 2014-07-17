@@ -221,7 +221,6 @@ ActiveRecord::Schema.define(version: 20140716194919) do
     t.integer  "lote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "tipo_requisicao"
     t.boolean  "urgente",           default: false
   end
 

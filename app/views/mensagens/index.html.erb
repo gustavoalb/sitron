@@ -10,10 +10,9 @@
     <tbody>
         <%@mensagens.each do |req|%>
         <tr class="<%=even_odd(req.id)%> gradeX">
-        <td  class="sorting_1"><%=req.remetente.nome if req.remetente%></td>
+            <td  class="sorting_1"><%=req.remetente.nome if req.remetente%></td>
             <td><%=req.created_at.to_s_br%></td>
-            <td></td>
-      
+            <td></td>   
         </tr>
         <%end%>
     </tbody>

@@ -4,13 +4,21 @@ class NotificacoesController < ApplicationController
   # GET /notificacoes
   # GET /notificacoes.json
   def index
-    @notificacoes = Notificacao.all
+    @notificacoes = Notificacao.nao_vista
   end
 
   # GET /notificacoes/1
   # GET /notificacoes/1.json
   def show
   end
+
+  def marcar_vista
+   @notificacoes = Notificacao.nao_vista
+   @notificacoes.each do |n|
+    n.ver
+  end
+
+end
 
   # GET /notificacoes/new
   def new
@@ -71,4 +79,4 @@ class NotificacoesController < ApplicationController
     def notificacao_params
       params.require(:notificacao).permit(:texto, :motivo, :state, :origem_id, :entidade_id, :posto_id)
     end
-end
+  end
