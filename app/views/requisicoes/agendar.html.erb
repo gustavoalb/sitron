@@ -16,6 +16,11 @@
 
 <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>"Selecione os Passageiros",:label=>"Passageiros"%>
 
+<%= f.input :pernoite,
+  :as => :radio_buttons_left_label,
+  :collection => [["Pernoite no Local",true],["Pernoite em Macapá",false]],:label=>"Local de Pernoite"
+%>
+
 <br/><br/><br/>
 <%= botoes_form(f)%>
 

@@ -6,11 +6,12 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :data_ida,:hora_ida,:motivo_id
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
+  validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia."
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
   #validate :hora
-  #validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
+  validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
   has_and_belongs_to_many :tipos
   has_and_belongs_to_many :pessoas,:class_name=>"Administracao::Pessoa"
   belongs_to :preferencia,:class_name=>"Tipo"
@@ -37,6 +38,7 @@ class Requisicao < ActiveRecord::Base
   after_create :evento
   #after_validation :setar_distancia
   enum tipo_requisicao: [:normal,:urgente,:agendada]
+
   
 
   def hora
