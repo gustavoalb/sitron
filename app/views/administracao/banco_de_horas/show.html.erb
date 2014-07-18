@@ -1,0 +1,25 @@
+<%= titulo_pagina("Detalhes da AdministracaoBancoDeHora", @administracao_banco_de_hora.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Posto:</dt>
+  <dd><%= @administracao_banco_de_hora.posto %></dd>
+  <dt>Dia:</dt>
+  <dd><%= @administracao_banco_de_hora.dia %></dd>
+  <dt>Mes:</dt>
+  <dd><%= @administracao_banco_de_hora.mes %></dd>
+  <dt>Ano:</dt>
+  <dd><%= @administracao_banco_de_hora.ano %></dd>
+  <dt>Horas normais:</dt>
+  <dd><%= @administracao_banco_de_hora.horas_normais %></dd>
+  <dt>Horas extras:</dt>
+  <dd><%= @administracao_banco_de_hora.horas_extras %></dd>
+  <dt>Numero semana:</dt>
+  <dd><%= @administracao_banco_de_hora.numero_semana %></dd>
+  <dt>Inicio semana:</dt>
+  <dd><%= @administracao_banco_de_hora.inicio_semana %></dd>
+  <dt>Fim semana:</dt>
+  <dd><%= @administracao_banco_de_hora.fim_semana %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_banco_de_hora_path(@administracao_banco_de_hora),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_banco_de_horas_path, class: "btn btn-sm btn-default" %>

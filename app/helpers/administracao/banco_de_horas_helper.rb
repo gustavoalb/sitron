@@ -1,0 +1,2 @@
+module Administracao::BancoDeHorasHelper
+end

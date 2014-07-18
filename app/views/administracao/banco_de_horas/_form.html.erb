@@ -1,0 +1,20 @@
+<%= simple_form_for(@administracao_banco_de_hora) do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.association :posto %>
+    <%= f.input :dia %>
+    <%= f.input :mes %>
+    <%= f.input :ano %>
+    <%= f.input :horas_normais %>
+    <%= f.input :horas_extras %>
+    <%= f.input :numero_semana %>
+    <%= f.input :inicio_semana %>
+    <%= f.input :fim_semana %>
+
+
+    <br/><br/><br/>
+    <%=botoes_form(f)%>
+
+<% end %>
+

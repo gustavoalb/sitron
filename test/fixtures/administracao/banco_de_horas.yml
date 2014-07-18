@@ -1,0 +1,23 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  posto_id: 
+  dia: 1
+  mes: 1
+  ano: 1
+  horas_normais: 1
+  horas_extras: 1
+  numero_semana: 1
+  inicio_semana: 2014-07-18
+  fim_semana: 2014-07-18
+
+two:
+  posto_id: 
+  dia: 1
+  mes: 1
+  ano: 1
+  horas_normais: 1
+  horas_extras: 1
+  numero_semana: 1
+  inicio_semana: 2014-07-18
+  fim_semana: 2014-07-18

@@ -3,6 +3,10 @@
 Sitron::Application.routes.draw do
 
   namespace :administracao do
+    resources :banco_de_horas
+  end
+
+  namespace :administracao do
     resources :escolas
   end
 

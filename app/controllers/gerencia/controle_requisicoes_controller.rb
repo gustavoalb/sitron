@@ -8,17 +8,27 @@ class Gerencia::ControleRequisicoesController < ApplicationController
   def definir_posto
      @requisicao = Requisicao.find(params[:requisicao][:id])
      @posto = Posto.ativo.find(params[:requisicao][:posto])
+     @veiculo = @posto.veiculo
+     mes = @requisicao.data_ida.month
+     ano = @requisicao.data_ida.year
+     @confirmada = nil
 
-     @requisicao.posto = @posto
-     @requisicao.confirmar
-     @posto.ligar
+     if @veiculo.validar_horas_extras(@requisicao.previsao_horas_extras,@requisicao.data_ida.strftime("%U"),mes,ano)
+        @requisicao.posto = @posto
+        @requisicao.confirmar
+        @posto.ligar
+        @confirmada = true
+      else
+        @confirmada = false
+      end
+
 
 
      respond_to do |format|
-      if @requisicao.save
+      if @confirmada and @requisicao.save
         format.html { redirect_to gerencia_controle_requisicoes_index_url, notice: 'Posto Definido com Sucesso' }
       else
-        format.html { redirect_to gerencia_controle_requisicoes_index_url, alert: 'Ocorreu um problema, por favor tente novamente.'  }
+        format.html { redirect_to gerencia_controle_requisicoes_index_url, alert: 'O Posto selecionado Ultrapassará as horas extras permitidas com esta requisição.'  }
         format.json { render json: @administracao_rota.errors, status: :unprocessable_entity }
       end
     end

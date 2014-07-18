@@ -10,6 +10,7 @@ class Administracao::Veiculo < ActiveRecord::Base
   belongs_to :contrato
   has_many :patios
   belongs_to :lote
+  has_many :banco_de_horas
 
   mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
@@ -34,6 +35,36 @@ class Administracao::Veiculo < ActiveRecord::Base
   qrcode = "id = '#{self.id}' AND empresa_id = '#{self.empresa.id}'"
   return qrcode
 end
+
+def horas_extras_semanais(semana,mes,ano)
+  banco_de_horas = self.banco_de_horas.na_semana(semana).no_mes(mes).no_ano(ano)
+  horas_extras = 0
+
+  banco_de_horas.each do |b|
+    if b.horas_extras
+      horas_extras += b.horas_extras
+    end
+  end
+
+  return horas_extras
+
+end
+
+
+def validar_horas_extras(horas,semana,mes,ano)
+   horas_extras = self.horas_extras_semanais(semana,mes,ano)
+   
+   if horas_extras == 8 
+      return false
+    else
+      if horas_extras + horas > 8 
+        return false 
+      elsif horas_extras + horas <=8
+        return true
+      end
+    end
+end
+
 
 
 def codigo_carro

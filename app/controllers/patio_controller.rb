@@ -75,7 +75,7 @@ def saida_servico
     @requisicao = Requisicao.confirmada.where(:posto_id=>@posto.id).first
 
     if @requisicao
-      @servico = Administracao::Servico.new(:requisicao_id=>@requisicao.id, :veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id, :empresa_id=>@posto.veiculo.empresa_id, :contrato_id=>@posto.veiculo.contrato_id,:lote=>@posto.veiculo.lote, :saida=> Time.zone.now,:valor_combustivel_centavos=>2.30)
+      @servico = @requisicao.create_servico(:veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id, :empresa_id=>@posto.veiculo.empresa_id, :contrato_id=>@posto.veiculo.contrato_id,:lote=>@posto.veiculo.lote, :saida=> Time.zone.now,:valor_combustivel_centavos=>2.30)
       if @servico.save!
         @posto.sair
           #@requisicao.sair
@@ -93,13 +93,12 @@ def saida_servico
 
 
   def chegada_servico
-
     codigo = params[:posto][:codigo_de_barras]
     veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
     @patio = Administracao::Patio.na_data(Time.zone.now).first
     @posto = @patio.postos.ativo.na_data(Time.zone.now).em_transito.where(:veiculo_id=>veiculo.id).first
     @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")
-
+  
     if @posto 
 
       @requisicao = Requisicao.confirmada.where(:posto_id=>@posto.id).first
@@ -115,7 +114,9 @@ def saida_servico
           @requisicao.finalizar
           @requisicao.data_volta = Time.zone.now
           @requisicao.hora_volta = Time.zone.now
-          @requisicao.save
+          @requisicao.save!
+          Administracao::BancoDeHora.definir_horas_extras(@posto.veiculo,@servico.chegada.day,@servico.chegada.strftime("%U"),@servico.chegada.month,@servico.chegada.year,@servico.chegada.beginning_of_week,@servico.chegada.end_of_week,@requisicao.horas_extras)
+
         end
 
       end

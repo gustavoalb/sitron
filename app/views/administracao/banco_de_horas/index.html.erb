@@ -1,0 +1,40 @@
+<table class='table'>
+  <thead>
+    <tr>
+      <th>Posto</th>
+      <th>Dia</th>
+      <th>Mes</th>
+      <th>Ano</th>
+      <th>Horas normais</th>
+      <th>Horas extras</th>
+      <th>Numero semana</th>
+      <th>Inicio semana</th>
+      <th>Fim semana</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_banco_de_horas.each do |administracao_banco_de_hora| %>
+      <tr>
+        <td><%= administracao_banco_de_hora.posto %></td>
+        <td><%= administracao_banco_de_hora.dia %></td>
+        <td><%= administracao_banco_de_hora.mes %></td>
+        <td><%= administracao_banco_de_hora.ano %></td>
+        <td><%= administracao_banco_de_hora.horas_normais %></td>
+        <td><%= administracao_banco_de_hora.horas_extras %></td>
+        <td><%= administracao_banco_de_hora.numero_semana %></td>
+        <td><%= administracao_banco_de_hora.inicio_semana %></td>
+        <td><%= administracao_banco_de_hora.fim_semana %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_banco_de_hora,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('editar'), edit_administracao_banco_de_hora_path(administracao_banco_de_hora),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
+        <td><%= link_to link_icone('apagar'), administracao_banco_de_hora, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar AdministracaoBancoDeHora','plus'), new_administracao_banco_de_hora_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>

@@ -33,9 +33,15 @@ class RequisicoesController < ApplicationController
        row.values roteiro_cumprido: @requisicao.rotas_requisicao
        row.values servidores_nome: @requisicao.servidores_nome
        row.values roteiro_cumprido_2: @requisicao.rotas_requisicao
-       row.values servidores_nome_2: @requisicao.servidores_nome
+       row.values nome_solicitante: @requisicao.requisitante.nome
        row.values numero_de_servidores: @requisicao.pessoas.count
        row.values codigo: @posto.veiculo.codigo_de_barras.file.file
+       row.values codigo_texto: @posto.veiculo.codigo
+       row.values autorizacao_transporte: @requisicao.numero
+       row.values data_saida: @requisicao.data_ida
+       row.values periodo_saida: @requisicao.hora_ida.in_time_zone("Brasilia").strftime('%H:%M:%S')
+       row.values hora_saida_2: @requisicao.hora_ida.in_time_zone("Brasilia").strftime('%H:%M:%S')
+       row.values observacoes: @requisicao.descricao
 
     end
 

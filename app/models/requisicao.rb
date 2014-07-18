@@ -14,7 +14,9 @@ class Requisicao < ActiveRecord::Base
   has_and_belongs_to_many :tipos
   has_and_belongs_to_many :pessoas,:class_name=>"Administracao::Pessoa"
   belongs_to :preferencia,:class_name=>"Tipo"
+  has_one :servico,:class_name=>"Administracao::Servico"
   has_one :event, dependent: :destroy
+
   has_many :mensagens,:as=>:objeto
   has_many :notificacoes,:as=>:objeto, dependent: :destroy
 
@@ -77,96 +79,131 @@ class Requisicao < ActiveRecord::Base
 
 
 
-
-
-
-
-
-
-  state_machine :initial => :aguardando do
-
-
-    event :confirmar do
-      transition [:aguardando,:agendada] => :confirmada
-    end
-
-    
-    event :cancelar do
-      transition any => :cancelada
-    end
-
-    event :agendar do
-      transition any => :agendada
-    end
-
-    event :finalizar do 
-      transition :confirmada => :finalizada
-    end
-
-    event :aguardar  do
-     transition any => :aguardando
+  def horas_extras
+    saida = self.servico.saida
+    chegada = self.servico.chegada
+    ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7]
+    horas_extras = 0
+    (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
+     if ary_horas.include? Time.at(date).hour
+       horas_extras += 1
+     end
    end
 
+   return horas_extras
+
+ end
 
 
-   state :aguardando do
 
-    def panel
-      'info'
-    end
+ def previsao_horas_extras
 
-    def color
-      '#2bbce0'
-    end
 
+  date_and_time = '%m-%d-%Y %H:%M:%S %Z'
+  saida = Time.zone.parse("#{self.data_ida.to_s} #{self.hora_ida.in_time_zone('Brasilia')}")
+  chegada = Time.zone.parse("#{self.data_volta.to_s} #{self.hora_volta.in_time_zone('Brasilia')}")
+
+
+  ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7]
+  horas_extras = 0
+  (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
+   if ary_horas.include? Time.at(date).hour
+     horas_extras += 1
+   end
+ end
+
+ return horas_extras
+
+end
+
+
+
+
+
+state_machine :initial => :aguardando do
+
+
+  event :confirmar do
+    transition [:aguardando,:agendada] => :confirmada
   end
 
-
-  state :confirmada do
-    def panel
-      'success'
-    end
-
-    def color
-      '#85c744'
-    end
-
+  
+  event :cancelar do
+    transition any => :cancelada
   end
 
-
-  state :cancelada do
-
-    def panel
-      'danger'
-    end
-
-    def color
-      '#e73c3c'
-    end
-
+  event :agendar do
+    transition any => :agendada
   end
 
-
-  state :agendada do
-    def panel
-      'default'
-    end
-
-    def color
-      '#aeafb1'
-    end
+  event :finalizar do 
+    transition :confirmada => :finalizada
   end
 
+  event :aguardar  do
+   transition any => :aguardando
+ end
 
-  state :finalizada do
-    def panel
-      'default'
-    end
 
-    def color
-      '#aeafb1'
-    end
+
+ state :aguardando do
+
+  def panel
+    'info'
   end
+
+  def color
+    '#2bbce0'
+  end
+
+end
+
+
+state :confirmada do
+  def panel
+    'success'
+  end
+
+  def color
+    '#85c744'
+  end
+
+end
+
+
+state :cancelada do
+
+  def panel
+    'danger'
+  end
+
+  def color
+    '#e73c3c'
+  end
+
+end
+
+
+state :agendada do
+  def panel
+    'default'
+  end
+
+  def color
+    '#aeafb1'
+  end
+end
+
+
+state :finalizada do
+  def panel
+    'default'
+  end
+
+  def color
+    '#aeafb1'
+  end
+end
 
 
 end
