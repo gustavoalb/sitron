@@ -82,7 +82,7 @@ class RequisicoesController < ApplicationController
     @requisicao.periodo_longo = true
     
     respond_to do |format|
-      if @requisicao.save!
+      if @requisicao.save
         @requisicao.agendar
         format.html { redirect_to @requisicao, notice: 'A Requisição foi agendada com sucesso.' }
         format.json { render :show, status: :created, location: @requisicao }
@@ -168,7 +168,7 @@ class RequisicoesController < ApplicationController
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def requisicao_params
-    params.require(:requisicao).permit(:numero, :descricao, :numero_passageiros,:requisitante_id, :data_ida, :hora_ida, :periodo,:tipo_requisicao, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:data_volta,:hora_volta,:motivo_id,:tipo_carga,:rota_ids=>[],:pessoa_ids=>[])
+    params.require(:requisicao).permit(:numero,:pernoite, :descricao, :numero_passageiros,:requisitante_id, :data_ida, :hora_ida, :periodo,:tipo_requisicao, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:data_volta,:hora_volta,:motivo_id,:tipo_carga,:rota_ids=>[],:pessoa_ids=>[])
   end
 
   def load_requisicao

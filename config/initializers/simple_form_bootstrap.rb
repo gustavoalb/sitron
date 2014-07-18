@@ -71,13 +71,18 @@ SimpleForm.setup do |config|
 
 
   config.wrappers :checkbox, tag: :div,class: "checkbox block",error_class: 'has-error' do |b|
-     b.use :html5
-     b.use :placeholder
-     b.use :input
-     b.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
-     b.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
+   b.use :html5
+   b.use :placeholder
+   b.use :input
+   b.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+   b.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
  end
 
+ config.wrappers :inline_radio,tag: 'div',item_wrapper_class: 'radio block', error_class: 'has-error' do |b|
+   #b.use :html5
+   b.use :label
+   b.use :input
+ end
   # Wrappers for forms and inputs using the Twitter Bootstrap toolkit.
   # Check the Bootstrap docs (http://twitter.github.com/bootstrap)
   # to learn about the different styles for forms and inputs,
