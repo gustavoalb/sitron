@@ -46,7 +46,6 @@ gem 'acts_as_list'
 gem 'gon'
 gem 'state_machine'
 
-#gem "resque", "~> 2.0.0.pre.1", git: "https://github.com/resque/resque.git"
 gem 'sidekiq'
 gem 'delayed_job_active_record'
 gem "delayed_cron",'0.2.0', :path => "#{File.expand_path(__FILE__)}/../vendor/gems/delayed_cron-0.2.0"
