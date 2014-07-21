@@ -6,7 +6,7 @@ class Administracao::Escola < ActiveRecord::Base
   
 
 
-  #private
+  private
 
   def adicionar_rota
 		rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
