@@ -9,7 +9,6 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder', '~> 2.0'
 gem 'sdoc', '~> 0.4.0', group: :doc
-#gem 'spring',        group: :development
 gem 'font-awesome-rails'
 gem 'brazilian-rails'
 gem 'ionicons-rails'
@@ -33,7 +32,6 @@ gem "rails-bootstrap-daterangepicker"
 gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails', :git => 'https://github.com/tispratik/bootstrap-timepicker-rails.git'
 
 gem 'bootstrap-select-rails'
-#gem 'bootbox-rails', '~>0.3'
 
 gem 'carrierwave'
 gem 'mini_magick'
@@ -47,7 +45,6 @@ gem 'acts_as_list'
 gem 'gon'
 gem 'state_machine'
 
-#gem "resque", "~> 2.0.0.pre.1", git: "https://github.com/resque/resque.git"
 gem 'sidekiq'
 gem 'delayed_job_active_record'
 gem "delayed_cron",'0.2.0', :path => "#{File.expand_path(__FILE__)}/../vendor/gems/delayed_cron-0.2.0"
@@ -82,6 +79,3 @@ gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'
-
-gem 'cancancan'
-
