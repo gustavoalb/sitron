@@ -80,5 +80,3 @@ gem 'thinreports-rails'
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'
 
-gem 'cancancan'
-
