@@ -33,7 +33,6 @@ gem "rails-bootstrap-daterangepicker"
 gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails', :git => 'https://github.com/tispratik/bootstrap-timepicker-rails.git'
 
 gem 'bootstrap-select-rails'
-#gem 'bootbox-rails', '~>0.3'
 
 gem 'carrierwave'
 gem 'mini_magick'
