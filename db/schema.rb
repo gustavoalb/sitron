@@ -11,11 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140718174911) do
-
+ActiveRecord::Schema.define(version: 20140719190144) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "avaliacoes", force: true do |t|
+    t.integer  "requisicao_id"
+    t.text     "texto"
+    t.integer  "tipo"
+    t.integer  "avaliador_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "avaliacoes", ["avaliador_id"], name: "index_avaliacoes_on_avaliador_id", using: :btree
+  add_index "avaliacoes", ["requisicao_id"], name: "index_avaliacoes_on_requisicao_id", using: :btree
 
   create_table "bairros", force: true do |t|
     t.string   "nome"
@@ -335,6 +346,18 @@ ActiveRecord::Schema.define(version: 20140718174911) do
   add_index "postos", ["servico_id"], name: "index_postos_on_servico_id", using: :btree
   add_index "postos", ["veiculo_id"], name: "index_postos_on_veiculo_id", using: :btree
 
+  create_table "provisoes", force: true do |t|
+    t.integer  "veiculo_id"
+    t.integer  "requisicao_id"
+    t.boolean  "ativo",                 default: true
+    t.datetime "data_aprovisionamento"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "provisoes", ["requisicao_id"], name: "index_provisoes_on_requisicao_id", using: :btree
+  add_index "provisoes", ["veiculo_id"], name: "index_provisoes_on_veiculo_id", using: :btree
+
   create_table "requisicoes", force: true do |t|
     t.string   "numero"
     t.string   "descricao"
@@ -358,7 +381,6 @@ ActiveRecord::Schema.define(version: 20140718174911) do
     t.integer  "tipo_carga"
     t.time     "hora_ida"
     t.time     "hora_volta"
-    t.boolean  "pernoite"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree

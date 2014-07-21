@@ -60,4 +60,10 @@ def even_odd(req)
   end
   return raw(html)
 end
+
+def link_cadastro_modal(titulo,url)
+  html=""
+  html+=link_to titulo,url,:'data-toggle' => "modal",:class=>"btn btn-success btn-xs"
+  return raw(html)
+end
 end

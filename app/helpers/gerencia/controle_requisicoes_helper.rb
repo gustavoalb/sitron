@@ -21,7 +21,7 @@ module Gerencia::ControleRequisicoesHelper
 	def modal(id,titulo_modal,r,&block)
         html=""
 		html+="<div style='display: none;' class='modal fade' id='#{id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>"
-		html+="<div class='modal-dialog'>"
+		html+="<div class='modal-dialog modal-lg'>"
 		html+="<div class='modal-content'>"
 		html+="<div class='modal-header'>"
 		html+="<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>"
@@ -32,6 +32,43 @@ module Gerencia::ControleRequisicoesHelper
 		html+="<div class='modal-footer'>"
 		html+="<button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>"
 		html+="</div>"
+		html+="</div>"
+		html+="</div>"
+		html+="</div>"
+        return raw(html)
+	end
+
+		def modal_sm(id,titulo_modal,r,&block)
+        html=""
+		html+="<div style='display: none;' class='modal fade' id='#{id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>"
+		html+="<div class='modal-dialog modal-sm'>"
+		html+="<div class='modal-content'>"
+		html+="<div class='modal-header'>"
+		html+="<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>"
+		html+="<h4 class='modal-title'>#{titulo_modal}</h4></div>"
+
+		html+="<div class='modal-body'>#{capture(&block)}</div>"
+
+		html+="<div class='modal-footer'>"
+		html+="<button type='button' class='btn btn-default' data-dismiss='modal'>Cancelar</button>"
+		html+="</div>"
+		html+="</div>"
+		html+="</div>"
+		html+="</div>"
+        return raw(html)
+	end
+
+
+
+		def modal_simples(id,titulo_modal,&block)
+        html=""
+		html+="<div style='display: none;' class='modal fade' id='#{id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>"
+		html+="<div class='modal-dialog modal-lg'>"
+		html+="<div class='modal-content'>"
+		html+="<div class='modal-header'>"
+		html+="<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>×</button>"
+		html+="<h4 class='modal-title'>#{titulo_modal}</h4></div>"
+		html+="<div class='modal-body'>#{capture(&block)}</div>"
 		html+="</div>"
 		html+="</div>"
 		html+="</div>"

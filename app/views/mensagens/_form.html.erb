@@ -2,14 +2,14 @@
   <%= f.error_notification %>
 
 
-    <%= f.input :texto,input_html: {:class=>"col-sm-3 control-label"},as: :text	 %>
+    <%= f.input :texto,:input_html=>{:class=>"mensagem"},as: :text	 %>
     <%= f.input :remetente_id,input_html: {value: current_user.id},as: :hidden %>
     <%= f.association :destinatario,:collection=>@destinatarios %>
 
 
 
     <br/><br/><br/>
-    <%=botoes_form(f)%>
+    <%=botoes_form_alt(f,"Enviar Mensagem")%>
 
 <% end %>
 

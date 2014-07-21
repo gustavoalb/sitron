@@ -13,7 +13,7 @@
     <tbody>
         <%@requisicoes.each do |req|%>
         <tr class="<%=even_odd(req.id)%> gradeX">
-        <td  class="sorting_1"><%=req.numero%></td>
+            <td  class="sorting_1"><%=req.numero%></td>
             <td><%=req.motivo.nome  %></td>
             <td><%=req.created_at.to_s_br%></td>
             <td class="center"> <%=req.state.upcase%></td>
@@ -22,7 +22,21 @@
                 <%= link_to link_icone('editar'), edit_requisicao_path(req),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
                 <%=link_to "Cancelar","#",:class=>"btn btn-sky btn-xs" unless req.confirmada? or req.cancelada? or req.finalizada? %>
                 <%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger btn-xs" unless req.finalizada? or req.confirmada?%>
-                <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada?%>
+                <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada? or req.finalizada?%>
+
+                <%=link_to link_icone("Avaliar o Serviço","bullhorn"),"#avaliar_#{req.id}", :'data-toggle' => "modal",:class=>"btn btn-orange btn-xs" if req.finalizada?%>
+
+
+                <%=modal("avaliar_#{req.id}", "Avaliar #{req.numero}",req) do %>
+
+                <%=simple_form_for :avaliar,html: {class: 'well form-horizontal'},:url=>requisicao_avaliar_url(req.id) do |f|%>
+                <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
+
+                <%=f.input :texto,input_html: {cols: "40", rows: "4" },as: :text,:label=>"Avaliação do Serviço" %>
+                <%=botoes_form_modal(f,"Avaliar")%>
+                <%end%>
+
+                <%end%>
             </td>
         </tr>
         <%end%>
@@ -44,20 +58,19 @@
 <script type="text/javascript">
 
 	$(document).ready(function() {
-    $('.datatables').dataTable({
-        "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-        "sPaginationType": "bootstrap",
-        "oLanguage": {
-            "sLengthMenu": "_MENU_ registros por página",
-            "sSearch": "",
-            "sInfo": "Exibindo página _PAGE_ de _PAGES_"
-        }
+        $('.datatables').dataTable({
+            "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+            "sPaginationType": "bootstrap",
+            "oLanguage": {
+                "sLengthMenu": "_MENU_ registros por página",
+                "sSearch": "",
+                "sInfo": "Exibindo página _PAGE_ de _PAGES_"
+            }
+        });
+        $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+        $('.dataTables_length select').addClass('form-control');
     });
-    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-    $('.dataTables_length select').addClass('form-control');
-});
 
 </script>
 <%end%>
 
-    

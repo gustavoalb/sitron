@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
       @modalidades = Administracao::Modalidade.all 
       @combustiveis = Administracao::Combustivel.all
       @rotas = Administracao::Rota.all
+      @problemas = Avaliacao.where(:tipo=>2).all
 
   end
 

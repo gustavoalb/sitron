@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  veiculo_id: 
+  requisicao_id: 
+  ativo: false
+
+two:
+  veiculo_id: 
+  requisicao_id: 
+  ativo: false

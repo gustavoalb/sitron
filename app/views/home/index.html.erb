@@ -1,4 +1,4 @@
-<%titulo_pagina("Sistema Online para Gestão de Transporte","SITRON")%>
+<%titulo_pagina("Sistema Online para Gestão de Transporte - SITRON/SEED","SITRON")%>
 <%content_for :dashboard do%>
 
 <%=icone_dash("Usuários Registrados",User.all.count,"person","Ver Todos","arrow-circle-right",'green',users_url) if can? :manage, User %>
@@ -6,7 +6,7 @@
 <%=icone_dash("Postos Disponíveis",Posto.disponivel.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'success') if can? :manage, Posto%>
 <%=icone_dash("Requisições de Transporte",Requisicao.count,"clipboard","Ver Todos","arrow-circle-right",'primary') if can? :manage, Requisicao%>
 <%=icone_dash("Rotas",Administracao::Rota.count,"map","Listar Rotas","arrow-circle-right",'sky') if can? :manage, Administracao::Rota%>
-<%=icone_dash("Problemas Ocorridos","6","thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'danger') %>
+<%=icone_dash("Problemas Ocorridos",@problemas.count,"thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'danger') %>
 
 <%end%>
 

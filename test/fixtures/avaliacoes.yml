@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  requisicao_id: 
+  texto: MyText
+  tipo: 1
+  avaliador_id: 
+
+two:
+  requisicao_id: 
+  texto: MyText
+  tipo: 1
+  avaliador_id: 

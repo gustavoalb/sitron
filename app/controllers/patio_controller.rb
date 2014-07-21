@@ -115,7 +115,6 @@ def saida_servico
           @requisicao.data_volta = Time.zone.now
           @requisicao.hora_volta = Time.zone.now
           @requisicao.save!
-          Administracao::BancoDeHora.definir_horas_extras(@posto.veiculo,@servico.chegada.day,@servico.chegada.strftime("%U"),@servico.chegada.month,@servico.chegada.year,@servico.chegada.beginning_of_week,@servico.chegada.end_of_week,@requisicao.horas_extras)
 
         end
 

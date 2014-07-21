@@ -6,7 +6,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :data_ida,:hora_ida,:motivo_id
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
-  validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia."
+ # validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia."
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
@@ -15,10 +15,12 @@ class Requisicao < ActiveRecord::Base
   has_and_belongs_to_many :tipos
   has_and_belongs_to_many :pessoas,:class_name=>"Administracao::Pessoa"
   belongs_to :preferencia,:class_name=>"Tipo"
-  has_one :servico,:class_name=>"Administracao::Servico"
+  has_one :servico,:class_name=>"Administracao::Servico", dependent: :destroy
   has_one :event, dependent: :destroy
+  has_one :provisao,:class_name=>"Administracao::Provisao",:dependent=>:destroy
+  has_many :avaliacoes
 
-  has_many :mensagens,:as=>:objeto
+  has_many :mensagens,:as=>:objeto, dependent: :destroy
   has_many :notificacoes,:as=>:objeto, dependent: :destroy
 
   before_validation :on => :create 
@@ -105,8 +107,8 @@ class Requisicao < ActiveRecord::Base
   saida = Time.zone.parse("#{self.data_ida.to_s} #{self.hora_ida.in_time_zone('Brasilia')}")
   chegada = Time.zone.parse("#{self.data_volta.to_s} #{self.hora_volta.in_time_zone('Brasilia')}")
 
+  ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7] #horas extras (horas cheias)
 
-  ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7]
   horas_extras = 0
   (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
    if ary_horas.include? Time.at(date).hour
@@ -123,6 +125,28 @@ end
 
 
 state_machine :initial => :aguardando do
+ 
+    after_transition :confirmada => :finalizada do |requisicao, transition|
+      posto = requisicao.posto
+      veiculo = posto.veiculo
+      servico = requisicao.servico
+      Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_extras)
+    end
+
+    after_transition any => :agendada do |requisicao, transition|
+      
+      data = Time.zone.parse("#{requisicao.data_ida} #{requisicao.hora_ida.in_time_zone('Brasilia')}")
+
+      Administracao::Lote.do_tipo(requisicao.motivo.tipo.nome).all.each do |l|
+        l.veiculos.each do |v|
+          if !v.aprovisionado?(requisicao.data_ida)
+             requisicao.create_provisao(veiculo: v,data_aprovisionamento: data)
+             break
+          end
+        end
+      end
+   end
+
 
 
   event :confirmar do

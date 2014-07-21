@@ -52,6 +52,8 @@ Sitron::Application.routes.draw do
     post :agendar_requisicao_urgente,on: :collection
     get :tipo_carga,:on=>:collection
     get :imprimir_requisicao
+    post :avaliar
+    post :salvar_pessoa,on: :collection
   end
 
   namespace :administracao do

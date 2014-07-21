@@ -4,7 +4,7 @@ class MensagensController < ApplicationController
   # GET /mensagens
   # GET /mensagens.json
   def index
-    @mensagens = Mensagem.para_o_usuario(current_user)|Mensagem.tipo_usuario(current_user.role).all
+    @mensagens = Mensagem.para_o_usuario(current_user).order(created_at: :desc)|Mensagem.tipo_usuario(current_user.role).order("created_at ASC").all
   end
 
   # GET /mensagens/1

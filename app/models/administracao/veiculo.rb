@@ -11,10 +11,13 @@ class Administracao::Veiculo < ActiveRecord::Base
   has_many :patios
   belongs_to :lote
   has_many :banco_de_horas
+  has_many :provisoes,:dependent=>:nullify
 
   mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
   mount_uploader :codigo_de_barras_s, ArtefatoUploader
+
+
  # belongs_to :turno
 
  validates_presence_of :lote_id,:contrato_id,:empresa_id
@@ -65,7 +68,13 @@ def validar_horas_extras(horas,semana,mes,ano)
     end
 end
 
-
+def aprovisionado?(data) 
+  if self.provisoes.na_data(data).size > 0
+    return true
+  else
+    return false
+  end
+end
 
 def codigo_carro
 
