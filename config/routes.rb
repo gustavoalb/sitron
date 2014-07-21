@@ -54,6 +54,7 @@ Sitron::Application.routes.draw do
     get :imprimir_requisicao
     post :avaliar
     post :salvar_pessoa,on: :collection
+    get :relatorio_horas,on: :collection
   end
 
   namespace :administracao do

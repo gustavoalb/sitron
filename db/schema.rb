@@ -381,6 +381,7 @@ ActiveRecord::Schema.define(version: 20140719190144) do
     t.integer  "tipo_carga"
     t.time     "hora_ida"
     t.time     "hora_volta"
+    t.boolean  "pernoite"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
