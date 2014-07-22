@@ -15,9 +15,9 @@
         <td><%= usuario.pessoa.nome %></td>
         <td><%= usuario.email %></td>
         <td><%= usuario.role %></td>
-        <td><%= link_to link_icone('detalhes'), usuario,:class=>"btn btn-success btn-sm" %></td>
+        <td><%= link_to link_icone('detalhes'), usuario_path(usuario),:class=>"btn btn-success btn-sm" %></td>
         <td><%= link_to link_icone('editar'), edit_usuario_path(usuario),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), usuario, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= link_to link_icone('apagar'), usuario_path(usuario), method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
