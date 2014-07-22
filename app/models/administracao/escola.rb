@@ -2,10 +2,10 @@ class Administracao::Escola < ActiveRecord::Base
   belongs_to :municipio,:class_name=>"Cidade"
   has_one :endereco,:as=>:enderecavel,:dependent=>:destroy
   has_one :rota, :as=>:roteavel,:dependent=>:destroy
-  #after_create :adicionar_rota
+  after_create :adicionar_rota
 
   
-  #private
+  private
 
 
 
