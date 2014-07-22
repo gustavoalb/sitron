@@ -1,8 +1,8 @@
 class Administracao::Departamento < ActiveRecord::Base
   belongs_to :entidade,:class_name=>"Empresa"
   belongs_to :responsavel,:class_name=>"Pessoa"
-  has_one :endereco,:as=>:enderecavel
-  has_one :rota, :as=>:roteavel
+  has_one :endereco,:as=>:enderecavel,:dependent=>:destroy
+  has_one :rota, :as=>:roteavel,:dependent=>:destroy
   
 
   attr_accessor :nome_responsavel,:cidade_nome,:bairro_nome

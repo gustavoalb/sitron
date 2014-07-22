@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class Administracao::Modalidade < ActiveRecord::Base
 
-    has_many :lotes
+    has_many :lotes,:dependent=>:destroy
     
 	def codigo_modalidade
 		code =  self.id.to_s
