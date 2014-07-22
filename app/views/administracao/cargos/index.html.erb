@@ -12,7 +12,7 @@
     <% @administracao_cargos.each do |administracao_cargo| %>
       <tr>
         <td><%= administracao_cargo.nome %></td>
-        <td><%= administracao_cargo.entidade %></td>
+        <td><%= administracao_cargo.entidade.nome %></td>
         <td><%= link_to link_icone('detalhes'), administracao_cargo,:class=>"btn btn-success btn-sm" %></td>
         <td><%= link_to link_icone('editar'), edit_administracao_cargo_path(administracao_cargo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
         <td><%= link_to link_icone('apagar'), administracao_cargo, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
