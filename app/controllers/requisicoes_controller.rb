@@ -16,6 +16,8 @@ class RequisicoesController < ApplicationController
   def show
   end
 
+
+
   def imprimir_requisicao
     @requisicao = Requisicao.find(params[:requisicao_id])
     @posto = @requisicao.posto
@@ -130,20 +132,20 @@ class RequisicoesController < ApplicationController
  def salvar_pessoa
   url=params[:url_volta]
 #  @pessoa = Administracao::Pessoa.new(params[:pessoa])
-  @tipo = nil 
-  @mensagem = nil
+@tipo = nil 
+@mensagem = nil
 
-  if @pessoa.save 
-    @tipo = :notice
-    @mensagem = "A Pessoa #{@pessoa.nome} foi Salva com sucesso!"
-  else
-    @tipo = :alert
-    @mensagem = "Não foi Possível Salvar, Tente novamente"
-  end
-  redirect_to url,@tipo=>@mensagem
- end
+if @pessoa.save 
+  @tipo = :notice
+  @mensagem = "A Pessoa #{@pessoa.nome} foi Salva com sucesso!"
+else
+  @tipo = :alert
+  @mensagem = "Não foi Possível Salvar, Tente novamente"
+end
+redirect_to url,@tipo=>@mensagem
+end
 
- def avaliar
+def avaliar
   @requisicao = Requisicao.find(params[:requisicao_id])
   @avaliacao = @requisicao.avaliacoes.new(:texto=>params[:avaliar][:texto],:tipo=>params[:avaliar][:tipo],:avaliador=>current_user)
   @mensagem = nil
@@ -194,7 +196,34 @@ end
     end
   end
 
-  private
+
+  def relatorio_horas
+   @veiculos = Administracao::Veiculo.all
+   report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'relatorio_horas_por_semana.tlf')
+   
+
+
+   @veiculos.each do |v|
+    bhoras = v.banco_de_horas
+    bhoras.each do |bh|
+     report.list.add_row do |row|
+      row.item(:semana).value bh.numero_semana
+       row.values mes: bh.mes
+       row.values ano: bh.ano
+       row.values veiculo: v.id
+       row.values modalidade: v.modalidade.nome
+       row.values lote: v.lote.nome
+       row.values horas: bh.horas_extras
+     end
+   end
+ end
+
+ send_data report.generate, filename: 'relatorio_horas.pdf', 
+ type: 'application/pdf', 
+ disposition: 'attachment'
+end
+
+private
   # Use callbacks to share common setup or constraints between actions.
   def set_requisicao
     @requisicao = Requisicao.find(params[:id])

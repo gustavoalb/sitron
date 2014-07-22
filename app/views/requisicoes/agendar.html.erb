@@ -16,7 +16,7 @@
 
 <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
 
-<%#= f.input :pernoite,
+<%= f.input :pernoite,
   :as => :radio_buttons_left_label,
   :collection => [["Pernoite no Local",true],["Pernoite em Macapá",false]],:label=>"Local de Pernoite"
 %>

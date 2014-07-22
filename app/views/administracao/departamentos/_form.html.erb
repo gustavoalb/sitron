@@ -20,6 +20,7 @@
 <%= simple_form_for(@administracao_departamento,html: {class: "form-horizontal"}) do |f| %>
   <%= f.error_notification %>
 	<%= f.input :nome %>
+  <%= f.input :sigla%>
     <%= f.association :entidade,:collection=>@empresas.collect {|e|[e.nome,e.id]} %>
     <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id"},:label=>"Nome do Responsável"%>
     <%=f.input :responsavel_id,as: :hidden%>
