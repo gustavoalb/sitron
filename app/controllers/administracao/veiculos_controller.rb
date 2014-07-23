@@ -44,16 +44,18 @@ def imprimir_codigos
  #  report.page.values printed_at: Time.zone.now
  @veiculos = Administracao::Veiculo.all
  @veiculos.each do  |v|
+  m = v.modalidade
   report.list.add_row do |row|
    row.values empresa: "#{v.empresa.nome.upcase}"
    row.values codigo: v.codigo_de_barras.file.file
-   row.values codigo_texto: v.codigo
+   row.values codigo_texto: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo} - #{v.codigo}".upcase
    row.values contrato: "#{v.contrato.numero}"
    row.values vigencia: v.contrato.vigencia
 
+
    row.values empresa_n: "#{v.empresa.nome.upcase}"
    row.values codigo_n: v.codigo_de_barras.file.file
-   row.values codigo_texto_n: v.codigo
+   row.values codigo_texto_n: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo} - #{v.codigo}".upcase
    row.values contrato_n: "#{v.contrato.numero}"
    row.values vigencia_n: v.contrato.vigencia
   end

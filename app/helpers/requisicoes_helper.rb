@@ -15,55 +15,55 @@ module RequisicoesHelper
 		html+="</div>"
 		return raw(html)
 	end
-def status_requisicao(req)
-html=""
-html+="<span class='badge badge-primary'>#{req.state.upcase}</span>" 
-return raw(html)
-end
+	def status_requisicao(req)
+		html=""
+		html+="<span class='badge badge-primary'>#{req.state.upcase}</span>" 
+		return raw(html)
+	end
 
 
-def direito_menu_req(req)
-color = ''
-html = ''
-case req.panel
-when 'default'
-	color = '#bebebe'
-when 'success'
-	color = '#85c744'
-when 'danger'
-	color = '#e73c3c'
-when 'info'
-	color = '#2bbce0'
-end
+	def direito_menu_req(req)
+		color = ''
+		html = ''
+		case req.panel
+		when 'default'
+			color = '#bebebe'
+		when 'success'
+			color = '#85c744'
+		when 'danger'
+			color = '#e73c3c'
+		when 'info'
+			color = '#2bbce0'
+		end
 
-html+="<div class='widget-block' style='background: #{color}; margin-top:10px;'>"
-html+="<div class='pull-left'>"
-html+="<small>#{req.motivo}</small>"
-html+="<h5>#{req.state.upcase}</h5>"
-html+="</div>"
-html+="<div class='pull-right'>"
-html+="<small class='text-right'>#{req.created_at.strftime('%B')}</small>"
-html+="<h5>#{req.created_at.day}</h5>"
-html+="</div>"
-html+="</div>"
-return raw(html)
+		html+="<div class='widget-block' style='background: #{color}; margin-top:10px;'>"
+		html+="<div class='pull-left'>"
+		html+="<small>#{req.motivo}</small>"
+		html+="<h5>#{req.state.upcase}</h5>"
+		html+="</div>"
+		html+="<div class='pull-right'>"
+		html+="<small class='text-right'>#{req.created_at.strftime('%B')}</small>"
+		html+="<h5>#{req.created_at.day}</h5>"
+		html+="</div>"
+		html+="</div>"
+		return raw(html)
 
-end
+	end
 
 
-def even_odd(req)
-  html=""
-  if req.even?
-  	html+="even"
-  else
-  	html+="odd"
-  end
-  return raw(html)
-end
+	def even_odd(req)
+		html=""
+		if req.even?
+			html+="even"
+		else
+			html+="odd"
+		end
+		return raw(html)
+	end
 
-def link_cadastro_modal(titulo,url)
-  html=""
-  html+=link_to titulo,url,:'data-toggle' => "modal",:class=>"btn btn-success btn-xs"
-  return raw(html)
-end
+	def link_cadastro_modal(titulo,url)
+		html=""
+		html+=link_to titulo,url,:'data-toggle' => "modal",:class=>"btn btn-success btn-xs"
+		return raw(html)
+	end
 end
