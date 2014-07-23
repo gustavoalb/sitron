@@ -94,6 +94,7 @@ $("#div_carga").html(data);
     nonSelectedText: 'Nenhum passageiro Selecionado',
     maxHeight: 150,
     numberDisplayed:0,
+    enableCaseInsensitiveFiltering: true,
      buttonText: function(options, select) {
     if (options.length == 0) {
       return this.nonSelectedText + ' <b class="caret"></b>';
@@ -145,6 +146,7 @@ $('.multiselect_rota').multiselect({
   enableFiltering: true,
   numberDisplayed:0,
   maxHeight: 200,
+  enableCaseInsensitiveFiltering: true,
   nonSelectedText: 'Selecione ao Menos uma Rota',
   buttonText: function(options, select) {
     if (options.length == 0) {
