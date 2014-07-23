@@ -252,19 +252,32 @@ end
 private
 
 
+
 def numero_requisicao
+
+@n = nil
+
+case self.tipo_requisicao
+when "normal"
+  @n="N"
+when "urgente"
+  @n="U"
+when "agendada"
+  @n="A"
+end
+
   if self.id < 10
-   self.numero = "RST000000#{self.id}"
+   self.numero = "RST#{@n}000000#{self.id}"
  elsif self.id < 100
-   self.numero = "RST00000#{self.id}"
+   self.numero = "RST#{@n}00000#{self.id}"
  elsif self.id < 1000 
-   self.numero = "RST0000#{self.id}"
+   self.numero = "RST#{@n}0000#{self.id}"
  elsif self.id < 10000
-   self.numero = "RST000#{self.id}"
+   self.numero = "RST#{@n}000#{self.id}"
  elsif self.id < 100000
-   self.numero = "RST00#{self.id}"
+   self.numero = "RST#{@n}00#{self.id}"
  else
-   self.numero = "RST#{self.id}"
+   self.numero = "RST#{@n}#{self.id}"
  end
  self.save
 end
