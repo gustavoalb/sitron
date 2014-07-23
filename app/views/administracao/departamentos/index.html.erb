@@ -13,8 +13,8 @@
     <% @administracao_departamentos.each do |administracao_departamento| %>
       <tr>
         <td><%= administracao_departamento.nome %></td>
-        <td><%= administracao_departamento.entidade.nome %></td>
-        <td><%= administracao_departamento.responsavel.nome %></td>
+        <td><%= administracao_departamento.entidade%></td>
+        <td><%= administracao_departamento.responsavel%></td>
         <td><%= link_to link_icone('detalhes'), administracao_departamento,:class=>"btn btn-success btn-sm" %></td>
         <td><%= link_to link_icone('editar'), edit_administracao_departamento_path(administracao_departamento),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
         <td><%= link_to link_icone('apagar'), administracao_departamento, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>

@@ -200,26 +200,30 @@ end
   def relatorio_horas
    @veiculos = Administracao::Veiculo.all
    report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'relatorio_horas_por_semana.tlf')
-   report.start_new_page
+   
+
 
    @veiculos.each do |v|
-     report.page.list(:default).add_row do |row|
-       row.item(:semana).value v.id
-       row.values mes: 2
-       row.values ano: 2014
-       row.values veiculo: 1
-       row.values modalidade: "VEICULO GERAL"
-       row.values lote: "LOTE 1"
-       row.values horas: 8
+    bhoras = v.banco_de_horas
+    bhoras.each do |bh|
+     report.list.add_row do |row|
+      row.item(:semana).value bh.numero_semana
+       row.values mes: bh.mes
+       row.values ano: bh.ano
+       row.values veiculo: v.id
+       row.values modalidade: v.modalidade.nome
+       row.values lote: v.lote.nome
+       row.values horas: bh.horas_extras
      end
    end
-
-   send_data report.generate, filename: 'relatorio_horas.pdf', 
-   type: 'application/pdf', 
-   disposition: 'attachment'
  end
 
- private
+ send_data report.generate, filename: 'relatorio_horas.pdf', 
+ type: 'application/pdf', 
+ disposition: 'attachment'
+end
+
+private
   # Use callbacks to share common setup or constraints between actions.
   def set_requisicao
     @requisicao = Requisicao.find(params[:id])
