@@ -10,7 +10,7 @@ class Administracao::Veiculo < ActiveRecord::Base
   belongs_to :contrato
   has_many :patios
   belongs_to :lote
-  has_many :banco_de_horas
+  has_many :banco_de_horas,:dependent=>:nullify
   has_many :provisoes,:dependent=>:nullify
 
   mount_uploader :qrcode, ArtefatoUploader

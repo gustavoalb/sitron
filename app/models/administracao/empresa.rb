@@ -4,10 +4,10 @@ class Administracao::Empresa < ActiveRecord::Base
 	self.table_name =  "empresas"
 	#attr_accessor :nome_responsavel
 
-	has_one :endereco,:as=>:enderecavel
+	has_one :endereco,:as=>:enderecavel,:dependent=>:destroy
 	belongs_to :responsavel,:class_name=>"Pessoa"
     has_many :departamentos,:foreign_key=>"entidade_id"
-    has_one :rota, :as=>:roteavel
+    has_one :rota, :as=>:roteavel,:dependent=>:destroy
   
 
 	validates_presence_of :nome,:cnpj#,:responsavel_id

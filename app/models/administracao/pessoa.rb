@@ -3,7 +3,7 @@ class Administracao::Pessoa < ActiveRecord::Base
 	belongs_to :entidade,:class_name=>"Empresa"
 	belongs_to :user
 	belongs_to :departamento
-	has_many :requisicoes,:foreign_key=>"requisitante_id"
+	has_many :requisicoes,:foreign_key=>"requisitante_id",:dependent=>:destroy
 
 	validates_presence_of :nome, :email
 #after_validation :gerar_usuario

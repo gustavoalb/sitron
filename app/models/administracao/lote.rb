@@ -1,6 +1,6 @@
 class Administracao::Lote < ActiveRecord::Base
 	validates_uniqueness_of :nome,:scope=>[:modalidade_id]
-	has_many :veiculos
+	has_many :veiculos,:dependent=>:destroy
 
 	scope :do_tipo,lambda{|tipo| where(:tipo=>tipo.camelcase)}
 
