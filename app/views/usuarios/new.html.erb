@@ -18,9 +18,9 @@
 	    <%= fp.input :matricula %>
       <%= fp.association :entidade, collection: @empresas.collect{|e| [e.nome, e.id] } %>
       <div id='departamentos'>
-       <%= fp.association :departamento,:collection=>@cargos.collect{|c|[c.nome,c.id]}, input_html: {readonly: true} %>
+       <%= fp.association :departamento, input_html: {readonly: true} %>
       </div>
-      <%= fp.association :cargo %>
+      <%= fp.association :cargo,:collection=>@cargos.collect{|c|[c.nome,c.id]} %>
 	  <% end %>
 
 

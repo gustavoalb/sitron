@@ -158,7 +158,7 @@ $('.multiselect_rota').multiselect({
 </script>
 
 
-<%=modal_simples("cadastrar_pessoa", "Adicionar uma Pessoa ao Sistema" ) do %>
+<%=modal_simples("cadastrar_pessoa", "Adicionar um Passageiro" ) do %>
 
 <%= simple_form_for :pessoa,html: {class: "form-horizontal",id: "my_form"},:url=>salvar_pessoa_requisicoes_url(:url_volta=>request.original_url) do |f| %>
   <%= f.error_notification %>
