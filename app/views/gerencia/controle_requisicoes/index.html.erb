@@ -78,7 +78,20 @@
 			<div class="btn-group">
 				<%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
 				<%=link_to link_icone("Definir Posto","car"), "#p_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-green"  %>
-				<%=link_to link_icone("Cancelar","recycle"), gerencia_controle_requisicoes_cancelar_requisicao_url(:requisicao=>r.id), data: { confirm: 'Você tem Certeza que deseja Cancelar esta requisicao?' },:class=>"btn btn-xs btn-brown",:method=>:post  %>
+				<%=link_to link_icone("Cancelar","recycle"), "javascript:;",:class=>"btn btn-xs btn-brown",:id=>"alerta-#{r.id}"  %>
+
+
+				<script type='text/javascript'>
+					$('#alerta-<%=r.id%>').click(function(){
+						bootbox.prompt("Qual o Motivo para o Cancelamento da Requisição <%=r.numero%>?", function(result) {
+							if (result === null) {
+							} else {
+								$.post("/gerencia/controle_requisicoes/cancelar_requisicao?requisicao=<%=r.id%>&"+"motivo="+result);
+
+							}
+						});
+					});
+				</script>
 			</div>
 		</td>
 	</tr>
@@ -94,7 +107,7 @@
 		<dd><%=r.motivo.nome%></dd>
 		<dt>Horas Extras Estimadas</dt>
 		<dd><%=r.previsao_horas_extras%></dd>
-	    <hr/>
+		<hr/>
 	</dl>			
 	<%end%>
 
@@ -109,9 +122,10 @@
 		<dd><%=r.motivo.nome%></dd>
 		<dt>Horas Extras Estimadas</dt>
 		<dd><%=r.previsao_horas_extras%></dd>
-	    <hr/>
+		<hr/>
 	</dl>		
-     <h3>Postos Disponíveis no Pátio</h3>
+	<%if @postos.count >0%>
+	<h3>Postos Disponíveis no Pátio</h3>
 	<div id='content'>
 		<%@postos.each do |p|%>
 		<div class='like-block'>
@@ -122,7 +136,15 @@
 		<%end%>
 
 	</div>
+	<%else%>
+	<div class="alert alert-dismissable alert-warning">
+		<h3>Aviso!</h3> 
+
+		<p>Nenhum Posto disponível no Pátio</p>
+		<br>
+
+	</div>
+	<%end%>
 	<%end%>
 	<%end%>
 </table>
-

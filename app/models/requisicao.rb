@@ -6,7 +6,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :data_ida,:hora_ida,:motivo_id
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
   validates_presence_of :inicio
-  validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia."
+  validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia.",:if=>Proc.new { |req| req.tipo_requisicao=='agendada' }
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
@@ -35,8 +35,13 @@ class Requisicao < ActiveRecord::Base
 
   scope :aguardando,->{where(:state=>"aguardando").order("created_at ASC ")}
   scope :confirmada,->{where(:state=>"confirmada").order("created_at ASC ")}
+  scope :normal_agendada,->{where("tipo_requisicao in (0,2)")}
+
+ 
   
   scope :validas,->{where("inicio > (SELECT CURRENT_TIMESTAMP)")}
+  scope :na_data,lambda{|data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?",data.day,data.month,data.year)}
+  scope :na_hora,lambda{|data| where("(inicio BETWEEN ? and ?)",data-3.hour,data-3.hour+60.minutes)}
 
   after_create :numero_requisicao,:criar_notificacao
   after_create :evento
@@ -104,8 +109,8 @@ class Requisicao < ActiveRecord::Base
 
 
   date_and_time = '%m-%d-%Y %H:%M:%S %Z'
-  saida = Time.zone.parse("#{self.data_ida.to_s} #{self.hora_ida.in_time_zone('Brasilia')}")
-  chegada = Time.zone.parse("#{self.data_volta.to_s} #{self.hora_volta.in_time_zone('Brasilia')}")
+  saida = self.inicio
+  chegada = self.fim
 
   ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7] #horas extras (horas cheias)
 

@@ -41,10 +41,11 @@ class RequisicoesController < ApplicationController
      row.values codigo: @posto.veiculo.codigo_de_barras.file.file
      row.values codigo_texto: @posto.veiculo.codigo
      row.values autorizacao_transporte: @requisicao.numero
-     row.values data_saida: @requisicao.data_ida
+     row.values data_saida: @requisicao.data_ida.to_s_br
      row.values periodo_saida: @requisicao.hora_ida.in_time_zone("Brasilia").strftime('%H:%M:%S')
      row.values hora_saida_2: @requisicao.hora_ida.in_time_zone("Brasilia").strftime('%H:%M:%S')
      row.values observacoes: @requisicao.descricao
+     row.values hora_chegada_2: @requisicao.hora_volta.in_time_zone("Brasilia").strftime('%H:%M:%S') 
 
    end
 
@@ -87,7 +88,7 @@ class RequisicoesController < ApplicationController
     
     respond_to do |format|
       if @requisicao.save
-        @requisicao.agendar
+        #@requisicao.agendar
         format.html { redirect_to @requisicao, notice: 'A Requisição foi agendada com sucesso.' }
         format.json { render :show, status: :created, location: @requisicao }
       else
@@ -208,19 +209,19 @@ end
     bhoras.each do |bh|
      report.list.add_row do |row|
       row.item(:semana).value bh.numero_semana
-       row.values mes: bh.mes
-       row.values ano: bh.ano
-       row.values veiculo: v.id
-       row.values modalidade: v.modalidade.nome
-       row.values lote: v.lote.nome
-       row.values horas: bh.horas_extras
-     end
-   end
- end
+      row.values mes: bh.mes
+      row.values ano: bh.ano
+      row.values veiculo: v.id
+      row.values modalidade: v.modalidade.nome
+      row.values lote: v.lote.nome
+      row.values horas: bh.horas_extras
+    end
+  end
+end
 
- send_data report.generate, filename: 'relatorio_horas.pdf', 
- type: 'application/pdf', 
- disposition: 'attachment'
+send_data report.generate, filename: 'relatorio_horas.pdf', 
+type: 'application/pdf', 
+disposition: 'attachment'
 end
 
 private

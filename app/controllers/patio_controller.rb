@@ -76,13 +76,13 @@ def saida_servico
 
     if @requisicao
       @servico = @requisicao.create_servico(:veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id, :empresa_id=>@posto.veiculo.empresa_id, :contrato_id=>@posto.veiculo.contrato_id,:lote=>@posto.veiculo.lote, :saida=> Time.zone.now,:valor_combustivel_centavos=>2.30)
-      if @servico.save!
+      #if @servico
         @posto.sair
           #@requisicao.sair
           @requisicao.data_ida = Time.zone.now
           @requisicao.hora_ida = Time.zone.now
           @requisicao.save
-        end
+        #end
       end
     end
 

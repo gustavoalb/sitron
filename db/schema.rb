@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140722235720) do
+ActiveRecord::Schema.define(version: 20140722235721) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -376,7 +376,7 @@ ActiveRecord::Schema.define(version: 20140722235720) do
     t.float    "distancia"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "agenda",             default: false
+    t.boolean  "agenda",              default: false
     t.integer  "motivo_id"
     t.integer  "tipo_requisicao"
     t.integer  "numero_passageiros"
@@ -384,6 +384,7 @@ ActiveRecord::Schema.define(version: 20140722235720) do
     t.time     "hora_ida"
     t.time     "hora_volta"
     t.boolean  "pernoite"
+    t.string   "motivo_cancelamento"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree

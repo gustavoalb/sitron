@@ -45,7 +45,7 @@ Sitron::Application.routes.draw do
  #mount Resque::Server => "/internal/resque"
 
 
-  resources :requisicoes do 
+  resources :requisicoes, except: [:edit] do 
     get :agendar,on: :collection
     post :agendar_requisicao,on: :collection
     get :requisicao_urgente,on: :collection
