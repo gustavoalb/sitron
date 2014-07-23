@@ -17,7 +17,7 @@
 
 <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
 
-<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino.downcase.camelcase,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
+<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[sigla_destino(r),r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
 
 
 

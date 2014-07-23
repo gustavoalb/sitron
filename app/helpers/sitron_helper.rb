@@ -45,6 +45,15 @@ module SitronHelper
   end
 
 
+  def sigla_destino(destino)
+    if destino.roteavel.respond_to? "sigla" 
+      return destino.roteavel.sigla 
+    else
+      destino.destino.downcase.camelcase
+    end
+  end
+
+
   def botoes_form_alt(form,titulo)
     html=""
 
