@@ -22,11 +22,13 @@ class RequisicoesController < ApplicationController
     @requisicao = Requisicao.find(params[:requisicao_id])
     @posto = @requisicao.posto
     @veiculo = @posto.veiculo
+    @m = @veiculo.modalidade
 
     report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'comprovante_requisicao.tlf')
     report.start_new_page
 
     report.list.add_row do |row|
+
      row.values numero_contrato: @veiculo.contrato.numero
      row.values nome_empresa: @veiculo.empresa.nome
      row.values periodo_vigencia: @veiculo.contrato.vigencia
@@ -38,14 +40,14 @@ class RequisicoesController < ApplicationController
      row.values roteiro_cumprido_2: @requisicao.rotas_requisicao
      row.values nome_solicitante: @requisicao.requisitante.nome
      row.values numero_de_servidores: @requisicao.pessoas.count
-     row.values codigo: @posto.veiculo.codigo_de_barras.file.file
-     row.values codigo_texto: @posto.veiculo.codigo
+     row.values codigo: @posto.veiculo.codigo_de_barras.placa.file.file
+     row.values codigo_texto: "#{@m.periodo_diario}H#{@m.dias_mes}d#{@veiculo.lote.tipo}/#{@veiculo.id}".upcase
      row.values autorizacao_transporte: @requisicao.numero
      row.values data_saida: @requisicao.data_ida.to_s_br
-     row.values periodo_saida: @requisicao.hora_ida.in_time_zone("Brasilia").strftime('%H:%M:%S')
-     row.values hora_saida_2: @requisicao.hora_ida.in_time_zone("Brasilia").strftime('%H:%M:%S')
+     row.values periodo_saida: @requisicao.inicio.strftime('%H:%M:%S')
+     row.values hora_saida_2: @requisicao.inicio.strftime('%H:%M:%S')
      row.values observacoes: @requisicao.descricao
-     row.values hora_chegada_2: @requisicao.hora_volta.in_time_zone("Brasilia").strftime('%H:%M:%S') 
+     row.values hora_chegada_2: @requisicao.fim.strftime('%H:%M:%S') 
 
    end
 

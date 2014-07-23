@@ -4,7 +4,7 @@
 <%=icone_dash("Usuários Registrados",User.all.count,"person","Ver Todos","arrow-circle-right",'green',users_url) if can? :manage, User %>
 <%=icone_dash("Postos no Pátio",Posto.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'orange',patio_index_url) if can? :manage, Posto%>
 <%=icone_dash("Postos Disponíveis",Posto.disponivel.na_data(Time.now).count,"model-s","Ver Todos","arrow-circle-right",'success') if can? :manage, Posto%>
-<%=icone_dash("Requisições de Transporte",Requisicao.count,"clipboard","Ver Todos","arrow-circle-right",'primary') if can? :manage, Requisicao%>
+<%=icone_dash("Requisições de Transporte",Requisicao.count,"clipboard","Ver Todos","arrow-circle-right",'primary',requisicoes_path) if can? :manage, Requisicao%>
 <%=icone_dash("Rotas",Administracao::Rota.count,"map","Listar Rotas","arrow-circle-right",'sky') if can? :manage, Administracao::Rota%>
 <%=icone_dash("Problemas Ocorridos",@problemas.count,"thumbsdown","Mostrar todos os Problemas","arrow-circle-right",'danger') %>
 
