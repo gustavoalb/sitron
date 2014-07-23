@@ -19,7 +19,7 @@
 	    <div id='departamentos'>
 	     <%= fp.association :departamento, input_html: {readonly: true} %>
 	    </div>
-	    <%= fp.association :departamento,:collection=>@cargos.collect{|c|[c.nome,c.id]}, input_html: {readonly: true,value: @usuario.cargo_id} %>
+	    <%= fp.association :departamento,:collection=>@cargos.collect{|c|[c.nome,c.id]}, input_html: {readonly: true} %>
 	  <% end %>
 
 
