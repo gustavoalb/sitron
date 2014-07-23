@@ -1,7 +1,7 @@
 class ProcessoFila
 	def perform
 
-		@requisicoes = Requisicao.na_data(Time.zone.now).na_hora(Time.zone.now).normal_agendada.aguardando
+		@requisicoes = Requisicao.na_data(Time.zone.now).na_hora.normal_agendada.aguardando
 		@remetente = User.find_by(:role=>0)
 		@semana = Time.zone.now.strftime("%U")
 		@mes = Time.zone.now.month

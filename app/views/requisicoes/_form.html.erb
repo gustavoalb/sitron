@@ -29,9 +29,11 @@
 
 <%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
 
-<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
+<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
 
-<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
+<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[r.destino.camelcase,r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
+
+
 
 
 <br/><br/><br/>

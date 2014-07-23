@@ -41,7 +41,7 @@ class Requisicao < ActiveRecord::Base
   
   scope :validas,->{where("inicio > (SELECT CURRENT_TIMESTAMP)")}
   scope :na_data,lambda{|data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?",data.day,data.month,data.year)}
-  scope :na_hora,lambda{|data| where("(inicio BETWEEN ? and ?)",data-3.hour,data-3.hour+60.minutes)}
+  scope :na_hora,lambda{where("(inicio BETWEEN ? and ?)",Time.zone.now,20.minutes.since)}
 
   after_create :numero_requisicao,:criar_notificacao
   after_create :evento
