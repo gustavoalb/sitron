@@ -16,7 +16,7 @@ class ProcessoFila
 
 				@tipo = p.veiculo.lote.tipo.remover_acentos.downcase
 
-				if req.previsao_horas_extras <= p.veiculo.horas_extras_semanais(@semana,@mes,@ano)
+				if req.previsao_horas_extras + p.veiculo.horas_extras_semanais(@semana,@mes,@ano) <=8
 
 					if req.motivo.tipo.nome.remover_acentos.downcase == @tipo and req.numero_passageiros <= p.veiculo.capacidade_passageiros
 						req.posto = p 
@@ -28,7 +28,7 @@ class ProcessoFila
 						req.confirmar
 						p.ligar
 						break
-					elsif Time.zone.now + 15.minutes <= req.hora_ida.in_time_zone 
+					elsif Time.zone.now + 5.minutes <= req.hora_ida.in_time_zone 
 						requisicao.motivo_cancelamento = "Nenhum posto no pátio atendia ao requerimento no momento!"
 						requisicao.cancelar
 						Mensagem.create(:remetente=>@remetente,:texto=>"Sua Requisição foi cancelada, você precisa criar outra requisicao, o motivo foi: Nenhum posto no pátio atendia ao requerimento no momento!",:destinatario=>req.requisitante.user)
