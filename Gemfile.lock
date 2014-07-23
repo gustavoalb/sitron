@@ -393,6 +393,7 @@ DEPENDENCIES
   chunky_png
   clockwork
   coffee-rails (~> 4.0.0)
+  daemons
   delayed_cron (= 0.2.0)!
   delayed_job_active_record
   devise

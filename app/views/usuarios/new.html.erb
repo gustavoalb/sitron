@@ -1,6 +1,6 @@
 <%=titulo_pagina(link_icone("Usuarios","users"),"Cadastrar Usuario")%>
 
-<%= simple_nested_form_for @usuario, html: {class: "form-horizontal"}, :url => usuarios_path(@usuario), :validate=>true do |f| %>
+<%= simple_nested_form_for @usuario, html: {class: "form-horizontal"}, :url => usuarios_path, :validate=>true do |f| %>
   <%= f.error_notification %>
 
   	<h5>Dados do Usuario</h5>

@@ -67,6 +67,7 @@ group :production do
 end
 
 gem "brakeman", :require => false
+gem "daemons"
 
 
 gem 'cancan'
