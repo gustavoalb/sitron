@@ -46,7 +46,7 @@ module SitronHelper
 
 
   def sigla_destino(destino)
-    if destino.roteavel.respond_to? "sigla" 
+    if destino.roteavel.respond_to? "sigla" and  destino.roteavel.sigla
       return destino.roteavel.sigla.upcase 
     else
       destino.destino.downcase.camelcase
