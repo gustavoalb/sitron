@@ -44,6 +44,7 @@ class ApplicationController < ActionController::Base
       @rotas = Administracao::Rota.all
       @problemas = Avaliacao.where(:tipo=>2).all
       @cargos = Administracao::Cargo.all
+      @departamentos = Administracao::Departamento.all
 
   end
 
