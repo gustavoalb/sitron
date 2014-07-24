@@ -12,9 +12,11 @@ class Ability
 
     if user.coordenador?
       can [:read,:update], User, {:id=>user.id}
-      can :manage, Requisicao, {:requisitante_id=>user.id}
+      can :manage, Requisicao, {:requisitante_id=>user.pessoa.id}
       cannot :manage, :requisicao_imediata, Requisicao
       can :manage, Administracao::Pessoa, {:departamento_id=>user.pessoa.departamento_id}
     end
+
+
   end
 end

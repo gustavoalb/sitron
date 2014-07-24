@@ -100,7 +100,6 @@ class RequisicoesController < ApplicationController
         format.html { redirect_to @requisicao, notice: 'A Requisição foi agendada com sucesso.' }
         format.json { render :show, status: :created, location: @requisicao }
       else
-        @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
         format.html { render :agendar }
         format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
@@ -125,7 +124,6 @@ class RequisicoesController < ApplicationController
         format.html { redirect_to @requisicao, notice: 'A Requisicao foi Criada com Sucesso' }
         format.json { render :show, status: :created, location: @requisicao }
       else
-        @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
         if @tipo=="normal"
           format.html { render :new }
         elsif @tipo=="agendada"
