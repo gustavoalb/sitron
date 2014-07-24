@@ -37,14 +37,14 @@ class ApplicationController < ActionController::Base
 
 
   def initialize_variaveis
-      @estados = Estado.all.collect{|e|[e.nome,e.id]}
-      @empresas = Administracao::Empresa.all    
-      @modalidades = Administracao::Modalidade.all 
-      @combustiveis = Administracao::Combustivel.all
-      @rotas = Administracao::Rota.all
+      @estados = Estado.all.order(:nome).collect{|e|[e.nome,e.id]}
+      @empresas = Administracao::Empresa.all.order(:nome)    
+      @modalidades = Administracao::Modalidade.all.order(:nome) 
+      @combustiveis = Administracao::Combustivel.all.order(:nome)
+      @rotas = Administracao::Rota.all.order(:nome)
       @problemas = Avaliacao.where(:tipo=>2).all
-      @cargos = Administracao::Cargo.all
-      @departamentos = Administracao::Departamento.all
+      @cargos = Administracao::Cargo.all.order(:nome)
+      @departamentos = Administracao::Departamento.all.order(:nome)
 
   end
 

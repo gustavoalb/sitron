@@ -26,7 +26,7 @@ class UsuariosController < ApplicationController
 
   def listar_departamentos
    @entidade = Administracao::Empresa.find(params[:empresa_id])
-   @departamentos = @entidade.departamentos
+   @departamentos = @entidade.departamentos.order(:nome)
 
    render :partial=> "departamentos",:locals=>{:departamentos=>@departamentos}
   end
@@ -91,13 +91,13 @@ class UsuariosController < ApplicationController
   # DELETE /usuarios/1
   # DELETE /usuarios/1.json
   def destroy
-    # @usuario = Usuario.find(params[:id])
-    # @usuario.destroy
+    @usuario = User.find(params[:id])
+    @usuario.destroy
 
-    # respond_to do |format|
-    #   format.html { redirect_to usuarios_url }
-    #   format.json { head :no_content }
-    # end
+     respond_to do |format|
+       format.html { redirect_to usuarios_url }
+       format.json { head :no_content }
+     end
   end
 
   private
