@@ -65,6 +65,7 @@ def saida_servico
   codigo = params[:posto][:codigo_de_barras]
   @requisicao = Requisicao.confirmada.find_by(:codigo=>codigo)
   #veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
+  @mensagem = nil
   
   if @requisicao
     @patio = Administracao::Patio.na_data(Time.zone.now).first
@@ -79,10 +80,11 @@ def saida_servico
       @requisicao.data_ida = Time.zone.now
       @requisicao.hora_ida = Time.zone.now
       @requisicao.save
-
+    else
+      @mensagem = "A Requisição já foi confirmada!"
     end
   else
-    @mensagem = "Nenhuma requisição encontrada com este código!"
+    @mensagem = "Nenhuma requisição encontrada com este código ou a requisição já foi finalizada!"
   end
 
 
@@ -97,6 +99,7 @@ def chegada_servico
   codigo = params[:posto][:codigo_de_barras]
   @requisicao = Requisicao.confirmada.find_by(:codigo=>codigo)
   @mensagem = nil
+
   
   if @requisicao
     @patio = Administracao::Patio.na_data(Time.zone.now).first
@@ -125,7 +128,7 @@ def chegada_servico
     end
 
   else
-    @mensagem = "Este não parece ser um codigo de barras válido"
+    @mensagem = "Este não parece ser um codigo de barras válido ou a Requisição já foi finalizada!"
   end
 
 end

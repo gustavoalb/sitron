@@ -44,6 +44,7 @@ class Requisicao < ActiveRecord::Base
   scope :aguardando,->{where(:state=>"aguardando").order("created_at ASC ")}
   scope :confirmada,->{where(:state=>"confirmada").order("created_at ASC ")}
   scope :normal_agendada,->{where("tipo_requisicao in (0,2)")}
+  scope :urgentes,->{where("tipo_requisicao = 1")}
 
 
   
@@ -219,6 +220,11 @@ state_machine :initial => :aguardando do
    end
  end
 
+ after_transition any => :cancelada do |requisicao,transition|
+    remetente = User.do_email("administrador").first
+    Mensagem.create(:remetente=>remetente,:texto=>"Sua Requisição foi cancelada, você precisa criar outra requisicao, o motivo foi: #{requisicao.motivo_cancelamento}",:destinatario=>requisicao.requisitante.user)
+ end
+
 
 
  event :confirmar do
@@ -333,11 +339,13 @@ end
 
 validate do
 
- if self.pessoas.count < self.numero_passageiros
-  self.errors.add(:pessoa_ids, 'Número de passageiros inferior ao informado')
-elsif self.pessoas.count > self.numero_passageiros
-  self.errors.add(:pessoa_ids, 'Número de passageiros superior ao informado')
-end
+    if self.pessoa_ids.count < self.numero_passageiros.to_i
+      self.errors.add(:pessoa_ids, "Número de passageiros inferior ao informado (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
+      self.pessoa_ids = []
+    elsif self.pessoa_ids.count > self.numero_passageiros.to_i
+      self.pessoa_ids = []
+      self.errors.add(:pessoa_ids, "Número de passageiros superior ao informado  (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
+    end
 
 end
 

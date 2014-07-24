@@ -10,7 +10,7 @@ SimpleForm.setup do |config|
     b.wrapper tag: 'div', class: 'col-sm-6' do |ba|
       ba.use :input
       ba.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
-      ba.use :hint,  wrap_with: { tag: 'p', class: 'help-block' }
+      ba.use :hint,  wrap_with: { tag: 'p', class: 'hint' }
     end
   end
 
@@ -22,7 +22,7 @@ SimpleForm.setup do |config|
       input.wrapper tag: 'div', class: 'input-prepend' do |prepend|
         prepend.use :input
       end
-      input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+      input.use :hint,  wrap_with: { tag: 'p', class: 'hint' }
       input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
@@ -35,7 +35,7 @@ SimpleForm.setup do |config|
       input.wrapper tag: 'div', class: 'input-append' do |append|
         append.use :input
       end
-      input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+      input.use :hint,  wrap_with: { tag: 'p', class: 'hint' }
       input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
@@ -50,7 +50,7 @@ SimpleForm.setup do |config|
       input.wrapper tag: 'div', class: 'col-sm-3' do |append|
         append.use :input
       end
-      input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+      input.use :hint,  wrap_with: { tag: 'p', class: 'hint' }
       input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
@@ -64,7 +64,7 @@ SimpleForm.setup do |config|
       input.wrapper tag: 'div', class: 'col-sm-3' do |append|
         append.use :input
       end
-      input.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+      input.use :hint,  wrap_with: { tag: 'p', class: 'hint' }
       input.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
     end
   end
@@ -74,7 +74,7 @@ SimpleForm.setup do |config|
    b.use :html5
    b.use :placeholder
    b.use :input
-   b.use :hint,  wrap_with: { tag: 'span', class: 'help-block' }
+   b.use :hint,  wrap_with: { tag: 'p', class: 'hint' }
    b.use :error, wrap_with: { tag: 'p', class: 'help-inline help-block' }
  end
 

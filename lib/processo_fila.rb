@@ -31,7 +31,6 @@ class ProcessoFila
 					elsif Time.zone.now + 5.minutes <= req.hora_ida.in_time_zone 
 						requisicao.motivo_cancelamento = "Nenhum posto no pátio atendia ao requerimento no momento!"
 						requisicao.cancelar
-						Mensagem.create(:remetente=>@remetente,:texto=>"Sua Requisição foi cancelada, você precisa criar outra requisicao, o motivo foi: Nenhum posto no pátio atendia ao requerimento no momento!",:destinatario=>req.requisitante.user)
 						break
 					end
 

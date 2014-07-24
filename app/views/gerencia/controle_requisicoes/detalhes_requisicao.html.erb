@@ -1,3 +1,61 @@
+<style type="text/css">
+  .like-block {
+    width: 200px;
+    height: 90px;
+    display: inline-block;
+    margin-right: 5px;
+    padding: 9px;
+    border: none;
+    border-radius: 5px;
+  }
+  .like-block-only-button {
+    width: 100px;
+    height: 40px;
+    display: inline-block;
+    margin-right: 5px;
+    padding: 9px;
+  }
+  .like-button {
+    height: 30px;
+    width: 100%;
+    text-align: center;
+    vertical-align: middle;
+    border-radius: 5px;
+    background: #85C744;
+    padding: 8px 14px 10px;
+    border: 1px solid #669e2f;
+    cursor: pointer;
+
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+    letter-spacing: .1em;
+    text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
+    color: #ffffff;
+    box-shadow: inset 0px 1px 0px #669e2f, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
+  }
+  .like-button:hover {
+    color: #dfe7ea;
+    box-shadow: inset 0px 1px 0px #669e2f, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+  }
+  .like-counter {
+    height: 40px;
+    border: 2px solid black;
+    text-align: center;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 1em;
+    font-family: Oswald, sans-serif;
+    letter-spacing: .1em;
+    text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
+    color: black;
+    background: #D7D7D7;
+    padding-top: 10px;
+  }
+  .text, .source-link {
+    margin-bottom: 10px;
+  }
+</style>
 <%= titulo_pagina("Detalhes da Requisição", @requisicao.requisitante.nome)%>
 <% @notificacao.ver if @notificacao.state=="nao_vista" -%>
 <dl class="dl-horizontal"> 
@@ -17,17 +75,43 @@
 
 </dl>
 
-<%=link_to link_icone("Definir Posto","car"), "#p_#{@requisicao.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-green"  %> |
-<%=link_to link_icone("Cancelar","recycle"), gerencia_controle_requisicoes_cancelar_requisicao_url(:requisicao=>@requisicao.id), data: { confirm: 'Você tem Certeza que deseja Cancelar esta requisicao?' },:class=>"btn btn-xs btn-brown",:method=>:post  if (@requisicao.state!="finalizada" or @requisicao.state!="cancelada") or (@requisicao.posto and @requisicao.posto.em_transito?) %> |
-<%= link_to link_icone('voltar'), mensagens_path, class: "btn btn-sm btn-default" %> |
+<%=link_to link_icone("Definir Posto","car"), "#p_#{@requisicao.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-green" unless @requisicao.confirmada? or @requisicao.cancelada?   %> 
+<%=link_to link_icone("Cancelar","recycle"), gerencia_controle_requisicoes_cancelar_requisicao_url(:requisicao=>@requisicao.id), data: { confirm: 'Você tem Certeza que deseja Cancelar esta requisicao?' },:class=>"btn btn-xs btn-brown",:method=>:post unless @requisicao.confirmada? or @requisicao.cancelada? %> 
+<%= link_to link_icone('voltar'), mensagens_path, class: "btn btn-sm btn-default" %> 
 
 
-  <%=modal("p_#{@requisicao.id}", "Definir o Posto para a Requisição #{@requisicao.id}",@requisicao) do %>
-  <%= simple_form_for :requisicao,:html=>{:class=>"form-horizontal"},:url=>gerencia_controle_requisicoes_definir_posto_url do |f| %>
-  <%=f.input :id,:input_html=>{:value=>@requisicao.id},as: :hidden%>
-  <%=f.input :posto,:collection=>@postos.collect {|p|["#{p.lote.nome} - #{p.lote.tipo}",p.id]}%>
-  <br/> 
-  <%=botoes_form_modal(f,"Definir Posto")%>
+  <%=modal("p_#{@requisicao.id}", "Definir o Posto para a Requisição: #{@requisicao.numero}",@requisicao) do %>
+    <dl class="dl-horizontal">
 
-  <%end%>
-  <%end%>
+      <dt>Requisitante</dt>
+      <dd><%=@requisicao.requisitante.nome%></dd>
+      <dt>Setor</dt>
+      <dd><%=@requisicao.requisitante.departamento.nome%></dd>
+      <dt>Motivo da Requisição</dt>
+      <dd><%=@requisicao.motivo.nome%></dd>
+      <dt>Horas Extras Estimadas</dt>
+      <dd><%=@requisicao.previsao_horas_extras%></dd>
+      <hr/>
+    </dl>   
+    <%if @postos.count >0%>
+    <h3>Postos Disponíveis no Pátio</h3>
+    <div id='content'>
+      <%@postos.each do |p|%>
+      <div class='like-block'>
+
+        <div class='like-counter counter c_odnoklassniki'><%=info_posto_alt(p)%></div>
+        <%=link_to "Usar esse",gerencia_controle_requisicoes_definir_posto_url(:req_id=>@requisicao.id,:posto_id=>p.id),class: 'btn like-button share s_odnoklassniki',:method=>:post,:remote=>:true,:'data-dismiss'=>'modal'%>
+      </div>
+      <%end%>
+
+    </div>
+    <%else%>
+    <div class="alert alert-dismissable alert-warning">
+      <h3>Aviso!</h3> 
+
+      <p>Nenhum Posto disponível no Pátio</p>
+      <br>
+
+    </div>
+    <%end%>
+    <%end%>

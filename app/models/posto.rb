@@ -4,6 +4,7 @@ class Posto < ActiveRecord::Base
   belongs_to :contrato,:class_name=>"Administracao::Contrato"
   belongs_to :empresa,:class_name=>"Administracao::Empresa"
   belongs_to :lote,:class_name=>"Administracao::Lote"
+  has_many :requisicoes
   acts_as_list scope: [:lote,:data_entrada]
   validates_presence_of :codigo
 

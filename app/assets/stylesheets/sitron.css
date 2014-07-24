@@ -1894,6 +1894,7 @@ select[multiple].input-lg {
 .has-error .checkbox-inline {
   color: #a81515;
 }
+.has-error .hint{color:#8d8d8d; }
 .has-error .form-control {
   border-color: #a81515;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -1916,6 +1917,13 @@ select[multiple].input-lg {
   margin-bottom: 0;
 }
 .help-block {
+  display: block;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  color: #8d8d8d;
+}
+
+.hint {
   display: block;
   margin-top: 5px;
   margin-bottom: 10px;
@@ -6290,6 +6298,10 @@ select.form-control {
   padding-top: 0;
 }
 .help-block {
+  margin-bottom: 0;
+}
+
+.hint {
   margin-bottom: 0;
 }
 .btn {

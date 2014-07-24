@@ -1,8 +1,7 @@
 class Gerencia::ControleRequisicoesController < ApplicationController
   def index
-  	@requisicoes = Requisicao.aguardando.all
+  	@requisicoes = Requisicao.aguardando.urgentes.all
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
-
  end
 
  def definir_posto
@@ -40,8 +39,6 @@ def cancelar_requisicao
   @requisicao = Requisicao.find(params[:requisicao])
   @requisicao.motivo_cancelamento = params[:motivo]
   @requisicao.cancelar
-
-   Mensagem.create(:remetente=>current_user,:texto=>"Sua Requisição #{ActionController::Base.helpers.link_to @requisicao.id,requisicao_url(@requisicao.id)} foi cancelada, você precisa criar outra requisicao, o motivo foi: #{@requisicao.motivo_cancelamento}",:destinatario=>@requisicao.requisitante.user)
 
 
   respond_to do |f|

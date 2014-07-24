@@ -41,6 +41,7 @@
             </div>
            
         </div>
-        <li class="dd-footer"><a href="<%= link_page(mensagens_url)%>">Ver Todas as Mensagens</a></li>
+        <li class="dd-footer"><a href="<%= link_page(mensagens_url)%>"><%=link_icone("Ver todas as Mensagens","eye")%></a></li>
+        <li class="dd-footer"><%=link_to link_icone("Nova Mensagem","envelope"),new_mensagem_url,:class=>"notification-success active"%></li>
     </ul>
 </li>

@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   # :confirmable, :lockable, :timeoutable and :omniauthable
     self.table_name =  "users"
     has_one :pessoa,class_name: "Administracao::Pessoa"
+    scope :do_email,lambda{|email|where("email like ?","%#{email}%")}
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
