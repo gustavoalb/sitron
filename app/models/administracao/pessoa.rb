@@ -2,7 +2,7 @@ class Administracao::Pessoa < ActiveRecord::Base
 #	default_scope { where(visivel: true) }
 	belongs_to :cargo
 	belongs_to :entidade,:class_name=>"Empresa"
-	belongs_to :user
+	belongs_to :user,:dependent=>:destroy
 	belongs_to :departamento
 	has_many :requisicoes,:foreign_key=>"requisitante_id",:dependent=>:destroy
 	scope :pode_ser_passageiro,->{where(:visivel=>true)}
