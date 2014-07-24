@@ -6,7 +6,7 @@
   	<h5>Dados do Usuario</h5>
   	<%= f.input :email %>
         
-    <%= f.input :role, :collection => User.roles.keys.map {|role| [role.titleize,role]}, :input_html => {:class=>"input-medium"}, :label=>"Permissoes", :required => true%>
+    <%= f.input :role, :collection => User.roles.keys.map {|role| [role.titleize,role]}, :input_html => {:class=>"input-medium"}, :label=>"Permissoes", :required => true if current_user.admin?%>
     
     <h5>Dados da Pessoa</h5>
     <%= f.fields_for :pessoa, :html => { :class => 'form-horizontal' }, :validate=>true do |fp| %>
@@ -15,11 +15,13 @@
 	    <%= fp.input :cpf, input_html: {class: "cpf"} %>
 	    <%= fp.input :email, as: :email %>
 	    <%= fp.input :matricula %>
+      <% if current_user.admin?%>
 	    <%= fp.association :entidade, collection: @empresas.collect{|e| [e.nome, e.id] } %>
 	    <div id='departamentos'>
 	     <%= fp.input :departamento, input_html: {disabled: true, value: detalhes(@usuario.pessoa.departamento,:sigla)} %>
 	    </div>
 	    <%= fp.association :cargo,:collection=>@cargos.collect{|c|[c.nome,c.id]}, input_html: {disabled: false} %>
+      <%end%>
 	  <% end %>
 
 
