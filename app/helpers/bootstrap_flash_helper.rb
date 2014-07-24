@@ -15,5 +15,20 @@ module BootstrapFlashHelper
     end
     flash_messages.join("\n").html_safe
   end
+
+  def flash_alert(alerta)
+
+    flash_messages = []
+
+    text = content_tag(:div,
+               content_tag(:button, raw("&times;"), :type=>"button",:class => "close", "data-dismiss" => "alert","aria-hidden"=>"true") +
+               alerta, :class => "alert fade in alert-danger alert-dismissable")
+    flash_messages << text
+    flash_messages.join("\n").html_safe
+  end
+
+  
+  
+
 end
 

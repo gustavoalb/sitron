@@ -6,6 +6,26 @@ class Administracao::Pessoa < ActiveRecord::Base
 	has_many :requisicoes,:foreign_key=>"requisitante_id",:dependent=>:destroy
 
 	validates_presence_of :nome, :email
+
+
+	def codigo_pessoa
+
+		code =  self.id.to_s
+
+		case code.chars.count
+		when 1
+			code_p = "000#{code}"
+		when 2
+			code_p = "00#{code}"
+		when 3
+			code_p = "0#{code}"
+		else
+			code_p = "#{code}"
+		end
+		return code_p
+	end
+
+
 #after_validation :gerar_usuario
 
 # 	def gerar_email

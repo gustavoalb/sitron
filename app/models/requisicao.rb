@@ -1,6 +1,13 @@
+# -*- encoding : utf-8 -*-
+require 'barby'
+require 'barby/barcode/code_128'
+require 'barby/outputter/png_outputter'
 class Requisicao < ActiveRecord::Base
-	belongs_to :requisitante,:class_name=>"Administracao::Pessoa"
-	belongs_to :posto
+
+  mount_uploader :codigo_de_barras, ArtefatoUploader
+
+  belongs_to :requisitante,:class_name=>"Administracao::Pessoa"
+  belongs_to :posto
   belongs_to :motivo,:class_name=>"Administracao::Motivo"
   has_and_belongs_to_many :rotas,:class_name=>"Administracao::Rota"
   validates_presence_of :data_ida,:hora_ida,:motivo_id
@@ -10,6 +17,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
+  
   #validate :hora
   validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
   has_and_belongs_to_many :tipos
@@ -37,18 +45,52 @@ class Requisicao < ActiveRecord::Base
   scope :confirmada,->{where(:state=>"confirmada").order("created_at ASC ")}
   scope :normal_agendada,->{where("tipo_requisicao in (0,2)")}
 
- 
+
   
   scope :validas,->{where("inicio > (SELECT CURRENT_TIMESTAMP)")}
   scope :na_data,lambda{|data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?",data.day,data.month,data.year)}
   scope :na_hora,lambda{where("(inicio BETWEEN ? and ?)",Time.zone.now,20.minutes.since)}
 
   after_create :numero_requisicao,:criar_notificacao
-  after_create :evento
+  after_create :evento,:gerar_code
   #after_validation :setar_distancia
   enum tipo_requisicao: [:normal,:urgente,:agendada]
+  enum tipo_carga: ["Mobiliário Escolar","Livros Didáticos","ETC"]
 
-  
+  def codigo_requisicao
+
+    code =  self.id.to_s
+
+    case code.chars.count
+    when 1
+      code_req = "0000#{code}"
+    when 2
+      code_req = "000#{code}"
+    when 3
+      code_req = "00#{code}"
+    when 4
+      code_req = "0#{code}"  
+    else
+      code_req = "#{code}"
+    end
+    return code_req
+  end
+
+
+  def periodo_da_requisicao
+    "de #{self.inicio.strftime('%H:%M')} até #{self.fim.in_time_zone.strftime('%H:%M')}"
+  end
+
+
+  def servico_executado
+    ary = []
+    ary.push self.motivo.nome 
+    if self.tipo_carga
+      ary.push self.tipo_carga
+    end
+    ary.compact.join(', ')
+  end
+
 
   def hora
     if self.data_ida==Date.today and self.hora_ida < Time.now+1.hour
@@ -60,7 +102,7 @@ class Requisicao < ActiveRecord::Base
   def rotas_requisicao
 
     ary = []
-    
+
     self.rotas.each do |r|
       ary.push r.destino
     end
@@ -68,10 +110,29 @@ class Requisicao < ActiveRecord::Base
   end
 
 
+  def codigo_aleatorio
+
+    code =  rand(9999)
+
+    case code.to_s.chars.count
+    when 1
+      code_a = "000#{code}"
+    when 2
+      code_a = "00#{code}"
+    when 3
+      code_a = "0#{code}"
+    else
+      code_a = "#{code}"
+    end
+
+    return code_a
+  end
+
+
   def servidores_nome
 
     ary = []
-    
+
     self.pessoas.each do |p|
       ary.push p.nome
     end
@@ -85,6 +146,12 @@ class Requisicao < ActiveRecord::Base
     return @tempo+4
   end
 
+
+  def generate_codigo_de_barras
+    code = "#{self.codigo_requisicao}#{self.requisitante.codigo_pessoa}#{self.codigo_aleatorio}"
+    dv = code.generate_check_digit
+    return "#{code}#{dv}"
+  end
 
 
 
@@ -130,54 +197,54 @@ end
 
 
 state_machine :initial => :aguardando do
- 
-    after_transition :confirmada => :finalizada do |requisicao, transition|
-      posto = requisicao.posto
-      veiculo = posto.veiculo
-      servico = requisicao.servico
-      Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_extras)
-    end
 
-    after_transition any => :agendada do |requisicao, transition|
-      
-      data = Time.zone.parse("#{requisicao.data_ida} #{requisicao.hora_ida.in_time_zone('Brasilia')}")
+  after_transition :confirmada => :finalizada do |requisicao, transition|
+    posto = requisicao.posto
+    veiculo = posto.veiculo
+    servico = requisicao.servico
+    Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_extras)
+  end
 
-      Administracao::Lote.do_tipo(requisicao.motivo.tipo.nome).all.each do |l|
-        l.veiculos.each do |v|
-          if !v.aprovisionado?(requisicao.data_ida)
-             requisicao.create_provisao(veiculo: v,data_aprovisionamento: data)
-             break
-          end
-        end
-      end
+  after_transition any => :agendada do |requisicao, transition|
+
+    data = Time.zone.parse("#{requisicao.data_ida} #{requisicao.hora_ida.in_time_zone('Brasilia')}")
+
+    Administracao::Lote.do_tipo(requisicao.motivo.tipo.nome).all.each do |l|
+      l.veiculos.each do |v|
+        if !v.aprovisionado?(requisicao.data_ida)
+         requisicao.create_provisao(veiculo: v,data_aprovisionamento: data)
+         break
+       end
+     end
    end
-
-
-
-  event :confirmar do
-    transition [:aguardando,:agendada] => :confirmada
-  end
-
-  
-  event :cancelar do
-    transition any => :cancelada
-  end
-
-  event :agendar do
-    transition any => :agendada
-  end
-
-  event :finalizar do 
-    transition :confirmada => :finalizada
-  end
-
-  event :aguardar  do
-   transition any => :aguardando
  end
 
 
 
- state :aguardando do
+ event :confirmar do
+  transition [:aguardando,:agendada] => :confirmada
+end
+
+
+event :cancelar do
+  transition any => :cancelada
+end
+
+event :agendar do
+  transition any => :agendada
+end
+
+event :finalizar do 
+  transition :confirmada => :finalizada
+end
+
+event :aguardar  do
+ transition any => :aguardando
+end
+
+
+
+state :aguardando do
 
   def panel
     'info'
@@ -245,9 +312,36 @@ end
 
 
 
+def gerar_code
+
+ codigo = self.generate_codigo_de_barras
 
 
+ barcode = Barby::Code128B.new(codigo)
 
+
+ caminho=%(#{Rails.root}/tmp)
+
+ File.open("#{caminho}/#{codigo.upcase}.png",'w'){|f|f.write barcode.to_png(margin: 0)}
+ file = File.open("#{caminho}/#{codigo.upcase}.png")
+ self.codigo_de_barras = file
+ File.delete(file)
+
+ self.codigo = codigo
+ self.save
+end
+
+validate do
+
+ if self.pessoas.count < self.numero_passageiros
+  self.errors.add(:pessoa_ids, 'Número de passageiros inferior ao informado')
+  self.pessoa_ids = []
+elsif self.pessoas.count > self.numero_passageiros
+  self.errors.add(:pessoa_ids, 'Número de passageiros superior ao informado')
+  self.pessoa_ids = []
+end
+
+end
 
 private
 
@@ -255,16 +349,16 @@ private
 
 def numero_requisicao
 
-@n = nil
+  @n = nil
 
-case self.tipo_requisicao
-when "normal"
-  @n="N"
-when "urgente"
-  @n="U"
-when "agendada"
-  @n="A"
-end
+  case self.tipo_requisicao
+  when "normal"
+    @n="N"
+  when "urgente"
+    @n="U"
+  when "agendada"
+    @n="A"
+  end
 
   if self.id < 10
    self.numero = "RST#{@n}000000#{self.id}"

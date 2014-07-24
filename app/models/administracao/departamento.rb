@@ -14,19 +14,34 @@ class Administracao::Departamento < ActiveRecord::Base
   accepts_nested_attributes_for :endereco#, :reject_if => proc { |attributes| attributes['logradouro'].blank? },:allow_destroy => true
 
 
-	
-	private
 
-	def adicionar_rota
-		rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
-    end
+    def codigo_departamento
 
-    def editar_rota
-		rota = self.rota 
-		rota.latitude = self.endereco.latitude
-		rota.longitude = self.endereco.longitude
-		rota.save
+    code =  self.id.to_s
+
+    case code.chars.count
+    when 1
+      code_d = "00#{code}"
+    when 2
+      code_d = "0#{code}"
+    else
+      code_d = "#{code}"
     end
+    return code_d
+  end
+
+  private
+
+  def adicionar_rota
+    rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
+  end
+
+  def editar_rota
+    rota = self.rota 
+    rota.latitude = self.endereco.latitude
+    rota.longitude = self.endereco.longitude
+    rota.save
+  end
 
 
 
