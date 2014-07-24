@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
     self.table_name =  "users"
-    has_one :pessoa,class_name: "Administracao::Pessoa",:dependent=>:destroy
+    has_one :pessoa,class_name: "Administracao::Pessoa"#,:dependent=>:destroy
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
