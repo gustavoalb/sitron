@@ -1,0 +1,11 @@
+<%= titulo_pagina(link_icone("Usuario","users"), @usuario.nome)%>
+
+<dl class="dl-horizontal"> 
+  <dt>Nome:</dt>
+  <dd><%= detalhes(@usuario.pessoa,:nome) %></dd>
+  <dt>Unidade de exercicio:</dt>
+  <dd><%= detalhes(@usuario.pessoa.departamento,:sigla) %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_usuario_path(@usuario),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), usuarios_path, class: "btn btn-sm btn-default" %>
