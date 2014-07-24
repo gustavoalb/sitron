@@ -7,15 +7,11 @@
     <%= f.input :cpf, input_html: {class: "cpf"} %>
     <%= f.input :email, as: :email %>
     <%= f.input :matricula %>
-    <%= f.association :entidade,collection: @empresas.collect{|e| [e.nome, e.id] } %>
-    <div id='departamentos'>
-     <%= f.input :departamento,input_html: {readonly: true} %>
-    </div>
+    <%= f.input :entidade_id,input_html: {value: current_user.pessoa.entidade_id},as: :hidden %>
+    <%= f.input :departamento_id,input_html: {value: current_user.pessoa.departamento_id},as: :hidden %>
     <%= f.association :cargo, collection: Administracao::Cargo.all.collect{|c| [c.nome, c.id] } %>
 
-
-
-    <br/><br/><br/>
+   <br/><br/><br/>
     <%=botoes_form(f)%>
 
 <% end %>

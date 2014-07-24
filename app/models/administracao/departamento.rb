@@ -15,7 +15,7 @@ class Administracao::Departamento < ActiveRecord::Base
 
 
 
-    def codigo_departamento
+  def codigo_departamento
 
     code =  self.id.to_s
 
@@ -33,7 +33,9 @@ class Administracao::Departamento < ActiveRecord::Base
   private
 
   def adicionar_rota
-    rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
+    if self.e_um_destino?
+      rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
+    end
   end
 
   def editar_rota

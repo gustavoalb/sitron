@@ -39,7 +39,7 @@
 	<%= endereco.input :latitude,:input_html=>{:class=>"gllpLatitude",:readonly=>true},:as=>:string%>
     <%= endereco.input :longitude,:input_html=>{:class=>"gllpLongitude",:readonly=>true},:as=>:string%>
 	<%end%>
-   
+   <%=f.input :e_um_destino,as: :inline_checkbox,:label=>"É um Destino?"%>
 
 
     <br/><br/><br/>
