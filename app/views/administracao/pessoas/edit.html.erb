@@ -14,6 +14,7 @@
      <%= f.input :departamento,input_html: {readonly: true}, :value=>@administracao_pessoa.departamento %>
     </div>
     <%= f.association :cargo, collection: Administracao::Cargo.all.collect{|c| [c.nome, c.id] } %>
+    <%=f.input :visivel,as: :inline_checkbox,:label=>"Pode ser Passageiro?"%>
 
 
 
