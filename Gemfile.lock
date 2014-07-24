@@ -169,7 +169,6 @@ GEM
       http_parser.rb (>= 0.6.0)
     em-socksify (0.3.0)
       eventmachine (>= 1.0.0.beta.4)
-    enum_help (0.0.8)
     erubis (2.7.0)
     event-calendar (2.3.3)
     eventmachine (1.0.3)
@@ -399,7 +398,6 @@ DEPENDENCIES
   delayed_job_active_record
   devise
   ean
-  enum_help
   event-calendar
   faye-rails
   figaro!

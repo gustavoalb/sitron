@@ -33,7 +33,6 @@ gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails', :git
 
 gem 'bootstrap-select-rails'
 gem 'bootbox-rails'
-gem 'enum_help'
 
 gem 'carrierwave'
 gem 'mini_magick'
