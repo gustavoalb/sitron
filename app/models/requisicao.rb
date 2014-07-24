@@ -335,10 +335,8 @@ validate do
 
  if self.pessoas.count < self.numero_passageiros
   self.errors.add(:pessoa_ids, 'Número de passageiros inferior ao informado')
-  self.pessoa_ids = []
 elsif self.pessoas.count > self.numero_passageiros
   self.errors.add(:pessoa_ids, 'Número de passageiros superior ao informado')
-  self.pessoa_ids = []
 end
 
 end

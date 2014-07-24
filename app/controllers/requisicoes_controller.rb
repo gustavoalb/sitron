@@ -2,6 +2,7 @@ class RequisicoesController < ApplicationController
   before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
   before_action :load_requisicao, only: :create
   before_action :load_pessoa,only: :salvar_pessoa
+  before_action :load_pessoas
   load_and_authorize_resource :class=>"Requisicao", except: :create
 
   # GET /requisicoes
@@ -67,18 +68,15 @@ class RequisicoesController < ApplicationController
   # GET /requisicoes/new
   def new
     @requisicao = Requisicao.new
-    @pessoas = Administracao::Pessoa.all
   end
 
 
   def agendar
     @requisicao = Requisicao.new
-    @pessoas = Administracao::Pessoa.all
   end
 
   def requisicao_urgente
     @requisicao = Requisicao.new
-    @pessoas = Administracao::Pessoa.all
   end
 
 
@@ -102,7 +100,7 @@ class RequisicoesController < ApplicationController
         format.html { redirect_to @requisicao, notice: 'A Requisição foi agendada com sucesso.' }
         format.json { render :show, status: :created, location: @requisicao }
       else
-        @pessoas = Administracao::Pessoa.all
+        @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
         format.html { render :agendar }
         format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
@@ -127,7 +125,7 @@ class RequisicoesController < ApplicationController
         format.html { redirect_to @requisicao, notice: 'A Requisicao foi Criada com Sucesso' }
         format.json { render :show, status: :created, location: @requisicao }
       else
-        @pessoas = Administracao::Pessoa.all
+        @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
         if @tipo=="normal"
           format.html { render :new }
         elsif @tipo=="agendada"
@@ -255,6 +253,10 @@ private
 
   def load_pessoa
     @pessoa = Administracao::Pessoa.new(pessoa_params)
+  end
+
+  def load_pessoas
+    @pessoas = Administracao::Pessoa.pode_ser_passageiro.accessible_by(current_ability).all
   end
 
 end
