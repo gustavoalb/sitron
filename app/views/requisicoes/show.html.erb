@@ -11,7 +11,7 @@
   <dt>Data:</dt>
   <dd><%= @requisicao.data_ida.to_s_br %></dd>
   <dt>Hora:</dt>
-  <dd><%= @requisicao.hora_ida.in_time_zone("Brasilia").strftime("%H:%M:%S") %></dd>
+  <dd><%= @requisicao.inicio.strftime("%H:%M:%S")%></dd>
   <dt>Status:</dt>
   <dd><%= @requisicao.state.upcase %></dd>
 </dl>

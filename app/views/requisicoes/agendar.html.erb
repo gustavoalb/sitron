@@ -7,8 +7,10 @@
 <div id="div_carga">
 </div>
 <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
-<%= f.input :inicio,:input_html=>{:readonly=>true},as: :string,hint: "Clique no campo para selecionar a data de Ida e Volta",:label=>"Saída"%>
-<%= f.input :fim,:input_html=>{:readonly=>true},as: :string,hint: "Este campo será preenchido automaticamente",:label=>"Previsão de Retorno"  %>
+<%= f.input :data_ida,input_html: {readonly: true,value: Date.tomorrow.to_s_br,class: "datepicker"},as: :string,:label=>"Data da Saída"  %>
+<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
+<%= f.input :data_volta,input_html: {class: "datepicker",readonly: true,value: Date.tomorrow.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
+<%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
 <%= f.input :tipo_requisicao,input_html: {value: "agendada",readonly: true},as: :hidden%>
 <%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
 
@@ -41,27 +43,6 @@ $("#div_carga").html(data);
 </script>
 <%end%>
 
-
-<script type="text/javascript">
-  $('#requisicao_inicio').daterangepicker(
-  {
-    locale: {applyLabel: 'Aplicar',
-    cancelLabel: 'Cancel',
-    fromLabel: 'Saída',
-    toLabel: 'Retorno',
-    weekLabel: 'W',
-    customRangeLabel: 'Calendário'},
-    timePicker: true, timePickerIncrement: 15, format: 'DD/MM/YYYY H:mm',timePicker12Hour: false,minDate: "<%=Time.now.to_s_br%>",
-
-    startDate: moment(),
-    endDate: moment().add('minutes',15)
-  },
-  function(start, end) {
-    $('#requisicao_inicio').val(start.format('DD/MM/YYYY H:mm'));
-    $('#requisicao_fim').val(end.format('DD/MM/YYYY H:mm'));
-  }
-  );
-</script>
 
 
 
@@ -175,3 +156,27 @@ $('.multiselect_rota').multiselect({
 
 <% end %>
 <%end%>
+
+
+<script type="text/javascript">
+
+
+  $('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',startDate:"<%=Date.tomorrow.to_s_br%>", autoclose: true,language: 'pt-BR',
+    'disableDateRanges': [
+    ['01/01/1000', '<%= Date.today %>'],
+    ]}); 
+  $('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+    'disableTimeRanges': [
+    ['0am', '7am'],
+    ]
+
+  });
+
+  $('#timepicker2').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+    'disableTimeRanges': [
+    ['0am', '7am'],
+    ]
+
+  });
+
+</script>

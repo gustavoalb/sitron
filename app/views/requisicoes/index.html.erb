@@ -19,9 +19,7 @@
             <td class="center"> <%=req.state.upcase%></td>
             <td>
                 <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
-                
-                <%=link_to "Cancelar","#",:class=>"btn btn-sky btn-xs" unless req.confirmada? or req.cancelada? or req.finalizada? %>
-                <%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
+                   <%= link_to link_icone('Cancelar','exclamation-triangle'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja cancelar esta requisição?' },:class=>"btn btn-sky btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
                 <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada? or req.finalizada?%>
 
                 <%=link_to link_icone("Avaliar o Serviço","bullhorn"),"#avaliar_#{req.id}", :'data-toggle' => "modal",:class=>"btn btn-orange btn-xs" if req.finalizada?%>
