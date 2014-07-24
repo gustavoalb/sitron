@@ -41,7 +41,7 @@ class ApplicationController < ActionController::Base
       @empresas = Administracao::Empresa.all.order(:nome)    
       @modalidades = Administracao::Modalidade.all.order(:nome) 
       @combustiveis = Administracao::Combustivel.all.order(:nome)
-      @rotas = Administracao::Rota.all.order(:nome)
+      @rotas = Administracao::Rota.all.order(:destino)
       @problemas = Avaliacao.where(:tipo=>2).all
       @cargos = Administracao::Cargo.all.order(:nome)
       @departamentos = Administracao::Departamento.all.order(:nome)
