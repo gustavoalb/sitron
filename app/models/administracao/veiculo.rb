@@ -117,16 +117,9 @@ def gerar_code
  ean1 = "S1#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
  codigo1 = "#{ean1}#{ean1.generate_check_digit}"
 
- ean2 = "S2#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
- codigo2 = "#{ean2}#{ean2.generate_check_digit}"
-
- ean3 = "S3#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
- codigo3 = "#{ean3}#{ean3.generate_check_digit}"
 
  barcode = Barby::Code128B.new(codigo)
- barcode1 = Barby::Code128B.new(codigo1)
- barcode2 = Barby::Code128B.new(codigo2)
- barcode3 = Barby::Code128B.new(codigo3)
+
 
  caminho=%(#{Rails.root}/tmp)
 
@@ -136,15 +129,9 @@ def gerar_code
  File.delete(file)
 
 
- File.open("#{caminho}/#{codigo1}.png",'w'){|f|f.write barcode1.to_png(margin: 0)}
- file1 = File.open("#{caminho}/#{codigo1}.png")
- self.codigo_de_barras_s = file1
- File.delete(file1)
-
 
 
  self.codigo = codigo
- self.codigo_s = codigo1
  self.save!
 end
 

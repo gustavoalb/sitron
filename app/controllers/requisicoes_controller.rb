@@ -33,6 +33,7 @@ class RequisicoesController < ApplicationController
      row.values nome_empresa: @veiculo.empresa.nome
      row.values periodo_vigencia: @veiculo.contrato.vigencia
      row.values setor_nome: @requisicao.requisitante.departamento.nome
+     row.values setor_nome_2: @requisicao.requisitante.departamento.nome
      row.values data_atual: Time.now.to_s_br
      row.values local_atual: @requisicao.requisitante.departamento.endereco.cidade.nome
      row.values roteiro_cumprido: @requisicao.rotas_requisicao
@@ -40,15 +41,22 @@ class RequisicoesController < ApplicationController
      row.values roteiro_cumprido_2: @requisicao.rotas_requisicao
      row.values nome_solicitante: @requisicao.requisitante.nome
      row.values numero_de_servidores: @requisicao.pessoas.count
-     row.values codigo: @posto.veiculo.codigo_de_barras.placa.file.file
-     row.values codigo_texto: "#{@m.periodo_diario}H#{@m.dias_mes}d#{@veiculo.lote.tipo}/#{@veiculo.id}".upcase
+     row.values codigo:@requisicao.codigo_de_barras.placa.file.file
+     row.values codigo_texto: @requisicao.codigo
      row.values autorizacao_transporte: @requisicao.numero
      row.values data_saida: @requisicao.data_ida.to_s_br
-     row.values periodo_saida: @requisicao.inicio.strftime('%H:%M:%S')
+     row.values periodo_saida: @requisicao.periodo_da_requisicao
      row.values hora_saida_2: @requisicao.inicio.strftime('%H:%M:%S')
      row.values observacoes: @requisicao.descricao
      row.values hora_chegada_2: @requisicao.fim.strftime('%H:%M:%S') 
+     row.values servico_executado: @requisicao.servico_executado
+     row.values deslocamento: @requisicao.tipo_requisicao.camelcase
+     if @requisicao.numero_da_portaria
+       row.item(:portaria).show
+       row.values numero_da_portaria: @requisicao.numero_da_portaria
+     end
 
+    
    end
 
    send_data report.generate, filename: 'requisicao.pdf', 
