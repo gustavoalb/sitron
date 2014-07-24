@@ -165,7 +165,7 @@
             <li class="divider"></li>
             <li><a href="javascript:;"><i class="fa fa-cog"></i> <span>Configurações</span></a>
               <ul class="acc-menu">
-                <% if can? :manage, User %>
+                <% if current_user.administrador? %>
                     <%=nav_item(usuarios_url,'Usuarios','usuarios','index','users')%>
                 <% end %>
 
