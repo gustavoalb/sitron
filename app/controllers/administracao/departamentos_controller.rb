@@ -8,7 +8,7 @@ class Administracao::DepartamentosController < ApplicationController
   autocomplete :pessoa, :nome,:class_name=>"Administracao::Pessoa"
 
   def index
-    @administracao_departamentos = Administracao::Departamento.accessible_by(current_ability)
+    @administracao_departamentos = Administracao::Departamento.accessible_by(current_ability).order(:nome)
   end
 
   # GET /administracao/departamentos/1

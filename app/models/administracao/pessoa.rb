@@ -1,7 +1,7 @@
 class Administracao::Pessoa < ActiveRecord::Base
 	belongs_to :cargo
 	belongs_to :entidade,:class_name=>"Empresa"
-	belongs_to :user
+	belongs_to :user,:dependent=>:destroy
 	belongs_to :departamento
 	has_many :requisicoes,:foreign_key=>"requisitante_id",:dependent=>:destroy
 
