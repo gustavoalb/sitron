@@ -4,7 +4,7 @@
   <dt>Nome:</dt>
   <dd><%= @administracao_cargo.nome %></dd>
   <dt>Entidade:</dt>
-  <dd><%= @administracao_cargo.entidade.nome %></dd>
+  <dd><%= detalhes(@administracao_cargo.entidade,:nome) %></dd>
 </dl>
 
 <%= link_to link_icone('editar'), edit_administracao_cargo_path(@administracao_cargo),class: "btn btn-warning btn-sm" %> |
