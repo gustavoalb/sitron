@@ -2,6 +2,7 @@ class RequisicoesController < ApplicationController
   before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
   before_action :load_requisicao, only: :create
   before_action :load_pessoa,only: :salvar_pessoa
+  before_action :load_pessoas
   load_and_authorize_resource :class=>"Requisicao", except: :create
 
   # GET /requisicoes
@@ -67,18 +68,15 @@ class RequisicoesController < ApplicationController
   # GET /requisicoes/new
   def new
     @requisicao = Requisicao.new
-    @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
   end
 
 
   def agendar
     @requisicao = Requisicao.new
-    @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
   end
 
   def requisicao_urgente
     @requisicao = Requisicao.new
-    @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
   end
 
 
@@ -255,6 +253,10 @@ private
 
   def load_pessoa
     @pessoa = Administracao::Pessoa.new(pessoa_params)
+  end
+
+  def load_pessoas
+    @pessoas = Administracao::Pessoa.pode_ser_passageiro.accessible_by(current_ability).all
   end
 
 end
