@@ -11,7 +11,7 @@
     <div id='departamentos'>
      <%= f.input :departamento,input_html: {readonly: true} %>
     </div>
-    <%= f.association :cargo %>
+    <%= f.association :cargo, collection: Administracao::Cargo.all.collect{|c| [c.nome, c.id] } %>
 
 
 

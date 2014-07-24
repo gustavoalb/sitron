@@ -10,7 +10,7 @@
   <dt>Matricula:</dt>
   <dd><%= @administracao_pessoa.matricula %></dd>
   <dt>Cargo:</dt>
-  <dd><%= @administracao_pessoa.cargo %></dd>
+  <dd><%= detalhes(@administracao_pessoa.cargo,:nome) %></dd>
 </dl>
 
 <%= link_to link_icone('editar'), edit_administracao_pessoa_path(@administracao_pessoa),class: "btn btn-warning btn-sm" %> |

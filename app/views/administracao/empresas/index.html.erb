@@ -16,10 +16,10 @@
       <tr>
         <td><%= administracao_empresa.nome %></td>
         <td><%= administracao_empresa.cnpj %></td>
-        <td><%= administracao_empresa.responsavel_id %></td>
+        <td><%= detalhes(administracao_empresa.responsavel,:nome) %></td>
         <td><%= link_to link_icone('detalhes'), administracao_empresa ,:class=>"btn btn-success btn-sm"%></td>
         <td><%= link_to link_icone('editar'), edit_administracao_empresa_path(administracao_empresa),:class=>"btn btn-warning btn-sm" %></td>
-        <td><%= link_to link_icone('apagar'), administracao_empresa, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= link_to link_icone('apagar'), administracao_empresa, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>

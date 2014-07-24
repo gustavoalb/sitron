@@ -22,7 +22,7 @@
         <td><%= administracao_escola.telefone %></td>
         <td><%= link_to link_icone('detalhes'), administracao_escola,:class=>"btn btn-success btn-sm" %></td>
         <td><%= link_to link_icone('editar'), edit_administracao_escola_path(administracao_escola),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), administracao_escola, method: :delete, data: { confirm: 'Are you sure?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= link_to link_icone('apagar'), administracao_escola, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
       </tr>
     <% end %>
   </tbody>
