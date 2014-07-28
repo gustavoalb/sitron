@@ -29,7 +29,7 @@ PATH
     delayed_cron (0.2.0)
 
 GEM
-  remote: https://rubygems.org/
+  remote: http://rubygems.org/
   specs:
     Ascii85 (1.0.2)
     actionmailer (4.1.1)
