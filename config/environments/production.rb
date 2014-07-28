@@ -94,18 +94,17 @@ config.i18n.fallbacks = true
     if path =~ /\.(css|js)\z/
       full_path = Rails.application.assets.resolve(path).to_path
       asset_paths = %w( app/assets vendor/assets lib/assets)
-      if ((asset_paths.any? {|ap| full_path.include? ap}) 
-       && !path.starts_with?('_'))
-      puts "\tIncluding: " + full_path
-      true
+      if ((asset_paths.any? {|ap| full_path.include? ap}) && !path.starts_with?('_'))
+        puts "\tIncluding: " + full_path
+        true
+      else
+        puts "\tExcluding: " + full_path
+        false
+      end
     else
-      puts "\tExcluding: " + full_path
       false
     end
-  else
-    false
-  end
-}
+  }
 
 
   # Disable automatic flushing of the log to improve performance.
