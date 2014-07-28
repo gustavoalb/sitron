@@ -64,9 +64,7 @@ class Requisicao < ActiveRecord::Base
   enum tipo_carga: ["Mobiliário Escolar","Livros Didáticos","ETC"]
 
   def codigo_requisicao
-
     code =  self.id.to_s
-
     case code.chars.count
     when 1
       code_req = "0000#{code}"
@@ -178,9 +176,24 @@ class Requisicao < ActiveRecord::Base
 
  end
 
+ def horas_normais
+  saida = self.servico.saida
+  chegada = self.servico.chegada
+  horas = 0
+
+  (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
+
+    horas += 1
+
+ end
+
+ return horas
+
+end
 
 
- def previsao_horas_extras
+
+def previsao_horas_extras
 
 
   date_and_time = '%m-%d-%Y %H:%M:%S %Z'
@@ -210,7 +223,7 @@ state_machine :initial => :aguardando do
     posto = requisicao.posto
     veiculo = posto.veiculo
     servico = requisicao.servico
-    Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_extras)
+    Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_extras,requisicao.horas_normais)
   end
 
   after_transition any => :agendada do |requisicao, transition|
@@ -343,13 +356,13 @@ end
 
 validate do
 
-    if self.pessoa_ids.count < self.numero_passageiros.to_i
-      self.errors.add(:pessoa_ids, "Número de passageiros inferior ao informado (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
-      self.pessoa_ids = []
-    elsif self.pessoa_ids.count > self.numero_passageiros.to_i
-      self.pessoa_ids = []
-      self.errors.add(:pessoa_ids, "Número de passageiros superior ao informado  (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
-    end
+  if self.pessoa_ids.count < self.numero_passageiros.to_i
+    self.errors.add(:pessoa_ids, "Número de passageiros inferior ao informado (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
+    self.pessoa_ids = []
+  elsif self.pessoa_ids.count > self.numero_passageiros.to_i
+    self.pessoa_ids = []
+    self.errors.add(:pessoa_ids, "Número de passageiros superior ao informado  (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
+  end
 
 end
 
