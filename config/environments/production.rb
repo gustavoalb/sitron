@@ -68,7 +68,7 @@ Rails.application.configure do
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
-  config.i18n.fallbacks = true
+config.i18n.fallbacks = true
 
   # Send deprecation notices to registered listeners.
   config.active_support.deprecation = :notify
@@ -87,6 +87,25 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = false
+
+  config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+  config.assets.paths << Rails.root.join('app', 'assets', 'sounds')
+  config.assets.precompile << Proc.new { |path|
+    if path =~ /\.(css|js)\z/
+      full_path = Rails.application.assets.resolve(path).to_path
+      asset_paths = %w( app/assets vendor/assets lib/assets)
+      if ((asset_paths.any? {|ap| full_path.include? ap}) 
+       && !path.starts_with?('_'))
+      puts "\tIncluding: " + full_path
+      true
+    else
+      puts "\tExcluding: " + full_path
+      false
+    end
+  else
+    false
+  end
+}
 
 
   # Disable automatic flushing of the log to improve performance.
