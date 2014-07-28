@@ -1,5 +1,16 @@
 <%if @confirmada%>
 window.location = "<%=gerencia_controle_requisicoes_index_path%>" ; 
+
+
+<% publish_to "/#{@notificacao.user_id}" do %>
+$("#contador_notificacao").html("<span class='badge'><%=@contador%></span>");
+$("#header_notificacoes").html("<span>Você tem <%=@contador%> <%='nova'.pluralize(@contador)%> <%='mensagem'.pluralize(@contador)%></span><span><%=escape_javascript(link_to 'Marcar tudo como vista',marcar_vista_notificacoes_url,:method=>:post,:remote=>true)%></span>");
+$("#lista_notificacoes").html("<%=escape_javascript(listar_notificacoes(@notificacoes_recebidas))%>");
+$.ionSound.play("car_horn");
+<%end%>
+
+
+
 <%else%>
 alert("<%=@mensagem%>");
 <%end%>

@@ -19,7 +19,7 @@
 </head>
 <body>
 
-
+<%= subscribe_to "/#{current_user.id}" %>
 
     <div id="headerbar">
         <div class="container">
@@ -295,16 +295,17 @@
                  
 
                   <div class="panel panel-primary">
+
                       <div class="panel-heading">
                          <h4><%=yield :sub_titulo%></h4>
                          <div class="options">
-
+                            <%=yield :options%>
                          </div>
                      </div>
 
 
                      <div class="panel-body">
-                     
+                         
                          <%=yield%>
                      </div>
                  </div>

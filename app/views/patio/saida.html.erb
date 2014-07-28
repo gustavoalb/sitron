@@ -1,16 +1,4 @@
 
-<script type="text/javascript">
-	$(function() {
-  var faye_client = new Faye.Client('http://127.0.0.1:3000/faye');
-  faye_client.subscribe("/patio", function(data) {
-    //alert(data.split('&'));
-   location.reload();
-   
-  
-  });
-}); 
-
-</script>
 
 <%=titulo_pagina("Pátio - #{Time.now.to_date.to_s_br}","Postos no Pátio no dia #{Time.now.strftime("%d do mês %m de %Y")}")%>
 

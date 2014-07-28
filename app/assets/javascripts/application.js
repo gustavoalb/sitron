@@ -11,10 +11,9 @@
 // about supported directives.
 //
 //= require jquery
-//= require faye
 //= require jquery.turbolinks
 //= require jquery_ujs
-//= require jquery.ui.all
+//= require jquery-ui
 //= require bootstrap
 //= require turbolinks
 //= require moment
@@ -24,9 +23,10 @@
 //= require gmaps/google
 //= require jquery_nested_form
 //= require dataTables/jquery.dataTables
-//= require dataTables/jquery.dataTables.bootstrap3
+//= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
 //= require bootstrap-select
 //= require bootbox
+//= require private_pub
 
 
 
@@ -59,14 +59,14 @@ jQuery(function($){
 
 
 jQuery.fn.observe_field = function(frequency, callback) {
-    return this.each(function(){
-        var element = $(this);
-        var prev = element.val();
+  return this.each(function(){
+    var element = $(this);
+    var prev = element.val();
 
-        var chk = function() {
-            var val = element.val();
-            if(prev != val){
-                prev = val;
+    var chk = function() {
+      var val = element.val();
+      if(prev != val){
+        prev = val;
 element.map(callback); // invokes the callback on the element
 }
 };
@@ -75,8 +75,8 @@ frequency = frequency * 1000; // translate to milliseconds
 var ti = setInterval(chk, frequency);
 // reset counter after user interaction
 element.bind('keyup', function() {
-    ti && clearInterval(ti);
-    ti = setInterval(chk, frequency);
+  ti && clearInterval(ti);
+  ti = setInterval(chk, frequency);
 });
 });
 
@@ -168,7 +168,49 @@ function getLatitudeLongitudeByCidadeBId(cidade_id) {
 }
 
 
- function updateCountdown() {
+function getLatitudeLongitudeRequisicao(cidade_id) {
+  $.getJSON("/requisicoes/lat_lng_cidade?cidade_id="+cidade_id, function(j) {
+    var latitude = '';
+    var longitude = '';
+    $.each(j.response, function(i, item) {
+      latitude += item.latitude;
+      longitude += item.longitude;
+    });
+    $("#requisicao_endereco_attributes_longitude").val(longitude);
+    $("#requisicao_endereco_attributes_latitude").val(latitude);
+  });
+}
+
+
+
+function updateCountdown() {
     // 160 is the max message length
     var remaining = 160 - jQuery('.mensagem').val().length;
     jQuery('.contagem_caracteres').text(remaining + ' caracteres sobrando.');}
+
+
+    $(document).ready(function(){
+
+      $.ionSound({
+        sounds: [
+        "button_tiny",
+        "bell_ring",
+        "computer_error",
+        "water_droplet_3",
+        "car_horn:0.4"
+        ],
+        path: "/assets/",
+        multiPlay: true,
+        volume: "1.0"
+      });
+
+
+      if($('#endereco_real').is(':visible')) {
+        $('#mapa').removeClass('fade');
+        $('#mapa').addClass('gmaps');
+        autocomplete_init();
+      }
+
+
+
+    });

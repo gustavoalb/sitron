@@ -11,7 +11,7 @@ class Requisicao < ActiveRecord::Base
   belongs_to :motivo,:class_name=>"Administracao::Motivo"
   has_and_belongs_to_many :rotas,:class_name=>"Administracao::Rota"
   validates_presence_of :data_ida,:hora_ida,:motivo_id
-  validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota"
+  validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota",if: Proc.new { |req| req.endereco.nil? }
   validates_presence_of :inicio
   validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia.",:if=>Proc.new { |req| req.tipo_requisicao=='agendada' }
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
@@ -27,9 +27,12 @@ class Requisicao < ActiveRecord::Base
   has_one :event, dependent: :destroy
   has_one :provisao,:class_name=>"Administracao::Provisao",:dependent=>:destroy
   has_many :avaliacoes
+  has_one :endereco,:as=>:enderecavel,:dependent=>:destroy
 
   has_many :mensagens,:as=>:objeto, dependent: :destroy
   has_many :notificacoes,:as=>:objeto, dependent: :destroy
+
+  accepts_nested_attributes_for :endereco,limit: 1, :reject_if => proc { |attributes| attributes['endereco'].blank? },:allow_destroy => true
 
   before_validation :on => :create 
   
@@ -43,6 +46,8 @@ class Requisicao < ActiveRecord::Base
 
   scope :aguardando,->{where(:state=>"aguardando").order("created_at ASC ")}
   scope :confirmada,->{where(:state=>"confirmada").order("created_at ASC ")}
+  scope :finalizadas,->{where(:state=>"finalizada").order("created_at ASC ")}
+  scope :canceladas,->{where(:state=>"cancelada").order("created_at ASC ")}
   scope :normal_agendada,->{where("tipo_requisicao in (0,2)")}
   scope :urgentes,->{where("tipo_requisicao = 1")}
 
@@ -160,7 +165,9 @@ class Requisicao < ActiveRecord::Base
     saida = self.servico.saida
     chegada = self.servico.chegada
     ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7]
+
     horas_extras = 0
+    
     (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
      if ary_horas.include? Time.at(date).hour
        horas_extras += 1
@@ -220,10 +227,7 @@ state_machine :initial => :aguardando do
    end
  end
 
- after_transition any => :cancelada do |requisicao,transition|
-    remetente = User.do_email("administrador").first
-    Mensagem.create(:remetente=>remetente,:texto=>"Sua Requisição foi cancelada, você precisa criar outra requisicao, o motivo foi: #{requisicao.motivo_cancelamento}",:destinatario=>requisicao.requisitante.user)
- end
+
 
 
 
@@ -415,7 +419,7 @@ end
 
 def criar_notificacao
   if self.tipo_requisicao=="urgente"
-    self.notificacoes.create(texto: "Nova requisição de Serviço de Transporte")
+    self.notificacoes.create(texto: "Requisição de Transporte Urgente",:tipo=>0)
   end
 end
 

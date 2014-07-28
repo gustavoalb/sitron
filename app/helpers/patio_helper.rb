@@ -127,19 +127,19 @@ module PatioHelper
 
 	def icone_lote(posto)
 		html=''
-		case posto.lote.nome
-		when "Lote 01"
+		case posto.lote.tipo
+		when "Passeio"
 			html += 'fa fa-car'
-		when "Lote 02"
-			html += 'fa fa-car'
-		when "Lote 03"
-			html += 'fa fa-car'
-		when "Lote 04"
+		when "Pick-up"
+			html += 'fa fa-pickup'
+		when "Motocicleta"
+			html += 'fa fa-motocicleta'
+		when "Caminhão"
 			html += 'fa fa-truck'
-		when "Lote 05"
-			html += 'fa fa-car'
-		when "Lote 06"
-			html += 'fa fa-car'
+		when "Van"
+			html += 'fa fa-van'
+		when "Kombi"
+			html += 'fa fa-kombi'
 		when "Lote 07"
 			html += 'fa fa-car'
 		when "Lote único"

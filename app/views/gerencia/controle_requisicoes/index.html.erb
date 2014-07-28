@@ -154,23 +154,29 @@
 	</table>
 
 
-	<%content_for :scripts do%>
-	<script type="text/javascript">
 
-		$(document).ready(function() {
-			$('.datatables').dataTable({
-				destroy: true,
-				"sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-				"sPaginationType": "bootstrap",
-				"oLanguage": {
-					"sLengthMenu": "_MENU_ registros por página",
-					"sSearch": "",
-					"sInfo": "Exibindo página _PAGE_ de _PAGES_"
-				}
-			});
-			$('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-			$('.dataTables_length select').addClass('form-control');
-		});
+<%content_for :scripts do%>
+<script type="text/javascript">
 
-	</script>
-	<%end%>
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      },
+      "sZeroRecords":  "Nenhuma requisição encontrada",
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
+
+</script>
+<%end%>

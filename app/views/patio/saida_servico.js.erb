@@ -1,6 +1,8 @@
 <%if @requisicao%>
+<% publish_to "/patio" do %>
 $('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
 $('#codigo_saida_servico').val('');
+<%end%>
 <%else%>
 $("#alerta").html("<%=escape_javascript(flash_alert(@mensagem))%>");
 <%end%>

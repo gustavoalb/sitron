@@ -124,7 +124,13 @@ end
 
 
 
-
+def sim_nao(atributo)
+  if atributo
+    return "Sim"
+  else
+    return "Não"
+  end
+end
 
 
 

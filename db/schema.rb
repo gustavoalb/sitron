@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140724190635) do
+ActiveRecord::Schema.define(version: 20140727224917) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -160,6 +160,7 @@ ActiveRecord::Schema.define(version: 20140724190635) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "endereco"
+    t.string   "descricao"
   end
 
   add_index "enderecos", ["latitude"], name: "index_enderecos_on_latitude", using: :btree
@@ -225,6 +226,7 @@ ActiveRecord::Schema.define(version: 20140724190635) do
     t.string   "state"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "assunto"
   end
 
   add_index "mensagens", ["destinatario_id"], name: "index_mensagens_on_destinatario_id", using: :btree
@@ -272,12 +274,14 @@ ActiveRecord::Schema.define(version: 20140724190635) do
     t.datetime "updated_at"
     t.string   "objeto_type"
     t.integer  "objeto_id"
+    t.integer  "user_id"
   end
 
   add_index "notificacoes", ["entidade_id"], name: "index_notificacoes_on_entidade_id", using: :btree
   add_index "notificacoes", ["objeto_id"], name: "index_notificacoes_on_objeto_id", using: :btree
   add_index "notificacoes", ["origem_id"], name: "index_notificacoes_on_origem_id", using: :btree
   add_index "notificacoes", ["posto_id"], name: "index_notificacoes_on_posto_id", using: :btree
+  add_index "notificacoes", ["user_id"], name: "index_notificacoes_on_user_id", using: :btree
 
   create_table "patios", force: true do |t|
     t.datetime "data_entrada"
@@ -476,6 +480,7 @@ ActiveRecord::Schema.define(version: 20140724190635) do
     t.string   "cpf"
     t.string   "authentication_token"
     t.integer  "role"
+    t.string   "avatar"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree

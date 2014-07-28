@@ -21,11 +21,13 @@ gem 'simple_form'
 gem 'nested_form'
 gem 'iconic'
 gem 'kaminari'
+gem 'ruby_kml'
 gem 'therubyracer', :platform=>:ruby
 gem 'money-rails'
 gem 'monetize'
 gem 'jquery-turbolinks'
 gem 'jquery-ui-rails'
+gem 'gmaps-autocomplete-rails'
 gem "geocoder"
 gem 'rails3-jquery-autocomplete'
 gem "rails-bootstrap-daterangepicker"
@@ -40,7 +42,8 @@ gem 'chunky_png'
 gem 'rqrcode_png'
 gem 'rghost'
 gem 'rghost_barcode'
-gem 'faye-rails'# => , '~> 1.0.6'
+gem 'faye'
+gem 'private_pub'
 gem 'momentjs-rails'
 gem 'acts_as_list'
 gem 'gon'
@@ -67,6 +70,7 @@ group :production do
 end
 
 gem "brakeman", :require => false
+gem "fontcustom",:require=> false
 gem "daemons"
 
 
@@ -77,7 +81,7 @@ gem 'underscore-rails'
 gem 'markaby',:require =>false
 gem 'memoist'
 gem 'event-calendar',	:require => "event_calendar"
-gem 'jquery-datatables-rails', git: 'https://github.com/rweng/jquery-datatables-rails.git'
+gem 'jquery-datatables-rails', '~> 2.1.10.0.3'
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'

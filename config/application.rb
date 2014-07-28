@@ -9,7 +9,7 @@ Bundler.require(*Rails.groups)
 
 module Sitron
   class Application < Rails::Application
-    
+
     config.generators do |g|
       g.stylesheets false
     end
@@ -31,15 +31,17 @@ module Sitron
     config.i18n.enforce_available_locales = false
     config.i18n.available_locales = ["pt-BR"]
     config.i18n.default_locale = :'pt-BR'
-     
-     config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
 
+    config.assets.paths << Rails.root.join('app', 'assets', 'fonts')
+    config.assets.paths << "#{Rails.root}/app/assets/sounds"
 
-  config.middleware.use FayeRails::Middleware, mount: '/faye', :timeout => 25 do
-    map '/patio' => RealtimePatioController  
-    map :default => :block
-   end
-     config.middleware.delete Rack::Lock
+=begin
+    config.middleware.use FayeRails::Middleware, mount: '/faye', :timeout => 25 do
+      map '/widgets/**' => WidgetsController 
+      map :default => :block
+    end
+    config.middleware.delete Rack::Lock
+=end
 
   end
 end

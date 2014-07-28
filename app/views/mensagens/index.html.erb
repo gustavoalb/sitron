@@ -1,45 +1,103 @@
 <%=titulo_pagina(link_icone("Mensagens","envelope"),link_icone("Listagem de Mensagens","envelope-o"))%>
-<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+
+
+
+
+
+
+<%content_for :options do %>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#nao_lidas" data-toggle="tab"><%=link_icone("Mensagens Não Lidas","envelope")%></a></li>
+    <li class=""><a href="#lidas" data-toggle="tab"><%=link_icone("Mensagens Lidas","envelope-o")%></a></li>
+</ul>
+
+<%=link_to link_icone("Nova Mensagem","plus"),new_mensagem_path,data: { no_turbolink: true }%>
+
+<%end%>
+
+
+<div class="tab-content">
+    <div class="tab-pane active" id="nao_lidas">
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
     <thead>
         <tr>
             <th>Remetente</th>
             <th>Data do Envio</th>
             <th>Lida?</th>
+            <th>Ações</th>
         </tr>
     </thead>
     <tbody>
-    
-        <%@mensagens.each do |req|%>
-        <tr class="<%=even_odd(req.id)%> gradeX">
-        <td  class="sorting_1"><%=m_lida(req)%><%=remetente(req)%></td>
-            <td><%=req.created_at.to_s_br%></td>
-            <td>
-              <%=link_to link_icone("Ler Mensagem","envelope-o"), mensagem_ler_url(req),:class=>"btn  btn-success-alt btn-xs"%>
 
-            </td>
-    
-        </tr>
-        <%end%>
-    </tbody>
+        <%@mensagens.each do |mensagem|%>
+        <tr class="<%=even_odd(mensagem.id)%> gradeX">
+            <td  class="sorting_1"><%=m_lida(mensagem)%><%=remetente(mensagem)%></td>
+            <td><%=mensagem.created_at.to_s_br%></td>
+            <td><%=sim_nao(mensagem.lida?)%></td>
+
+            <td>
+               <%=link_to link_icone("Ler Mensagem","envelope-o"), mensagem_ler_url(mensagem),:class=>"btn  btn-success btn-xs"%>
+
+               <%= link_to link_icone('apagar'), mensagem, method: :delete, data: { confirm: 'Tem certeza que deseja excluir esta mensagem?' },:class=>"btn btn-danger btn-xs" %></td>
+
+           </td>
+
+       </tr>
+       <%end%>
+   </tbody>
 </table>
 
+    </div>
+    <div class="tab-pane" id="lidas">
+    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+    <thead>
+        <tr>
+            <th>Remetente</th>
+            <th>Data do Envio</th>
+            <th>Lida?</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
 
+        <%@mensagens_lidas.each do |mensagem|%>
+        <tr class="<%=even_odd(mensagem.id)%> gradeX">
+            <td  class="sorting_1"><%=m_lida(mensagem)%><%=remetente(mensagem)%></td>
+            <td><%=mensagem.created_at.to_s_br%></td>
+            <td><%=sim_nao(mensagem.lida?)%></td>
+
+            <td>
+               <%=link_to link_icone("Ler Mensagem","envelope-o"), mensagem_ler_url(mensagem),:class=>"btn  btn-success btn-xs"%>
+
+               <%= link_to link_icone('apagar'), mensagem, method: :delete, data: { confirm: 'Tem certeza que deseja excluir esta mensagem?' },:class=>"btn btn-danger btn-xs" %></td>
+
+           </td>
+
+       </tr>
+       <%end%>
+   </tbody>
+</table>
+    </div>
+    </div>
 <%= link_to link_icone('Nova Mensagem','plus'), new_mensagem_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
 
-<%content_for :scripts do%>
+
+
+
+    <%content_for :scripts do%>
 <script type="text/javascript">
 
   $(document).ready(function() {
     $('.datatables').dataTable({
-         destroy: true,
-        "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-        "sPaginationType": "bootstrap",
-        "oLanguage": {
-            "sLengthMenu": "_MENU_ registros por página",
-            "sSearch": "",
-            "sInfo": "Exibindo página _PAGE_ de _PAGES_"
-        }
-    });
+       destroy: true,
+       "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+       "sPaginationType": "bootstrap",
+       "oLanguage": {
+        "sLengthMenu": "_MENU_ registros por página",
+        "sSearch": "",
+        "sInfo": "Exibindo página _PAGE_ de _PAGES_"
+    }
+});
     $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
     $('.dataTables_length select').addClass('form-control');
 });
