@@ -214,4 +214,3 @@ function updateCountdown() {
 
 
     });
-Faye.Transport.WebSocket.isUsable = function($,_,c){c(false)};

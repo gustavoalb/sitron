@@ -336,6 +336,9 @@
 
 
 <%= yield :scripts%>
+<script type="text/javascript">
+    Faye.Transport.WebSocket.isUsable = function($,_,c){c(false)};
+</script>
 </body>
 </html>
 
