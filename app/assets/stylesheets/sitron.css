@@ -8005,7 +8005,7 @@ body.static-header {
   text-shadow: none;
   background-color: transparent;
   border: 0;
-  background: asset-url("logo.png") no-repeat center center;
+  background: url("assets/logo.png") no-repeat center center;
   height: 40px;
   width: 106px;
 }

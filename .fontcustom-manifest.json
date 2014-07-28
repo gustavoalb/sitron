@@ -1,15 +1,19 @@
 {
   "checksum": {
-    "previous": "036481aa0f452b97d025a212ece122e9eaa0b525281369bee833a4ddcd9bf6a3",
-    "current": "036481aa0f452b97d025a212ece122e9eaa0b525281369bee833a4ddcd9bf6a3"
+    "previous": "df98e7f27267c236e85ae6952282c0f6c5d12809b31417351b1ca9694d70d9e3",
+    "current": "df98e7f27267c236e85ae6952282c0f6c5d12809b31417351b1ca9694d70d9e3"
   },
   "fonts": [
-    "/home/guilherme/Documentos/fontes/nova/sitrom_036481aa0f452b97d025a212ece122e9.ttf",
-    "/home/guilherme/Documentos/fontes/nova/sitrom_036481aa0f452b97d025a212ece122e9.svg",
-    "/home/guilherme/Documentos/fontes/nova/sitrom_036481aa0f452b97d025a212ece122e9.woff",
-    "/home/guilherme/Documentos/fontes/nova/sitrom_036481aa0f452b97d025a212ece122e9.eot"
+    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.ttf",
+    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.svg",
+    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.woff",
+    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.eot"
   ],
   "glyphs": {
+    "caminhao": {
+      "codepoint": 61707,
+      "source": "/home/guilherme/Documentos/fontes/caminhao.svg"
+    },
     "kombi": {
       "codepoint": 61703,
       "source": "/home/guilherme/Documentos/fontes/kombi.svg"
@@ -21,6 +25,10 @@
     "onibus": {
       "codepoint": 61698,
       "source": "/home/guilherme/Documentos/fontes/onibus.svg"
+    },
+    "passeio": {
+      "codepoint": 61708,
+      "source": "/home/guilherme/Documentos/fontes/passeio.svg"
     },
     "pickup": {
       "codepoint": 61704,
