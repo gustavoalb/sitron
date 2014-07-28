@@ -1,5 +1,5 @@
 /************************
-jquery-timepicker v1.3.8
+jquery-timepicker v1.4.3
 http://jonthornton.github.com/jquery-timepicker/
 
 requires jQuery 1.7+
@@ -24,9 +24,9 @@ requires jQuery 1.7+
 		durationTime: null,
 		step: 30,
 		showDuration: false,
+		showOnFocus: true,
 		timeFormat: 'g:ia',
-		scrollDefaultNow: false,
-		scrollDefaultTime: false,
+		scrollDefault: null,
 		selectOnBlur: false,
 		disableTouchKeyboard: false,
 		forceRoundTime: false,
@@ -90,12 +90,16 @@ requires jQuery 1.7+
 
 		show: function(e)
 		{
-			if (e) {
-				e.preventDefault();
-			}
-
 			var self = $(this);
 			var settings = self.data('timepicker-settings');
+
+			if (e) {
+				if (!settings.showOnFocus) {
+					return true;
+				}
+
+				e.preventDefault();
+			}
 
 			if (settings.useSelect) {
 				self.data('timepicker-list').focus();
@@ -155,10 +159,8 @@ requires jQuery 1.7+
 			if (!selected.length) {
 				if (_getTimeValue(self)) {
 					selected = _findRow(self, list, _time2int(_getTimeValue(self)));
-				} else if (settings.scrollDefaultNow) {
-					selected = _findRow(self, list, _time2int(new Date()));
-				} else if (settings.scrollDefaultTime !== false) {
-					selected = _findRow(self, list, _time2int(settings.scrollDefaultTime));
+				} else if (settings.scrollDefault) {
+					selected = _findRow(self, list, settings.scrollDefault);
 				}
 			}
 
@@ -207,34 +209,34 @@ requires jQuery 1.7+
 
 		option: function(key, value)
 		{
-			var self = this;
-			var settings = self.data('timepicker-settings');
-			var list = self.data('timepicker-list');
+			return this.each(function(){
+				var self = $(this);
+				var settings = self.data('timepicker-settings');
+				var list = self.data('timepicker-list');
 
-			if (typeof key == 'object') {
-				settings = $.extend(settings, key);
+				if (typeof key == 'object') {
+					settings = $.extend(settings, key);
 
-			} else if (typeof key == 'string' && typeof value != 'undefined') {
-				settings[key] = value;
+				} else if (typeof key == 'string' && typeof value != 'undefined') {
+					settings[key] = value;
 
-			} else if (typeof key == 'string') {
-				return settings[key];
-			}
+				} else if (typeof key == 'string') {
+					return settings[key];
+				}
 
-			settings = _parseSettings(settings);
+				settings = _parseSettings(settings);
 
-			self.data('timepicker-settings', settings);
+				self.data('timepicker-settings', settings);
 
-			if (list) {
-				list.remove();
-				self.data('timepicker-list', false);
-			}
+				if (list) {
+					list.remove();
+					self.data('timepicker-list', false);
+				}
 
-			if (settings.useSelect) {
-				_render(self);
-			}
-
-			return this;
+				if (settings.useSelect) {
+					_render(self);
+				}
+			});
 		},
 
 		getSecondsFromMidnight: function()
@@ -288,6 +290,7 @@ requires jQuery 1.7+
 				return;
 			}
 
+			var settings = self.data('timepicker-settings');
 			self.removeAttr('autocomplete', 'off');
 			self.removeClass('ui-timepicker-input');
 			self.removeData('timepicker-settings');
@@ -296,6 +299,10 @@ requires jQuery 1.7+
 			// timepicker-list won't be present unless the user has interacted with this timepicker
 			if (self.data('timepicker-list')) {
 				self.data('timepicker-list').remove();
+			}
+
+			if (settings.useSelect) {
+				self.show();
 			}
 
 			self.removeData('timepicker-list');
@@ -318,6 +325,22 @@ requires jQuery 1.7+
 
 		if (settings.durationTime && typeof settings.durationTime !== 'function') {
 			settings.durationTime = _time2int(settings.durationTime);
+		}
+
+		if (settings.scrollDefault == 'now') {
+			settings.scrollDefault = _time2int(new Date());
+		} else if (settings.scrollDefault) {
+			settings.scrollDefault = _time2int(settings.scrollDefault);
+		} else if (settings.minTime) {
+			settings.scrollDefault = settings.minTime;
+		}
+
+		if (settings.scrollDefault) {
+			settings.scrollDefault = _time2int(_roundTime(settings.scrollDefault, settings));
+		}
+
+		if (settings.timeFormat.match(/[gh]/)) {
+			settings._twelveHourTime = true;
 		}
 
 		if (settings.disableTimeRanges.length > 0) {
@@ -486,7 +509,7 @@ requires jQuery 1.7+
 			appendTo.append(wrapped_list);
 			_setSelected(self, list);
 
-			list.on('click', 'li', function(e) {
+			list.on('mousedown', 'li', function(e) {
 
 				// hack: temporarily disable the focus handler
 				// to deal with the fact that IE fires 'focus'
@@ -611,7 +634,7 @@ requires jQuery 1.7+
 	{
 		list.find('li').removeClass('ui-timepicker-selected');
 
-		var timeValue = _time2int(_getTimeValue(self));
+		var timeValue = _time2int(_getTimeValue(self), self.data('timepicker-settings'));
 		if (timeValue === null) {
 			return;
 		}
@@ -736,6 +759,9 @@ requires jQuery 1.7+
 
 		if (!list || !list.is(':visible')) {
 			if (e.keyCode == 40) {
+				// show the list!
+				methods.show.call(self.get(0));
+				list = self.data('timepicker-list');
 				if (!_hideKeyboard(self)) {
 					self.focus();
 				}
@@ -883,13 +909,6 @@ requires jQuery 1.7+
 		if (cursor.length) {
 			// selected value found
 			timeValue = cursor.data('time');
-
-		} else if (_getTimeValue(self)) {
-
-			// no selected value; fall back on input value
-			timeValue = _time2int(_getTimeValue(self));
-
-			_setSelected(self, list);
 		}
 
 		if (timeValue !== null) {
@@ -907,6 +926,7 @@ requires jQuery 1.7+
 
 	function _int2duration(seconds, step)
 	{
+		seconds = Math.abs(seconds);
 		var minutes = Math.round(seconds/60),
 			duration = [],
 			hours, mins;
@@ -1008,7 +1028,7 @@ requires jQuery 1.7+
 		return output;
 	}
 
-	function _time2int(timeString)
+	function _time2int(timeString, settings)
 	{
 		if (timeString === '') return null;
 		if (!timeString || timeString+0 == timeString) return timeString;
@@ -1039,22 +1059,30 @@ requires jQuery 1.7+
 		}
 
 		var hour = parseInt(time[1]*1, 10);
-		var hours;
+		var ampm = time[4];
+		var hours = hour;
 
-		if (time[4]) {
+		if (ampm) {
 			if (hour == 12) {
 				hours = (time[4] == 'p') ? 12 : 0;
 			} else {
 				hours = (hour + (time[4] == 'p' ? 12 : 0));
 			}
-
-		} else {
-			hours = hour;
 		}
 
 		var minutes = ( time[2]*1 || 0 );
 		var seconds = ( time[3]*1 || 0 );
-		return hours*3600 + minutes*60 + seconds;
+		var timeInt = hours*3600 + minutes*60 + seconds;
+
+		// if no am/pm provided, intelligently guess based on the scrollDefault
+		if (!ampm && settings && settings._twelveHourTime && settings.scrollDefault) {
+			var delta = timeInt - settings.scrollDefault;
+			if (delta < 0 && delta >= _ONE_DAY / -2) {
+				timeInt = (timeInt + (_ONE_DAY / 2)) % _ONE_DAY;
+			}
+		}
+
+		return timeInt
 	}
 
 	function _pad2(n) {

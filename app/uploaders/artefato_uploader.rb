@@ -4,7 +4,7 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
 
   # Include RMagick or MiniMagick support:
   # include CarrierWave::RMagick
-   include CarrierWave::MiniMagick
+  include CarrierWave::MiniMagick
 
   # Choose what kind of storage to use for this uploader:
   storage :file
@@ -17,7 +17,7 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
   end
 
   def delete_image_folder
-      FileUtils.remove_dir(File.join(Rails.root, File.join('public','uploads' , file_name.store_dir)), :force => true)  
+    FileUtils.remove_dir(File.join(Rails.root, File.join('public','uploads' , file_name.store_dir)), :force => true)  
   end
   # Provide a default URL as a default if there hasn't been a file uploaded:
   # def default_url
@@ -40,8 +40,12 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
     process :resize_to_fill => [95,50]
   end
 
-    version :thumbcb do
+  version :thumbcb do
     process :resize_to_fill => [200,44]
+  end
+
+  version :avatar do 
+    process :resize_to_fill => [215,215]
   end
 
 
@@ -51,10 +55,14 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
   end
   # Add a white list of extensions which are allowed to be uploaded.
   # For images you might use something like this:
-   def extension_white_list
-     %w(jpg jpeg png)
-   end
+  def extension_white_list
+   %w(jpg jpeg png)
+ end
 
+
+ def default_url
+  "/assets/padrao/" + [version_name, "default.png"].compact.join('_')
+ end
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
   # def filename

@@ -1,5 +1,29 @@
 <%=titulo_pagina(link_icone("Requisições",'thumbs-up'),"Listagem de Requisições de Serviço de Transporte")%>
 
+
+
+
+
+
+
+<%content_for :options do %>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#aguardando" data-toggle="tab">Aguardando</a></li>
+    <li class=""><a href="#confirmadas" data-toggle="tab">Confirmadas</a></li>
+    <li class=""><a href="#finalizadas" data-toggle="tab">Finalizadas</a></li>
+    <li class=""><a href="#canceladas" data-toggle="tab">Canceladas</a></li>
+</ul>
+
+
+<%= link_to link_icone('','calendar'), agendar_requisicoes_path%>
+<%= link_to link_icone('','bolt'), requisicao_urgente_requisicoes_path if can?(:requisicao_urgente,Requisicao) %>
+<%= link_to link_icone('','thumbs-up'), new_requisicao_path %>
+<%end%>
+
+<div class="tab-content">
+    <div class="tab-pane active" id="aguardando">
+        
+
 <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
     <thead>
         <tr>
@@ -18,10 +42,9 @@
             <td><%=req.created_at.to_s_br%></td>
             <td class="center"> <%=req.state.upcase%></td>
             <td>
-                <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
                 
-                <%=link_to "Cancelar","#",:class=>"btn btn-sky btn-xs" unless req.confirmada? or req.cancelada? or req.finalizada? %>
-                <%= link_to link_icone('apagar'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja apagar?' },:class=>"btn btn-danger btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
+                <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
+                <%= link_to link_icone('Cancelar','exclamation-triangle'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja cancelar esta requisição?' },:class=>"btn btn-sky btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
                 <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada? or req.finalizada?%>
 
                 <%=link_to link_icone("Avaliar o Serviço","bullhorn"),"#avaliar_#{req.id}", :'data-toggle' => "modal",:class=>"btn btn-orange btn-xs" if req.finalizada?%>
@@ -29,13 +52,13 @@
 
                 <%=modal_simples("avaliar_#{req.id}", "Avaliar #{req.numero}") do %>
                 <div class='row'>
-                <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"} do |f|%>
-                
-                <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
+                    <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"} do |f|%>
 
-                <%=f.input :texto,input_html: {cols: "40", rows: "4" },as: :text,:label=>"Avaliação do Serviço" %>
-                
-                <%=botoes_form_modal(f,"Avaliar")%>
+                    <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
+
+                    <%=f.input :texto,input_html: {cols: "40", rows: "4" },as: :text,:label=>"Avaliação do Serviço" %>
+
+                    <%=botoes_form_modal(f,"Avaliar")%>
                 </div>
                 <%end%>
 
@@ -48,6 +71,158 @@
 
 
 
+    </div>
+
+    <div class="tab-pane" id="confirmadas">
+
+
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Motivo</th>
+            <th>Data da Requisição</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%@requisicoes_confirmadas.each do |req|%>
+        <tr class="<%=even_odd(req.id)%> gradeX">
+            <td  class="sorting_1"><%=req.numero%></td>
+            <td><%=req.motivo.nome  %></td>
+            <td><%=req.created_at.to_s_br%></td>
+            <td class="center"> <%=req.state.upcase%></td>
+            <td>
+
+                <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
+                <%= link_to link_icone('Cancelar','exclamation-triangle'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja cancelar esta requisição?' },:class=>"btn btn-sky btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
+                <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada? or req.finalizada?%>
+
+                <%=link_to link_icone("Avaliar o Serviço","bullhorn"),"#avaliar_#{req.id}", :'data-toggle' => "modal",:class=>"btn btn-orange btn-xs" if req.finalizada?%>
+
+
+
+                <%=modal_simples("avaliar_#{req.id}", "Avaliar #{req.numero}") do %>
+                <div class='row'>
+                    <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"} do |f|%>
+
+                    <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
+
+                    <%=f.input :texto,input_html: {cols: "40", rows: "4" },as: :text,:label=>"Avaliação do Serviço" %>
+
+                    <%=botoes_form_modal(f,"Avaliar")%>
+                </div>
+                <%end%>
+
+                <%end%>
+            </td>
+        </tr>
+        <%end%>
+    </tbody>
+</table>
+    </div>
+    <div class="tab-pane" id="finalizadas">
+        
+
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Motivo</th>
+            <th>Data da Requisição</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%@requisicoes_finalizadas.each do |req|%>
+        <tr class="<%=even_odd(req.id)%> gradeX">
+            <td  class="sorting_1"><%=req.numero%></td>
+            <td><%=req.motivo.nome  %></td>
+            <td><%=req.created_at.to_s_br%></td>
+            <td class="center"> <%=req.state.upcase%></td>
+            <td>
+                <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
+                <%= link_to link_icone('Cancelar','exclamation-triangle'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja cancelar esta requisição?' },:class=>"btn btn-sky btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
+                <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada? or req.finalizada?%>
+
+                <%=link_to link_icone("Avaliar o Serviço","bullhorn"),"#avaliar_#{req.id}", :'data-toggle' => "modal",:class=>"btn btn-orange btn-xs" if req.finalizada?%>
+
+
+                <%=modal_simples("avaliar_#{req.id}", "Avaliar #{req.numero}") do %>
+                <div class='row'>
+                    <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"} do |f|%>
+
+                    <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
+
+                    <%=f.input :texto,input_html: {cols: "40", rows: "4" },as: :text,:label=>"Avaliação do Serviço" %>
+
+                    <%=botoes_form_modal(f,"Avaliar")%>
+                </div>
+                <%end%>
+
+                <%end%>
+            </td>
+        </tr>
+        <%end%>
+    </tbody>
+</table>
+
+
+    </div>
+    <div class="tab-pane" id="canceladas">
+        
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
+    <thead>
+        <tr>
+            <th>Número</th>
+            <th>Motivo</th>
+            <th>Data da Requisição</th>
+            <th>Status</th>
+            <th>Ações</th>
+        </tr>
+    </thead>
+    <tbody>
+        <%@requisicoes_canceladas.each do |req|%>
+        <tr class="<%=even_odd(req.id)%> gradeX">
+            <td  class="sorting_1"><%=req.numero%></td>
+            <td><%=req.motivo.nome  %></td>
+            <td><%=req.created_at.to_s_br%></td>
+            <td class="center"> <%=req.state.upcase%></td>
+            <td>
+                <%= link_to link_icone('detalhes'), requisicao_path(req),class: "btn btn-success btn-xs",data: { no_turbolink: true }  %>
+                <%= link_to link_icone('Cancelar','exclamation-triangle'), req, method: :delete, data: { confirm: 'Você tem certeza que deseja cancelar esta requisição?' },:class=>"btn btn-sky btn-xs" unless req.finalizada? or req.confirmada? or req.cancelada?%>
+                <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(req),:class=>"btn btn-green btn-xs" if req.confirmada? or req.finalizada?%>
+
+                <%=link_to link_icone("Avaliar o Serviço","bullhorn"),"#avaliar_#{req.id}", :'data-toggle' => "modal",:class=>"btn btn-orange btn-xs" if req.finalizada?%>
+
+
+                <%=modal_simples("avaliar_#{req.id}", "Avaliar #{req.numero}") do %>
+                <div class='row'>
+                    <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"} do |f|%>
+
+                    <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
+
+                    <%=f.input :texto,input_html: {cols: "40", rows: "4" },as: :text,:label=>"Avaliação do Serviço" %>
+
+                    <%=botoes_form_modal(f,"Avaliar")%>
+                </div>
+                <%end%>
+
+                <%end%>
+            </td>
+        </tr>
+        <%end%>
+    </tbody>
+</table>
+
+
+    </div>
+</div>
+
+
+
 <%= link_to link_icone('Requisição de Transporte - Dia Seguinte','thumbs-up'), new_requisicao_path, :class=>"btn btn-large btn-green",data: { no_turbolink: true }  %>
 
 
@@ -57,23 +232,29 @@
 <%= link_to link_icone('Agendamento de Viagem','calendar'), agendar_requisicoes_path, :class=>"btn btn-large btn-midnightblue",data: { no_turbolink: true }  %>
 
 
+
+
 <%content_for :scripts do%>
 <script type="text/javascript">
 
-	$(document).ready(function() {
-        $('.datatables').dataTable({
-            "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-            "sPaginationType": "bootstrap",
-            "oLanguage": {
-                "sLengthMenu": "_MENU_ registros por página",
-                "sSearch": "",
-                "sInfo": "Exibindo página _PAGE_ de _PAGES_"
-            }
-        });
-        $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-        $('.dataTables_length select').addClass('form-control');
-    });
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      }
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
 
 </script>
 <%end%>
-

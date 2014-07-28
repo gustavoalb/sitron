@@ -27,9 +27,9 @@ var GMapsLatLonPicker = (function() {
 	///////////////////////////////////////////////////////////////////////////////////////////////
 	// PARAMETERS (MODIFY THIS PART) //////////////////////////////////////////////////////////////
 	_self.params = {
-		defLat : 0,
-		defLng : 0,
-		defZoom : 1,
+		defLat : 0.03889,
+		defLng : -51.06639,
+		defZoom : 14,
     marca: "/assets/venda.png",
 		queryLocationNameWhenLatLngChanges: true,
 		queryElevationWhenLatLngChanges: true,
@@ -41,7 +41,7 @@ var GMapsLatLonPicker = (function() {
 			streetViewControl: true
 		},
 		strings : {
-			markerText : "Arreste esta Marca para mudar o Endereço", 
+			markerText : "Arreste esta Marca para mudar o Endereço do Destino", 
 			error_empty_field : "Couldn't find coordinates for this place",
 			error_no_results : "Couldn't find coordinates for this place"
 		}
@@ -175,12 +175,14 @@ var GMapsLatLonPicker = (function() {
 			_self.vars.map = new google.maps.Map($(_self.vars.cssID + ".gllpMap").get(0), _self.vars.MAPOPTIONS);
 			_self.vars.geocoder = new google.maps.Geocoder();
 			_self.vars.elevator = new google.maps.ElevationService();
+			
 
 			_self.vars.marker = new google.maps.Marker({
 				position: _self.vars.LATLNG,
 				map: _self.vars.map,
 				title: _self.params.strings.markerText,
-				draggable: true
+				draggable: true,
+				icon: "/assets/marker.png"
 			});
 
 			// Set position on doubleclick
@@ -240,11 +242,14 @@ var GMapsLatLonPicker = (function() {
 $(document).ready( function() {
 	$(".gllpLatlonPicker").each(function() {
 		(new GMapsLatLonPicker()).init( $(this) );
+		    console.log("***********************	");
+			console.log("Eu Realmente gostaria de saber o que você procura por aqui!");
 	});
 });
 
 $(document).bind("location_changed", function(event, object) {
 	console.log("changed: " + $(object).attr('id') );
+
 });
 
 }(jQuery));

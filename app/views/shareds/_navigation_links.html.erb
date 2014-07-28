@@ -2,11 +2,11 @@
 <% if user_signed_in? %>
 
     <li class="dropdown">
-                <a href="#" class="dropdown-toggle username" data-toggle="dropdown"><span class="hidden-xs"><%=current_user.nome%> <i class="fa fa-caret-down"></i></span><%=image_tag("padrao/avatar_default.png")%></a>
+                <a href="#" class="dropdown-toggle username" data-toggle="dropdown"><span class="hidden-xs"><%=current_user.nome%> <i class="fa fa-caret-down"></i></span><%=image_tag(current_user.avatar_url(:avatar),:class=>"userimg")%></a>
                 <ul class="dropdown-menu userinfo arrow">
                     <li class="username">
                         <a href="#">
-                            <div class="pull-left"><%=image_tag("padrao/avatar_default.png",:class=>"userimg")%></div>
+                            <div class="pull-left"><%=image_tag(current_user.avatar_url(:avatar),:class=>"userimg")%></div>
                             <div class="pull-right"><h5>Olá, <%=current_user.pessoa.nome%>!</h5></div>
                         </a>
                     </li>

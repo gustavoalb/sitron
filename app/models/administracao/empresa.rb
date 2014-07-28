@@ -15,7 +15,7 @@ class Administracao::Empresa < ActiveRecord::Base
 	
 
 	after_create :adicionar_rota
-  after_update :editar_rota
+    after_update :editar_rota
 
 
 

@@ -1,20 +1,50 @@
-class RequisicoesController < ApplicationController
-  before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
-  before_action :load_requisicao, only: :create
-  before_action :load_pessoa,only: :salvar_pessoa
-  before_action :load_pessoas
-  load_and_authorize_resource :class=>"Requisicao", except: :create
+  class RequisicoesController < ApplicationController
+    before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
+    before_action :load_requisicao, only: :create
+    before_action :load_pessoa,only: :salvar_pessoa
+    before_action :load_pessoas
+    load_and_authorize_resource :class=>"Requisicao", except: :create
 
   # GET /requisicoes
   # GET /requisicoes.json
   add_breadcrumb "Requisições de Transporte"
   def index
-    @requisicoes = Requisicao.accessible_by(current_ability)
+    @requisicoes = Requisicao.aguardando.accessible_by(current_ability)
+    @requisicoes_confirmadas = Requisicao.confirmada.accessible_by(current_ability)
+    @requisicoes_canceladas = Requisicao.canceladas.accessible_by(current_ability)
+    @requisicoes_finalizadas = Requisicao.finalizadas.accessible_by(current_ability)
   end
 
   # GET /requisicoes/1
   # GET /requisicoes/1.json
   def show
+    @ary = []
+    @ultima = nil
+    gon.caminhos = []
+    if params[:notificacao]
+      @notificacao = current_user.notificacoes_recebidas.find(params[:notificacao])
+      @notificacao.ver unless @notificacao.vista?
+    end
+
+    if !@requisicao.endereco.nil?
+      gon.latitude = @requisicao.endereco.latitude
+      gon.longitude = @requisicao.endereco.longitude
+    elsif @requisicao.rotas.count > 0
+      @ultima = @requisicao.rotas.last
+
+      gon.latitude = @requisicao.rotas.last.latitude
+      gon.longitude = @requisicao.rotas.last.longitude
+
+      @requisicao.rotas.each do |r|
+        gon.caminhos.push [r.latitude,r.longitude] unless r.id == @ultima.id
+      end
+
+    end
+    
+    
+    
+
+
   end
 
 
@@ -57,7 +87,7 @@ class RequisicoesController < ApplicationController
        row.values numero_da_portaria: @requisicao.numero_da_portaria
      end
 
-    
+     
    end
 
    send_data report.generate, filename: 'requisicao.pdf', 
@@ -68,16 +98,59 @@ class RequisicoesController < ApplicationController
   # GET /requisicoes/new
   def new
     @requisicao = Requisicao.new
-  end
+    @estado = Estado.find_by(:sigla=>"AP")
+    @cidades = @estado.cidades.collect{|c|[c.nome,c.id]}
+  # @endereco = @requisicao.build_endereco
+end
+
+def listar_rota
+  @requisicao = Requisicao.find(params[:requisicao_id])
 
 
-  def agendar
-    @requisicao = Requisicao.new
-  end
+  kml = KMLFile.new
+  
+  folder = KML::Folder.new(:name => "Destino da Requisição: #{@requisicao.numero}",:description=>"Esta é uma Descrição")
+  if @requisicao.rotas.count > 0
 
-  def requisicao_urgente
-    @requisicao = Requisicao.new
-  end
+    @requisicao.rotas.each do |r|
+      point = KML::Point.new :coordinates => { :lat => r.latitude,
+       :lng => r.longitude }
+       place = KML::Placemark.new :geometry => point, :name => r.destino
+       folder.features << place                                     
+     end
+
+   elsif !@requisicao.endereco.nil?
+    point = KML::Point.new :coordinates => { :lat => @requisicao.endereco.latitude,
+     :lng => @requisicao.endereco.longitude }
+     place = KML::Placemark.new :geometry => point, :name => @requisicao.endereco.descricao
+     folder.features << place
+   end
+   kml.objects << folder
+
+   respond_to do |format|
+     format.kml { send_data kml.render }
+   end
+   
+
+ end
+
+ def lat_lng_cidade
+  @cidade = Cidade.find(params[:cidade_id])
+  response = []
+  response << {:latitude => @cidade.latitude, :longitude => @cidade.longitude}
+  render :json => {:response => response.compact}.as_json
+end
+
+
+def agendar
+  @requisicao = Requisicao.new
+   @estado = Estado.find_by(:sigla=>"AP")
+end
+
+def requisicao_urgente
+  @requisicao = Requisicao.new
+  @estado = Estado.find_by(:sigla=>"AP")
+end
 
 
   # GET /requisicoes/1/edit
@@ -89,8 +162,11 @@ class RequisicoesController < ApplicationController
   def agendar_requisicao
 
     @requisicao = Requisicao.new(requisicao_params)
-    @requisicao.data_ida = @requisicao.inicio.to_date #if params[requisicao_params[:inicio]]
-    @requisicao.hora_ida = @requisicao.inicio.to_time #if params[requisicao_params[:inicio]]
+    data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
+    data_retorno = Time.zone.parse("#{requisicao_params[:data_volta].gsub('/','-')} #{requisicao_params[:hora_volta]}")
+    #data = DateTime.strptime("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]} Brasilia",date_and_time)
+    @requisicao.inicio = data
+    @requisicao.fim = data_retorno
     @requisicao.periodo_longo = true
     @requisicao.requisitante_id = current_user.pessoa.id
     
@@ -100,6 +176,7 @@ class RequisicoesController < ApplicationController
         format.html { redirect_to @requisicao, notice: 'A Requisição foi agendada com sucesso.' }
         format.json { render :show, status: :created, location: @requisicao }
       else
+       @estado = Estado.find_by(:sigla=>"AP")
         format.html { render :agendar }
         format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
@@ -108,6 +185,8 @@ class RequisicoesController < ApplicationController
 
   def create
     @requisicao = Requisicao.new(requisicao_params)
+    @endereco = requisicao_params[:endereco_attributes]
+
     date_and_time = '%m-%d-%Y %H:%M:%S %Z'
     data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
     data_retorno = Time.zone.parse("#{requisicao_params[:data_volta].gsub('/','-')} #{requisicao_params[:hora_volta]}")
@@ -131,6 +210,7 @@ class RequisicoesController < ApplicationController
         elsif @tipo=="urgente"
          format.html { render :requisicao_urgente }
        end
+
        format.json { render json: @requisicao.errors, status: :unprocessable_entity }
      end
    end
@@ -187,7 +267,7 @@ end
   def destroy
     @requisicao.destroy
     respond_to do |format|
-      format.html { redirect_to requisicoes_url, notice: 'Requisicao was successfully destroyed.' }
+      format.html { redirect_to requisicoes_url, notice: 'A Requisição foi cancelada!' }
       format.json { head :no_content }
     end
   end
@@ -234,11 +314,12 @@ private
   # Use callbacks to share common setup or constraints between actions.
   def set_requisicao
     @requisicao = Requisicao.find(params[:id])
+
   end
   
   # Never trust parameters from the scary internet, only allow the white list through.
   def requisicao_params
-    params.require(:requisicao).permit(:numero,:pernoite, :descricao, :numero_passageiros,:requisitante_id, :data_ida, :hora_ida, :periodo,:tipo_requisicao, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:data_volta,:hora_volta,:motivo_id,:tipo_carga,:rota_ids=>[],:pessoa_ids=>[])
+    params.require(:requisicao).permit(:numero,:pernoite, :descricao, :numero_passageiros,:requisitante_id, :data_ida, :hora_ida, :periodo,:tipo_requisicao, :periodo_longo, :inicio, :fim, :posto_id, :preferencia_id,:data_volta,:hora_volta,:motivo_id,:tipo_carga,:rota_ids=>[],:pessoa_ids=>[],endereco_attributes: [:logradouro,:numero,:complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude,:descricao])
   end
 
   def pessoa_params
@@ -247,6 +328,7 @@ private
 
   def load_requisicao
     @requisicao = Requisicao.new(requisicao_params)
+    @estado = Estado.find_by(:sigla=>"AP")
   end
 
   def load_pessoa

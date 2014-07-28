@@ -1,10 +1,10 @@
-<%= simple_form_for @mensagem,html: {class: "form-horizontal"} do |f| %>
+<%= simple_form_for @mensagem,html: {class: "form-horizontal"},:remote=>true do |f| %>
   <%= f.error_notification %>
 
-
+    <%= f.input :assunto%>
     <%= f.input :texto,:input_html=>{:class=>"mensagem"},as: :text	 %>
-    <%= f.input :remetente_id,input_html: {value: current_user.id},as: :hidden %>
-    <%= f.association :destinatario,:collection=>@destinatarios %>
+    <%= f.input :remetente_id,input_html: {value: current_user.id,cols: "50",rows: "4",:class=>"col-sm-6"},as: :hidden %>
+    <%= f.association :destinatario,:collection=>@destinatarios,:label=>"Enviar para" %>
 
 
 

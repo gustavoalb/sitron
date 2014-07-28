@@ -5,6 +5,7 @@ class Mensagem < ActiveRecord::Base
   scope :tipo_usuario,lambda{|tipo| where(:tipo_usuario=>tipo)}
   scope :para_o_usuario,lambda {|u| where(:destinatario_id=>u.id)}
   scope :nao_lidas, ->{where(:state=>:nao_lida)}
+  scope :lidas,->{where(:state=>:lida)}
 
 
   state_machine :initial => :nao_lida do

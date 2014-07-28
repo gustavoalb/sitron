@@ -4,7 +4,9 @@ class MensagensController < ApplicationController
   # GET /mensagens
   # GET /mensagens.json
   def index
-    @mensagens = Mensagem.para_o_usuario(current_user).order(created_at: :desc)|Mensagem.tipo_usuario(current_user.role).order("created_at ASC").all
+    @mensagens = Mensagem.para_o_usuario(current_user).nao_lidas.order(created_at: :desc)|Mensagem.tipo_usuario(current_user.role).nao_lidas.order("created_at ASC").all
+    @mensagens_lidas = Mensagem.para_o_usuario(current_user).lidas.order(created_at: :desc)|Mensagem.tipo_usuario(current_user.role).lidas.order("created_at ASC").all
+  
   end
 
   # GET /mensagens/1
@@ -42,8 +44,12 @@ class MensagensController < ApplicationController
 
     respond_to do |format|
       if @mensagem.save
+        @contador = @mensagem.destinatario.mensagens_recebidas.nao_lidas.count
+        @mensagens_recebidas = @mensagem.destinatario.mensagens_recebidas.limit(3).nao_lidas
+
         format.html { redirect_to mensagens_url, notice: 'Sua Mensagem foi enviada! ' }
         format.json { render :show, status: :created, location: @mensagem }
+        format.js
       else
         format.html { render :new }
         format.json { render json: @mensagem.errors, status: :unprocessable_entity }

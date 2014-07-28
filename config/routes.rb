@@ -6,6 +6,9 @@ Sitron::Application.routes.draw do
     resources :banco_de_horas
   end
 
+
+  
+
   namespace :administracao do
     resources :escolas
   end
@@ -55,6 +58,8 @@ Sitron::Application.routes.draw do
     post :avaliar
     post :salvar_pessoa,on: :collection
     get :relatorio_horas,on: :collection
+    get 'lat_lng_cidade',on: :collection
+    get :listar_rota
   end
 
   namespace :administracao do
@@ -97,6 +102,7 @@ Sitron::Application.routes.draw do
     post  :chegada_servico,on: :collection
     post  :saida_veiculo,on: :collection
     post  :remover_posto, on: :collection
+    post :chat,on: :collection
     
   end
 

@@ -24,14 +24,115 @@ module NotificacoesHelper
 	end
 
 	def link_page(link_atual)
-         link = ''
-		 if current_page?(link_atual)
-		 	link = "#"
-		 else
-		 	link = link_atual
-		 end
+		link = ''
+		if current_page?(link_atual)
+			link = "#"
+		else
+			link = link_atual
+		end
 
-		 return link
+		return link
+	end
+
+
+
+
+
+
+	def v_notificacao(notificacoes)
+		
+
+		html=""
+
+		html+="<li class='dropdown'>"
+		html+="<a href='#' class='hasnotifications dropdown-toggle' data-toggle='dropdown' id='notificacoes'><i class='fa fa-bell'></i>"
+		html+="<div id='contador_notificacao'>"
+		if notificacoes.count > 0
+			html+="<span class='badge'>#{notificacoes.count}</span>"
+		end
+		html+="</div>"
+		html+="</a>"
+		html+="<ul class='dropdown-menu notifications arrow'>"
+		html+="<li class='dd-header'>"
+		html+="<div id='header_notificacoes'>"
+		html+="<span>Você tem #{notificacoes.count} #{'nova'.pluralize(notificacoes.count)} #{'notificação'.pluralize(notificacoes.count)}</span>"
+		html+="<span>#{link_to 'Marcar como visto',marcar_vista_notificacoes_url,:method=>:post,:remote=>true}</span>"
+		html+="</div>"
+		html+="</li>"
+		html+="<div tabindex='5003' style='overflow-y: hidden;' class='scrollthis'>"
+		html+="<div id='lista_notificacoes'>"
+		notificacoes.each do |notificacao|	
+			case notificacao.tipo
+			when "aviso"
+				tipo = "notification-order"
+				icone = "fa fa-bolt"
+			when "cancelamento"
+				tipo = "notification-danger"
+				icone = "fa fa-thumbs-down"
+			when "confirmacao"
+				tipo = "notification-success"
+				icone = "fa fa-car"
+			when "problema"
+				tipo = "notification-failure"
+				icone = "fa fa-times-circle"
+			end
+			
+			if notificacao.objeto_type == "Requisicao" and notificacao.tipo == "aviso"
+				url = "#{gerencia_controle_requisicoes_detalhes_requisicao_url(:requisicao_id=>notificacao.objeto.id,:notificacao_id=>notificacao.id)}" 
+			elsif notificacao.objeto_type == "Requisicao" and notificacao.tipo == "cancelamento" and current_user.id == notificacao.user_id
+				url = "#{requisicao_path(notificacao.objeto_id,:notificacao=>notificacao.id)}"
+			elsif notificacao.objeto_type == "Requisicao" and notificacao.tipo == "confirmacao" and current_user.id == notificacao.user_id
+				url = "#{requisicao_path(notificacao.objeto_id,:notificacao=>notificacao.id)}"
+			end
+
+			html+="<li><a href='#{url}' class='#{tipo}'>"
+			html+="<span class='hora'>#{tempo_relativo(notificacao.created_at)}</span>"
+			html+="<i class='#{icone}'></i>"
+			html+="<span class='msg'>#{notificacao.texto}</span></a></li>"
+		end
+
+		html+="</div></div>"
+		html+="<li class='dd-footer'><a href='#{link_page(gerencia_controle_requisicoes_index_path)}'>Ver Todas as Notificações</a></li>"
+		html+="</ul>"
+		html+="</li>"
+
+		return raw(html)
+	end
+
+
+	def listar_notificacoes(notificacoes)
+		html=""
+		notificacoes.each do |notificacao|	
+			case notificacao.tipo
+			when "aviso"
+				tipo = "notification-order"
+				icone = "fa fa-bolt"
+			when "cancelamento"
+				tipo = "notification-danger"
+				icone = "fa fa-thumbs-down"
+			when "confirmacao"
+				tipo = "notification-success"
+				icone = "fa fa-car"
+			when "problema"
+				tipo = "notification-failure"
+				icone = "fa fa-times-circle"
+			end
+			
+			
+			if notificacao.objeto_type == "Requisicao" and notificacao.tipo == "aviso"
+				url = "#{gerencia_controle_requisicoes_detalhes_requisicao_url(:requisicao_id=>notificacao.objeto.id,:notificacao_id=>notificacao.id)}" 
+			elsif notificacao.objeto_type == "Requisicao" and notificacao.tipo == "cancelamento" and current_user.id == notificacao.user_id
+				url = "#{requisicao_path(notificacao.objeto_id,:notificacao=>notificacao.id)}"
+			elsif notificacao.objeto_type == "Requisicao" and notificacao.tipo == "confirmacao" and current_user.id == notificacao.user_id
+				url = "#{requisicao_path(notificacao.objeto_id,:notificacao=>notificacao.id)}"
+			end
+
+			html+="<li><a href='#{url}' class='#{tipo}'>"
+			html+="<span class='hora'>#{tempo_relativo(notificacao.created_at)}</span>"
+			html+="<i class='#{icone}'></i>"
+			html+="<span class='msg'>#{notificacao.texto}</span></a></li>"
+		end
+		return raw(html)
 	end
 
 end

@@ -37,21 +37,28 @@ class ApplicationController < ActionController::Base
 
 
   def initialize_variaveis
-      @estados = Estado.all.order(:nome).collect{|e|[e.nome,e.id]}
-      @empresas = Administracao::Empresa.all.order(:nome)    
-      @modalidades = Administracao::Modalidade.all.order(:nome) 
-      @combustiveis = Administracao::Combustivel.all.order(:nome)
-      @rotas = Administracao::Rota.all.order(:destino)
-      @problemas = Avaliacao.where(:tipo=>2).all
-      @cargos = Administracao::Cargo.all.order(:nome)
-      @departamentos = Administracao::Departamento.all.order(:nome)
+    @estados = Estado.all.order(:nome).collect{|e|[e.nome,e.id]}
+    @empresas = Administracao::Empresa.all.order(:nome)    
+    @modalidades = Administracao::Modalidade.all.order(:nome) 
+    @combustiveis = Administracao::Combustivel.all.order(:nome)
+    @rotas = Administracao::Rota.all.order(:destino)
+    @problemas = Avaliacao.where(:tipo=>2).all
+    @cargos = Administracao::Cargo.all.order(:nome)
+    @departamentos = Administracao::Departamento.all.order(:nome)
 
   end
 
   def mensagens
-    @mensagensb = Mensagem.para_o_usuario(current_user).nao_lidas|Mensagem.tipo_usuario(current_user.role).nao_lidas if current_user
+    @mensagensb = Mensagem.para_o_usuario(current_user).nao_lidas if current_user
     #@notificacoesb = Notificacao.nao_vista.all if current_user and current_user.administrador?
-    @notificacoesb = Notificacao.nao_vista.all if current_user
+    @notificacoes_gerentes = Notificacao.nao_vista.para_gerentes.all if current_user and (current_user.useget? or current_user.administrador?)
+    @notificacoes_usuarios = Notificacao.nao_vista.do_usuario(current_user).all if current_user
+    
+    if current_user and (current_user.useget? or current_user.administrador?)
+      @notificacoesb = @notificacoes_gerentes + @notificacoes_usuarios
+    else
+      @notificacoesb = @notificacoes_usuarios
+    end
   end
 
 end

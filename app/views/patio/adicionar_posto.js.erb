@@ -1,4 +1,7 @@
-$('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
 $('#posto_codigo_de_barras').val('')
 
+
+<% publish_to "/patio" do %>
+$('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
+<% end %>
 
