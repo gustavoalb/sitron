@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "sitron_font";
-  src: url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.eot");
-  src: url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.eot?#iefix") format("embedded-opentype"),
-       url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.woff") format("woff"),
-       url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.ttf") format("truetype"),
-       url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.svg#sitron_font") format("svg");
+  src: url(<%=asset_path('sitron_font_1d41da70c8d916e89c6e88765485cb58.eot')%>);
+  src: url(<%=asset_path('sitron_font_1d41da70c8d916e89c6e88765485cb58.eot?#iefix')%>) format("embedded-opentype"),
+       url(<%=asset_path('sitron_font_1d41da70c8d916e89c6e88765485cb58.woff')%>) format("woff"),
+       url(<%=asset_path('sitron_font_1d41da70c8d916e89c6e88765485cb58.ttf')%>) format("truetype"),
+       url(<%=asset_path('sitron_font_1d41da70c8d916e89c6e88765485cb58.svg#sitron_font')%>) format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "sitron_font";
-    src: url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.svg#sitron_font") format("svg");
+    src: url(<%=asset_path('sitron_font_1d41da70c8d916e89c6e88765485cb58.svg#sitron_font") format("svg");
   }
 }
 

@@ -36,6 +36,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
   respond_to do |format|
     format.js
   end
+  
 end
 
 
