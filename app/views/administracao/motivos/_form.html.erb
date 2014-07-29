@@ -10,6 +10,8 @@
     <%= f.input :interior,as: :inline_checkbox,:label=>"Para o Interior" %>
     <%= f.input :viagem_longa,as: :inline_checkbox,:label=>"Viagem Longa" %>
     <%= f.input :urgente,as: :inline_checkbox,:label=>"Urgente" %>
+        <%= f.input :necessita_descricao,:label=>"Precisa de uma Descrição Detalhada",as: :inline_checkbox%>
+
 
 <br/><br/><br/>
 <%=botoes_form(f)%>

@@ -70,7 +70,7 @@ class Administracao::MotivosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_motivo_params
-      params.require(:administracao_motivo).permit(:nome, :tipo_id, :carga, :passageiro, :entrega_documento, :interior, :viagem_longa,:urgente)
+      params.require(:administracao_motivo).permit(:nome, :tipo_id, :carga, :passageiro, :entrega_documento, :interior, :viagem_longa,:urgente,:necessita_descricao)
     end
 
     def load_motivo

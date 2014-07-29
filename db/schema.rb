@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140728160744) do
+ActiveRecord::Schema.define(version: 20140729061642) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -247,15 +247,17 @@ ActiveRecord::Schema.define(version: 20140728160744) do
   create_table "motivos", force: true do |t|
     t.string   "nome"
     t.integer  "tipo_id"
-    t.boolean  "carga",             default: false
-    t.boolean  "passageiro",        default: false
-    t.boolean  "entrega_documento", default: false
-    t.boolean  "interior",          default: false
-    t.boolean  "viagem_longa",      default: false
+    t.boolean  "carga",               default: false
+    t.boolean  "passageiro",          default: false
+    t.boolean  "entrega_documento",   default: false
+    t.boolean  "interior",            default: false
+    t.boolean  "viagem_longa",        default: false
     t.integer  "lote_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean  "urgente",           default: false
+    t.integer  "tipo_requisicao"
+    t.boolean  "urgente",             default: false
+    t.boolean  "necessita_descricao", default: false
   end
 
   add_index "motivos", ["lote_id"], name: "index_motivos_on_lote_id", using: :btree
@@ -284,12 +286,19 @@ ActiveRecord::Schema.define(version: 20140728160744) do
 
   create_table "patios", force: true do |t|
     t.datetime "data_entrada"
+    t.integer  "veiculo_id"
+    t.integer  "motorista_id"
+    t.integer  "empresa_id"
     t.datetime "data_saida"
     t.string   "state"
     t.integer  "position"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "patios", ["empresa_id"], name: "index_patios_on_empresa_id", using: :btree
+  add_index "patios", ["motorista_id"], name: "index_patios_on_motorista_id", using: :btree
+  add_index "patios", ["veiculo_id"], name: "index_patios_on_veiculo_id", using: :btree
 
   create_table "pessoas", force: true do |t|
     t.string   "nome"
@@ -360,7 +369,6 @@ ActiveRecord::Schema.define(version: 20140728160744) do
 
   create_table "requisicoes", force: true do |t|
     t.string   "numero"
-    t.integer  "motivo_id"
     t.string   "descricao"
     t.integer  "requisitante_id"
     t.date     "data_ida"
@@ -376,6 +384,7 @@ ActiveRecord::Schema.define(version: 20140728160744) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "agenda",              default: false
+    t.integer  "motivo_id"
     t.integer  "tipo_requisicao"
     t.integer  "numero_passageiros"
     t.integer  "tipo_carga"
@@ -389,7 +398,6 @@ ActiveRecord::Schema.define(version: 20140728160744) do
     t.text     "kml"
   end
 
-  add_index "requisicoes", ["motivo_id"], name: "index_requisicoes_on_motivo_id", using: :btree
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
   add_index "requisicoes", ["preferencia_id"], name: "index_requisicoes_on_preferencia_id", using: :btree
   add_index "requisicoes", ["requisitante_id"], name: "index_requisicoes_on_requisitante_id", using: :btree

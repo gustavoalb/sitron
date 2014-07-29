@@ -95,8 +95,9 @@ $("#div_carga").html(data);
       $('#mapa').removeClass('fade');
       $('#mapa').addClass('gmaps');
      // autocomplete_init();
-      $('#requisicao_rota_ids').hide();
-    });
+     $("#requisicao_rota_ids").multiselect("clearSelection");
+     ("#requisicao_rota_ids").multiselect('hide');
+   });
 
     $(document).on('nested:fieldRemoved', function() {
       fieldsCount -= 1;
@@ -104,6 +105,7 @@ $("#div_carga").html(data);
 
       $('#mapa').addClass('fade');
       $('#mapa').addClass('gmaps');
+      $('#endereco_real').val('');
     });  
 
   // count existing nested fields after page was loaded
@@ -112,6 +114,7 @@ $("#div_carga").html(data);
 })
 
 </script>
+
 
 
 <%end%>
@@ -162,7 +165,7 @@ $("#div_carga").html(data);
       }
       else {
         if (options.length > this.numberDisplayed) {
-          return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+          return 'Foram Selecionado(s) ' + ' ' + options.length +' de '+$("#npassageiros").val()+' passageiro(s)'+' <b class="caret"></b>';
         }
         else {
           var selected = '';
@@ -185,12 +188,14 @@ $("#div_carga").html(data);
       return !$(this).is(':selected');
     });
 
+
     var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
     nonSelectedOptions.each(function() {
       var input = $('input[value="' + $(this).val() + '"]');
       input.prop('disabled', true);
       input.parent('li').addClass('disabled');
     });
+    
   }
   else {
     // Enable all checkboxes.
@@ -205,7 +210,7 @@ $("#div_carga").html(data);
 });
 $('.multiselect_rota').multiselect({
   enableFiltering: true,
-  numberDisplayed:0,
+  numberDisplayed:00,
   maxHeight: 200,
   enableCaseInsensitiveFiltering: true,
   nonSelectedText: 'Selecione ao Menos uma Rota',
@@ -215,7 +220,7 @@ $('.multiselect_rota').multiselect({
     }
     else {
       if (options.length > this.numberDisplayed) {
-        return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+        return 'Foram Selecionado(s) ' + ' ' + options.length + ' Destino(s)  <b class="caret"></b>';
       }
       else {
         var selected = '';

@@ -26,7 +26,9 @@ class ApplicationController < ActionController::Base
   end
 
 
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from CanCan::AccessDenied do |exception|
+    redirect_to main_app.home_nao_autorizado_url
+  end
 
   private
 

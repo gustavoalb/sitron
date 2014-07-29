@@ -12,10 +12,12 @@ class Requisicao < ActiveRecord::Base
   has_and_belongs_to_many :rotas,:class_name=>"Administracao::Rota"
   validates_presence_of :data_ida,:hora_ida,:motivo_id
   validates_presence_of :rota_ids, :message=>"Precisa definir ao menos uma rota",if: Proc.new { |req| req.endereco.nil? }
+  validates_presence_of :descricao, :message=>"Precisa informar com detalhes o caso",if: Proc.new { |req| req.motivo and req.motivo.necessita_descricao? }
+  validates_presence_of :tipo_carga, :message=>"Precisa informar o tipo de carga",if: Proc.new { |req| req.motivo and req.motivo.carga? }
   validates_presence_of :inicio
   validates_inclusion_of :pernoite, :in=> [true], :message=>"Para pernoite em Macapá, é necessário fazer uma requisição para cada dia.",:if=>Proc.new { |req| req.tipo_requisicao=='agendada' }
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
-  validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número excede ao máximo permitido!"
+  validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número precisa ser informado!",if: Proc.new{|req| req.pessoa_ids.count>0 }
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
   
   #validate :hora
@@ -32,7 +34,7 @@ class Requisicao < ActiveRecord::Base
   has_many :mensagens,:as=>:objeto, dependent: :destroy
   has_many :notificacoes,:as=>:objeto, dependent: :destroy
 
-  accepts_nested_attributes_for :endereco,limit: 1, :reject_if => proc { |attributes| attributes['endereco'].blank? },:allow_destroy => true
+  accepts_nested_attributes_for :endereco,limit: 1, :reject_if => proc { |attributes| attributes['endereco'].blank?   },:allow_destroy => true
 
   before_validation :on => :create 
   
@@ -92,6 +94,9 @@ class Requisicao < ActiveRecord::Base
     if self.tipo_carga
       ary.push self.tipo_carga
     end
+    if self.descricao
+      ary.push self.descricao 
+    end
     ary.compact.join(', ')
   end
 
@@ -106,10 +111,16 @@ class Requisicao < ActiveRecord::Base
   def rotas_requisicao
 
     ary = []
-
+    if self.rotas.count > 0
     self.rotas.each do |r|
       ary.push r.destino
     end
+  else
+   if self.endereco
+    ary.push self.endereco.descricao
+    ary.push self.endereco.endereco
+   end
+  end
     ary.compact.join(', ')
   end
 
@@ -357,11 +368,11 @@ end
 validate do
 
   if self.pessoa_ids.count < self.numero_passageiros.to_i
-    self.errors.add(:pessoa_ids, "Número de passageiros inferior ao informado (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
+    self.errors.add(:pessoa_ids, "Número de passageiros inferior ao informado (#{self.pessoa_ids.count} para #{self.numero_passageiros})")
     self.pessoa_ids = []
   elsif self.pessoa_ids.count > self.numero_passageiros.to_i
     self.pessoa_ids = []
-    self.errors.add(:pessoa_ids, "Número de passageiros superior ao informado  (#{self.numero_passageiros} para #{self.pessoa_ids.count})")
+    self.errors.add(:pessoa_ids, "Número de passageiros superior ao informado  (#{self.pessoa_ids.count} para #{self.numero_passageiros})")
   end
 
 end

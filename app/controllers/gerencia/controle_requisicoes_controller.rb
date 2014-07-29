@@ -1,10 +1,13 @@
 class Gerencia::ControleRequisicoesController < ApplicationController
   def index
-  	@requisicoes = Requisicao.aguardando.urgentes.all
+  	authorize! :gerencia_index,current_user
+    @requisicoes = Requisicao.aguardando.urgentes.all
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
+
   end
 
   def definir_posto
+    authorize! :definir_posto,current_user
     @requisicao = Requisicao.find(params[:req_id])
     @posto = Posto.ativo.find(params[:posto_id])
     @veiculo = @posto.veiculo
@@ -33,6 +36,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
 
 def detalhes_requisicao
+authorize! :detalhes_requisicao,current_user
  @requisicao = Requisicao.find(params[:requisicao_id])
  @notificacao = Notificacao.find(params[:notificacao_id])
  @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
@@ -40,6 +44,7 @@ end
 
 
 def cancelar_requisicao
+  authorize! :cancelar_requisicao,current_user
   @requisicao = Requisicao.find(params[:requisicao])
   @requisicao.motivo_cancelamento = params[:motivo]
   @requisicao.cancelar

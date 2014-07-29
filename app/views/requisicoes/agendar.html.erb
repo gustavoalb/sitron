@@ -19,6 +19,14 @@
 <%= f.error_notification %>
 <%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao"}%>
 <div id="div_carga">
+ <%if f.object.motivo and f.object.motivo.carga?%>
+      <%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
+      <%end%>
+      <%if f.object.motivo and f.object.motivo.necessita_descricao%>
+      <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
+
+
+      <%end%>
 </div>
 <%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
 <%= f.input :data_ida,input_html: {readonly: true,value: Date.tomorrow.to_s_br,class: "datepicker"},as: :string,:label=>"Data da Saída"  %>
@@ -96,8 +104,10 @@ $("#div_carga").html(data);
       $('#mapa').removeClass('fade');
       $('#mapa').addClass('gmaps');
      // autocomplete_init();
-      $('#requisicao_rota_ids').hide();
-    });
+     $("#requisicao_rota_ids").multiselect("clearSelection");
+     $("#requisicao_rota_ids").selectpicker('hide');
+
+   });
 
     $(document).on('nested:fieldRemoved', function() {
       fieldsCount -= 1;
@@ -105,6 +115,7 @@ $("#div_carga").html(data);
 
       $('#mapa').addClass('fade');
       $('#mapa').addClass('gmaps');
+      $('#endereco_real').val('');
     });  
 
   // count existing nested fields after page was loaded
@@ -113,6 +124,7 @@ $("#div_carga").html(data);
 })
 
 </script>
+
 
 <script type="text/javascript">
  var np = 0
@@ -130,25 +142,25 @@ $("#div_carga").html(data);
     maxHeight: 150,
     numberDisplayed:0,
     enableCaseInsensitiveFiltering: true,
-     buttonText: function(options, select) {
-    if (options.length == 0) {
-      return this.nonSelectedText + ' <b class="caret"></b>';
-    }
-    else {
-      if (options.length > this.numberDisplayed) {
-        return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+    buttonText: function(options, select) {
+      if (options.length == 0) {
+        return this.nonSelectedText + ' <b class="caret"></b>';
       }
       else {
-        var selected = '';
-        options.each(function() {
-          var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+        if (options.length > this.numberDisplayed) {
+          return 'Foram Selecionado(s) ' + ' ' + options.length +' de '+$("#npassageiros").val()+' passageiro(s)'+' <b class="caret"></b>';
+        }
+        else {
+          var selected = '';
+          options.each(function() {
+            var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
 
-          selected += "Selecionados" + ', ';
-        });
-        return selected.substr(0, selected.length - 2) + ' <b class="caret">Selecionado</b>';
+            selected += "Selecionados" + ', ';
+          });
+          return selected.substr(0, selected.length - 2) + ' <b class="caret">Selecionado</b>';
+        }
       }
-    }
-  },
+    },
     onChange: function(option, checked) {
     // Get selected options.
     var selectedOptions = $('.multiselect_pessoa option:selected');
@@ -159,12 +171,14 @@ $("#div_carga").html(data);
       return !$(this).is(':selected');
     });
 
+
     var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
     nonSelectedOptions.each(function() {
       var input = $('input[value="' + $(this).val() + '"]');
       input.prop('disabled', true);
       input.parent('li').addClass('disabled');
     });
+    
   }
   else {
     // Enable all checkboxes.
@@ -179,7 +193,7 @@ $("#div_carga").html(data);
 });
 $('.multiselect_rota').multiselect({
   enableFiltering: true,
-  numberDisplayed:0,
+  numberDisplayed:00,
   maxHeight: 200,
   enableCaseInsensitiveFiltering: true,
   nonSelectedText: 'Selecione ao Menos uma Rota',
@@ -189,7 +203,7 @@ $('.multiselect_rota').multiselect({
     }
     else {
       if (options.length > this.numberDisplayed) {
-        return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+        return 'Foram Selecionado(s) ' + ' ' + options.length + ' Destino(s)  <b class="caret"></b>';
       }
       else {
         var selected = '';

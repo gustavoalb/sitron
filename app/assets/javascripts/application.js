@@ -31,6 +31,7 @@
 
 
 
+
 //= require_tree .
 
 
@@ -189,28 +190,3 @@ function updateCountdown() {
     jQuery('.contagem_caracteres').text(remaining + ' caracteres sobrando.');}
 
 
-    $(document).ready(function(){
-
-      $.ionSound({
-        sounds: [
-        "button_tiny",
-        "bell_ring",
-        "computer_error",
-        "water_droplet_3",
-        "car_horn:0.4"
-        ],
-        path: "/assets/",
-        multiPlay: true,
-        volume: "1.0"
-      });
-
-
-      if($('#endereco_real').is(':visible')) {
-        $('#mapa').removeClass('fade');
-        $('#mapa').addClass('gmaps');
-        autocomplete_init();
-      }
-
-
-
-    });

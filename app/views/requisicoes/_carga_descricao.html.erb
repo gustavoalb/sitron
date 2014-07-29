@@ -1,0 +1,5 @@
+<%=simple_fields_for :requisicao do |f|%>
+<%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
+  <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
+
+<%end%>

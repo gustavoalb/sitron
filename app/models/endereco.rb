@@ -8,6 +8,9 @@ class Endereco < ActiveRecord::Base
 	belongs_to :cidade
 	belongs_to :estado
 
+    validates_presence_of :descricao, :message=>"Precisa informar a descrição do destino",if: Proc.new { |e| e.enderecavel_type? and e.enderecavel_type == "Requisicao" }
+
+
 
 
    #geocoded_by :endereco_completo

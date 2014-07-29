@@ -17,7 +17,7 @@
 <%= simple_nested_form_for @administracao_empresa,:html=>{:class=>"form-horizontal"} do |f| %>
   <%= f.error_notification %>
 
-    <%= f.input :nome%>
+    <%= f.input :nome,:input_html=>{:'data-bv-notempty'=>"true",:'data-bv-notempty-message'=>"The first name is required and cannot be empty"}%>
     <%= f.input :cnpj,input_html: {:class=>"cnpj"} %>
     <%= f.input :responsavel_id, :url=>autocomplete_pessoa_nome_administracao_empresas_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_empresa_responsavel_id"},:label=>"Nome do Responsável"%>
 	 <%=f.fields_for :endereco do |endereco|%>

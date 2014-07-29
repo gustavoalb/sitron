@@ -277,8 +277,12 @@ end
     if params[:motivo_id] and !params[:motivo_id].blank?
       @motivo = Administracao::Motivo.find(params[:motivo_id])
     end
-    if @motivo and @motivo.carga?
+    if @motivo and @motivo.carga? and !@motivo.necessita_descricao?
       render :partial=>"partial_carga"
+    elsif @motivo and @motivo.carga? and @motivo.necessita_descricao? 
+      render :partial=>"carga_descricao"
+    elsif @motivo and @motivo.necessita_descricao?
+      render :partial=>"descricao"
     elsif !@motivo or !@motivo.carga? or params[:motivo_id].blank?
       render :nothing=>true
     end

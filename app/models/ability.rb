@@ -15,6 +15,7 @@ class Ability
       can :manage, Requisicao, {:requisitante_id=>user.pessoa.id}
       cannot :manage, :requisicao_imediata, Requisicao
       can :manage, Administracao::Pessoa, {:departamento_id=>user.pessoa.departamento_id}
+      cannot [:gerencia_index,:definir_posto,:detalhes_requisicao,:cancelar_requisicao],Requisicao
     end
 
 

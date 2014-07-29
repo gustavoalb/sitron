@@ -1,6 +1,7 @@
 source 'http://rubygems.org'
 ruby '2.1.1'
 gem 'rails', '4.1.1'
+gem "non-stupid-digest-assets"
 gem 'pg'
 gem 'sass-rails', '~> 4.0.3'
 gem 'uglifier', '>= 1.3.0'
@@ -35,6 +36,7 @@ gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails', :git
 
 gem 'bootstrap-select-rails'
 gem 'bootbox-rails'
+
 
 gem 'carrierwave'
 gem 'mini_magick'

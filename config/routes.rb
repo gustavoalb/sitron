@@ -91,6 +91,7 @@ Sitron::Application.routes.draw do
 
 
   get 'patio/index'
+  get "home/nao_autorizado"
 
 
   resources :patio,only: [:index] do 

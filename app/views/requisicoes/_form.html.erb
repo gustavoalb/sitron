@@ -17,7 +17,16 @@
     <%= f.error_notification %>
     <%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao"}%>
     <div id="div_carga">
+      <%if f.object.motivo and f.object.motivo.carga?%>
+      <%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
+      <%end%>
+      <%if f.object.motivo and f.object.motivo.necessita_descricao%>
+      <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
+
+
+      <%end%>
     </div>
+
     <%= f.input :tipo_requisicao,input_html: {value: "normal",readonly: true},as: :hidden%>
     <%if Time.zone.now.wday == 6 -%>
     <%= f.input :data_ida,input_html: {readonly: true,value: 2.days.from_now.to_date.to_s_br},as: :string,:label=>"Saída"  %>
@@ -55,9 +64,9 @@
   </div>
 
   <div class='col-md-6'>
-  <%=yield :direito%>
-   
- </div>
+    <%=yield :direito%>
+
+  </div>
 </fieldset>
 </div>
 
@@ -100,8 +109,9 @@ $("#div_carga").html(data);
       $('#mapa').removeClass('fade');
       $('#mapa').addClass('gmaps');
      // autocomplete_init();
-      $('#requisicao_rota_ids').hide();
-    });
+     $("#requisicao_rota_ids").multiselect("clearSelection");
+     ("#requisicao_rota_ids").multiselect('hide');
+   });
 
     $(document).on('nested:fieldRemoved', function() {
       fieldsCount -= 1;
@@ -109,6 +119,7 @@ $("#div_carga").html(data);
 
       $('#mapa').addClass('fade');
       $('#mapa').addClass('gmaps');
+      $('#endereco_real').val('');
     });  
 
   // count existing nested fields after page was loaded
@@ -168,7 +179,7 @@ $("#div_carga").html(data);
       }
       else {
         if (options.length > this.numberDisplayed) {
-          return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+          return 'Foram Selecionado(s) ' + ' ' + options.length +' de '+$("#npassageiros").val()+' passageiro(s)'+' <b class="caret"></b>';
         }
         else {
           var selected = '';
@@ -191,12 +202,14 @@ $("#div_carga").html(data);
       return !$(this).is(':selected');
     });
 
+
     var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
     nonSelectedOptions.each(function() {
       var input = $('input[value="' + $(this).val() + '"]');
       input.prop('disabled', true);
       input.parent('li').addClass('disabled');
     });
+    
   }
   else {
     // Enable all checkboxes.
@@ -221,7 +234,7 @@ $('.multiselect_rota').multiselect({
     }
     else {
       if (options.length > this.numberDisplayed) {
-        return 'Você selecionou' + ' ' + options.length +' <b class="caret"></b>';
+        return 'Foram Selecionado(s) ' + ' ' + options.length + ' Destino(s)  <b class="caret"></b>';
       }
       else {
         var selected = '';

@@ -8,41 +8,54 @@ class ProcessoFila
 		@ano = Time.zone.now.year
 
 
+		if @requisicoes
+			@requisicoes.each do |req|
 
-		@requisicoes.each do |req|
+				@postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")	
+				@postos.each do |p|
 
-			@postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")	
-			@postos.each do |p|
+					@tipo = p.veiculo.lote.tipo.remover_acentos.downcase
 
-				@tipo = p.veiculo.lote.tipo.remover_acentos.downcase
+					if req.previsao_horas_extras + p.veiculo.horas_extras_semanais(@semana,@mes,@ano) <=8
 
-				if req.previsao_horas_extras + p.veiculo.horas_extras_semanais(@semana,@mes,@ano) <=8
 
-					if req.motivo.tipo.nome.remover_acentos.downcase == @tipo and req.numero_passageiros <= p.veiculo.capacidade_passageiros
-						req.posto = p 
-						req.confirmar
-						p.ligar
-						break
-					elsif req.numero_passageiros <= p.veiculo.capacidade_passageiros
-						req.posto = p 
-						req.confirmar
-						p.ligar
-						break
-					elsif Time.zone.now + 5.minutes <= req.hora_ida.in_time_zone 
-						requisicao.motivo_cancelamento = "Nenhum posto no pátio atendia ao requerimento no momento!"
-						requisicao.cancelar
+						if req.motivo and req.motivo.carga? and @tipo == 'caminhao' 
+
+							req.posto = p 
+							req.confirmar
+							p.ligar
+							break
+							
+						else
+
+							if req.motivo.tipo.nome.remover_acentos.downcase == @tipo and req.numero_passageiros <= p.veiculo.capacidade_passageiros
+								req.posto = p 
+								req.confirmar
+								p.ligar
+								break
+							elsif req.numero_passageiros <= p.veiculo.capacidade_passageiros
+								req.posto = p 
+								req.confirmar
+								p.ligar
+								break
+							elsif Time.zone.now + 5.minutes <= req.hora_ida.in_time_zone 
+								requisicao.motivo_cancelamento = "Nenhum posto no pátio atendia ao requerimento no momento!"
+								requisicao.cancelar
+								break
+							end
+
+						end
+
+
+
+					else
 						break
 					end
 
-				else
-					break
 				end
-
 			end
+
 		end
-
-
-
 
 	end
 

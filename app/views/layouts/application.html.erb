@@ -163,6 +163,7 @@
             <% end %>
 
             <li class="divider"></li>
+                            <% if current_user.administrador? or current_user.useget? %>
             <li><a href="javascript:;"><i class="fa fa-cog"></i> <span>Configurações</span></a>
               <ul class="acc-menu">
                 <% if current_user.administrador? %>
@@ -198,7 +199,7 @@
                 <% end %>
             </ul>
         </li>
-
+         <%end%>
     </ul>
     <!-- END SIDEBAR MENU -->
 </nav>
@@ -336,9 +337,7 @@
 
 
 <%= yield :scripts%>
-<script type="text/javascript">
-    Faye.Transport.WebSocket.isUsable = function($,_,c){c(false)};
-</script>
+
 </body>
 </html>
 
