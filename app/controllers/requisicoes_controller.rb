@@ -127,9 +127,10 @@ def listar_rota
    end
    kml.objects << folder
 
-   respond_to do |format|
-     format.kml { send_data kml.render }
-   end
+   @requisicao.kml = kml.render
+   @requisicao.save 
+
+   send_data @requisicao.kml
    
 
  end
@@ -144,7 +145,7 @@ end
 
 def agendar
   @requisicao = Requisicao.new
-   @estado = Estado.find_by(:sigla=>"AP")
+  @estado = Estado.find_by(:sigla=>"AP")
 end
 
 def requisicao_urgente
@@ -177,19 +178,19 @@ end
         format.json { render :show, status: :created, location: @requisicao }
       else
        @estado = Estado.find_by(:sigla=>"AP")
-        format.html { render :agendar }
-        format.json { render json: @requisicao.errors, status: :unprocessable_entity }
-      end
-    end
-  end
+       format.html { render :agendar }
+       format.json { render json: @requisicao.errors, status: :unprocessable_entity }
+     end
+   end
+ end
 
-  def create
-    @requisicao = Requisicao.new(requisicao_params)
-    @endereco = requisicao_params[:endereco_attributes]
+ def create
+  @requisicao = Requisicao.new(requisicao_params)
+  @endereco = requisicao_params[:endereco_attributes]
 
-    date_and_time = '%m-%d-%Y %H:%M:%S %Z'
-    data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
-    data_retorno = Time.zone.parse("#{requisicao_params[:data_volta].gsub('/','-')} #{requisicao_params[:hora_volta]}")
+  date_and_time = '%m-%d-%Y %H:%M:%S %Z'
+  data = Time.zone.parse("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]}")
+  data_retorno = Time.zone.parse("#{requisicao_params[:data_volta].gsub('/','-')} #{requisicao_params[:hora_volta]}")
     #data = DateTime.strptime("#{requisicao_params[:data_ida].gsub('/','-')} #{requisicao_params[:hora_ida]} Brasilia",date_and_time)
     @requisicao.inicio = data
     @requisicao.fim = data_retorno
