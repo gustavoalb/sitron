@@ -5,4 +5,6 @@ $("#contador_notificacao").html("<span class='badge'><%=@contador%></span>");
 $("#header_notificacoes").html("<span>Você tem <%=@contador%> <%='nova'.pluralize(@contador)%> <%='mensagem'.pluralize(@contador)%></span><span><%=escape_javascript(link_to 'Marcar tudo como vista',marcar_vista_notificacoes_url,:method=>:post,:remote=>true)%></span>");
 $("#lista_notificacoes").html("<%=escape_javascript(listar_notificacoes(@notificacoes_recebidas))%>");
 $.ionSound.play("computer_error");
+$.pnotify({title: 'Aviso',text: 'Sua Requisição número <%=@requisicao.numero%> foi cancelada, pelo seguinte motivo: <%=@requisicao.motivo_cancelamento%>',type: 'error',history: false});
+
 <%end%>

@@ -1,4 +1,17 @@
+
 <% publish_to "/patio" do %>
-$('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
+<%if @ja_adicionado%>
+	$.pnotify({title: 'Aviso',text: 'O Posto já encontra-se no Pátio',type: 'error',history: false});
+	$('#posto_codigo_de_barras').val('');
+<%else%>
+	<%if @nao_existe%>
+		$.pnotify({title: 'Aviso',text: 'Nenhum posto encontrado com esse código de barras!',type: 'error',history: false});
+	<%else%>
+		$.ionSound.play("car_horn");
+		$('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
+		$('#posto_codigo_de_barras').val('');
+	<%end%>
+<%end%>
+
 <% end %>
-$('#posto_codigo_de_barras').val('')
+

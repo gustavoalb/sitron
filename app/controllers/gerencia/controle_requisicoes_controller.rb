@@ -8,7 +8,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
   def definir_posto
     authorize! :definir_posto,current_user
-    @requisicao = Requisicao.find(params[:req_id])
+    @requisicao = Requisicao.aguardando.find(params[:req_id])
     @posto = Posto.ativo.find(params[:posto_id])
     @veiculo = @posto.veiculo
     mes = @requisicao.data_ida.month
@@ -28,18 +28,22 @@ class Gerencia::ControleRequisicoesController < ApplicationController
    else
     @confirmada = false
     @mensagem = 'O Posto selecionado Ultrapassará as horas extras permitidas com esta requisição.'
-   end
+  end
 
   @requisicoes = Requisicao.aguardando.all
   @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
+
+  respond_to do |format|
+    format.js
   end
+end
 
 
 def detalhes_requisicao
-authorize! :detalhes_requisicao,current_user
- @requisicao = Requisicao.find(params[:requisicao_id])
- @notificacao = Notificacao.find(params[:notificacao_id])
- @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
+  authorize! :detalhes_requisicao,current_user
+  @requisicao = Requisicao.find(params[:requisicao_id])
+  @notificacao = Notificacao.find(params[:notificacao_id])
+  @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
 end
 
 
@@ -52,8 +56,8 @@ def cancelar_requisicao
   @notificacoes_recebidas = @requisicao.requisitante.user.notificacoes_recebidas.nao_vista
   @contador = @notificacoes_recebidas.count
 
-  respond_to do |f|
-    f.js 
+  respond_to do |format|
+    format.js 
   end
 
   #redirect_to gerencia_controle_requisicoes_index_url, alert: "A requisição #{@requisicao.id} de #{@requisicao.requisitante.nome} foi cancelada"

@@ -1,36 +1,38 @@
 /*
-  Icon Font: sitrom
+  Icon Font: sitron_font
 */
 
 @font-face {
-  font-family: "sitrom";
-  src: url("/assets/sitrom_036481aa0f452b97d025a212ece122e9.eot");
-  src: url("/assets/sitrom_036481aa0f452b97d025a212ece122e9.eot?#iefix") format("embedded-opentype"),
-       url("/assets/sitrom_036481aa0f452b97d025a212ece122e9.woff") format("woff"),
-       url("/assets/sitrom_036481aa0f452b97d025a212ece122e9.ttf") format("truetype"),
-       url("/assets/sitrom_036481aa0f452b97d025a212ece122e9.svg#sitrom") format("svg");
+  font-family: "sitron_font";
+  src: url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.eot");
+  src: url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.eot?#iefix") format("embedded-opentype"),
+       url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.woff") format("woff"),
+       url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.ttf") format("truetype"),
+       url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.svg#sitron_font") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
-    font-family: "sitrom";
-    src: url("/assets/sitrom_036481aa0f452b97d025a212ece122e9.svg#sitrom") format("svg");
+    font-family: "sitron_font";
+    src: url("/assets/sitron_font_1d41da70c8d916e89c6e88765485cb58.svg#sitron_font") format("svg");
   }
 }
 
 [data-icon]:before { content: attr(data-icon); }
 
 [data-icon]:before,
+.fa-caminhao:before,
 .fa-kombi:before,
 .fa-motocicleta:before,
 .fa-onibus:before,
+.fa-passeio:before,
 .fa-pickup:before,
 .fa-sitron-marker:before,
 .fa-van:before {
   display: inline-block;
-  font-family: "sitrom";
+  font-family: "sitron_font";
   font-style: normal;
   font-weight: normal;
   font-variant: normal;
@@ -43,9 +45,11 @@
   font-smoothing: antialiased;
 }
 
+.fa-caminhao:before { content: "\f10b"; }
 .fa-kombi:before { content: "\f107"; }
 .fa-motocicleta:before { content: "\f106"; }
 .fa-onibus:before { content: "\f102"; }
+.fa-passeio:before { content: "\f10c"; }
 .fa-pickup:before { content: "\f108"; }
 .fa-sitron-marker:before { content: "\f10a"; }
 .fa-van:before { content: "\f109"; }

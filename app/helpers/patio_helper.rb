@@ -129,13 +129,13 @@ module PatioHelper
 		html=''
 		case posto.lote.tipo
 		when "Passeio"
-			html += 'fa fa-car'
+			html += 'fa fa-passeio'
 		when "Pick-up"
 			html += 'fa fa-pickup'
 		when "Motocicleta"
 			html += 'fa fa-motocicleta'
 		when "Caminhão"
-			html += 'fa fa-truck'
+			html += 'fa fa-caminhao'
 		when "Van"
 			html += 'fa fa-van'
 		when "Kombi"

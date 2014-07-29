@@ -1,13 +1,13 @@
 {
   "checksum": {
-    "previous": "df98e7f27267c236e85ae6952282c0f6c5d12809b31417351b1ca9694d70d9e3",
-    "current": "df98e7f27267c236e85ae6952282c0f6c5d12809b31417351b1ca9694d70d9e3"
+    "previous": "1d41da70c8d916e89c6e88765485cb58719ce64ce54cbedb4f63fd6b996a6c5f",
+    "current": "1d41da70c8d916e89c6e88765485cb58719ce64ce54cbedb4f63fd6b996a6c5f"
   },
   "fonts": [
-    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.ttf",
-    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.svg",
-    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.woff",
-    "/home/guilherme/Documentos/fontes/nova/sitrom_df98e7f27267c236e85ae6952282c0f6.eot"
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.ttf",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.svg",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.woff",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.eot"
   ],
   "glyphs": {
     "caminhao": {
@@ -48,7 +48,7 @@
     "config": "/home/guilherme/Documentos/fontes/fontcustom.yml",
     "css_selector": ".fa-{{glyph}}",
     "debug": true,
-    "font_name": "sitrom",
+    "font_name": "sitron_font",
     "force": true,
     "input": {
       "templates": "/home/guilherme/Documentos/fontes/font/",
@@ -68,7 +68,7 @@
     ]
   },
   "templates": [
-    "/home/guilherme/Documentos/fontes/nova/sitrom.css",
-    "/home/guilherme/Documentos/fontes/nova/sitrom-preview.html"
+    "/home/guilherme/Documentos/fontes/nova/sitron_font.css",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font-preview.html"
   ]
 }
