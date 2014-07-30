@@ -1,13 +1,13 @@
 {
   "checksum": {
-    "previous": "1d41da70c8d916e89c6e88765485cb58719ce64ce54cbedb4f63fd6b996a6c5f",
-    "current": "1d41da70c8d916e89c6e88765485cb58719ce64ce54cbedb4f63fd6b996a6c5f"
+    "previous": "c6f8d33bb292b56dc483d036427d82512bd68e88808a528c5be2390ae9aae820",
+    "current": "c6f8d33bb292b56dc483d036427d82512bd68e88808a528c5be2390ae9aae820"
   },
   "fonts": [
-    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.ttf",
-    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.svg",
-    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.woff",
-    "/home/guilherme/Documentos/fontes/nova/sitron_font_1d41da70c8d916e89c6e88765485cb58.eot"
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_c6f8d33bb292b56dc483d036427d8251.ttf",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_c6f8d33bb292b56dc483d036427d8251.svg",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_c6f8d33bb292b56dc483d036427d8251.woff",
+    "/home/guilherme/Documentos/fontes/nova/sitron_font_c6f8d33bb292b56dc483d036427d8251.eot"
   ],
   "glyphs": {
     "caminhao": {
@@ -37,6 +37,10 @@
     "sitron-marker": {
       "codepoint": 61706,
       "source": "/home/guilherme/Documentos/fontes/sitron-marker.svg"
+    },
+    "sitron_marker": {
+      "codepoint": 61710,
+      "source": "/home/guilherme/Documentos/fontes/sitron_marker.svg"
     },
     "van": {
       "codepoint": 61705,

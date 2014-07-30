@@ -14,7 +14,7 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 		mins = minutos
 
 		banco_hora = Administracao::BancoDeHora.where(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano).first
-                
+		
 		if banco_hora
 			banco_horas2 = Administracao::BancoDeHora.where(veiculo_id: veiculo.id, dia: dia,numero_semana: numero_semana, mes: mes,ano: ano).first
 			horas_normais = banco_horas2.horas_normais
@@ -22,44 +22,42 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 			horas_extras_semanais = banco_hora.horas_extras
 
 
-          
+			
 			if (horas_normais+horas) > 8
 
 
 				hora_extra =  ((horas_normais+horas)-8)
 				hora_normal = (((horas_normais+horas)-hora_extra)-horas_normais)
-                banco_horas2.horas_normais += hora_normal
+				banco_horas2.horas_normais += hora_normal
 
 				if (horas_extras_semanais + hora_extra) < 8
-                   banco_horas2.horas_extras += hora_extra
-                else
-
-                	if (horas_extras_semanais + hora_extra) > 8
-                	    hora_extra2 =  ((horas_extras_semanais+hora_extra)-8)
-				        acumulo = (((horas_extras_semanais+hora_extra)-hora_extra2)-horas_extras_semanais)
-				        banco_horas2.acumulo_horas_extras += acumulo
-				        banco_horas2.horas_extras+=hora_extra2
-                	end
-
-                end
-
-
-                banco_horas2.save!
-
-
-			else 
-               
-                 banco_horas2.horas_normais+=horas
-                 banco_horas2.save!
+					banco_horas2.horas_extras += hora_extra
+				elsif (horas_extras_semanais + hora_extra) > 8
+					hora_extra2 =  ((horas_extras_semanais+hora_extra)-8)
+					acumulo = (((horas_extras_semanais+hora_extra)-hora_extra2)-horas_extras_semanais)
+					banco_horas2.acumulo_horas_extras += acumulo
+					banco_horas2.horas_extras+=hora_extra2
+				end
 
 			end
 
 
+			banco_horas2.save!
+
 
 		else 
+			
+			banco_horas2.horas_normais+=horas
+			banco_horas2.save!
 
-			inicio = inicio_semana
-			fim    = fim_semana
+		end
+
+
+
+	else 
+
+		inicio = inicio_semana
+		fim    = fim_semana
 
     	(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date| #interage na data
     		if Time.at(date).day == dia and Time.at(date).month == mes and Time.at(date).year == ano

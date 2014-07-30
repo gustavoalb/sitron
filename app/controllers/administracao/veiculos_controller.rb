@@ -48,12 +48,12 @@ def imprimir_codigos
   report.list.add_row do |row|
    row.values empresa: "#{v.empresa.nome.upcase}"
    row.values codigo: v.codigo_de_barras.placa.file.file
-   row.values codigo_texto: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}/#{v.id}".upcase
+   row.values codigo_texto: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}/#{v.position}".upcase
    row.values contrato: "#{v.contrato.numero}"
    row.values vigencia: v.contrato.vigencia
 
    row.values codigo_n: v.codigo_de_barras.placa.file.file
-   row.values codigo_texto_n: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}/#{v.id}".upcase
+   row.values codigo_texto_n: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}/#{v.position}".upcase
   end
 
 end
