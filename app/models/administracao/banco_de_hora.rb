@@ -39,25 +39,25 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 					banco_horas2.horas_extras+=hora_extra2
 				end
 
+				
+
+
+				banco_horas2.save!
+
+
+			else 
+				
+				banco_horas2.horas_normais+=horas
+				banco_horas2.save!
+
 			end
 
 
-			banco_horas2.save!
-
 
 		else 
-			
-			banco_horas2.horas_normais+=horas
-			banco_horas2.save!
 
-		end
-
-
-
-	else 
-
-		inicio = inicio_semana
-		fim    = fim_semana
+			inicio = inicio_semana
+			fim    = fim_semana
 
     	(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date| #interage na data
     		if Time.at(date).day == dia and Time.at(date).month == mes and Time.at(date).year == ano
