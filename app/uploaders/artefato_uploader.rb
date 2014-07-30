@@ -61,7 +61,8 @@ class ArtefatoUploader < CarrierWave::Uploader::Base
 
 
  def default_url
-  "/assets/padrao/" + [version_name, "default.png"].compact.join('_')
+  nome_arquivo = [version_name, "default.png"].compact.join('_')
+  ActionController::Base.helpers.asset_url("padrao/"+nome_arquivo)
  end
   # Override the filename of the uploaded files:
   # Avoid using model.id or version_name here, see uploader/store.rb for details.
