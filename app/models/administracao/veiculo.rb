@@ -16,7 +16,7 @@ class Administracao::Veiculo < ActiveRecord::Base
   mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
   mount_uploader :codigo_de_barras_s, ArtefatoUploader
-  acts_as_list scope: [:lote,:data_entrada]
+  acts_as_list scope: [:lote]
 
 
 
