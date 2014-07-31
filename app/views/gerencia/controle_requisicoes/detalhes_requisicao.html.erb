@@ -103,8 +103,8 @@
       <dd><%=@requisicao.requisitante.departamento.nome%></dd>
       <dt>Motivo da Requisição</dt>
       <dd><%=@requisicao.motivo.nome%></dd>
-      <dt>Horas Extras Estimadas</dt>
-      <dd><%=@requisicao.previsao_horas_extras%></dd>
+      <dt>Horas Estimadas</dt>
+      <dd><%=@requisicao.previsao_horas.to_i%></dd>
       <hr/>
     </dl>   
     <%if @postos.count >0%>

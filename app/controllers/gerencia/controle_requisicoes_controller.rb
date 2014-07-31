@@ -15,7 +15,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     ano = @requisicao.data_ida.year
     @confirmada = nil
 
-    if @veiculo.validar_horas_extras(@requisicao.previsao_horas_extras,@requisicao.data_ida.strftime("%U"),mes,ano)
+    if @veiculo.validar_horas_extras(@requisicao.previsao_horas,@requisicao.data_ida.strftime("%U"),mes,ano)
      @requisicao.posto = @posto
      @requisicao.confirmar
      @posto.ligar

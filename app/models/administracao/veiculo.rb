@@ -41,12 +41,14 @@ end
 
 def horas_extras_semanais(semana,mes,ano)
   banco_de_horas = self.banco_de_horas.na_semana(semana).no_mes(mes).no_ano(ano)
-  horas_extras = 0
+  
+  horas_extras = 0.0
 
   banco_de_horas.each do |b|
     if b.horas_extras
       horas_extras += b.horas_extras
     end
+
   end
 
   return horas_extras
@@ -57,14 +59,16 @@ end
 def validar_horas_extras(horas,semana,mes,ano)
    horas_extras = self.horas_extras_semanais(semana,mes,ano)
    
-   if horas_extras == 8 
+   if horas_extras == 8.0 
       return false
     else
-      if horas_extras + horas > 8 
+
+      if horas_extras + horas > 8.0 
         return false 
-      elsif horas_extras + horas <=8
+      elsif horas_extras + horas <=8.0
         return true
       end
+    
     end
 end
 

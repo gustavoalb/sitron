@@ -187,40 +187,40 @@ class Requisicao < ActiveRecord::Base
 
  end
 
+
  def horas_normais
+  segundos = 0.0
+  minutos = 0.0
   saida = self.servico.saida
   chegada = self.servico.chegada
-  horas = 0
 
-  (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
+  (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.seconds) do |date|
+     segundos += 1
+  end
 
-    horas += 1
-
- end
-
- return horas
+  minutos = segundos / 60
+ 
+  return minutos
 
 end
 
 
 
-def previsao_horas_extras
+def previsao_horas
 
-
-  date_and_time = '%m-%d-%Y %H:%M:%S %Z'
+  segundos = 0.0
+  minutos = 0.0
   saida = self.inicio
   chegada = self.fim
 
-  ary_horas = [12,13,18,19,20,21,22,23,00,1,2,3,4,5,6,7] #horas extras (horas cheias)
+  (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.seconds) do |date|
+     segundos += 1
+  end
 
-  horas_extras = 0
-  (saida.to_datetime.to_i .. chegada.to_datetime.to_i).step(1.hour) do |date|
-   if ary_horas.include? Time.at(date).hour
-     horas_extras += 1
-   end
- end
+  minutos = segundos / 60
+  horas = minutos / 60
+  return horas
 
- return horas_extras
 
 end
 
@@ -234,7 +234,7 @@ state_machine :initial => :aguardando do
     posto = requisicao.posto
     veiculo = posto.veiculo
     servico = requisicao.servico
-    Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_extras,requisicao.horas_normais)
+    Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_normais)
   end
 
   after_transition any => :agendada do |requisicao, transition|

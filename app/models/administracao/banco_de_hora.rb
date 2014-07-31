@@ -9,43 +9,61 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 
 
 
-	def self.definir_horas_extras(veiculo,dia,numero_semana,mes,ano,inicio_semana,fim_semana,horas,horas_n=nil)
+	def self.definir_horas_extras(veiculo,dia,numero_semana,mes,ano,inicio_semana,fim_semana,minutos)
+		horas = (minutos/60)
+		mins = minutos
 
 		banco_hora = Administracao::BancoDeHora.where(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano).first
-
+                
 		if banco_hora
 			banco_horas2 = Administracao::BancoDeHora.where(veiculo_id: veiculo.id, dia: dia,numero_semana: numero_semana, mes: mes,ano: ano).first
-			horas_extras = banco_horas2.horas_extras 
 			horas_normais = banco_horas2.horas_normais
-			if horas_extras and horas_extras > 0
-				horas_extras+=horas
-				banco_horas2.horas_extras = horas_extras
-				banco_horas2.save!
-			else
-				horas_extras = horas 
-				banco_horas2.horas_extras = horas_extras
-				banco_horas2.save!
-			end
+			horas_extras = banco_horas2.horas_extras
+			horas_extras_semanais = banco_hora.horas_extras
 
-			if horas_normais and horas_normais > 0
-				horas_normais+=horas_n
-				banco_horas2.horas_normais = horas_normais
-				banco_horas2.save!
-			else
-				horas_normais = horas_n 
-				banco_horas2.horas_normais = horas_normais
-				banco_horas2.save!
+
+          
+			if (horas_normais+horas) > 8
+
+
+				hora_extra =  ((horas_normais+horas)-8)
+				hora_normal = (((horas_normais+horas)-hora_extra)-horas_normais)
+                banco_horas2.horas_normais += hora_normal
+
+				if (horas_extras_semanais + hora_extra) < 8
+                   banco_horas2.horas_extras += hora_extra
+                else
+
+                	if (horas_extras_semanais + hora_extra) > 8
+                	    hora_extra2 =  ((horas_extras_semanais+hora_extra)-8)
+				        acumulo = (((horas_extras_semanais+hora_extra)-hora_extra2)-horas_extras_semanais)
+				        banco_horas2.acumulo_horas_extras += acumulo
+				        banco_horas2.horas_extras+=hora_extra2
+                	end
+
+                end
+
+
+                banco_horas2.save!
+
+
+			else 
+               
+                 banco_horas2.horas_normais+=horas
+                 banco_horas2.save!
+
 			end
 
 
 
 		else 
+
 			inicio = inicio_semana
 			fim    = fim_semana
 
     	(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date| #interage na data
     		if Time.at(date).day == dia and Time.at(date).month == mes and Time.at(date).year == ano
-    			banco_hora = Administracao::BancoDeHora.create(veiculo: veiculo,dia: Time.at(date).day,numero_semana: numero_semana,mes: mes,ano: ano,inicio_semana: inicio,fim_semana: fim,horas_extras: horas, horas_normais:horas_n)
+    			banco_hora = Administracao::BancoDeHora.create(veiculo: veiculo,dia: Time.at(date).day,numero_semana: numero_semana,mes: mes,ano: ano,inicio_semana: inicio,fim_semana: fim, horas_normais:horas,minutos:mins)
     		else
     			banco_hora = Administracao::BancoDeHora.create(veiculo: veiculo,dia: Time.at(date).day,numero_semana: numero_semana,mes: mes,ano: ano,inicio_semana: inicio,fim_semana: fim)
     		end		

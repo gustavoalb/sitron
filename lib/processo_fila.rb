@@ -16,7 +16,7 @@ class ProcessoFila
 
 					@tipo = p.veiculo.lote.tipo.remover_acentos.downcase
 
-					if req.previsao_horas_extras + p.veiculo.horas_extras_semanais(@semana,@mes,@ano) <=8
+					if req.previsao_horas + p.veiculo.horas_extras_semanais(@semana,@mes,@ano) <=8
 
 
 						if req.motivo and req.motivo.carga? and @tipo == 'caminhao' 

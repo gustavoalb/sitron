@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140729061642) do
+ActiveRecord::Schema.define(version: 20140729211041) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,13 +44,15 @@ ActiveRecord::Schema.define(version: 20140729061642) do
     t.integer  "dia"
     t.integer  "mes"
     t.integer  "ano"
-    t.integer  "horas_normais"
-    t.integer  "horas_extras"
     t.integer  "numero_semana"
     t.date     "inicio_semana"
     t.date     "fim_semana"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.float    "minutos"
+    t.float    "horas_normais",        default: 0.0
+    t.float    "horas_extras",         default: 0.0
+    t.float    "acumulo_horas_extras"
   end
 
   add_index "banco_de_horas", ["posto_id"], name: "index_banco_de_horas_on_posto_id", using: :btree
