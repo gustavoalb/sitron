@@ -18,6 +18,7 @@ Sitron::Application.routes.draw do
     get 'controle_requisicoes/detalhes_requisicao'
     post 'controle_requisicoes/definir_posto'
     post 'controle_requisicoes/cancelar_requisicao'
+    post 'controle_requisicoes/cancelar_confirmada'
   end
 
   resources :usuarios do
@@ -52,6 +53,7 @@ Sitron::Application.routes.draw do
     get :agendar,on: :collection
     post :agendar_requisicao,on: :collection
     get :requisicao_urgente,on: :collection
+    get :teste,on: :collection
     post :agendar_requisicao_urgente,on: :collection
     get :tipo_carga,:on=>:collection
     get :imprimir_requisicao

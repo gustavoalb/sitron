@@ -1,14 +1,13 @@
-<%=titulo_pagina(link_icone("Requisição Sitron/SEED",'thumbs-up'),link_icone("Agendamento de viagem", "calendar"))%>
-
 <%content_for :maps do%>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <%=javascript_include_tag("gmaps_autocomplete.js")%>
 <%end%>
-<%= simple_nested_form_for @requisicao,html: {class: 'form-horizontal'},url: agendar_requisicao_requisicoes_url do |f| %>
-<%= f.error_notification %>
-<%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao"}%>
-<div id="div_carga">
- <%if f.object.motivo and f.object.motivo.carga?%>
+
+    <%= simple_nested_form_for @requisicao,html: {class: 'form-horizontal'} do |f| %>
+    <%= f.error_notification %>
+    <%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao"}%>
+    <div id="div_carga">
+      <%if f.object.motivo and f.object.motivo.carga?%>
       <%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
       <%end%>
       <%if f.object.motivo and f.object.motivo.necessita_descricao%>
@@ -16,35 +15,62 @@
 
 
       <%end%>
-</div>
-<%= f.input :requisitante_id,input_html: {value: current_user.pessoa.id},as: :hidden%>
-<%= f.input :data_ida,input_html: {readonly: true,value: Date.tomorrow.to_s_br,class: "datepicker"},as: :string,:label=>"Data da Saída"  %>
-<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
-<%= f.input :data_volta,input_html: {class: "datepicker",readonly: true,value: Date.tomorrow.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
-<%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
-<%= f.input :tipo_requisicao,input_html: {value: "agendada",readonly: true},as: :hidden%>
-<%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
+    </div>
 
-<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
-<div id='rotas'>
-<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[sigla_destino(r),r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
-</div>
+    <%= f.input :tipo_requisicao,input_html: {value: "normal",readonly: true},as: :hidden%>
+    <%if Time.zone.now.wday == 6 -%>
+    <%= f.input :data_ida,input_html: {readonly: true,value: 2.days.from_now.to_date.to_s_br},as: :string,:label=>"Saída"  %>
+    <%elsif Time.zone.now.wday == 7 -%>
+    <%= f.input :data_ida,input_html: {readonly: true,value: 1.days.from_now.to_date.to_s_br},as: :string,:label=>"Saída"  %>
+    <%else%>
+    <%= f.input :data_ida,input_html: {readonly: true,value: Time.zone.now.tomorrow.to_date.to_s_br},as: :string,:label=>"Saída"  %>
 
+    <%end%>
 
+    <%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
+    <%if Time.zone.now.wday == 6 -%>
+    <%= f.input :data_volta,input_html: {readonly: true,value: 2.days.from_now.to_date.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
+    <%elsif Time.zone.now.wday == 7 -%>
+    <%= f.input :data_volta,input_html: {readonly: true,value: 1.days.from_now.to_date.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
+    <%else%>
+    <%= f.input :data_volta,input_html: {readonly: true,value: Time.now.tomorrow.to_date.to_s_br},as: :string,:label=>"Previsão de Retorno" ,as: :hidden	 %>
+    <%end%>
 
-<%= f.input :pernoite,
-  :as => :radio_buttons_left_label,
-  :collection => [["Pernoite no Local",true],["Pernoite em Macapá",false]],:label=>"Local de Pernoite"
-%>
+    <%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Previsão da Hora de Retorno"  %>
 
-  <%= f.fields_for :endereco%>
+    <%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
+
+    <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
+
+    <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[sigla_destino(r),r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:label=>"Rota",:hint=>raw("Selecione uma rota")%>
+
+    <%= f.fields_for :endereco%>
 
     <%=raw("#{f.link_to_add link_icone('Você pode usar um destino diferente clicando Aqui','sitron-marker'), :endereco,:class=>'btn btn-xs btn-success'}")%>
 
+  <div class='gmaps hide' id='mapa'>
+  <div class='input-gmaps-autocomplete'>
 
-<%= botoes_form(f)%>
+   <div class="form-group">
+                <label class="col-sm-3 control-label">Endereço do Destino</label>
+                <div class="col-sm-6">
+  <input id='gmaps-input-address'placeholder='Comece a Digitar um Endereço...' type='text' class='form-control'/>
+                      <p class="help-block">Digite o endereço e use a Marca Sitron no Mapa para localizar o Endereço exato!</p>
+                </div>
+            </div>
 
-<%end%>
+
+     <div id='gmaps-error'></div>
+  </div>
+  <div id='gmaps-canvas'></div>
+</div>
+
+
+    <%=botoes_form(f)%>
+
+    <% end %>
+
+
 
 
 
@@ -52,17 +78,16 @@
 <%=modal_simples("cadastrar_pessoa", "Adicionar um Passageiro" ) do %>
 
 <%= simple_form_for :pessoa,html: {class: "form-horizontal",id: "my_form"},:url=>salvar_pessoa_requisicoes_url(:url_volta=>request.original_url) do |f| %>
-  <%= f.error_notification %>
+<%= f.error_notification %>
 
-
-    <%= f.input :nome %>
-    <%= f.input :cpf, input_html: {class: "cpf"} %>
-    <%= f.input :email, as: :email %>
-    <%= f.input :matricula %>
-    <%= f.input :entidade_id,input_html: {value: current_user.pessoa.entidade.id},as: :hidden%>
-    <%= f.input :departamento_id,input_html: {value: current_user.pessoa.departamento.id},as: :hidden    %>
-    <%= f.input :cargo_id,:collection=>Administracao::Cargo.all.collect {|c|[c.nome,c.id]} %>
-    <%=botoes_form_modal(f,"Salvar Pessoa")%>
+<%= f.input :nome %>
+<%= f.input :cpf, input_html: {class: "cpf"} %>
+<%= f.input :email, as: :email %>
+<%= f.input :matricula %>
+<%= f.input :entidade_id,input_html: {value: current_user.pessoa.entidade.id},as: :hidden%>
+<%= f.input :departamento_id,input_html: {value: current_user.pessoa.departamento.id},as: :hidden    %>
+<%= f.input :cargo_id,:collection=>Administracao::Cargo.all.collect {|c|[c.nome,c.id]} %>
+<%=botoes_form_modal(f,"Salvar Pessoa")%>
 
 <% end %>
 <%end%>
@@ -235,13 +260,11 @@ $('.multiselect_rota').multiselect({
     $(document).on('nested:fieldAdded', function() {
       fieldsCount += 1;
       toggleAddLink();
-
-
+       
+       alert('Olá');
        gmaps_init();
        autocomplete_init();
       $('#mapa').removeClass('hide');
-      $('#rotas').addClass('hide');
-     // autocomplete_init();
       $("#requisicao_rota_ids").multiselect("clearSelection");
 
    });
@@ -249,32 +272,15 @@ $('.multiselect_rota').multiselect({
     $(document).on('nested:fieldRemoved', function() {
       fieldsCount -= 1;
       toggleAddLink();
-      gmaps_init();
-       autocomplete_init();
       $('#mapa').addClass('hide');
-       $('#rotas').removeClass('hide');
       $('#endereco_real').val('');
       $('#gmaps-input-address').val('');
-      $('#requisicao_endereco_attributes_descricao').val();
-      $('#gmaps-output-latitude').val();
-      $('#gmaps-output-logitude').val();
     });  
 
   // count existing nested fields after page was loaded
   fieldsCount = $('form .fields').length;
   toggleAddLink();
 })
-
-</script>
-
-
-<script type="text/javascript">
-
-  if ($('#requisicao_endereco_attributes_descricao').is(":visible"))
-{
-     $('#mapa').removeClass('hide');
-}
-</script>
 
 
 <%end%>

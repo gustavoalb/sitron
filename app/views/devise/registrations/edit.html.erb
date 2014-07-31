@@ -1,6 +1,6 @@
 <div class="authform">
   <h3>Editar o Usuário </h3>
-  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :role => 'form',:multipart=>true}) do |f| %>
+  <%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put, :role => 'form',:multipart => true}) do |f| %>
     <%= devise_error_messages! %>
         <fieldset>
       <p>Deixe os Campos em branco se não quiser mudar a senha.</p>
@@ -20,7 +20,7 @@
                     <div class="fileinput fileinput-new" data-provides="fileinput"><input name="..." value="" type="hidden">
                         <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; height: 150px; line-height: 150px;"></div>
                         <div>
-                          <span class="btn btn-default btn-file"><span class="fileinput-new">Selecione o Avatar</span><span class="fileinput-exists">Mudar</span><%=f.file_field :avatar%></span>
+                          <span class="btn btn-default btn-file"><span class="fileinput-new">Selecione o Avatar</span><span class="fileinput-exists">Mudar</span><%=f.file_field :avatar%><%= f.hidden_field :avatar_cache%></span>
                           <a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">Remover</a>
                         </div>
                     </div>
@@ -31,7 +31,7 @@
     <fieldset>
       <p>Você precisa digitar sua senha atual para fazer as mudanças</p>
       <div class="form-group">
-        <%= f.label :current_password %>
+        <%= f.label :senha_atual %>
         <%= f.password_field :current_password, class: 'form-control' %>
       </div>
     </fieldset>

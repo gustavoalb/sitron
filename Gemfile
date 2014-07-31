@@ -88,3 +88,4 @@ gem 'jquery-datatables-rails', '~> 2.1.10.0.3'
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
 gem 'ean'
+gem 'bootstrap-multiselect-rails'

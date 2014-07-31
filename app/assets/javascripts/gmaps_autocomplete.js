@@ -6,12 +6,13 @@ var marker;
 function gmaps_init(){
 
   // center of the universe
-  var latlng = new google.maps.LatLng(51.751724,-1.255284);
+  var latlng = new google.maps.LatLng(0.03889,-51.06639);
 
   var options = {
-    zoom: 2,
+    zoom: 13,
     center: latlng,
-    mapTypeId: google.maps.MapTypeId.ROADMAP
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    lang: "pt-BR"
   };
 
   // create our map object
@@ -23,7 +24,8 @@ function gmaps_init(){
   // the marker shows us the position of the latest address
   marker = new google.maps.Marker({
     map: map,
-    draggable: true
+    draggable: true,
+    icon: '/assets/marker.png'
   });
 
   // event triggered when marker is dragged and dropped
@@ -42,16 +44,18 @@ function gmaps_init(){
 
 // move the marker to a new position, and center the map on it
 function update_map( geometry ) {
+    google.maps.event.trigger(map, 'resize')
   map.fitBounds( geometry.viewport )
   marker.setPosition( geometry.location )
+
 }
 
 // fill in the UI elements with new position data
 function update_ui( address, latLng ) {
   $('#gmaps-input-address').autocomplete("close");
   $('#gmaps-input-address').val(address);
-  //$('#gmaps-output-latitude').html(latLng.lat());
-  //$('#gmaps-output-longitude').html(latLng.lng());
+  $('#gmaps-output-latitude').val(latLng.lat());
+  $('#gmaps-output-longitude').val(latLng.lng());
 }
 
 // Query the Google geocode object
@@ -93,7 +97,7 @@ function geocode_lookup( type, value, update ) {
 
       if( type == 'address' ) {
         // User has typed in an address which we can't geocode to a location
-        $('#gmaps-error').html("Sorry! We couldn't find " + value + ". Try a different search term, or click the map." );
+        $('#gmaps-error').html("Desculpe, não encontramos " + value + ". Tente um endereço diferente ou clique no mapa" );
         $('#gmaps-error').show();
       } else {
         // User has clicked or dragged marker to somewhere that Google can't do a reverse lookup for
@@ -152,6 +156,7 @@ function autocomplete_init() {
 $(document).ready(function() { 
   if( $('#gmaps-canvas').length  ) {
     gmaps_init();
+
     autocomplete_init();
   }; 
 });

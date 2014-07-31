@@ -34,7 +34,7 @@ class Requisicao < ActiveRecord::Base
   has_many :mensagens,:as=>:objeto, dependent: :destroy
   has_many :notificacoes,:as=>:objeto, dependent: :destroy
 
-  accepts_nested_attributes_for :endereco,limit: 1, :reject_if => proc { |attributes| attributes['endereco'].blank?   },:allow_destroy => true
+  accepts_nested_attributes_for :endereco,limit: 1, :reject_if => proc { |attributes| attributes['endereco'].blank? and attributes['endereco'].blank?   },:allow_destroy => true
 
   before_validation :on => :create 
   
@@ -52,6 +52,7 @@ class Requisicao < ActiveRecord::Base
   scope :canceladas,->{where(:state=>"cancelada").order("created_at ASC ")}
   scope :normal_agendada,->{where("tipo_requisicao in (0,2)")}
   scope :urgentes,->{where("tipo_requisicao = 1")}
+  scope :proximas_de_sair,->{joins(:posto).where("requisicoes.state=? and postos.state = ?",'confirmada','saida_proxima').order("created_at ASC ")}
 
 
   

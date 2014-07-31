@@ -52,7 +52,7 @@
 
                 <%=modal_simples("avaliar_#{req.id}", "Avaliar #{req.numero}") do %>
                 <div class='row'>
-                    <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"} do |f|%>
+                    <%=simple_form_for :avaliar,:url=>requisicao_avaliar_url(req.id),html: {class: "form-horizontal"},:validate => true do |f|%>
 
                     <%= f.input :tipo, :collection => Avaliacao.tipos.keys.map {|t| [t.titleize,t]}, :label=>"Tipo da Avaliação"%>
 

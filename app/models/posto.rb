@@ -20,15 +20,17 @@ class Posto < ActiveRecord::Base
   scope :proximo_de_sair,->{where(state: "saida_proxima")}
   scope :ativo, -> {where("state not in ('liberado')")}
 
-  enum turno: [:manha, :tarde, :noite]
+  enum turno: [:manha, :tarde, :noite,:madrugada]
 
   def self.setar_turno(horario)
     if horario.hour >=7 and horario.hour <=12
       return 0
     elsif horario.hour >12 and horario.hour <=18
       return 1
-    elsif horario.hour > 18 and horario.hour
+    elsif horario.hour > 18 and horario.hour <=22
       return 2
+    else
+      return 3
     end
   end
 
@@ -39,7 +41,7 @@ class Posto < ActiveRecord::Base
     end
 
     event :estacionar do 
-      transition [:em_transito,:com_problema] => :estacionado
+      transition [:saida_proxima,:em_transito,:com_problema] => :estacionado
     end
 
 

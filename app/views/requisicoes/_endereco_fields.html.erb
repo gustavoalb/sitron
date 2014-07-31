@@ -1,28 +1,16 @@
-<div class='teste'>
-<%= f.link_to_remove "×",:class=>"close",:'aria-hidden'=>"true" %>
-<%=f.input :descricao,:label=>"Descrição do Destino",:required=>'required'%>
-<%= f.input :estado_id,:input_html=>{:class=>"form-control",:value=>@estado.id},as: :hidden %>
-<%= f.input :endereco,:input_html=>{:class=>"gllpLocationName",:id=>"endereco_real",:readonly=>true},:label=>"Endereço",:hint=>"Use a Marca (Sitron) no Mapa para localizar o endereço"%>
-<%= f.input :latitude,:input_html=>{:class=>"gllpLatitude",:readonly=>true},:as=>:string,as: :hidden%>
-<%= f.input :longitude,:input_html=>{:class=>"gllpLongitude",:readonly=>true},:as=>:string,as: :hidden%>
+	<div class="row">
+	<div class='col-md-12'>
+	<%= f.link_to_remove "×",:class=>"close",:'aria-hidden'=>"true" %>
+	<%=f.input :descricao,:label=>"Descrição do Destino",:required=>'required'%>
+	<%= f.input :estado_id,:input_html=>{:class=>"form-control",:value=>@estado.id},as: :hidden %>
 
-<%content_for :direito do%>
- <div class='gmaps fade' id='mapa'>
-      <div class='input-gmaps-autocomplete form-group '>
-        <div class="col-sm-8">
-         <input type="text" class="gllpSearchField form-control input-sm" id='gmaps-input-address' placeholder='Você pode buscar um endereço aqui!'>
-       </div>
-       <input type="button" class="gllpSearchButton btn btn-success" value="Mostrar no Mapa">
 
-       <div id='gmaps-error'></div>
-     </div>
-
-     <div id='gmaps-canvas'></div>
-          <p class="text-danger">Posicione o Marcador exatamento no local desejado no Mapa, se quiser, use a busca acima!</p>
-
-     <div class="gllpMap" id='map_conteiner'>Rota no Mapa</div>
-     <input type="hidden" class="gllpZoom" value="14"/>
-   </div>
-<%end%>
+	<div class='gmaps'>		<div class='input-gmaps-autocomplete'>
+			<%= f.input :endereco,:input_html=>{:id=>"endereco_real",:id=>'gmaps-input-address'},:label=>"Endereço",:hint=>raw("Use a Marca #{link_icone("Sitron",'sitron-marker','esquerda')} no Mapa para localizar o endereço")%>
+			<%= f.input :latitude,:input_html=>{:class=>"gllpLatitude",:readonly=>true,:id=>"gmaps-output-latitude"},:as=>:hidden%>
+			<%= f.input :longitude,:input_html=>{:class=>"gllpLongitude",:readonly=>true,:id=>"gmaps-output-longitude"},:as=>:hidden%>
+		</div>
+		<div id='gmaps-canvas'></div>
+	</div>
 </div>
-
+</div>

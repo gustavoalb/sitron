@@ -18,7 +18,6 @@
 //= require turbolinks
 //= require moment
 //= require moment/pt-br.js
-//= require bootstrap-daterangepicker
 //= require underscore
 //= require gmaps/google
 //= require jquery_nested_form
@@ -27,10 +26,9 @@
 //= require bootstrap-select
 //= require bootbox
 //= require private_pub
-
-
-
-
+//= require bootstrap-daterangepicker
+//= require bootstrap-timepicker
+//= require bootstrap-multiselect
 
 //= require_tree .
 

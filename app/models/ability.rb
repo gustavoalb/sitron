@@ -6,8 +6,12 @@ class Ability
     end
 
     if user.useget?
-      can :manage, :all
-      cannot :manage, :requisicao_imediata, Requisicao
+      can [:read,:update], User, {:id=>user.id}
+      can :manage, Requisicao
+      can [:index,:definir_posto,:detalhes_requisicao,:cancelar_requisicao,:cancelar_confirmada],Requisicao
+      can :manage, Administracao::Patio
+      can :manage, Administracao::Pessoa, {:departamento_id=>user.pessoa.departamento_id}
+
     end
 
     if user.coordenador?

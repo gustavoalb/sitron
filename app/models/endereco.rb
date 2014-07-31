@@ -10,12 +10,9 @@ class Endereco < ActiveRecord::Base
 
     validates_presence_of :descricao, :message=>"Precisa informar a descrição do destino",if: Proc.new { |e| e.enderecavel_type? and e.enderecavel_type == "Requisicao" }
 
-
-
-
    #geocoded_by :endereco_completo
- #  after_validation :reverse_geocode
- #  reverse_geocoded_by :latitude, :longitude, :address => :logradouro
+   #  after_validation :reverse_geocode
+   #  reverse_geocoded_by :latitude, :longitude, :address => :logradouro
 
 	enum tipo:  [
 		"Outros",
@@ -67,5 +64,6 @@ class Endereco < ActiveRecord::Base
 def endereco_completo
 ["#{logradouro},#{numero}", cidade.nome, estado.sigla, 'BR'].compact.join(', ')   
 end
+
 
 end

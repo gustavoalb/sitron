@@ -33,7 +33,7 @@ module PatioHelper
 		html+="<div class='col-md-2' id='posto_#{posto.id}'>"
 		html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
 		html+="<div class='tiles-heading'>"
-		html+="<div class='pull-left'>#{posto.position}</div>"
+		html+="<div class='pull-left'>V#{posto.veiculo.position}</div>"
 		html+="<div class='pull-right'>#{posto.lote.tipo}</div></div>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
@@ -71,7 +71,7 @@ module PatioHelper
 			html+="<div class='col-md-2' id='posto_#{posto.id}'>"
 			html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
 			html+="<div class='tiles-heading'>"
-			html+="<div class='pull-left'>#{posto.position}</div>"
+			html+="<div class='pull-left'>#{posto.veiculo.position}</div>"
 			html+="<div class='pull-right'>#{posto.lote.tipo}</div></div>"
 			html+="<div class='tiles-body'>"
 			html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
@@ -100,7 +100,7 @@ module PatioHelper
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month
 		ano = Time.zone.now.year
-		return "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo.upcase}#{posto.veiculo.horas_extras_semanais(s,mes,ano)}".upcase
+		return "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo.upcase}#{posto.position}/#{v.lote.numero_postos}: #{posto.veiculo.horas_extras_semanais(s,mes,ano).to_i}"
 
 	end
 

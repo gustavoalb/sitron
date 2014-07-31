@@ -154,6 +154,12 @@ def requisicao_urgente
 end
 
 
+def teste
+  @requisicao = Requisicao.new
+  @estado = Estado.find_by(:sigla=>"AP")
+end
+
+
   # GET /requisicoes/1/edit
   def edit
   end

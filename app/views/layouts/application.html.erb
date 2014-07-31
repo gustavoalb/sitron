@@ -14,6 +14,7 @@
 
 
     <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+    <%=yield :maps%>
 
     <%= csrf_meta_tags %>
 </head>
@@ -130,7 +131,7 @@
 
 
             <li class="divider"></li>
-            <%=nav_item(root_url,'Home','root','index','home')%>
+            <%=nav_item(root_url,'Início','root','index','home')%>
             <% if can? :manage, Administracao::Empresa %>
                 <%=nav_item_menu('Empresas','administracao_empresas','building-o') do %>
                     <%=nav_item(administracao_empresas_url,'Listagem de empresas','administracao_empresas','index','building-o') if can? :manage, Administracao::Empresa %>
@@ -163,7 +164,7 @@
             <% end %>
 
             <li class="divider"></li>
-                            <% if current_user.administrador? or current_user.useget? %>
+                            <% if current_user.administrador?%>
             <li><a href="javascript:;"><i class="fa fa-cog"></i> <span>Configurações</span></a>
               <ul class="acc-menu">
                 <% if current_user.administrador? %>
