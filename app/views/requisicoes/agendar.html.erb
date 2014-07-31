@@ -97,11 +97,8 @@ $("#div_carga").html(data);
 
 <script type="text/javascript">
 
-
   $('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR',
-    'disableDateRanges': [
-    ['01/01/1000', 'Date.today'],
-    ]}); 
+    startDate: "today"}); 
   $('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
     'disableTimeRanges': [
     ['0am', '7am'],

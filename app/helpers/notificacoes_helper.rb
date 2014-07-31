@@ -23,12 +23,12 @@ module NotificacoesHelper
 		retur raw(icons)
 	end
 
-	def link_page(link_atual)
+	def link_page(link_atual,titulo,icone)
 		link = ''
 		if current_page?(link_atual)
 			link = "#"
 		else
-			link = link_atual
+			link = link_to link_icone(titulo,icone),link_atual,:class=>'active'
 		end
 
 		return link
@@ -55,8 +55,12 @@ module NotificacoesHelper
 		html+="<ul class='dropdown-menu notifications arrow'>"
 		html+="<li class='dd-header'>"
 		html+="<div id='header_notificacoes'>"
+        if notificacoes.count > 0
 		html+="<span>Você tem #{notificacoes.count} #{'nova'.pluralize(notificacoes.count)} #{'notificação'.pluralize(notificacoes.count)}</span>"
 		html+="<span>#{link_to 'Marcar como visto',marcar_vista_notificacoes_url,:method=>:post,:remote=>true}</span>"
+		else
+		html+='<span>Nenhuma nova Notificação</span>'
+	end
 		html+="</div>"
 		html+="</li>"
 		html+="<div tabindex='5003' style='overflow-y: hidden;' class='scrollthis'>"
@@ -92,7 +96,7 @@ module NotificacoesHelper
 		end
 
 		html+="</div></div>"
-		html+="<li class='dd-footer'><a href='#{link_page(gerencia_controle_requisicoes_index_path)}'>Ver Todas as Notificações</a></li>"
+		html+="<li class='dd-footer'>#{link_page(gerencia_controle_requisicoes_index_path,'Todas as Requisições Urgentes','bolt')}</li>"
 		html+="</ul>"
 		html+="</li>"
 

@@ -63,7 +63,7 @@ module MensagensHelper
 			html+="</a></li>"
 		end
 		html+="</div></div>"
-		html+="<li class='dd-footer'><a href='#{ link_page(mensagens_url)}' class='notification-success active'>#{link_icone('Ver todas as Mensagens','eye')}</a></li>"
+		html+="<li class='dd-footer'>#{link_page(mensagens_url,'Ver todas as Mensagens','eye')}</li>"
 		html+="<li class='dd-footer'>#{link_to link_icone('Nova Mensagem','envelope'),new_mensagem_url,:class=>'notification-success active'}</li>"
 		html+="</ul>"
 		html+="</li>"
