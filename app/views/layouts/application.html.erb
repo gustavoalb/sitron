@@ -22,6 +22,11 @@
 
 <%= subscribe_to "/#{current_user.id}" %>
 
+<script type="text/javascript">
+PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
+  eval(data.chat_message);
+});
+</script>
     
 
     <header class="navbar navbar-inverse navbar-fixed-top" role="banner">
@@ -81,7 +86,7 @@
             <% end %>
 
             <% if can? :manage, Requisicao %>
-                <%=nav_item(requisicoes_url,'Requisições de Transporte','requisicoes','index','thumbs-up')%>
+                <%=nav_item(requisicoes_url,'Requisições de Transporte','requisicoes','index','requisicao')%>
             <% end %>
 
             <%#=nav_item(calendario_url,'Calendário de Requisições','calendario','index','calendar')%>

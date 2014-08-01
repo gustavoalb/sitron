@@ -4,11 +4,11 @@
 
 @font-face {
   font-family: "sitron_font";
-  src: url(<%=asset_path('sitron_font_c6f8d33bb292b56dc483d036427d8251.eot')%>);
-  src: url(<%=asset_path('sitron_font_c6f8d33bb292b56dc483d036427d8251.eot?#iefix')%>) format("embedded-opentype"),
-       url(<%=asset_path('sitron_font_c6f8d33bb292b56dc483d036427d8251.woff')%>) format("woff"),
-       url(<%=asset_path('sitron_font_c6f8d33bb292b56dc483d036427d8251.ttf')%>) format("truetype"),
-       url(<%=asset_path('sitron_font_c6f8d33bb292b56dc483d036427d8251.svg#sitron_font')%>) format("svg");
+  src: url(<%=asset_path("sitron_font.eot")%>);
+  src: url(<%=asset_path("sitron_font.eot?#iefix")%>) format("embedded-opentype"),
+       url(<%=asset_path("sitron_font.woff")%>) format("woff"),
+       url(<%=asset_path("sitron_font.ttf")%>) format("truetype"),
+       url(<%=asset_path("sitron_font.svg#sitron_font")%>) format("svg");
   font-weight: normal;
   font-style: normal;
 }
@@ -16,7 +16,7 @@
 @media screen and (-webkit-min-device-pixel-ratio:0) {
   @font-face {
     font-family: "sitron_font";
-    src: url(<%=asset_path('sitron_font_c6f8d33bb292b56dc483d036427d8251.svg#sitron_font')%>) format("svg");
+    src: url(<%=asset_path("sitron_font.svg#sitron_font")%>) format("svg");
   }
 }
 
@@ -29,6 +29,7 @@
 .fa-onibus:before,
 .fa-passeio:before,
 .fa-pickup:before,
+.fa-requisicao:before,
 .fa-sitron-marker:before,
 .fa-sitron_marker:before,
 .fa-van:before {
@@ -46,12 +47,13 @@
   font-smoothing: antialiased;
 }
 
-.fa-caminhao:before { content: "\f10b"; }
-.fa-kombi:before { content: "\f107"; }
-.fa-motocicleta:before { content: "\f106"; }
-.fa-onibus:before { content: "\f102"; }
-.fa-passeio:before { content: "\f10c"; }
-.fa-pickup:before { content: "\f108"; }
-.fa-sitron-marker:before { content: "\f10a"; }
-.fa-sitron_marker:before { content: "\f10e"; }
+.fa-caminhao:before { content: "\f100"; }
+.fa-kombi:before { content: "\f101"; }
+.fa-motocicleta:before { content: "\f102"; }
+.fa-onibus:before { content: "\f103"; }
+.fa-passeio:before { content: "\f104"; }
+.fa-pickup:before { content: "\f105"; }
+.fa-requisicao:before { content: "\f106"; }
+.fa-sitron-marker:before { content: "\f107"; }
+.fa-sitron_marker:before { content: "\f108"; }
 .fa-van:before { content: "\f109"; }

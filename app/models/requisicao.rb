@@ -4,6 +4,7 @@ require 'barby/barcode/code_128'
 require 'barby/outputter/png_outputter'
 class Requisicao < ActiveRecord::Base
 
+
   mount_uploader :codigo_de_barras, ArtefatoUploader
 
   belongs_to :requisitante,:class_name=>"Administracao::Pessoa"
@@ -169,6 +170,43 @@ class Requisicao < ActiveRecord::Base
     return "#{code}#{dv}"
   end
 
+
+  def confirmar_requisicao(posto)
+    self.posto = posto 
+    self.confirmar
+    posto.ligar
+
+    user = User.do_email("administrador").first
+    notificacao = self.notificacoes.create(:texto=>"Reqisição confirmada: #{self.numero}",:origem=>user,:user=>self.requisitante.user,:tipo=>2)
+    @notificacoes_recebidas = self.requisitante.user.notificacoes_recebidas.nao_vista
+    contador = @notificacoes_recebidas.count
+    mess = ''
+    mess+="$('#contador_notificacao').html(\"<span class='badge'>#{contador}</span>\");"
+    mess+="$('#header_notificacoes').html(\"<span>Você tem #{contador} #{'nova'.pluralize(contador)} #{'mensagem'.pluralize(contador)}</span>\");"
+    mess+="$.ionSound.play(\"car_horn\");"
+    mess+="$.pnotify({title: 'Aviso',text: 'Sua Requisição #{self.numero} foi confirmada, e o posto já encontra-se aguardando',type: 'success',history: false});"
+    PrivatePub.publish_to "/#{self.requisitante.user.id}", :chat_message => mess
+  end
+
+
+
+
+
+  def cancelar_requisicao(motivo)
+    self.motivo_cancelamento = motivo
+    self.cancelar
+
+    user = User.do_email("administrador").first
+    notificacao = self.notificacoes.create(:texto=>"Reqisição cancelada: #{self.numero}",:origem=>user,:user=>self.requisitante.user,:tipo=>1)
+    @notificacoes_recebidas = self.requisitante.user.notificacoes_recebidas.nao_vista
+    contador = @notificacoes_recebidas.count
+    mess = ''
+    mess+="$('#contador_notificacao').html(\"<span class='badge'>#{contador}</span>\");"
+    mess+="$('#header_notificacoes').html(\"<span>Você tem #{contador} #{'nova'.pluralize(contador)} #{'mensagem'.pluralize(contador)}</span>\");"
+    mess+="$.ionSound.play(\"computer_error\");"
+    mess+="$.pnotify({title: 'Cancelamento',text: 'Sua Requisição #{self.numero} foi cancelada, e o motivo foi: #{motivo}',type: 'error',history: false,sticker: false});"
+    PrivatePub.publish_to "/#{self.requisitante.user.id}", :chat_message => mess
+  end
 
 
   def horas_extras

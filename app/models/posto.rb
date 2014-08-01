@@ -34,6 +34,33 @@ class Posto < ActiveRecord::Base
     end
   end
 
+
+  def horas_livres?(previsao_horas,semana,ano)
+    if previsao_horas + self.veiculo.horas_extras_semanais(semana,ano) <= 8
+      return true
+    else
+      return false
+    end
+
+  end
+
+
+  def e_do_tipo?(tipo)
+    if self.veiculo.lote.tipo.remover_acentos.downcase == tipo.remover_acentos.downcase
+      return true
+    else
+      return false
+    end
+  end
+
+  
+
+
+
+  def self.horas_livres?(previsao_horas,semana,ano)
+    Posto.ativo.all.select { |p| p.horas_livres?(previsao_horas,semana,ano) }
+  end
+
   state_machine :initial => :estacionado do
 
     event :ligar do

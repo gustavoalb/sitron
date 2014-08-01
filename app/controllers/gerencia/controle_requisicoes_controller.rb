@@ -1,18 +1,19 @@
 class Gerencia::ControleRequisicoesController < ApplicationController
-load_and_authorize_resource :class=>"Requisicao"
+
   def index
-  
+    authorize! :index,current_user
     @requisicoes = Requisicao.aguardando.urgentes.all
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
     @requisicoes_proximas_de_sair = Requisicao.proximas_de_sair.all
 
-    authorize! :index,current_user
+    
 
   end
 
   def definir_posto
     
     @requisicao = Requisicao.aguardando.find(params[:req_id])
+    authorize! :definir_posto,@requisicao
     @posto = Posto.ativo.find(params[:posto_id])
     @veiculo = @posto.veiculo
     mes = @requisicao.data_ida.month
@@ -38,7 +39,7 @@ load_and_authorize_resource :class=>"Requisicao"
 
   @requisicoes = Requisicao.aguardando.all
   @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
-  authorize! :definir_posto,current_user
+  
   respond_to do |format|
     format.js
   end
@@ -49,6 +50,7 @@ end
 def detalhes_requisicao
   
   @requisicao = Requisicao.find(params[:requisicao_id])
+  authorize! :detalhes_requisicao,@requisicao
   @notificacao = Notificacao.find(params[:notificacao_id])
   @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
 
@@ -59,6 +61,8 @@ end
 def cancelar_requisicao
   
   @requisicao = Requisicao.find(params[:requisicao])
+  authorize! :cancelar_requisicao,@requisicao
+
   @requisicao.motivo_cancelamento = params[:motivo]
   @requisicao.cancelar
   @notificacao = @requisicao.notificacoes.create(:texto=>"Requisição Cancelada: #{@requisicao.numero}",:origem=>current_user,:user=>@requisicao.requisitante.user,:tipo=>1)
@@ -75,9 +79,9 @@ end
 
 
 def cancelar_confirmada
-  authorize! :cancelar_confirmada,current_user
   
   @requisicao = Requisicao.find(params[:requisicao])
+  authorize! :cancelar_confirmada,@requisicao
   @posto = @requisicao.posto
   @requisicao.motivo_cancelamento = params[:motivo]
   @requisicao.cancelar
@@ -85,7 +89,7 @@ def cancelar_confirmada
   @notificacao = @requisicao.notificacoes.create(:texto=>"Requisição Cancelada: #{@requisicao.numero}",:origem=>current_user,:user=>@requisicao.requisitante.user,:tipo=>1)
   @notificacoes_recebidas = @requisicao.requisitante.user.notificacoes_recebidas.nao_vista
   @contador = @notificacoes_recebidas.count
-
+  
 
   respond_to do |format|
     format.js 

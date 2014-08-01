@@ -139,4 +139,41 @@ module NotificacoesHelper
 		return raw(html)
 	end
 
+
+
+	def listar_notificacoes_alt(notificacoes)
+		html=""
+		notificacoes.each do |notificacao|	
+			case notificacao.tipo
+			when "aviso"
+				tipo = "notification-order"
+				icone = "fa fa-bolt"
+			when "cancelamento"
+				tipo = "notification-danger"
+				icone = "fa fa-thumbs-down"
+			when "confirmacao"
+				tipo = "notification-success"
+				icone = "fa fa-car"
+			when "problema"
+				tipo = "notification-failure"
+				icone = "fa fa-times-circle"
+			end
+			
+			
+			if notificacao.objeto_type == "Requisicao" and notificacao.tipo == "aviso"
+				url = "#{gerencia_controle_requisicoes_detalhes_requisicao_url(:requisicao_id=>notificacao.objeto.id,:notificacao_id=>notificacao.id)}" 
+			elsif notificacao.objeto_type == "Requisicao" and notificacao.tipo == "cancelamento"
+				url = "#{requisicao_url(notificacao.objeto_id,:notificacao=>notificacao.id)}"
+			elsif notificacao.objeto_type == "Requisicao" and notificacao.tipo == "confirmacao"
+				url = "#{requisicao_url(notificacao.objeto_id,:notificacao=>notificacao.id)}"
+			end
+
+			html+="<li><a href='#{url}' class='#{tipo}'>"
+			html+="<span class='hora'>#{tempo_relativo(notificacao.created_at)}</span>"
+			html+="<i class='#{icone}'></i>"
+			html+="<span class='msg'>#{notificacao.texto}</span></a></li>"
+		end
+		return raw(html)
+	end
+
 end
