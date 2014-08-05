@@ -273,7 +273,6 @@ state_machine :initial => :aguardando do
     posto = requisicao.posto
     veiculo = posto.veiculo
     servico = requisicao.servico
-    Administracao::BancoDeHora.definir_horas_extras(veiculo,servico.chegada.day,servico.chegada.strftime("%U"),servico.chegada.month,servico.chegada.year,servico.chegada.beginning_of_week,servico.chegada.end_of_week,requisicao.horas_normais)
   end
 
   after_transition any => :agendada do |requisicao, transition|

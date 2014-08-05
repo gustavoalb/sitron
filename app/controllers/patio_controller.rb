@@ -79,7 +79,12 @@ def remover_posto
 
   @posto = @postos.find_by(:codigo=>codigo)
 
-  @posto.sair_do_patio
+  if @posto 
+    @posto.saida = Time.zone.now
+    @posto.sair_do_patio
+  else
+    @mensagem = "Nenhum posto foi encontrado com este código"
+  end
 
   respond_to do |format|
     format.js

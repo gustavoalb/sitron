@@ -1,5 +1,4 @@
 <% publish_to "/patio" do %>
 $('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
 $('#codigo_remover_posto').val('');
-alert('<%=@posto.id%>');
 <%end%>

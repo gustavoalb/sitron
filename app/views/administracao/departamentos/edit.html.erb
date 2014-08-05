@@ -25,7 +25,7 @@
   <%= f.error_notification %>
 	    <%= f.input :nome %>
     <%= f.association :entidade,:collection=>@empresas.collect {|e|[e.nome,e.id]} %>
-    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id"},:label=>"Nome do Responsável",input_html: {value: @administracao_departamento.responsavel.nome}%>
+    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id"},:label=>"Nome do Responsável",input_html: {value: detalhes(@administracao_departamento.responsavel,:nome)}%>
     <%=f.input :responsavel_id,as: :hidden%>
 
     <%=f.fields_for :endereco do |endereco|%>

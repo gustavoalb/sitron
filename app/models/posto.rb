@@ -35,91 +35,117 @@ class Posto < ActiveRecord::Base
   end
 
 
-  def horas_livres?(previsao_horas,semana,ano)
-    if previsao_horas + self.veiculo.horas_extras_semanais(semana,ano) <= 8
-      return true
-    else
-      return false
-    end
+  def horas_normais
+    segundos = 0.0
+    minutos = 0.0
+    entrada = self.data_entrada
+    saida = self.saida
 
-  end
-
-
-  def e_do_tipo?(tipo)
-    if self.veiculo.lote.tipo.remover_acentos.downcase == tipo.remover_acentos.downcase
-      return true
-    else
-      return false
-    end
-  end
-
-  
-
-
-
-  def self.horas_livres?(previsao_horas,semana,ano)
-    Posto.ativo.all.select { |p| p.horas_livres?(previsao_horas,semana,ano) }
-  end
-
-  state_machine :initial => :estacionado do
-
-    event :ligar do
-      transition :estacionado => :saida_proxima
-    end
-
-    event :estacionar do 
-      transition [:saida_proxima,:em_transito,:com_problema] => :estacionado
-    end
-
-
-
-    event :sair do 
-      transition any => :em_transito
-    end
-
-    event :quebrar do 
-      transition any => :com_problema
-    end
-
-    event :consertar do 
-      transition :com_problema => :estacionado
-    end
-
-
-
-    event :sair_do_patio do
-      transition any => :liberado
-    end
-
-
-    state :estacionado do
-      def status
-        'Aguardando'
-      end
-    end
-
-
-
-
-    state :saida_proxima do 
-    	def status 
-       'Próximo de Sair'
-     end
+    (entrada.to_datetime.to_i .. saida.to_datetime.to_i).step(1.seconds) do |date|
+     segundos += 1
    end
 
-   state :em_transito do 
-     def status 
-       'Em Trânsito'
-     end
-   end
+   minutos = segundos / 60
 
-   state :com_problema do 
-     def status 
-       'Com Problemas'
-     end
-   end
+   return minutos
 
  end
+
+
+
+ def horas_livres?(previsao_horas,semana,ano)
+  if previsao_horas + self.veiculo.horas_extras_semanais(semana,ano) <= 8
+    return true
+  else
+    return false
+  end
+
+end
+
+
+def e_do_tipo?(tipo)
+  if self.veiculo.lote.tipo.remover_acentos.downcase == tipo.remover_acentos.downcase
+    return true
+  else
+    return false
+  end
+end
+
+
+
+
+
+def self.horas_livres?(previsao_horas,semana,ano)
+  Posto.ativo.all.select { |p| p.horas_livres?(previsao_horas,semana,ano) }
+end
+
+state_machine :initial => :estacionado do
+
+ after_transition any => :sair_do_patio do |posto, transition|
+  veiculo = posto.veiculo
+  tempo = Time.zone.now
+  Administracao::BancoDeHora.definir_horas_extras(veiculo,tempo.day,tempo.strftime("%U"),tempo.month,tempo.year,servico.chegada.beginning_of_week,tempo.end_of_week,self.horas_normais)
+end
+
+
+
+event :ligar do
+  transition :estacionado => :saida_proxima
+end
+
+event :estacionar do 
+  transition [:saida_proxima,:em_transito,:com_problema] => :estacionado
+end
+
+
+
+event :sair do 
+  transition any => :em_transito
+end
+
+event :quebrar do 
+  transition any => :com_problema
+end
+
+event :consertar do 
+  transition :com_problema => :estacionado
+end
+
+
+
+event :sair_do_patio do
+  transition any => :liberado
+end
+
+
+state :estacionado do
+  def status
+    'Aguardando'
+  end
+end
+
+
+
+
+state :saida_proxima do 
+ def status 
+   'Próximo de Sair'
+ end
+end
+
+state :em_transito do 
+ def status 
+   'Em Trânsito'
+ end
+end
+
+state :com_problema do 
+ def status 
+   'Com Problemas'
+ end
+end
+
+end
 
 
 end
