@@ -8,7 +8,7 @@ class Posto < ActiveRecord::Base
   acts_as_list scope: [:lote,:data_entrada]
   validates_presence_of :codigo
 
-  validates_uniqueness_of :codigo,conditions: -> { where("data_entrada = ? and (turno in (?) or turno in (?) or turno in (?))", Time.zone.now.to_date,[0,1],[0,2],[1,2]) }
+  validates_uniqueness_of :codigo,scope:[:data_entrada,:turno],conditions: -> { where("turno in (?) or turno in (?) or turno in (?)", [0,1],[0,2],[1,2]) }
 
   #enum lote:  [:"Lote 01",:"Lote 02",:"Lote 03",:"Lote 04",:"Lote 05",:"Lote 06",:"Lote 07",:"Lote 08",:"Lote ùnico"]
 
