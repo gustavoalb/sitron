@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20140802234222) do
     t.float    "minutos"
     t.float    "horas_normais",        default: 0.0
     t.float    "horas_extras",         default: 0.0
-    t.float    "acumulo_horas_extras"
+    t.float    "acumulo_horas_extras", default: 0.0
   end
 
   add_index "banco_de_horas", ["posto_id"], name: "index_banco_de_horas_on_posto_id", using: :btree

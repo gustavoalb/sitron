@@ -38,7 +38,7 @@ class Posto < ActiveRecord::Base
   def horas_normais
     segundos = 0.0
     minutos = 0.0
-    entrada = self.data_entrada
+    entrada = self.entrada
     saida = self.saida
 
     (entrada.to_datetime.to_i .. saida.to_datetime.to_i).step(1.seconds) do |date|
@@ -81,12 +81,6 @@ end
 
 state_machine :initial => :estacionado do
 
- after_transition any => :sair_do_patio do |posto, transition|
-  veiculo = posto.veiculo
-  tempo = Time.zone.now
-  Administracao::BancoDeHora.definir_horas_extras(veiculo,tempo.day,tempo.strftime("%U"),tempo.month,tempo.year,servico.chegada.beginning_of_week,tempo.end_of_week,self.horas_normais)
-  puts "Espero que tenha dado Certo"
-end
 
 
 
@@ -147,6 +141,7 @@ state :com_problema do
 end
 
 end
+
 
 
 end
