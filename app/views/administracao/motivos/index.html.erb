@@ -1,5 +1,5 @@
 <%=titulo_pagina(link_icone("Motivos para Requisição",'comment'),"Listagem de Motivos")%>
-<table class='table'>
+ <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
   <thead>
     <tr>
       <th>Nome</th>
@@ -9,7 +9,8 @@
       <th>Entrega documento</th>
       <th>Interior</th>
       <th>Viagem longa</th>
-      <th colspan="3"></th>
+      <th>Descrição Detalhada</th>
+      <th></th>
     </tr>
   </thead>
 
@@ -18,14 +19,15 @@
       <tr>
         <td><%= administracao_motivo.nome %></td>
         <td><%= administracao_motivo.tipo.nome %></td>
-        <td><%= administracao_motivo.carga %></td>
-        <td><%= administracao_motivo.passageiro %></td>
-        <td><%= administracao_motivo.entrega_documento %></td>
-        <td><%= administracao_motivo.interior %></td>
-        <td><%= administracao_motivo.viagem_longa %></td>
-        <td><%= link_to link_icone('detalhes'), administracao_motivo,:class=>"btn btn-success btn-sm" %></td>
-        <td><%= link_to link_icone('editar'), edit_administracao_motivo_path(administracao_motivo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), administracao_motivo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= sim_nao(administracao_motivo.carga) %></td>
+        <td><%= sim_nao(administracao_motivo.passageiro) %></td>
+        <td><%= sim_nao(administracao_motivo.entrega_documento) %></td>
+        <td><%= sim_nao(administracao_motivo.interior) %></td>
+        <td><%= sim_nao(administracao_motivo.viagem_longa) %></td>
+           <td><%= sim_nao(administracao_motivo.necessita_descricao) %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_motivo,:class=>"btn btn-success btn-xs" %>
+        <%= link_to link_icone('editar'), edit_administracao_motivo_path(administracao_motivo),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
+        <%= link_to link_icone('apagar'), administracao_motivo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -35,3 +37,28 @@
 
 
 <%= link_to link_icone('Cadastrar Motivo','plus'), new_administracao_motivo_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      }
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
+
+</script>
+<%end%>

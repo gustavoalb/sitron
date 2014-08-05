@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 class UsuariosController < ApplicationController
   before_action :load_user, only: :create
-	load_and_authorize_resource :class=>"User", except: :create
+  load_and_authorize_resource :class=>"User", except: :create
   # GET /usuarios
   # GET /usuarios.json
   def index
@@ -29,7 +29,7 @@ class UsuariosController < ApplicationController
    @departamentos = @entidade.departamentos.order(:nome)
 
    render :partial=> "departamentos",:locals=>{:departamentos=>@departamentos}
-  end
+ end
 
   # GET /usuarios/new
   # GET /usuarios/new.json
@@ -47,6 +47,14 @@ class UsuariosController < ApplicationController
   def edit
     @usuario = User.find(params[:id])
     @pessoa = @usuario.pessoa
+    @entidade = Administracao::Empresa.find(@pessoa.entidade_id) if @pessoa.entidade_id
+    if @entidade
+      @departamentos = @entidade.departamentos.collect{|d|[d.nome,d.id]}
+      @cargos = @entidade.cargos.collect{|c|[c.nome,c.id]}
+    else
+      @departamentos = ["Selecione a Entidade!",0]
+      @cargos = ["Selecione a Entidade",0]
+    end
   end
 
   # POST /usuarios
@@ -94,13 +102,13 @@ class UsuariosController < ApplicationController
     @usuario = User.find(params[:id])
     @usuario.destroy
 
-     respond_to do |format|
-       format.html { redirect_to usuarios_url }
-       format.json { head :no_content }
-     end
-  end
+    respond_to do |format|
+     format.html { redirect_to usuarios_url }
+     format.json { head :no_content }
+   end
+ end
 
-  private
+ private
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     params.require(:user).permit(:email,
@@ -110,5 +118,7 @@ class UsuariosController < ApplicationController
   def load_user
     @usuario = User.new(user_params)
   end
+
+
 
 end

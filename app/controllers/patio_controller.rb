@@ -1,15 +1,20 @@
 class PatioController < ApplicationController
   include ActionController::Live
 
+ 
+
   def index
 
   	@postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
+
   	
   end
 
 
   def entrada
-   @postos = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
+   @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
+   @postos_especiais = Posto.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
+   @postos = @postos_comuns + @postos_especiais
  end
 
 

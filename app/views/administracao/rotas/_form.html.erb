@@ -21,7 +21,7 @@
       <%= f.input :destino,:label=>"Descrição da Rota" %>
       <%=f.input :roteavel_type,collection: [['Departamentos','Administracao::Departamento'],['Escolas','Administracao::Escola'],['Entidades','Administracao::Empresa']],:label=>"Tipo do Destino",:prompt=>"Selecione o Tipo de Destino"%>
       <%if action_name=='edit'%>
-      <%=f.input :roteavel_id,:collection=>[],:label=>"Destino da Rota",input_html: {:class=>"gllpUpdateButton",:id=>"destino_id",:value=>@administracao_rota.roteavel_id}%>
+      <%=f.input :roteavel_id,:collection=>[],:label=>"Destino da Rota",input_html: {:class=>"gllpUpdateButton",:id=>"destino_id",:value=>detalhes(@administracao_rota.roteavel,:nome)}%>
       <%else%>
       <%=f.input :roteavel_id,:collection=>[],:label=>"Destino da Rota",input_html: {:class=>"gllpUpdateButton",:id=>"destino_id"}%>
       <%end%>

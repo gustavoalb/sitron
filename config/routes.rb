@@ -84,7 +84,7 @@ Sitron::Application.routes.draw do
   end
 
   namespace :administracao do
-    resources :rotas do 
+    resources :rotas,except: [:edit] do 
       get "tipo_destino",on: :collection
       get "destino",on: :collection
     end
@@ -94,6 +94,7 @@ Sitron::Application.routes.draw do
 
   get 'patio/index'
   get "home/nao_autorizado"
+  get "home/busca"
 
 
   resources :patio,only: [:index] do 

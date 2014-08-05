@@ -55,10 +55,11 @@ PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
         <ul class="acc-menu" id="sidebar">
             <li id="search">
                 <a href="javascript:;"><i class="fa fa-search opacity-control"></i></a>
-                <form>
-                    <input type="text" class="search-query" placeholder="Busca...">
+         
+                <%=form_for :busca,:url=>home_busca_url,:method=>:get do |f|%>
+                <%= f.text_field :nome,:class=>"search-query",:placeholder=>"Busca..." %>
                     <button type="submit"><i class="fa fa-search"></i></button>
-                </form>
+                <%end%>
             </li>
 
 
@@ -185,7 +186,7 @@ PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
 		<div id="page-heading">
 			<%= render_breadcrumbs_app %>
 
-			<h1><%=yield :titulo%></h1>
+			<h1><%=yield :titulo%></h1><%=yield :opcao_direita%>
 			
 		</div>
 		<div class="container">

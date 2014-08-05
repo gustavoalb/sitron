@@ -29,9 +29,10 @@
 //= require bootstrap-daterangepicker
 //= require bootstrap-timepicker
 //= require bootstrap-multiselect
+//= require bootstrap-tour
 
 //= require_tree .
-
+//= require pace/pace
 
 
 jQuery(function($){

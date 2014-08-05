@@ -1,3 +1,4 @@
+require "bundler/setup"
 class ProcessoFila
 	def perform
 

@@ -125,11 +125,19 @@ end
 
 
 def sim_nao(atributo)
+  html = ""
   if atributo
-    return "Sim"
+    html+="<span class='fa-stack fa-lg'>"
+    html+="<i class='fa fa-circle fa-stack-2x text-success'></i>"
+    html+="<i class='fa fa-check fa-stack-1x fa-inverse'></i>"
+    html+="</span>"
   else
-    return "Não"
+    html+="<span class='fa-stack fa-lg'>"
+    html+="<i class='fa fa-circle fa-stack-2x text-danger'></i>"
+    html+="<i class='fa fa-ban fa-stack-1x fa-inverse'></i>"
+    html+="</span>"
   end
+  return raw(html)
 end
 
 
@@ -177,11 +185,38 @@ def link_to_function(name, *args, &block)
 end
 
 def detalhes(objeto,atributo)
-  if !objeto.nil?
+  if !objeto.nil? 
     return objeto.send("#{atributo.to_s}")
   else
     return raw("Nada Cadastrado")
   end
+end
+
+
+def menu_direito(titulo,url,icone)
+  html = ""
+  html+="<div class='options'>"
+  html+="<div class='btn-toolbar'>"
+  html+="<div class='btn-group hidden-xs'>"
+  html+="<a href='#' class='btn btn-default dropdown-toggle' data-toggle='dropdown'><i class='fa fa-#{icone}'></i><span class='hidden-sm'> #{titulo} </span><span class='caret'></span></a>"
+  html+="<ul class='dropdown-menu'>"
+  html+="<li>#{url}</li>"
+  html+="</ul>"
+  html+="</div>"
+  html+="</div>"
+  html+="</div>"
+  content_for :opcao_direita do
+    raw(html)
+  end
+
+
+end
+
+
+def tour(passo,titulo,conteudo,classe)
+  html = ""
+  html+="data-bootstro-step='#{passo}' data-bootstro-content='#{conteudo}' data-bootstro-title='#{classe}' data-original-title='' title='' class='#{classe}'"
+  return html
 end
 
 

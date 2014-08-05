@@ -13,22 +13,35 @@ module PatioHelper
 		return raw(html)
 	end
 
+
+	def cor_posto(posto)
+		if posto.veiculo.especial
+			@tile = "green"
+		else
+			case posto.state
+			when "estacionado"
+				@tile = 'success'
+			when "saida_proxima"
+				@tile = 'primary'
+			when "em_transito"
+				@tile = 'warning'
+			when "com_problema"
+				@tile = 'danger'
+			when "agendado"
+				@tile = 'info'
+			end
+		end
+
+		return @tile
+
+	end
+
 	def veiculo_posto(url,tile,posto,veiculo)
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month
 		ano = Time.zone.now.year
-		case posto.state
-		when "estacionado"
-			@tile = 'success'
-		when "saida_proxima"
-			@tile = 'primary'
-		when "em_transito"
-			@tile = 'warning'
-		when "com_problema"
-			@tile = 'danger'
-		when "agendado"
-			@tile = 'info'
-		end
+		@tile = cor_posto(posto)
+
 		html = ""
 		html+="<div class='col-md-2' id='posto_#{posto.id}'>"
 		html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
@@ -55,18 +68,7 @@ module PatioHelper
 		html = ""
 		postos.each do |posto|			
 			veiculo = posto.veiculo
-			case posto.state
-			when "estacionado"
-				@tile = 'success'
-			when "saida_proxima"
-				@tile = 'primary'
-			when "em_transito"
-				@tile = 'warning'
-			when "com_problema"
-				@tile = 'danger'
-			when "agendado"
-				@tile = 'info'
-			end
+			@tile = cor_posto(posto)
 
 			html+="<div class='col-md-2' id='posto_#{posto.id}'>"
 			html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
@@ -75,8 +77,8 @@ module PatioHelper
 			html+="<div class='pull-right'></div></div>"
 			html+="<div class='tiles-body'>"
 			html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
-		    html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.horas_extras_semanais(s,ano).to_i}</span></div>"
- 			html+="<div class='pull-right'></div>"
+			html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.horas_extras_semanais(s,ano).to_i}</span></div>"
+			html+="<div class='pull-right'></div>"
 			html+="</div>"
 			html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
 			html+="</a>"
@@ -89,7 +91,7 @@ module PatioHelper
 	def info_posto(posto)
 		v = posto.veiculo
 		m = v.modalidade
-		return "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo.upcase}#{posto.position}/#{v.lote.numero_postos}".upcase
+		return "#{m.periodo_diario}H#{m.dias_mes}#{posto.position}/#{v.lote.numero_postos}".upcase
 
 	end
 
@@ -100,7 +102,7 @@ module PatioHelper
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month
 		ano = Time.zone.now.year
-		return "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo.upcase}#{posto.position}/#{v.lote.numero_postos}: #{posto.veiculo.horas_extras_semanais(s,ano).to_i}"
+		return raw("#{link_icone('',icone_lote(posto))}#{m.periodo_diario}H#{m.dias_mes} #{posto.position}/#{v.lote.numero_postos} HE#{posto.veiculo.horas_extras_semanais(s,ano).to_i}")
 
 	end
 

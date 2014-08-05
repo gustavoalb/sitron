@@ -18,8 +18,8 @@ class Posto < ActiveRecord::Base
   scope :disponivel, ->{ where(state: "estacionado")}
   scope :em_transito, ->{ where(state: "em_transito")}
   scope :proximo_de_sair,->{where(state: "saida_proxima")}
-  scope :ativo, -> {where("state not in ('liberado')")}
-
+  scope :ativo, -> {joins(:veiculo).where("postos.state not in ('liberado') and veiculos.especial = false")}
+  scope :especiais, -> {joins(:veiculo).where("postos.state not in ('liberado') and veiculos.especial = true")}
   enum turno: [:manha, :tarde, :noite,:madrugada]
 
   def self.setar_turno(horario)

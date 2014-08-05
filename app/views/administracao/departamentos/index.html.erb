@@ -14,10 +14,10 @@
       <tr>
         <td><%= administracao_departamento.nome %></td>
         <td><%= detalhes(administracao_departamento.entidade,:nome)%></td>
-        <td><%= administracao_departamento.responsavel%></td>
-        <td><%= link_to link_icone('detalhes'), administracao_departamento,:class=>"btn btn-success btn-sm" %>
-        <%= link_to link_icone('editar'), edit_administracao_departamento_path(administracao_departamento),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %>
-        <%= link_to link_icone('apagar'), administracao_departamento, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= detalhes(administracao_departamento.responsavel,:nome)%></td>
+        <td><%= link_to link_icone('detalhes'), administracao_departamento,:class=>"btn btn-success btn-xs" %>
+        <%= link_to link_icone('editar'), edit_administracao_departamento_path(administracao_departamento),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
+        <%= link_to link_icone('apagar'), administracao_departamento, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>
       </tr>
     <% end %>
   </tbody>

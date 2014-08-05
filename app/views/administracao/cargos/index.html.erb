@@ -1,10 +1,10 @@
-<%=titulo_pagina(link_icone("Cargos","suitcase"),"Listagem de Cargos")%>
-<table class='table'>
+<%=titulo_pagina(link_icone("Cargos","suitcase"),link_icone("Listagem de Cargos",'suitcase'))%>
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
   <thead>
     <tr>
       <th>Nome</th>
       <th>Entidade</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -12,10 +12,10 @@
     <% @administracao_cargos.each do |administracao_cargo| %>
       <tr>
         <td><%= administracao_cargo.nome %></td>
-        <td><%= administracao_cargo.entidade.nome %></td>
-        <td><%= link_to link_icone('detalhes'), administracao_cargo,:class=>"btn btn-success btn-sm" %></td>
-        <td><%= link_to link_icone('editar'), edit_administracao_cargo_path(administracao_cargo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), administracao_cargo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= detalhes(administracao_cargo.entidade,:nome) %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_cargo,:class=>"btn btn-success btn-xs" %>
+        <%= link_to link_icone('editar'), edit_administracao_cargo_path(administracao_cargo),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
+        <%= link_to link_icone('apagar'), administracao_cargo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -24,4 +24,32 @@
 
 
 
-<%= link_to link_icone('Cadastrar AdministracaoCargo','plus'), new_administracao_cargo_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+<%= link_to link_icone('Cadastrar Cargo','plus'), new_administracao_cargo_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      }
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
+
+</script>
+
+
+<%end%>

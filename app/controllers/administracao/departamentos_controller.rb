@@ -25,6 +25,10 @@ class Administracao::DepartamentosController < ApplicationController
   # GET /administracao/departamentos/1/edit
   def edit
     @endereco = @administracao_departamento.endereco
+    @estado = @endereco.estado
+    @cidade = @estado.cidades.find(@endereco.cidade_id)
+    @cidades = @estado.cidades.collect{|c|[c.nome,c.id]}
+    @bairros = @cidade.bairros.collect{|b|[b.nome,b.id]}
   end
 
   # POST /administracao/departamentos

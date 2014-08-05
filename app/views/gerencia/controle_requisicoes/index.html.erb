@@ -134,6 +134,10 @@
 					<dd><%=r.requisitante.departamento.nome%></dd>
 					<dt>Motivo da Requisição</dt>
 					<dd><%=r.motivo.nome%></dd>
+					<dt></dt>
+					<dd><%=r.descricao%></dd>
+					<dt>Passageiros</dt>
+					<dd><%=r.servidores_nome%></dd>
 					<dt>Horas Estimadas</dt>
 					<dd><%=r.previsao_horas.to_i%></dd>
 					<hr/>
@@ -147,7 +151,10 @@
 						<div class='like-counter counter c_odnoklassniki'><%=info_posto_alt(p)%></div>
 						<%=link_to "Usar esse",gerencia_controle_requisicoes_definir_posto_url(:req_id=>r.id,:posto_id=>p.id),class: 'btn like-button share s_odnoklassniki',:method=>:post,:remote=>:true,:'data-dismiss'=>'modal'%>
 					</div>
+					
 					<%end%>
+
+					
 
 				</div>
 				<%else%>

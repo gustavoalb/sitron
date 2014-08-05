@@ -87,5 +87,9 @@ gem 'event-calendar',	:require => "event_calendar"
 gem 'jquery-datatables-rails', '~> 2.1.10.0.3'
 gem 'thinreports-rails'	
 gem 'barby',:git=>"https://github.com/toretore/barby.git"
+gem 'has_barcode'
 gem 'ean'
 gem 'bootstrap-multiselect-rails'
+gem 'rails-simple-search'
+gem 'bootstrap-tour-rails'
+gem 'pace-rails'

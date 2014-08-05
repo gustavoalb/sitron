@@ -21,7 +21,7 @@
   <dt>Combustivel:</dt>
   <dd><%= @administracao_veiculo.combustivel.nome %></dd>
   <dt>Códigos</dt>
-  <dd><%=image_tag(@administracao_veiculo.qrcode_url(:thumb),class: "img-responsive img-thumbnail")%></dd>
+  <dd><%=image_tag(@administracao_veiculo.qrcode_url,class: "img-responsive img-thumbnail")%></dd>
   <dd><%=image_tag(@administracao_veiculo.codigo_de_barras_url,class: "img-responsive img-thumbnail")%></dd>
 </dl>
 

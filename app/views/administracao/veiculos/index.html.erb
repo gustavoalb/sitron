@@ -1,17 +1,7 @@
-                  <div class="options">
-                    <div class="btn-toolbar">
-                        <div class="btn-group hidden-xs">
-                            <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><i class="fa fa-barcode"></i><span class="hidden-sm"> Impressão de Códigos </span><span class="caret"></span></a>
-                            <ul class="dropdown-menu">
-                                <li><%=link_to link_icone("Imprimir Todos","print"),imprimir_codigos_administracao_veiculos_path%></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
+<%=titulo_pagina(link_icone("Veículos",'car'),link_icone('Listagem de Veículos','passeio'))%>
+<%=menu_direito('Impressão de Codigo de Barras',"#{link_to link_icone('Imprimir Todos','print'),imprimir_codigos_administracao_veiculos_path}",'barcode')%>
+ <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
 
-<%=titulo_pagina(link_icone("Veículos",'car'),"Listagem de Veículos")%>
-
-<table class='table DTTT_selectable'>
   <thead>
     <tr>
       <th>Modalidade</th>
@@ -19,7 +9,7 @@
       <th>Capacidade passageiros</th>
       <th>Itens obrigatorios</th>
       <th>Combustivel</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -31,9 +21,9 @@
         <td><%= administracao_veiculo.capacidade_passageiros %></td>
         <td><%= administracao_veiculo.itens_obrigatorios %></td>
         <td><%= administracao_veiculo.combustivel.nome %></td>
-        <td><%= link_to link_icone('detalhes'), administracao_veiculo,:class=>"btn btn-success btn-sm" %></td>
-        <td><%= link_to link_icone('editar'), edit_administracao_veiculo_path(administracao_veiculo),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), administracao_veiculo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_veiculo,:class=>"btn btn-success btn-xs" %>
+        <%= link_to link_icone('editar'), edit_administracao_veiculo_path(administracao_veiculo),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
+        <%= link_to link_icone('apagar'), administracao_veiculo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -43,3 +33,27 @@
 
 
 <%= link_to link_icone('Cadastrar Veículo','plus'), new_administracao_veiculo_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      }
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
+
+</script>
+<%end%>

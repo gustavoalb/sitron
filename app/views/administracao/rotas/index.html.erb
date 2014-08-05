@@ -1,14 +1,12 @@
 <%=titulo_pagina(link_icone("Rotas",'compass'),"Rotas Cadastradas")%>
-<table class='table'>
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
   <thead>
     <tr>
       <th>Destino</th>
       <th>Tempo previsto</th>
       <th>Latitude</th>
       <th>Longitude</th>
-      <th>Rota longa</th>
-      <th>Intermunicipal</th>
-      <th colspan="3"></th>
+      <th></th>
     </tr>
   </thead>
 
@@ -19,11 +17,8 @@
         <td><%= administracao_rota.tempo_previsto %></td>
         <td><%= administracao_rota.latitude %></td>
         <td><%= administracao_rota.longitude %></td>
-        <td><%= administracao_rota.rota_longa %></td>
-        <td><%= administracao_rota.intermunicipal %></td>
-        <td><%= link_to link_icone('detalhes'), administracao_rota,:class=>"btn btn-success btn-sm" %></td>
-        <td><%= link_to link_icone('editar'), edit_administracao_rota_path(administracao_rota),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %></td>
-        <td><%= link_to link_icone('apagar'), administracao_rota, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_rota,:class=>"btn btn-success btn-xs" %>
+          <%= link_to link_icone('apagar'), administracao_rota, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>
       </tr>
     <% end %>
   </tbody>
@@ -33,3 +28,29 @@
 
 
 <%= link_to link_icone('Cadastrar Rota','plus'), new_administracao_rota_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      }
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
+
+</script>
+
+<%end%>

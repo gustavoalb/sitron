@@ -7,6 +7,7 @@ class Administracao::Empresa < ActiveRecord::Base
 	has_one :endereco,:as=>:enderecavel,:dependent=>:destroy
 	belongs_to :responsavel,:class_name=>"Pessoa"
     has_many :departamentos,:foreign_key=>"entidade_id"
+    has_many :cargos,:foreign_key=>"entidade_id"
     has_one :rota, :as=>:roteavel,:dependent=>:destroy
   
 

@@ -1,22 +1,33 @@
 # -*- encoding : utf-8 -*-
 require 'barby'
 require 'barby/barcode/code_128'
+require 'barby/barcode/ean_13'
+require 'barby/barcode/code_39'
 require 'barby/outputter/png_outputter'
 class Administracao::Veiculo < ActiveRecord::Base
-  belongs_to :modalidade
-  belongs_to :combustivel
-  belongs_to :empresa
-  belongs_to :tipo
-  belongs_to :contrato
-  has_many :patios
-  belongs_to :lote
-  has_many :banco_de_horas,:dependent=>:nullify
-  has_many :provisoes,:dependent=>:nullify
+ include HasBarcode
+ belongs_to :modalidade
+ belongs_to :combustivel
+ belongs_to :empresa
+ belongs_to :tipo
+ belongs_to :contrato
+ has_many :patios
+ belongs_to :lote
+ has_many :banco_de_horas,:dependent=>:nullify
+ has_many :provisoes,:dependent=>:nullify
 
-  mount_uploader :qrcode, ArtefatoUploader
-  mount_uploader :codigo_de_barras, ArtefatoUploader
-  mount_uploader :codigo_de_barras_s, ArtefatoUploader
-  acts_as_list scope: [:lote]
+ mount_uploader :qrcode, ArtefatoUploader
+ mount_uploader :codigo_de_barras, ArtefatoUploader
+ mount_uploader :codigo_de_barras_s, ArtefatoUploader
+ acts_as_list scope: [:lote]
+
+
+
+ has_barcode :barcode,
+ :outputter => :png,
+ :type => Barby::EAN13,
+ :value => Proc.new { |v| v.numero }
+
 
 
 
@@ -36,12 +47,8 @@ class Administracao::Veiculo < ActiveRecord::Base
  
  #before_create :gerar_codigo_barras
 
- def para_qrcode
-  qrcode = "id = '#{self.id}' AND empresa_id = '#{self.empresa.id}'"
-  return qrcode
-end
 
-def horas_extras_semanais(semana,ano)
+ def horas_extras_semanais(semana,ano)
   banco_de_horas = self.banco_de_horas.na_semana(semana).no_ano(ano)
   
   horas_extras = 0.0
@@ -59,19 +66,19 @@ end
 
 
 def validar_horas_extras(horas,semana,mes,ano)
-   horas_extras = self.horas_extras_semanais(semana,ano)
-   
-   if horas_extras == 8.0 
-      return false
-    else
+ horas_extras = self.horas_extras_semanais(semana,ano)
 
-      if horas_extras + horas > 8.0 
-        return false 
-      elsif horas_extras + horas <=8.0
-        return true
-      end
-    
-    end
+ if horas_extras == 8.0 
+  return false
+else
+
+  if horas_extras + horas > 8.0 
+    return false 
+  elsif horas_extras + horas <=8.0
+    return true
+  end
+
+end
 end
 
 def aprovisionado?(data) 
@@ -100,6 +107,12 @@ def codigo_carro
     return code_car
   end
 
+  def numero
+    ean =  "#{self.codigo_carro}#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
+    codigo = "#{ean}#{ean.generate_check_digit}"
+    return codigo
+  end
+
 
 
 
@@ -109,7 +122,12 @@ def codigo_carro
 
 def gerar_code
 
- qr = RQRCode::QRCode.new(self.para_qrcode, :size => 4, :level => :h )
+
+
+ ean = "#{self.codigo_carro}#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
+ codigo = "#{ean}#{ean.generate_check_digit}"
+
+ qr = RQRCode::QRCode.new(self.codigo, :size => 4, :level => :h )
  png = qr.to_img 
  caminho=%(#{Rails.root}/tmp/#{self.id}.png)
  png.resize(900, 900).save(caminho)
@@ -117,19 +135,16 @@ def gerar_code
  self.qrcode = file
  File.delete(caminho)
 
- ean = "N1#{self.codigo_carro}#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
- codigo = "#{ean}#{ean.generate_check_digit}"
-
  ean1 = "S1#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
  codigo1 = "#{ean1}#{ean1.generate_check_digit}"
 
 
- barcode = Barby::Code128B.new(codigo)
+ #barcode = Barby::Code128B.new(codigo)
 
 
  caminho=%(#{Rails.root}/tmp)
 
- File.open("#{caminho}/#{codigo.upcase}.png",'w'){|f|f.write barcode.to_png(margin: 0)}
+ File.open("#{caminho}/#{codigo.upcase}.png",'w'){|f|f.write self.barcode.to_png(:xdim=>3,:height=>150,margin: 0)}
  file = File.open("#{caminho}/#{codigo.upcase}.png")
  self.codigo_de_barras = file
  File.delete(file)

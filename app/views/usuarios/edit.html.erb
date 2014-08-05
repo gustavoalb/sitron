@@ -1,29 +1,29 @@
-<%=titulo_pagina(link_icone("Usuarios","users"),"Editar Usuario")%>
+<%=titulo_pagina(link_icone("Cadastro de Usuários","users"),link_icone("Editar Usuário",'user'))%>
 
 <%= simple_nested_form_for @usuario, html: {class: "form-horizontal"}, :url => usuario_path(@usuario), :validate=>true do |f| %>
   <%= f.error_notification %>
 
-  	<h5>Dados do Usuario</h5>
+  	<h3><span class='label label-info'><%=link_icone("Dados do Usuário","user")%></span></h3>
   	<%= f.input :email %>
         
     <%= f.input :role, :collection => User.roles.keys.map {|role| [role.titleize,role]}, :input_html => {:class=>"input-medium"}, :label=>"Permissoes", :required => true if current_user.administrador?%>
     
-    <h5>Dados da Pessoa</h5>
+    <h3><span class='label label-info'><%=link_icone("Dados da Pessoa",'male')%></span></h3>
     <%= f.fields_for :pessoa, :html => { :class => 'form-horizontal' }, :validate=>true do |fp| %>
 	    <%= fp.input :id, :value=>@pessoa.id, as: :hidden %>
       <%= fp.input :nome %>
 	    <%= fp.input :cpf, input_html: {class: "cpf"} %>
 	    <%= fp.input :email, as: :email %>
 	    <%= fp.input :matricula %>
+
       <% if current_user.administrador?%>
 	    <%= fp.association :entidade, collection: @empresas.collect{|e| [e.nome, e.id] } %>
-	    <div id='departamentos'>
-	     <%= fp.input :departamento, input_html: {disabled: true, value: detalhes(@usuario.pessoa.departamento,:sigla)} %>
+
+	     <%= fp.association :departamento, :collection=>@departamentos,:selected=>@usuario.pessoa.departamento_id %>
 	    </div>
-	    <%= fp.association :cargo,:collection=>@cargos.collect{|c|[c.nome,c.id]}, input_html: {disabled: false} %>
+	    <%= fp.association :cargo,:collection=>@cargos,:selected=>@usuario.pessoa.cargo_id %>
       <%end%>
 	  <% end %>
-
 
 
     <br/><br/><br/>

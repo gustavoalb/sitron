@@ -47,13 +47,11 @@ def imprimir_codigos
   m = v.modalidade
   report.list.add_row do |row|
    row.values empresa: "#{v.empresa.nome.upcase}"
-   row.values codigo: v.codigo_de_barras.placa.file.file
+   row.values codigo: v.codigo_de_barras.file.file
    row.values codigo_texto: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}#{v.position}/#{v.lote.numero_postos}".upcase
    row.values contrato: "#{v.contrato.numero}"
    row.values vigencia: v.contrato.vigencia
-
-   row.values codigo_n: v.codigo_de_barras.placa.file.file
-   row.values codigo_texto_n: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}#{v.position}/#{v.lote.numero_postos}".upcase
+   row.values qr_code:  v.qrcode.file.file
   end
 
 end
@@ -112,7 +110,7 @@ end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_veiculo_params
-      params.require(:administracao_veiculo).permit(:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode,:contrato_id,:lote_id)
+      params.require(:administracao_veiculo).permit(:especial,:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode,:contrato_id,:lote_id)
     end
 
     def load_veiculo
