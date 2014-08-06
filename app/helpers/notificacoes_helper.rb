@@ -44,6 +44,8 @@ module NotificacoesHelper
 
 		html=""
 
+
+
 		html+="<li class='dropdown'>"
 		html+="<a href='#' class='hasnotifications dropdown-toggle' data-toggle='dropdown' id='notificacoes'><i class='fa fa-bell'></i>"
 		html+="<div id='contador_notificacao'>"
@@ -55,12 +57,12 @@ module NotificacoesHelper
 		html+="<ul class='dropdown-menu notifications arrow'>"
 		html+="<li class='dd-header'>"
 		html+="<div id='header_notificacoes'>"
-        if notificacoes.count > 0
-		html+="<span>Você tem #{notificacoes.count} #{'nova'.pluralize(notificacoes.count)} #{'notificação'.pluralize(notificacoes.count)}</span>"
-		html+="<span>#{link_to 'Marcar como visto',marcar_vista_notificacoes_url,:method=>:post,:remote=>true}</span>"
+		if notificacoes.count > 0
+			html+="<span>Você tem #{notificacoes.count} #{'nova'.pluralize(notificacoes.count)} #{'notificação'.pluralize(notificacoes.count)}</span>"
+			html+="<span>#{link_to 'Marcar como visto',marcar_vista_notificacoes_url,:method=>:post,:remote=>true}</span>"
 		else
-		html+='<span>Nenhuma nova Notificação</span>'
-	end
+			html+='<span>Nenhuma nova Notificação</span>'
+		end
 		html+="</div>"
 		html+="</li>"
 		html+="<div tabindex='5003' style='overflow-y: hidden;' class='scrollthis'>"
@@ -98,6 +100,10 @@ module NotificacoesHelper
 		html+="</div></div>"
 		html+="<li class='dd-footer'>#{link_page(gerencia_controle_requisicoes_index_path,'Todas as Requisições Urgentes','bolt')}</li>"
 		html+="</ul>"
+		html+="</li>"
+
+		html+="<li class='dropdown'>"
+			html+=link_to link_icone("Manual",'file-pdf-o'),home_manual_url,:class=>'hasnotifications'
 		html+="</li>"
 
 		return raw(html)
