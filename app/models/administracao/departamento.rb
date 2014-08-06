@@ -40,9 +40,17 @@ class Administracao::Departamento < ActiveRecord::Base
 
   def editar_rota
     rota = self.rota 
-    rota.latitude = self.endereco.latitude
-    rota.longitude = self.endereco.longitude
-    rota.save
+    if rota 
+      if rota.latitude != self.endereco.latitude and rota.longitude != self.endereco.longitude
+        rota.latitude = self.endereco.latitude
+        rota.longitude = self.endereco.longitude
+        rota.save
+      end
+    else
+      if self.e_um_destino?
+        rota = self.create_rota(:latitude=>self.endereco.latitude,:longitude=>self.endereco.longitude,:destino=>"#{self.nome}")
+      end
+    end
   end
 
 
