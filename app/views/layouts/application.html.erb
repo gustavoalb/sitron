@@ -92,7 +92,10 @@ PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
             <%#=nav_item(calendario_url,'Calendário de Requisições','calendario','index','calendar')%>
             
             <% if can? :manage, Administracao::Patio %>
-                <%=nav_item(entrada_patio_index_url,'Gerenciamento de Pátio','patio','index','car')%>
+             <%#=nav_item_menu("Gerenciamento de Pátio",'patio','car') do%>
+                <%=nav_item(entrada_patio_index_url,'Gerenciamento de Pátio','patios','index','passeio')%>
+                <%#=nav_item(controle_manual_patio_index_url,'Controle Manual','patios','controle_manual','database')%>
+                <%#end%>
                 <%=nav_item(gerencia_controle_requisicoes_index_url,'Ger. de Requisições','controle_requisicoes','index','random')%>
             <% end %>
 

@@ -10,6 +10,20 @@ class PatioController < ApplicationController
   	
   end
 
+  def controle_manual
+   @patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
+
+   @postos_comuns = @patio.postos.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
+   @postos_especiais = @patio.postos.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
+   @postos_no_patio = @postos_comuns + @postos_especiais
+   ary = @postos_no_patio.collect{|c|[c.id]}
+
+   @postos_fora = Administracao::Veiculo.nao_entraram(ary)
+
+
+
+  end
+
 
   def entrada
    @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")

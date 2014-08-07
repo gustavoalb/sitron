@@ -1,0 +1,31 @@
+<%=titulo_pagina(link_icone("Pátio","car"),link_icone("Gerenciamento Manual",'car'))%>
+<%content_for :options do %>
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#no_patio" data-toggle="tab"><%=link_icone("Postos no Pátio","car")%></a></li>
+    <li class=""><a href="#fora_do_patio" data-toggle="tab"><%=link_icone("Postos Fora do Pátio","exclamation")%></a></li>
+</ul>
+<%end%>
+
+<div class="tab-content">
+
+
+    <div class="tab-pane active" id="no_patio">
+    vv
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="tab-pane" id="fora_do_patio">
+    <%=render 'fora_do_patio'%>
+    </div>
+
+</div>   

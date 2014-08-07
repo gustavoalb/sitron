@@ -28,6 +28,8 @@ class Administracao::Veiculo < ActiveRecord::Base
  :type => Barby::EAN13,
  :value => Proc.new { |v| v.numero }
 
+ scope :nao_entraram,lambda{|ids| where('id not in (?) ',ids)}
+
 
 
 
