@@ -2,6 +2,7 @@
 class Administracao::VeiculosController < ApplicationController
   before_action :set_administracao_veiculo, only: [:show, :edit, :update, :destroy]
   before_action :load_veiculo, only: :create
+  before_action :carregar_lotes
   load_and_authorize_resource :class=>"Administracao::Veiculo", except: :create
 
 
@@ -104,6 +105,11 @@ end
 
   private
     # Use callbacks to share common setup or constraints between actions.
+
+    def carregar_lotes
+    @lotes_veiculos = Administracao::Lote.all.order('nome ASC').collect{|l|["#{l.nome} - #{l.tipo}",l.id]}
+    end
+    
     def set_administracao_veiculo
       @administracao_veiculo = Administracao::Veiculo.find(params[:id])
     end
