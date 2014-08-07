@@ -16,9 +16,7 @@ class PatioController < ApplicationController
    @postos_comuns = @patio.postos.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
    @postos_especiais = @patio.postos.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
    @postos_no_patio = @postos_comuns + @postos_especiais
-   ary = @postos_no_patio.collect{|c|[c.id]}
-
-   @postos_fora = Administracao::Veiculo.nao_entraram(ary)
+   @postos_fora = Administracao::Veiculo.nao_entraram(@postos_no_patio)
 
 
 

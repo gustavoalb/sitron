@@ -2,12 +2,19 @@
  <thead>
      <tr>
      	<th>Placa</th>
+     	<th>Tipo</th>
+     	<th>Modelo</th>
+     	<th>Lote</th>
+     	</th></th>
      </tr>
  </thead>
  <tbody>
  <%@postos_fora.each do |v|%>
   <tr>
-   <td><%=v.placa%></td>
+   <td><%=v.id%></td>
+   <td><%=v.lote.tipo%></td>
+   <td><%=v.lote.nome%></td>
+   <td></td>
   </tr>
  <%end%>
  </tbody>
