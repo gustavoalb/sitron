@@ -9,7 +9,7 @@ class Administracao::VeiculosController < ApplicationController
   # GET /administracao/veiculos
   # GET /administracao/veiculos.json
   def index
-    @administracao_veiculos = Administracao::Veiculo.accessible_by(current_ability).joins(:lote).order("lotes.tipo ASC","veiculos.position")
+    @administracao_veiculos = Administracao::Veiculo.accessible_by(current_ability).order(:lote_id,:position)
   end
 
   # GET /administracao/veiculos/1

@@ -4,6 +4,7 @@
 
   <thead>
     <tr>
+    <th></th>
     <th>Número do Veículo</th>
       <th>Modalidade</th>
       <th>Tipo</th>
@@ -16,6 +17,7 @@
   <tbody>
     <% @administracao_veiculos.each do |administracao_veiculo| %>
       <tr>
+        <td><%=administracao_veiculo.lote_id%></td>
         <td><%=administracao_veiculo.position%></td>
         <td><%= administracao_veiculo.modalidade.nome %></td>
         <td><%= administracao_veiculo.lote.tipo %></td>
