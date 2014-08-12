@@ -55,7 +55,7 @@ def especial
   @ary = @postos_comuns.collect{|c|c.veiculo_id}
   @veiculos = Administracao::Veiculo.nao_entraram(@ary).all
   resp = Administracao::Departamento.all.collect {|d|d.responsavel_id}
-  @responsaveis = Administracao::Pessoa.podem_solicitar(resp).collect{|p|[p.nome,p.id]} 
+  @responsaveis = User.do_email("seed.ap.gov.br").collect{|u|[u.pessoa.nome,u.pessoa.id]} 
 
 
 end
