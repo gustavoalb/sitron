@@ -7,7 +7,6 @@ class PatioController < ApplicationController
 
   	@postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
 
-  	
   end
 
   def controle_manual
@@ -86,22 +85,15 @@ end
 def remover_posto
   codigo = params[:posto][:codigo_de_barras]
   veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
-
   @patio = Administracao::Patio.na_data(Time.zone.now).first
-
   @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")  
-
   @posto = @patio.postos.find_by(:codigo=>codigo)
 
   if @posto 
     @posto.saida = Time.zone.now
     @posto.sair_do_patio
-
     veiculo = @posto.veiculo
     Administracao::BancoDeHora.definir_horas_extras(veiculo,@posto.saida.day,@posto.saida.strftime("%U"),@posto.saida.month,@posto.saida.year,@posto.saida.beginning_of_week,@posto.saida.end_of_week,@posto.horas_normais)
-
-
-
   else
     @mensagem = "Nenhum posto foi encontrado com este código"
   end

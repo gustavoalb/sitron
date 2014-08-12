@@ -22,6 +22,9 @@ class Administracao::EmpresasController < ApplicationController
   def new
     @administracao_empresa = Administracao::Empresa.new
     @endereco = @administracao_empresa.build_endereco
+     @estado = Estado.all
+      @cidades = @estado.all
+      @bairros = Bairro.all
     add_breadcrumb "Cadastrar Empresa",new_administracao_empresa_url
   end
 
@@ -36,7 +39,7 @@ class Administracao::EmpresasController < ApplicationController
 
     respond_to do |format|
       if @administracao_empresa.save!
-        format.html { redirect_to @administracao_empresa, notice: 'Empresa was successfully created.' }
+        format.html { redirect_to @administracao_empresa, notice: 'Empresa foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_empresa }
       else
         @endereco = @administracao_empresa.build_endereco
@@ -67,7 +70,7 @@ class Administracao::EmpresasController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_empresa.update(administracao_empresa_params)
-        format.html { redirect_to @administracao_empresa, notice: 'Empresa was successfully updated.' }
+        format.html { redirect_to @administracao_empresa, notice: 'Empresa foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_empresa }
       else
         format.html { render :edit }
@@ -81,7 +84,7 @@ class Administracao::EmpresasController < ApplicationController
   def destroy
     @administracao_empresa.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_empresas_url, notice: 'Empresa was successfully destroyed.' }
+      format.html { redirect_to administracao_empresas_url, notice: 'Empresa foi removido do sistema.' }
       format.json { head :no_content }
     end
   end
@@ -90,15 +93,21 @@ class Administracao::EmpresasController < ApplicationController
     # Use callbacks to share common setup or constraints between actions.
     def set_administracao_empresa
       @administracao_empresa = Administracao::Empresa.find(params[:id])
+      @estado = Estado.find(@administracao_empresa.endereco.estado_id)
+      @cidades = @estado.cidades
+      @bairros = Bairro.where(:cidade_id=>@administracao_empresa.endereco.cidade_id)
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_empresa_params
-      params.require(:administracao_empresa).permit(:nome, :cnpj, :responsavel_id, endereco_attributes: [:logradouro,:numero,
+      params.require(:administracao_empresa).permit(:nome, :cnpj, :nome_responsavel,:responsavel_id, endereco_attributes: [:logradouro,:numero,
         :complemento,:estado_id,:cidade_id,:bairro_id,:cep,:endereco,:latitude,:longitude])
     end
 
     def load_empresa
       @administracao_empresa = Administracao::Empresa.new(administracao_empresa_params)
+
     end
+
+  
 end

@@ -30,7 +30,7 @@ class Administracao::ContratosController < ApplicationController
 
     respond_to do |format|
       if @administracao_contrato.save
-        format.html { redirect_to @administracao_contrato, notice: 'Contrato was successfully created.' }
+        format.html { redirect_to @administracao_contrato, notice: 'Contrato foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_contrato }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class Administracao::ContratosController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_contrato.update(administracao_contrato_params)
-        format.html { redirect_to @administracao_contrato, notice: 'Contrato was successfully updated.' }
+        format.html { redirect_to @administracao_contrato, notice: 'Contrato foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_contrato }
       else
         format.html { render :edit }
@@ -58,7 +58,7 @@ class Administracao::ContratosController < ApplicationController
   def destroy
     @administracao_contrato.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_contratos_url, notice: 'Contrato was successfully destroyed.' }
+      format.html { redirect_to administracao_contratos_url, notice: 'Contrato foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

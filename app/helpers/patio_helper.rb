@@ -107,6 +107,16 @@ module PatioHelper
 	end
 
 
+	def info_veiculo(veiculo)
+		m = veiculo.modalidade
+		s = Time.zone.now.strftime("%U")
+		mes = Time.zone.now.month
+		ano = Time.zone.now.year
+		return raw("#{veiculo.lote.tipo}::#{m.periodo_diario}H#{m.dias_mes} #{veiculo.position}/#{veiculo.lote.numero_postos} HE#{veiculo.horas_extras_semanais(s,ano).to_i}")
+
+	end
+
+
 
 
 	def veiculo_posto_ex(veiculo_id)

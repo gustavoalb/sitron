@@ -29,14 +29,15 @@ module SitronHelper
 
 
 
-  def botoes_form(form)
+  def botoes_form(form,link=nil)
+    caminho = !link.nil? ? link : :back
     html=""
-
+    
     html+="<div class='panel-footer'>"
     html+="<div class='row'>"
     html+="<div class='col-sm-6 col-sm-offset-3'>"
     html+="<div class='btn-toolbar'>"
-    html+="#{form.submit "Salvar",:class=>"btn btn-primary"} ou #{link_to 'Cancelar',:back,:class=>"btn btn-warning"}"
+    html+="#{form.submit "Salvar",:class=>"btn btn-primary"} ou #{link_to 'Cancelar',caminho,:class=>"btn btn-warning"}"
     html+="</div>"
     html+="</div>"
     html+="</div>"

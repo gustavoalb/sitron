@@ -1,6 +1,3 @@
-<h1>Editing administracao_empresa</h1>
-
+<%= titulo_pagina(link_icone("Empresas","building-o"), link_icone("Edição de: #{@administracao_empresa.nome}",'building-o'))%>
 <%= render 'form' %>
 
-<%= link_to 'Show', @administracao_empresa %> |
-<%= link_to 'Back', administracao_empresas_path %>

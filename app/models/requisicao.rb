@@ -20,7 +20,7 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :descricao,if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15,:message=>"Número precisa ser informado!",if: Proc.new{|req| req.pessoa_ids.count>0 }
   validates_length_of :descricao, :maximum=>160, :message=>"A Descrição não pode ultrapassar 160 caracteres"
-  
+  validates_presence_of :requisitante_id,:message=>"Precisa definir o Responsável pela requisição"
   #validate :hora
   validates_presence_of :fim,:if => Proc.new { |record|!record.agenda?   }
   has_and_belongs_to_many :tipos
@@ -64,7 +64,7 @@ class Requisicao < ActiveRecord::Base
   after_create :numero_requisicao,:criar_notificacao
   after_create :evento,:gerar_code
   #after_validation :setar_distancia
-  enum tipo_requisicao: [:normal,:urgente,:agendada]
+  enum tipo_requisicao: [:normal,:urgente,:agendada,:especial]
   enum tipo_carga: ["Mobiliário Escolar","Livros Didáticos","ETC"]
 
   def codigo_requisicao
@@ -430,6 +430,8 @@ def numero_requisicao
     @n="U"
   when "agendada"
     @n="A"
+  when "especial"
+    @n="E"
   end
 
   if self.id < 10

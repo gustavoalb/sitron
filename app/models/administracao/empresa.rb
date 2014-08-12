@@ -2,7 +2,6 @@
 class Administracao::Empresa < ActiveRecord::Base
 	paginates_per 10	
 	self.table_name =  "empresas"
-	#attr_accessor :nome_responsavel
 
 	has_one :endereco,:as=>:enderecavel,:dependent=>:destroy
 	belongs_to :responsavel,:class_name=>"Pessoa"

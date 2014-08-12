@@ -31,7 +31,7 @@ class Administracao::ConfiguracoesController < ApplicationController
 
     respond_to do |format|
       if @administracao_configuracao.save
-        format.html { redirect_to @administracao_configuracao, notice: 'Configuracao was successfully created.' }
+        format.html { redirect_to @administracao_configuracao, notice: 'Configuracao foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_configuracao }
       else
         format.html { render :new }
@@ -45,7 +45,7 @@ class Administracao::ConfiguracoesController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_configuracao.update(administracao_configuracao_params)
-        format.html { redirect_to @administracao_configuracao, notice: 'Configuracao was successfully updated.' }
+        format.html { redirect_to @administracao_configuracao, notice: 'Configuracao foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_configuracao }
       else
         format.html { render :edit }
@@ -59,7 +59,7 @@ class Administracao::ConfiguracoesController < ApplicationController
   def destroy
     @administracao_configuracao.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_configuracoes_url, notice: 'Configuracao was successfully destroyed.' }
+      format.html { redirect_to administracao_configuracoes_url, notice: 'Configuracao foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

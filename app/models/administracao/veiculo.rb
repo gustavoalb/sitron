@@ -19,7 +19,7 @@ class Administracao::Veiculo < ActiveRecord::Base
  mount_uploader :qrcode, ArtefatoUploader
  mount_uploader :codigo_de_barras, ArtefatoUploader
  mount_uploader :codigo_de_barras_s, ArtefatoUploader
- acts_as_list scope: [:lote]
+
 
 
 
@@ -48,6 +48,10 @@ class Administracao::Veiculo < ActiveRecord::Base
  after_create :gerar_code
  
  #before_create :gerar_codigo_barras
+
+ def lotes
+   Administracao::Lote.all
+ end
 
 
  def horas_extras_semanais(semana,ano)

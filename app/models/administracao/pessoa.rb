@@ -6,6 +6,7 @@ class Administracao::Pessoa < ActiveRecord::Base
 	belongs_to :departamento
 	has_many :requisicoes,:foreign_key=>"requisitante_id",:dependent=>:destroy
 	scope :pode_ser_passageiro,->{where(:visivel=>true)}
+	
 
 
 	validates_presence_of :nome, :email

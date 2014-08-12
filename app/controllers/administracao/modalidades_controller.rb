@@ -31,7 +31,7 @@ class Administracao::ModalidadesController < ApplicationController
 
     respond_to do |format|
       if @administracao_modalidade.save
-        format.html { redirect_to @administracao_modalidade, notice: 'Modalidade was successfully created.' }
+        format.html { redirect_to @administracao_modalidade, notice: 'Modalidade foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_modalidade }
       else
         format.html { render :new }
@@ -45,7 +45,7 @@ class Administracao::ModalidadesController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_modalidade.update(administracao_modalidade_params)
-        format.html { redirect_to @administracao_modalidade, notice: 'Modalidade was successfully updated.' }
+        format.html { redirect_to @administracao_modalidade, notice: 'Modalidade foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_modalidade }
       else
         format.html { render :edit }
@@ -59,7 +59,7 @@ class Administracao::ModalidadesController < ApplicationController
   def destroy
     @administracao_modalidade.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_modalidades_url, notice: 'Modalidade was successfully destroyed.' }
+      format.html { redirect_to administracao_modalidades_url, notice: 'Modalidade foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

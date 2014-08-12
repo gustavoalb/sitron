@@ -10,7 +10,7 @@
     <%= f.input :entidade_id,input_html: {value: current_user.pessoa.entidade_id},as: :hidden %>
     <%= f.input :departamento_id,input_html: {value: current_user.pessoa.departamento_id},as: :hidden %>
     <%= f.association :cargo, collection: Administracao::Cargo.all.collect{|c| [c.nome, c.id] } %>
-s
+    
    <br/><br/><br/>
     <%=botoes_form(f)%>
 

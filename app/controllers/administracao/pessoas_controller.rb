@@ -37,7 +37,7 @@ class Administracao::PessoasController < ApplicationController
 
     respond_to do |format|
       if @administracao_pessoa.save
-        format.html { redirect_to @administracao_pessoa, notice: 'Pessoa was successfully created.' }
+        format.html { redirect_to @administracao_pessoa, notice: 'Pessoa foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_pessoa }
       else
         format.html { render :new }
@@ -51,7 +51,7 @@ class Administracao::PessoasController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_pessoa.update(administracao_pessoa_params)
-        format.html { redirect_to @administracao_pessoa, notice: 'Pessoa was successfully updated.' }
+        format.html { redirect_to @administracao_pessoa, notice: 'Pessoa foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_pessoa }
       else
         format.html { render :edit }
@@ -65,7 +65,7 @@ class Administracao::PessoasController < ApplicationController
   def destroy
     @administracao_pessoa.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_pessoas_url, notice: 'Pessoa was successfully destroyed.' }
+      format.html { redirect_to administracao_pessoas_url, notice: 'Pessoa foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

@@ -197,6 +197,7 @@
 							<%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
 
 							<%=link_to link_icone("Cancelar","recycle"), "javascript:;",:class=>"btn btn-xs btn-brown",:id=>"alerta-#{r.id}_confirmada"  %>
+							<%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(r),:class=>"btn btn-green btn-xs" if r.confirmada? or r.finalizada?%>
 
 
 							<script type='text/javascript'>
@@ -298,3 +299,4 @@
 
 </script>
 <%end%>
+<%=link_to link_icone("Nova Requisição Especial","plus"),gerencia_controle_requisicoes_especial_url,:class=>"btn btn-success btn-xs"%>

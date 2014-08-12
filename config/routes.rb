@@ -19,6 +19,8 @@ Sitron::Application.routes.draw do
     post 'controle_requisicoes/definir_posto'
     post 'controle_requisicoes/cancelar_requisicao'
     post 'controle_requisicoes/cancelar_confirmada'
+    get 'controle_requisicoes/especial'
+    post 'controle_requisicoes/salvar_requisicao'
   end
 
   resources :usuarios do

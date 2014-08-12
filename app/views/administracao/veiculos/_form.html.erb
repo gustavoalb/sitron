@@ -22,6 +22,7 @@
     <%= f.input :itens_obrigatorios,:as=>:inline_checkbox %>
     <%= f.input :observacao %>
     <%= f.association :combustivel,:collection=>@combustiveis.collect{|combustivel|[combustivel.nome,combustivel.id]},input_html: {class: "selectpicker",:'data-width'=>"100%"},prompt: "Selecione o Tipo de Combustível" %>
+    <%=f.input :motorista,:label=>"Nome do Motorista"%>
     <%=f.input :especial,as: :inline_checkbox%>
     <%=botoes_form(f)%>
 

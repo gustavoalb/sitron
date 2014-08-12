@@ -1,4 +1,4 @@
-<%= titulo_pagina("Detalhes da Empresa", @administracao_empresa.nome)%>
+<%= titulo_pagina(link_icone("Empresas","building-o"), link_icone("Detalhes de: #{@administracao_empresa.nome}",'building-o'))%>
 
 <section class="content invoice">
 	<!-- title row -->
@@ -37,28 +37,7 @@
 		</div>
 		<div class='col-xs-6'>
 
-			<div class="box box-solid box-danger">
-				<div class="box-header">
-					<h3 class="box-title">Problemas Ocorridos</h3>
-					<div class="box-tools pull-right">
-						<button class="btn btn-danger btn-sm" data-widget="collapse">
-							<i class="fa fa-minus"></i>
-						</button>
-						<button class="btn btn-danger btn-sm" data-widget="remove">
-							<i class="fa fa-times"></i>
-						</button>
-					</div>
-				</div>
-				<div class="box-body">
-					Box class: <code>
-						.box.box-solid.box-danger</code>
-					<p>
-						amber, microbrewery abbey hydrometer, brewpub ale lauter tun saccharification oxidized barrel.
-						berliner weisse wort chiller adjunct hydrometer alcohol aau!
-						sour/acidic sour/acidic chocolate malt ipa ipa hydrometer.
-					</p>
-				</div><!-- /.box-body -->
-			</div>
+			
 		</div>
 
 </section>

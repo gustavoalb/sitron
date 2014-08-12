@@ -29,7 +29,7 @@ class Administracao::MotivosController < ApplicationController
 
     respond_to do |format|
       if @administracao_motivo.save
-        format.html { redirect_to @administracao_motivo, notice: 'Motivo was successfully created.' }
+        format.html { redirect_to @administracao_motivo, notice: 'Motivo foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_motivo }
       else
         format.html { render :new }
@@ -43,7 +43,7 @@ class Administracao::MotivosController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_motivo.update(administracao_motivo_params)
-        format.html { redirect_to @administracao_motivo, notice: 'Motivo was successfully updated.' }
+        format.html { redirect_to @administracao_motivo, notice: 'Motivo foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_motivo }
       else
         format.html { render :edit }
@@ -57,7 +57,7 @@ class Administracao::MotivosController < ApplicationController
   def destroy
     @administracao_motivo.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_motivos_url, notice: 'Motivo was successfully destroyed.' }
+      format.html { redirect_to administracao_motivos_url, notice: 'Motivo foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

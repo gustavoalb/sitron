@@ -19,16 +19,17 @@
 
     <%= f.input :nome,:input_html=>{:'data-bv-notempty'=>"true",:'data-bv-notempty-message'=>"The first name is required and cannot be empty"}%>
     <%= f.input :cnpj,input_html: {:class=>"cnpj"} %>
-    <%= f.input :responsavel_id, :url=>autocomplete_pessoa_nome_administracao_empresas_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_empresa_responsavel_id"},:label=>"Nome do Responsável"%>
+    <%=f.input :nome_responsavel,:url=>autocomplete_pessoa_nome_administracao_empresas_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_empresa_responsavel_id",:valeu=>detalhes(@administracao_empresa.responsavel,:nome)},:label=>"Nome do Responsável"%>
+    <%= f.input :responsavel_id,as: :hidden %>
 	 <%=f.fields_for :endereco do |endereco|%>
-    	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"} %>
+    	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"},:selected=>@administracao_empresa.endereco.estado_id %>
 
 	<div id="cidades">
-	<%= endereco.input :cidade_id,:collection=>[],:prompt=>"Selecione a Cidade",:input_html=>{:id=>"departamento_cidade_select",class: "gllpUpdateButton"} %>
+	<%= endereco.input :cidade_id,:collection=>@cidades.collect{|c|[c.nome,c.id]},:prompt=>"Selecione a Cidade",:input_html=>{:id=>"departamento_cidade_select",class: "gllpUpdateButton"},:selected=>@administracao_empresa.endereco.cidade_id %>
 	</div>
 
 	<div id="bairros">
-	<%= endereco.input :bairro_id,:collection=>[],:prompt=>"Selecione o Bairro" %>
+	<%= endereco.input :bairro_id,:collection=>@bairros.collect{|b|[b.nome,b.id]},:prompt=>"Selecione o Bairro" %>
 	</div>
     <%= endereco.input :endereco,:input_html=>{:class=>"gllpLocationName",:id => 'gmaps-input-address',:readonly=>true} %>
 

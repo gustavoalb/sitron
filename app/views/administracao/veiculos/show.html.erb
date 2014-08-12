@@ -1,5 +1,5 @@
 
-<%= titulo_pagina("Detalhes da AdministracaoVeiculo", @administracao_veiculo.tipo)%>
+<%= titulo_pagina(link_icone("Veículos","car"), link_icone("Detalhes de: #{@administracao_veiculo.lote.tipo} - #{@administracao_veiculo.placa}","car"))%>
 <div class='row'>
 <div class='col-xs-6'>
 <dl class="dl-horizontal"> 
@@ -20,6 +20,10 @@
   <dd><%= @administracao_veiculo.modalidade.nome %></dd>
   <dt>Combustivel:</dt>
   <dd><%= @administracao_veiculo.combustivel.nome %></dd>
+  <dt>Placa:</dt>
+  <dd><%=@administracao_veiculo.placa%></dd>
+    <dt>Número do Veículo:</dt>
+  <dd><%=@administracao_veiculo.position%></dd>
   <dt>Códigos</dt>
   <dd><%=image_tag(@administracao_veiculo.qrcode_url,class: "img-responsive img-thumbnail")%></dd>
   <dd><%=image_tag(@administracao_veiculo.codigo_de_barras_url,class: "img-responsive img-thumbnail")%></dd>

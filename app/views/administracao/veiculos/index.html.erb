@@ -4,12 +4,11 @@
 
   <thead>
     <tr>
-    <th></th>
+    <th>Número do Veículo</th>
       <th>Modalidade</th>
       <th>Tipo</th>
       <th>Capacidade passageiros</th>
-      <th>Itens obrigatorios</th>
-      <th>Combustível</th>
+      <th>Placa</th>
       <th></th>
     </tr>
   </thead>
@@ -17,12 +16,11 @@
   <tbody>
     <% @administracao_veiculos.each do |administracao_veiculo| %>
       <tr>
-        <td><%=administracao_veiculo.id%></td>
+        <td><%=administracao_veiculo.position%></td>
         <td><%= administracao_veiculo.modalidade.nome %></td>
         <td><%= administracao_veiculo.lote.tipo %></td>
         <td><%= administracao_veiculo.capacidade_passageiros %></td>
-        <td><%= administracao_veiculo.itens_obrigatorios %></td>
-        <td><%= administracao_veiculo.combustivel.nome %></td>
+        <td><%= administracao_veiculo.placa%></td>
         <td><%= link_to link_icone('detalhes'), administracao_veiculo,:class=>"btn btn-success btn-xs" %>
         <%= link_to link_icone('editar'), edit_administracao_veiculo_path(administracao_veiculo),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
         <%= link_to link_icone('apagar'), administracao_veiculo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>

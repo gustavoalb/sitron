@@ -36,7 +36,7 @@ end
 
     respond_to do |format|
       if @notificacao.save
-        format.html { redirect_to @notificacao, notice: 'Notificacao was successfully created.' }
+        format.html { redirect_to @notificacao, notice: 'Notificacao foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @notificacao }
       else
         format.html { render :new }
@@ -50,7 +50,7 @@ end
   def update
     respond_to do |format|
       if @notificacao.update(notificacao_params)
-        format.html { redirect_to @notificacao, notice: 'Notificacao was successfully updated.' }
+        format.html { redirect_to @notificacao, notice: 'Notificacao foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @notificacao }
       else
         format.html { render :edit }
@@ -64,7 +64,7 @@ end
   def destroy
     @notificacao.destroy
     respond_to do |format|
-      format.html { redirect_to notificacoes_url, notice: 'Notificacao was successfully destroyed.' }
+      format.html { redirect_to notificacoes_url, notice: 'Notificacao foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

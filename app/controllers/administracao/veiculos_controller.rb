@@ -48,11 +48,12 @@ def imprimir_codigos
   m = v.modalidade
   report.list.add_row do |row|
    row.values empresa: "#{v.empresa.nome.upcase}"
-   row.values codigo: v.codigo_de_barras.file.file
-   row.values codigo_texto: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}#{v.position}/#{v.lote.numero_postos}".upcase
+   row.values codigo_barras: v.codigo_de_barras.file.file
+   row.values codigo: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}".upcase
    row.values contrato: "#{v.contrato.numero}"
    row.values vigencia: v.contrato.vigencia
-   row.values qr_code:  v.qrcode.file.file
+   row.values qrcodes:  v.qrcode.file.file
+   row.values n: v.position
   end
 
 end
@@ -70,7 +71,7 @@ end
 
     respond_to do |format|
       if @administracao_veiculo.save
-        format.html { redirect_to @administracao_veiculo, notice: 'Veiculo was successfully created.' }
+        format.html { redirect_to @administracao_veiculo, notice: 'Veiculo foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_veiculo }
       else
         format.html { render :new }
@@ -84,7 +85,7 @@ end
   def update
     respond_to do |format|
       if @administracao_veiculo.update(administracao_veiculo_params)
-        format.html { redirect_to @administracao_veiculo, notice: 'Veiculo was successfully updated.' }
+        format.html { redirect_to @administracao_veiculo, notice: 'Veiculo foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_veiculo }
       else
         format.html { render :edit }
@@ -98,7 +99,7 @@ end
   def destroy
     @administracao_veiculo.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_veiculos_url, notice: 'Veiculo was successfully destroyed.' }
+      format.html { redirect_to administracao_veiculos_url, notice: 'Veiculo foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

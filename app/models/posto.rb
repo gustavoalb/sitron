@@ -89,7 +89,7 @@ event :ligar do
 end
 
 event :estacionar do 
-  transition [:saida_proxima,:em_transito,:com_problema] => :estacionado
+  transition [:liberado,:saida_proxima,:em_transito,:com_problema] => :estacionado
 end
 
 

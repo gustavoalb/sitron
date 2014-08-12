@@ -30,7 +30,7 @@ class Administracao::RotasController < ApplicationController
 
     respond_to do |format|
       if @administracao_rota.save
-        format.html { redirect_to @administracao_rota, notice: 'Rota was successfully created.' }
+        format.html { redirect_to @administracao_rota, notice: 'Rota foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_rota }
       else
         format.html { render :new }
@@ -82,7 +82,7 @@ class Administracao::RotasController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_rota.update(administracao_rota_params)
-        format.html { redirect_to @administracao_rota, notice: 'Rota was successfully updated.' }
+        format.html { redirect_to @administracao_rota, notice: 'Rota foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_rota }
       else
         format.html { render :edit }
@@ -96,7 +96,7 @@ class Administracao::RotasController < ApplicationController
   def destroy
     @administracao_rota.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_rotas_url, notice: 'Rota was successfully destroyed.' }
+      format.html { redirect_to administracao_rotas_url, notice: 'Rota foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

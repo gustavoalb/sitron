@@ -35,7 +35,7 @@ class Administracao::CargosController < ApplicationController
 
     respond_to do |format|
       if @administracao_cargo.save
-        format.html { redirect_to @administracao_cargo, notice: 'Cargo was successfully created.' }
+        format.html { redirect_to @administracao_cargo, notice: 'Cargo foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_cargo }
       else
         format.html { render :new }
@@ -49,7 +49,7 @@ class Administracao::CargosController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_cargo.update(administracao_cargo_params)
-        format.html { redirect_to @administracao_cargo, notice: 'Cargo was successfully updated.' }
+        format.html { redirect_to @administracao_cargo, notice: 'Cargo foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_cargo }
       else
         format.html { render :edit }
@@ -63,7 +63,7 @@ class Administracao::CargosController < ApplicationController
   def destroy
     @administracao_cargo.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_cargos_url, notice: 'Cargo was successfully destroyed.' }
+      format.html { redirect_to administracao_cargos_url, notice: 'Cargo foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

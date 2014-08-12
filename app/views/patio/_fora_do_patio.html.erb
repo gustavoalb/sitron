@@ -1,48 +1,52 @@
 <table cellpadding="0" cellspacing="0" border="0" class="table table-striped datatables">
- <thead>
-     <tr>
-     	<th>Placa</th>
-     	<th>Tipo</th>
-     	<th>Modelo</th>
-     	<th>Lote</th>
-     	</th></th>
-     </tr>
- </thead>
- <tbody>
- <%@postos_fora.each do |v|%>
-  <tr>
-   <td><%=v.placa%></td>
-   <td><%=v.lote.tipo%></td>
-   <td><%=v.lote.nome%></td>
-   <td></td>
-  </tr>
- <%end%>
- </tbody>
- </table>
+	<thead>
+		<tr>
+			<th>Placa</th>
+			<th>Tipo</th>
+			<th>Lote</th>
+			<th>Modelo</th>
+		</th></th>
+	</tr>
+</thead>
+<tbody>
+	<%@postos_fora.each do |v|%>
+	<tr>
+		<td><%=v.placa%></td>
+		<td><%=v.lote.tipo%></td>
+		<td><%=v.lote.nome%></td>
+		<td><%=v.modelo%></td>	
+		<td>
+			<%=link_to link_icone("Em Serviço","road"),'#',:class=>"btn btn-xs btn-success"%>
+
+		</td>
+	</tr>
+	<%end%>
+</tbody>
+</table>
 
 
 
 <%content_for :scripts do%>
 <script type="text/javascript">
 
-  $(document).ready(function() {
-    $('.datatables').dataTable({
-     destroy: true,
-     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-     "sPaginationType": "bootstrap",
-     "oLanguage": {
-      "sLengthMenu": "_MENU_ registros por página",
-      "sSearch": "",
-      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
-      "oPaginate": {
-        "sPrevious": "Anterior",
-        "sNext": "Próxima"
-      }
-    }
-  });
-    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-    $('.dataTables_length select').addClass('form-control');
-  });
+	$(document).ready(function() {
+		$('.datatables').dataTable({
+			destroy: true,
+			"sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+			"sPaginationType": "bootstrap",
+			"oLanguage": {
+				"sLengthMenu": "_MENU_ registros por página",
+				"sSearch": "",
+				"sInfo": "Exibindo página _PAGE_ de _PAGES_",
+				"oPaginate": {
+					"sPrevious": "Anterior",
+					"sNext": "Próxima"
+				}
+			}
+		});
+		$('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+		$('.dataTables_length select').addClass('form-control');
+	});
 
 </script>
 <%end%>

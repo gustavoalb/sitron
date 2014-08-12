@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140802234222) do
+ActiveRecord::Schema.define(version: 20140812182856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -522,6 +522,8 @@ ActiveRecord::Schema.define(version: 20140802234222) do
     t.string   "codigo_s"
     t.integer  "position"
     t.boolean  "especial",               default: false
+    t.string   "state"
+    t.string   "motorista"
   end
 
   add_index "veiculos", ["combustivel_id"], name: "index_veiculos_on_combustivel_id", using: :btree

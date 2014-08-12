@@ -38,7 +38,7 @@ class Administracao::DepartamentosController < ApplicationController
 
     respond_to do |format|
       if @administracao_departamento.save
-        format.html { redirect_to @administracao_departamento, notice: 'Departamento was successfully created.' }
+        format.html { redirect_to @administracao_departamento, notice: 'Departamento foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_departamento }
       else
         @endereco = @administracao_empresa.build_endereco
@@ -75,7 +75,7 @@ class Administracao::DepartamentosController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_departamento.update(administracao_departamento_params)
-        format.html { redirect_to @administracao_departamento, notice: 'Departamento was successfully updated.' }
+        format.html { redirect_to @administracao_departamento, notice: 'Departamento foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_departamento }
       else
         @endereco = @administracao_departamento.endereco
@@ -90,7 +90,7 @@ class Administracao::DepartamentosController < ApplicationController
   def destroy
     @administracao_departamento.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_departamentos_url, notice: 'Departamento was successfully destroyed.' }
+      format.html { redirect_to administracao_departamentos_url, notice: 'Departamento foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

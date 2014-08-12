@@ -32,7 +32,7 @@ class Administracao::CombustiveisController < ApplicationController
 
     respond_to do |format|
       if @administracao_combustivel.save
-        format.html { redirect_to @administracao_combustivel, notice: 'Combustivel was successfully created.' }
+        format.html { redirect_to @administracao_combustivel, notice: 'Combustivel foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_combustivel }
       else
         format.html { render :new }
@@ -46,7 +46,7 @@ class Administracao::CombustiveisController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_combustivel.update(administracao_combustivel_params)
-        format.html { redirect_to @administracao_combustivel, notice: 'Combustivel was successfully updated.' }
+        format.html { redirect_to @administracao_combustivel, notice: 'Combustivel foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_combustivel }
       else
         format.html { render :edit }
@@ -60,7 +60,7 @@ class Administracao::CombustiveisController < ApplicationController
   def destroy
     @administracao_combustivel.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_combustiveis_url, notice: 'Combustivel was successfully destroyed.' }
+      format.html { redirect_to administracao_combustiveis_url, notice: 'Combustivel foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

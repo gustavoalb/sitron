@@ -28,7 +28,7 @@ class Administracao::EscolasController < ApplicationController
 
     respond_to do |format|
       if @administracao_escola.save
-        format.html { redirect_to @administracao_escola, notice: 'Escola was successfully created.' }
+        format.html { redirect_to @administracao_escola, notice: 'Escola foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_escola }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class Administracao::EscolasController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_escola.update(administracao_escola_params)
-        format.html { redirect_to @administracao_escola, notice: 'Escola was successfully updated.' }
+        format.html { redirect_to @administracao_escola, notice: 'Escola foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_escola }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class Administracao::EscolasController < ApplicationController
   def destroy
     @administracao_escola.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_escolas_url, notice: 'Escola was successfully destroyed.' }
+      format.html { redirect_to administracao_escolas_url, notice: 'Escola foi removido do sistema.' }
       format.json { head :no_content }
     end
   end

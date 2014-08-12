@@ -28,7 +28,7 @@ class Administracao::BancoDeHorasController < ApplicationController
 
     respond_to do |format|
       if @administracao_banco_de_hora.save
-        format.html { redirect_to @administracao_banco_de_hora, notice: 'Banco de hora was successfully created.' }
+        format.html { redirect_to @administracao_banco_de_hora, notice: 'Banco de hora foi criado com sucesso.' }
         format.json { render :show, status: :created, location: @administracao_banco_de_hora }
       else
         format.html { render :new }
@@ -42,7 +42,7 @@ class Administracao::BancoDeHorasController < ApplicationController
   def update
     respond_to do |format|
       if @administracao_banco_de_hora.update(administracao_banco_de_hora_params)
-        format.html { redirect_to @administracao_banco_de_hora, notice: 'Banco de hora was successfully updated.' }
+        format.html { redirect_to @administracao_banco_de_hora, notice: 'Banco de hora foi atualizado com sucesso.' }
         format.json { render :show, status: :ok, location: @administracao_banco_de_hora }
       else
         format.html { render :edit }
@@ -56,7 +56,7 @@ class Administracao::BancoDeHorasController < ApplicationController
   def destroy
     @administracao_banco_de_hora.destroy
     respond_to do |format|
-      format.html { redirect_to administracao_banco_de_horas_url, notice: 'Banco de hora was successfully destroyed.' }
+      format.html { redirect_to administracao_banco_de_horas_url, notice: 'Banco de hora foi removido do sistema.' }
       format.json { head :no_content }
     end
   end
