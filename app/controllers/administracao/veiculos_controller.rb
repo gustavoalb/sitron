@@ -45,7 +45,7 @@ class Administracao::VeiculosController < ApplicationController
  #  report.page.values printed_at: Time.zone.now
  @veiculos = Administracao::Veiculo.all
  Administracao::Lote.all.each do |l|
-   l.veiculos.each do  |v|
+   l.veiculos.order(:position).each do  |v|
     m = v.modalidade
     report.list.add_row do |row|
      row.values empresa: "#{v.empresa.nome.upcase}"
