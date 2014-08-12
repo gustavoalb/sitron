@@ -54,7 +54,8 @@ def especial
   @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
   @ary = @postos_comuns.collect{|c|c.veiculo_id}
   @veiculos = Administracao::Veiculo.nao_entraram(@ary).all
-  @responsaveis = Administracao::Departamento.com_responsavel.all.collect{|d|[d.responsavel.nome,d.responsavel_id]}  
+  resp = Administracao::Departamento.all.collect {|d|d.responsavel_id}
+  @responsaveis = Administracao::Pessoa.podem_solicitar(resp).collect{|p|[p.nome,p.id]} 
 
 
 end
