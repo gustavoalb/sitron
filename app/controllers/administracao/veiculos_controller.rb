@@ -9,7 +9,7 @@ class Administracao::VeiculosController < ApplicationController
   # GET /administracao/veiculos
   # GET /administracao/veiculos.json
   def index
-    @administracao_veiculos = Administracao::Veiculo.accessible_by(current_ability)
+    @administracao_veiculos = Administracao::Veiculo.accessible_by(current_ability).joins(:lote).order("lotes.tipo ASC","veiculos.position")
   end
 
   # GET /administracao/veiculos/1
@@ -30,31 +30,33 @@ class Administracao::VeiculosController < ApplicationController
     m = Administracao::Modalidade.find(params[:modalidade_id])
     @lotes = m.lotes.order('nome ASC')
 
-   response = []
-   @lotes.each do |lote|
-    response << {:id => lote.id, :n => "#{lote.nome} - #{lote.tipo}"}
+    response = []
+    @lotes.each do |lote|
+      response << {:id => lote.id, :n => "#{lote.nome} - #{lote.tipo}"}
+    end
+    render :json => {:response => response.compact}.as_json
   end
-  render :json => {:response => response.compact}.as_json
-end
 
-def imprimir_codigos
-  i = 1
-  n = 1
-  report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
-  report.start_new_page
+  def imprimir_codigos
+    i = 1
+    n = 1
+    report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
+    report.start_new_page
  #  report.page.values printed_at: Time.zone.now
  @veiculos = Administracao::Veiculo.all
- @veiculos.each do  |v|
-  m = v.modalidade
-  report.list.add_row do |row|
-   row.values empresa: "#{v.empresa.nome.upcase}"
-   row.values codigo_barras: v.codigo_de_barras.file.file
-   row.values codigo: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}".upcase
-   row.values contrato: "#{v.contrato.numero}"
-   row.values vigencia: v.contrato.vigencia
-   row.values qrcodes:  v.qrcode.file.file
-   row.values n: v.position
-  end
+ Administracao::Lote.all.each do |l|
+   l.veiculos.each do  |v|
+    m = v.modalidade
+    report.list.add_row do |row|
+     row.values empresa: "#{v.empresa.nome.upcase}"
+     row.values codigo_barras: v.codigo_de_barras.file.file
+     row.values codigo: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}".upcase
+     row.values contrato: "#{v.contrato.numero}"
+     row.values vigencia: v.contrato.vigencia
+     row.values qrcodes:  v.qrcode.file.file
+     row.values n: v.position
+   end
+ end
 
 end
 
@@ -108,7 +110,7 @@ end
     # Use callbacks to share common setup or constraints between actions.
 
     def carregar_lotes
-    @lotes_veiculos = Administracao::Lote.all.order('nome ASC').collect{|l|["#{l.nome} - #{l.tipo}",l.id]}
+      @lotes_veiculos = Administracao::Lote.all.order('nome ASC').collect{|l|["#{l.nome} - #{l.tipo}",l.id]}
     end
     
     def set_administracao_veiculo
