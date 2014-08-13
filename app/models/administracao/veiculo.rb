@@ -177,7 +177,7 @@ def gerar_code
 
 
 
- self.codigo = codigo
+ self.codigo = self.barcode.data
  self.save!
 end
 
