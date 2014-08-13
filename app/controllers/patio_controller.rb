@@ -56,7 +56,8 @@ end
 
 def adicionar_posto
 
-  codigo = params[:posto][:codigo_de_barras]
+  cod = params[:posto][:codigo_de_barras]
+  codigo = "0#{cod[0,cod.size-1]}"
   @patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
   @ja_adicionado = nil
   posto = @patio.postos.find_by(:codigo=>codigo,:turno=>Posto.setar_turno(Time.zone.now))
@@ -83,7 +84,8 @@ end
 
 
 def remover_posto
-  codigo = params[:posto][:codigo_de_barras]
+  cod = params[:posto][:codigo_de_barras]
+  codigo = "0#{cod[0,cod.size-1]}"
   veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
   @patio = Administracao::Patio.na_data(Time.zone.now).first
   @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")  
