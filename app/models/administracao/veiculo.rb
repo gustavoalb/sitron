@@ -56,36 +56,53 @@ class Administracao::Veiculo < ActiveRecord::Base
 
  def horas_extras_semanais(semana,ano)
   banco_de_horas = self.banco_de_horas.na_semana(semana).no_ano(ano)
-  
   horas_extras = 0.0
-
   banco_de_horas.each do |b|
     if b.horas_extras
       horas_extras += b.horas_extras
     end
-
   end
-
   return horas_extras
-
 end
 
 
-def validar_horas_extras(horas,semana,mes,ano)
- horas_extras = self.horas_extras_semanais(semana,ano)
-
- if horas_extras == 8.0 
-  return false
-else
-
-  if horas_extras + horas > 8.0 
-    return false 
-  elsif horas_extras + horas <=8.0
-    return true
+def horas_normais_semanais(semana,ano)
+  banco_de_horas = self.banco_de_horas.na_semana(semana).no_ano(ano)
+  horas_normais = 0.0
+  banco_de_horas.each do |b|
+    if b.horas_normais
+      horas_normais += b.horas_normais
+    end
   end
+  return horas_normais
+end
 
-end
-end
+
+ def validar_horas_extras(horas,semana,mes,ano)
+     puts "Começando"
+     horas_extras = self.horas_extras_semanais(semana,ano)
+     horas_normais = self.horas_normais_semanais(semana,ano)
+
+      if horas_extras > 0
+        if  horas_extras >= 8.0 
+         return false
+        else
+          if (horas_normais + horas) > 8.0
+            hora_extra =  ((horas_normais+horas)-8)
+            hora_normal = (((horas_normais+horas)-hora_extra)-horas_normais)
+              if hora_extra > 8.0
+               return false
+              else
+               return true
+              end
+          end
+        end
+      else
+       return true
+      end
+ end
+
+
 
 def aprovisionado?(data) 
   if self.provisoes.na_data(data).size > 0
