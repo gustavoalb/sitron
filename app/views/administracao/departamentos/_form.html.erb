@@ -22,7 +22,7 @@
 	<%= f.input :nome %>
   <%= f.input :sigla%>
     <%= f.association :entidade,:collection=>@empresas.collect {|e|[e.nome,e.id]} %>
-    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id"},:label=>"Nome do Responsável"%>
+    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id",:class=>"autocompleteOff"},:label=>"Nome do Responsável"%>
     <%=f.input :responsavel_id,as: :hidden%>
     <%=f.fields_for :endereco do |endereco|%>
     	<%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"} %>
