@@ -119,10 +119,15 @@
 					<dd><%=r.requisitante.departamento.nome%></dd>
 					<dt>Motivo da Requisição</dt>
 					<dd><%=r.motivo.nome%></dd>
-					<dt>Horas Estimadas</dt>
+                    <dt>Descriçao</dt>
+                    <dd><%=r.descricao%></dd>
+                    <dt>Passageiros</dt>
+                    <dd><%=r.servidores_nome%></dd>
+                   <dt>Destinos</dt>
+                   <dd><%=r.rotas_requisicao%></dd>
+                   	<dt>Horas Estimadas</dt>
 					<dd><%=r.previsao_horas.to_i%></dd>
-					<hr/>
-				</dl>			
+				</dl>
 				<%end%>
 
 				<%=modal("p_#{r.id}", "Definir o Posto para a Requisição: #{r.numero}",r) do %>
@@ -216,18 +221,23 @@
 				</tr>
 				
 				<%=modal_sm("detalhes_#{r.id}", "Detalhes da Requisição: #{r.numero}",r) do %>
-				<dl>
+                    <dl>
 
-					<dt>Requisitante</dt>
-					<dd><%=r.requisitante.nome%></dd>
-					<dt>Setor</dt>
-					<dd><%=r.requisitante.departamento.nome%></dd>
-					<dt>Motivo da Requisição</dt>
-					<dd><%=r.motivo.nome%></dd>
-					<dt>Horas Estimadas</dt>
-					<dd><%=r.previsao_horas.to_i%></dd>
-					<hr/>
-				</dl>			
+                      <dt>Requisitante</dt>
+                      <dd><%=r.requisitante.nome%></dd>
+                      <dt>Setor</dt>
+                      <dd><%=r.requisitante.departamento.nome%></dd>
+                      <dt>Motivo da Requisição</dt>
+                      <dd><%=r.motivo.nome%></dd>
+                      <dt>Descriçao</dt>
+                      <dd><%=r.descricao%></dd>
+                      <dt>Passageiros</dt>
+                      <dd><%=r.servidores_nome%></dd>
+                      <dt>Destinos</dt>
+                      <dd><%=r.rotas_requisicao%></dd>
+                      <dt>Horas Estimadas</dt>
+                      <dd><%=r.previsao_horas.to_i%></dd>
+                    </dl>
 				<%end%>
 
 				

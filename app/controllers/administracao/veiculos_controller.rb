@@ -55,6 +55,15 @@ class Administracao::VeiculosController < ApplicationController
      row.values vigencia: v.contrato.vigencia
      row.values qrcodes:  v.qrcode.file.file
      row.values n: v.position
+
+
+     row.values empresa_n: "#{v.empresa.nome.upcase}"
+     row.values codigo_barras_n: v.codigo_de_barras.file.file
+     row.values codigo_n: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}".upcase
+     row.values contrato_n: "#{v.contrato.numero}"
+     row.values vigencia_n: v.contrato.vigencia
+     row.values qrcodes_n:  v.qrcode.file.file
+     row.values n_n: v.position
    end
  end
 
