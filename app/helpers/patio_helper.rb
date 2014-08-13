@@ -104,10 +104,23 @@ module PatioHelper
 		ano = Time.zone.now.year
 		return raw("#{link_icone('',icone_lote(posto))}#{m.periodo_diario}H#{m.dias_mes} #{posto.position}/#{v.lote.numero_postos} HE#{posto.veiculo.horas_extras_semanais(s,ano).to_i}")
 
-	end
+  end
 
 
-	def info_veiculo(veiculo)
+
+  def info_posto_print(posto)
+    v = posto.veiculo
+    m = v.modalidade
+    s = Time.zone.now.strftime("%U")
+    mes = Time.zone.now.month
+    ano = Time.zone.now.year
+    return raw("#{posto.veiculo.lote.tipo.upcase}#{m.periodo_diario}H#{m.dias_mes} #{v.position}/#{v.lote.numero_postos}")
+
+  end
+
+
+
+  def info_veiculo(veiculo)
 		m = veiculo.modalidade
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month

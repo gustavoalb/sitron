@@ -4,7 +4,7 @@ require 'barby/barcode/code_128'
 require 'barby/outputter/png_outputter'
 class Requisicao < ActiveRecord::Base
 
-
+  mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
 
   belongs_to :requisitante,:class_name=>"Administracao::Pessoa"
@@ -385,6 +385,18 @@ end
 
 
 def gerar_code
+  codigo = self.generate_codigo_de_barras
+
+  qr = RQRCode::QRCode.new(codigo, :size => 4, :level => :h )
+  png = qr.to_img
+  caminho=%(#{Rails.root}/tmp/#{self.id}.png)
+  png.resize(900, 900).save(caminho)
+  file = File.open(caminho)
+  self.qrcode = file
+  File.delete(caminho)
+
+
+
 
  codigo = self.generate_codigo_de_barras
 

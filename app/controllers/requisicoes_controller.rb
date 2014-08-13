@@ -73,6 +73,9 @@
      row.values nome_solicitante: @requisicao.requisitante.nome
      row.values numero_de_servidores: @requisicao.pessoas.count
      row.values codigo:@requisicao.codigo_de_barras.placa.file.file
+     if @requisicao.qrcode.present?
+      row.values qrcode: @requisicao.qrcode.file.file
+     end
      row.values codigo_texto: @requisicao.codigo
      row.values autorizacao_transporte: @requisicao.numero
      row.values data_saida: @requisicao.data_ida.to_s_br
@@ -82,6 +85,7 @@
      row.values hora_chegada_2: @requisicao.fim.strftime('%H:%M:%S') 
      row.values servico_executado: @requisicao.servico_executado
      row.values deslocamento: @requisicao.tipo_requisicao.camelcase
+     row.values veiculo: PatioController.helpers.info_posto_print(@posto)
      if @requisicao.numero_da_portaria
        row.item(:portaria).show
        row.values numero_da_portaria: @requisicao.numero_da_portaria

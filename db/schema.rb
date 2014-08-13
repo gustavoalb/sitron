@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140812182856) do
+ActiveRecord::Schema.define(version: 20140813190148) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -399,6 +399,7 @@ ActiveRecord::Schema.define(version: 20140812182856) do
     t.string   "codigo"
     t.string   "numero_da_portaria"
     t.text     "kml"
+    t.string   "qrcode"
   end
 
   add_index "requisicoes", ["posto_id"], name: "index_requisicoes_on_posto_id", using: :btree
