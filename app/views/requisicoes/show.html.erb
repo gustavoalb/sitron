@@ -1,22 +1,25 @@
 <%=titulo_pagina("Detalhes da Requisição - #{@requisicao.numero}","Detalhes")%>
 <div class='row'>
   <div class="col-md-4">
-    <dl class="dl-horizontal"> 
+    <dl class="dl-horizontal">
+      <dt>Tipo</dt>
+      <dd><%=@requisicao.tipo_requisicao.upcase%></dd>
       <dt>Numero:</dt>
       <dd><%= @requisicao.numero %></dd>
       <dt>Requisitante:</dt>
       <dd><%= @requisicao.requisitante.nome %></dd>
-      <dt>Tipo</dt>
-      <dd><%=@requisicao.tipo_requisicao.upcase%></dd>
-      <dt>Data de Saída:</dt>
-      <dd><%= @requisicao.data_ida.to_s_br %></dd>
-      <dt>Hora de Saída:</dt>
-      <dd><%= @requisicao.inicio.strftime("%H:%M:%S")%></dd>
-
-      <dt>Previsão de Data de Retorno:</dt>
-      <dd><%= @requisicao.data_volta.to_s_br %></dd>
-      <dt>Previsão de Hora de Previsã:</dt>
-      <dd><%= @requisicao.fim.strftime("%H:%M:%S")%></dd>
+      <dt>Departamento</dt>
+      <dd><%=@requisicao.requisitante.departamento.nome%></dd>
+      <dt>Periodo da Requisiçao</dt>
+      <dd><%=@requisicao.periodo_completo_da_requisicao%></dd>
+      <dt>Rotas</dt>
+      <dd><%=@requisicao.rotas_requisicao%></dd>
+      <dt>Serviço</dt>
+      <dd><%=@requisicao.servico_executado%></dd>
+      <dt>Descrição Detalhada</dt>
+      <dd><%=@requisicao.descricao%></dd>
+      <dt>Passageiros</dt>
+      <dd><%=@requisicao.servidores_nome%></dd>
 
       <dt>Status:</dt>
       <dd><%= @requisicao.state.upcase %></dd>
