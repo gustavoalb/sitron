@@ -1,4 +1,4 @@
-<%=titulo_pagina("Detalhes da Requisição - #{@requisicao.numero}","Detalhes")%>
+<%=titulo_pagina(link_icone("Detalhes da Requisição - #{@requisicao.numero}","info"),link_icone("Detalhes da Requisição - #{@requisicao.numero}","info"))%>
 <div class='row'>
   <div class="col-md-4">
     <dl class="dl-horizontal">
@@ -41,7 +41,7 @@
     </dl>
     <br/>
     <%= link_to link_icone('voltar'), requisicoes_path, class: "btn btn-sm btn-default" %>
-
+ <hr/>
   </div>
   <div class="col-md-8">
     <div style='width: 100%;'>
