@@ -89,7 +89,7 @@
 				<tr>
 					<td><%=r.numero%></td>
 					<td><%=r.requisitante.nome%></td>
-                    <td><%=r.requisitante.departamento.nome%></td>
+                    <td><%=r.requisitante.departamento.sigla%></td>
 					<td><%=r.data_ida.to_s_br%> <%=r.inicio.in_time_zone("Brasilia").strftime("%H:%M")%></td>
                   <td><%=r.data_volta.to_s_br%> <%=r.fim.in_time_zone("Brasilia").strftime("%H:%M")%></td>
 					<td>
@@ -120,7 +120,7 @@
 					<dt>Requisitante</dt>
 					<dd><%=r.requisitante.nome%></dd>
 					<dt>Setor</dt>
-					<dd><%=r.requisitante.departamento.sigla%></dd>
+					<dd><%=r.requisitante.departamento.nome%></dd>
 					<dt>Motivo da Requisição</dt>
 					<dd><%=r.motivo.nome%></dd>
                     <dt>Descriçao</dt>
@@ -204,7 +204,7 @@
 				<tr>
                   <td><%=r.numero%></td>
                   <td><%=r.requisitante.nome%></td>
-                  <td><%=r.requisitante.departamento.nome%></td>
+                  <td><%=r.requisitante.departamento.sigla%></td>
 					<td><%=r.data_ida.to_s_br%> <%=r.inicio.in_time_zone("Brasilia").strftime("%H:%M")%></td>
                   <td><%=r.data_volta.to_s_br%> <%=r.fim.in_time_zone("Brasilia").strftime("%H:%M")%></td>
 					<td>
@@ -236,7 +236,7 @@
                       <dt>Requisitante</dt>
                       <dd><%=r.requisitante.nome%></dd>
                       <dt>Setor</dt>
-                      <dd><%=r.requisitante.departamento.sigla%></dd>
+                      <dd><%=r.requisitante.departamento.nome%></dd>
                       <dt>Motivo da Requisição</dt>
                       <dd><%=r.motivo.nome%></dd>
                       <dt>Descriçao</dt>
@@ -246,7 +246,7 @@
                       <dt>Destinos</dt>
                       <dd><%=r.rotas_requisicao%></dd>
                       <dt>Periodo do Serviço</dt>
-                      <dd><%=r.periodo_completo_da_requisicao%></dd>
+                      <dd><%=r.periodo_da_requisicao%></dd>
                       <dt>Horas Estimadas</dt>
                       <dd><%=r.previsao_horas.to_i%></dd>
                     </dl>
