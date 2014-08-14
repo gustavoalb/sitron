@@ -28,6 +28,7 @@
     <thead>
         <tr>
             <th>Número</th>
+            <th>Sigla do Departamento</th>
             <th>Motivo</th>
             <th>Data da Requisição</th>
             <th>Status</th>
@@ -38,6 +39,7 @@
         <%@requisicoes.each do |req|%>
         <tr class="<%=even_odd(req.id)%> gradeX">
             <td  class="sorting_1"><%=req.numero%></td>
+           <td><%=req.requisitante.departamento.sigla%></td>
             <td><%=req.motivo.nome  %></td>
             <td><%=req.created_at.to_s_br%></td>
             <td class="center"> <%=req.state.upcase%></td>

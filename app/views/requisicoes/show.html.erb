@@ -8,10 +8,16 @@
       <dd><%= @requisicao.requisitante.nome %></dd>
       <dt>Tipo</dt>
       <dd><%=@requisicao.tipo_requisicao.upcase%></dd>
-      <dt>Data:</dt>
+      <dt>Data de Saída:</dt>
       <dd><%= @requisicao.data_ida.to_s_br %></dd>
-      <dt>Hora:</dt>
+      <dt>Hora de Saída:</dt>
       <dd><%= @requisicao.inicio.strftime("%H:%M:%S")%></dd>
+
+      <dt>Previsão de Data de Retorno:</dt>
+      <dd><%= @requisicao.data_volta.to_s_br %></dd>
+      <dt>Previsão de Hora de Previsã:</dt>
+      <dd><%= @requisicao.fim.strftime("%H:%M:%S")%></dd>
+
       <dt>Status:</dt>
       <dd><%= @requisicao.state.upcase %></dd>
       <%if @requisicao.state == 'cancelada'%>

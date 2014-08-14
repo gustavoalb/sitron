@@ -33,7 +33,10 @@ class PatioController < ApplicationController
 
  def saida
   @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
-end
+ end
+
+
+
 
 def chat
  @mensagem = params[:posto][:mensagem]

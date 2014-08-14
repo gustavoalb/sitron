@@ -86,7 +86,12 @@ class Requisicao < ActiveRecord::Base
 
 
   def periodo_da_requisicao
-    "de #{self.inicio.strftime('%H:%M')} até #{self.fim.in_time_zone.strftime('%H:%M')}"
+    "de #{self.inicio.in_time_zone("Brasilia").strftime("%H:%M")} até #{self.fim.in_time_zone("Brasilia").strftime("%H:%M")}"
+  end
+
+
+  def periodo_completo_da_requisicao
+     "de #{self.data_ida.to_s_br} ás #{self.inicio.in_time_zone("Brasilia").strftime("%H:%M")} até #{self.data_volta.to_s_br} ás #{self.fim.in_time_zone("Brasilia").strftime("%H:%M")}"
   end
 
 
