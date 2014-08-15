@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class MensagensController < ApplicationController
   before_action :set_mensagem, only: [:show, :edit, :update, :destroy]
 

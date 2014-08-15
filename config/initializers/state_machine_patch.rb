@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module StateMachine
   module Integrations
      module ActiveModel

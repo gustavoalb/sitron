@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoBancoDeHoras < ActiveRecord::Migration
   def change
     create_table :banco_de_horas do |t|

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::Pessoa < ActiveRecord::Base
 #	default_scope { where(visivel: true) }
 	belongs_to :cargo

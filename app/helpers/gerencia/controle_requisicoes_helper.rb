@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module Gerencia::ControleRequisicoesHelper
 
 	def lista_requisicoes(requisicoes)

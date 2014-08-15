@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoEscolas < ActiveRecord::Migration
   def change
     create_table :escolas do |t|

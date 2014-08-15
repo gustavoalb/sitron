@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddCodigoDeBarrasFromRequisicoes < ActiveRecord::Migration
   def change
     add_column :requisicoes, :codigo_de_barras, :string

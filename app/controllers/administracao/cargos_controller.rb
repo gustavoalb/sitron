@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::CargosController < ApplicationController
   before_action :set_administracao_cargo, only: [:show, :edit, :update, :destroy]
   before_action :load_cargo, only: :create

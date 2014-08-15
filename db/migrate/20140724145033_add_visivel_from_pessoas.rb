@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddVisivelFromPessoas < ActiveRecord::Migration
   def change
     add_column :pessoas, :visivel, :boolean,default: true

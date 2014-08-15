@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module NotificacoesHelper
 
 	def tipo_notificacao(n)

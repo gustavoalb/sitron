@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateRequisicoesPessoas < ActiveRecord::Migration
   def change
     create_table :pessoas_requisicoes do |t|

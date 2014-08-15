@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::MotivosController < ApplicationController
   before_action :set_administracao_motivo, only: [:show, :edit, :update, :destroy]
   before_action :load_motivo, only: :create

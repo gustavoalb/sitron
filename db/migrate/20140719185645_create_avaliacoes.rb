@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAvaliacoes < ActiveRecord::Migration
   def change
     create_table :avaliacoes do |t|

@@ -1,324 +1,95 @@
 <style type="text/css">
-	.like-block {
-		width: 200px;
-		height: 90px;
-		display: inline-block;
-		margin-right: 5px;
-		padding: 9px;
-		border: none;
-		border-radius: 5px;
-	}
-	.like-block-only-button {
-		width: 100px;
-		height: 40px;
-		display: inline-block;
-		margin-right: 5px;
-		padding: 9px;
-	}
-	.like-button {
-		height: 30px;
-		width: 100%;
-		text-align: center;
-		vertical-align: middle;
-		border-radius: 5px;
-		background: #85C744;
-		padding: 8px 14px 10px;
-		border: 1px solid #669e2f;
-		cursor: pointer;
+    .like-block {
+        width: 200px;
+        height: 90px;
+        display: inline-block;
+        margin-right: 5px;
+        padding: 9px;
+        border: none;
+        border-radius: 5px;
+    }
+    .like-block-only-button {
+        width: 100px;
+        height: 40px;
+        display: inline-block;
+        margin-right: 5px;
+        padding: 9px;
+    }
+    .like-button {
+        height: 30px;
+        width: 100%;
+        text-align: center;
+        vertical-align: middle;
+        border-radius: 5px;
+        background: #85C744;
+        padding: 8px 14px 10px;
+        border: 1px solid #669e2f;
+        cursor: pointer;
 
-		font-family: sans-serif;
-		-ms-text-size-adjust: 100%;
-		-webkit-text-size-adjust: 100%;
-		letter-spacing: .1em;
-		text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
-		color: #ffffff;
-		box-shadow: inset 0px 1px 0px #669e2f, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
-	}
-	.like-button:hover {
-		color: #dfe7ea;
-		box-shadow: inset 0px 1px 0px #669e2f, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
-	}
-	.like-counter {
-		height: 40px;
-		border: 2px solid black;
-		text-align: center;
-		margin-bottom: 10px;
-		border-radius: 5px;
-		font-size: 1em;
-		font-family: Oswald, sans-serif;
-		letter-spacing: .1em;
-		text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
-		color: black;
-		background: #D7D7D7;
-		padding-top: 10px;
-	}
-	.text, .source-link {
-		margin-bottom: 10px;
-	}
+        font-family: sans-serif;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+        letter-spacing: .1em;
+        text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
+        color: #ffffff;
+        box-shadow: inset 0px 1px 0px #669e2f, 0px 5px 0px 0px #205c73, 0px 10px 5px #999;
+    }
+    .like-button:hover {
+        color: #dfe7ea;
+        box-shadow: inset 0px 1px 0px #669e2f, 0px 2px 0px 0px #205c73, 0px 2px 5px #999;
+    }
+    .like-counter {
+        height: 40px;
+        border: 2px solid black;
+        text-align: center;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-size: 1em;
+        font-family: Oswald, sans-serif;
+        letter-spacing: .1em;
+        text-shadow: 0 -1px 0px rgba(0, 0, 0, 0.3);
+        color: black;
+        background: #D7D7D7;
+        padding-top: 10px;
+    }
+    .text, .source-link {
+        margin-bottom: 10px;
+    }
 </style>
 
-<%=titulo_pagina(link_icone("Controle de Requisições","random"),"Requisições Imediatas")%>
+<%=titulo_pagina(link_icone("Controle de Requisições","random"),link_icone("Controle de Requisições","aguardando"))%>
 
 
 
 <%content_for :options do %>
-<ul class="nav nav-tabs">
-    <li class="active"><a href="#aguardando" data-toggle="tab">Requisições Aguardando</a></li>
-    <li class=""><a href="#confirmadas" data-toggle="tab">Confirmadas e Prontas para Sair</a></li>
- </ul>
+    <ul class="nav nav-tabs">
+      <li class="active"><a href="#aguardando" data-toggle="tab"><%=link_icone("Requisições Aguardando","aguardando")%></a></li>
+      <li class=""><a href="#confirmadas" data-toggle="tab"><%=link_icone("Confirmadas e Prontas para Sair","check-circle-o")%></a></li>
+    </ul>
 
 <%end%>
+
 
 
 <div class="tab-content">
-    <div class="tab-pane active" id="aguardando">
-    <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables">
-	<thead>
-		<tr>
-			<th>Número</th>
-			<th>Requisitante</th>
-            <th>Departamento</th>
-			<th>Saída</th>
-           <th>Previsão de Retorno</th>
-			<th>Ações</th>
-		</tr>
-		<thead>
-			<tbody>
-				<%@requisicoes.each do |r|%>
+  <div class="tab-pane active" id="aguardando">
+    <div class="tab-container tab-top tab-danger">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#urgentes" data-toggle="tab"><%=link_icone("Requisiçoes Urgentes","bolt")%></a></li>
+        <li class=""><a href="#hoje" data-toggle="tab">Requisiçoes para Hoje</a></li>
+        <li class=""><a href="#amanha" data-toggle="tab">Requisiçoes para Amanha</a></li>
+      </ul>
 
-				<tr>
-					<td><%=r.numero%></td>
-					<td><%=r.requisitante.nome%></td>
-                    <td><%=r.requisitante.departamento.sigla%></td>
-					<td><%=r.data_ida.to_s_br%> <%=r.inicio.in_time_zone("Brasilia").strftime("%H:%M")%></td>
-                  <td><%=r.data_volta.to_s_br%> <%=r.fim.in_time_zone("Brasilia").strftime("%H:%M")%></td>
-					<td>
-						<div class="btn-group">
-							<%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
-							<%=link_to link_icone("Definir Posto","car"), "#p_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-green"  %>
-							<%=link_to link_icone("Cancelar","recycle"), "javascript:;",:class=>"btn btn-xs btn-brown",:id=>"alerta-#{r.id}"  %>
+      <div class="tab-content">
+        <div class="tab-pane  active" id="urgentes"><%=render partial: "urgentes"%></div>
+        <div class="tab-pane" id="hoje"><%=render partial: "hoje"%></div>
+        <div class="tab-pane" id="amanha"><%=render partial: "amanha"%></div>
 
-
-							<script type='text/javascript'>
-								$('#alerta-<%=r.id%>').click(function(){
-									bootbox.prompt("Qual o Motivo para o Cancelamento da Requisição <%=r.numero%>?", function(result) {
-										if (result === null) {
-										} else {
-											$.post("/gerencia/controle_requisicoes/cancelar_requisicao?requisicao=<%=r.id%>&"+"motivo="+result);
-
-										}
-									});
-								});
-							</script>
-						</div>
-					</td>
-				</tr>
-				
-				<%=modal("detalhes_#{r.id}", "Detalhes da Requisição: #{r.numero}",r) do %>
-				<dl>
-
-					<dt>Requisitante</dt>
-					<dd><%=r.requisitante.nome%></dd>
-					<dt>Setor</dt>
-					<dd><%=r.requisitante.departamento.nome%></dd>
-					<dt>Motivo da Requisição</dt>
-					<dd><%=r.motivo.nome%></dd>
-                    <dt>Descriçao</dt>
-                    <dd><%=r.descricao%></dd>
-                    <dt>Passageiros</dt>
-                    <dd><%=r.servidores_nome%></dd>
-                   <dt>Destinos</dt>
-                   <dd><%=r.rotas_requisicao%></dd>
-                   <dt>Periodo do Serviço</dt>
-                   <dd><%=r.periodo_completo_da_requisicao%></dd>
-                   	<dt>Horas Estimadas</dt>
-					<dd><%=r.previsao_horas.to_i%></dd>
-				</dl>
-				<%end%>
-
-				<%=modal("p_#{r.id}", "Definir o Posto para a Requisição: #{r.numero}",r) do %>
-				<dl class="dl-horizontal">
-
-					<dt>Requisitante</dt>
-					<dd><%=r.requisitante.nome%></dd>
-					<dt>Setor</dt>
-					<dd><%=r.requisitante.departamento.nome%></dd>
-					<dt>Motivo da Requisição</dt>
-					<dd><%=r.motivo.nome%></dd>
-					<dt></dt>
-					<dd><%=r.descricao%></dd>
-					<dt>Passageiros</dt>
-					<dd><%=r.servidores_nome%></dd>
-					<dt>Horas Estimadas</dt>
-					<dd><%=r.previsao_horas.to_i%></dd>
-					<hr/>
-				</dl>		
-				<%if @postos.count >0%>
-				<h3>Postos Disponíveis no Pátio</h3>
-				<div id='content'>
-					<%@postos.each do |p|%>
-					<div class='like-block'>
-
-						<div class='like-counter counter c_odnoklassniki'><%=info_posto_alt(p)%></div>
-						<%=link_to "Usar esse",gerencia_controle_requisicoes_definir_posto_url(:req_id=>r.id,:posto_id=>p.id),class: 'btn like-button share s_odnoklassniki',:method=>:post,:remote=>:true,:'data-dismiss'=>'modal'%>
-					</div>
-					
-					<%end%>
-
-					
-
-				</div>
-				<%else%>
-				<div class="alert alert-dismissable alert-warning">
-					<h3>Aviso!</h3> 
-
-					<p>Nenhum Posto disponível no Pátio</p>
-					<br>
-
-				</div>
-				<%end%>
-				<%end%>
-
-				<%end%>
-			</body>
-		</table>
-
+      </div>
     </div>
+  </div>
 
-    <div class="tab-pane" id="confirmadas">
-    
- <table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered dt_confirmadas">
-	<thead>
-		<tr>
-          <th>Número</th>
-          <th>Requisitante</th>
-          <th>Departamento</th>
-          <th>Saída</th>
-          <th>Previsão de Retorno</th>
-          <th>Ações</th>
-		</tr>
-		<thead>
-			<tbody>
-				<%@requisicoes_proximas_de_sair.each do |r|%>
-
-				<tr>
-                  <td><%=r.numero%></td>
-                  <td><%=r.requisitante.nome%></td>
-                  <td><%=r.requisitante.departamento.sigla%></td>
-					<td><%=r.data_ida.to_s_br%> <%=r.inicio.in_time_zone("Brasilia").strftime("%H:%M")%></td>
-                  <td><%=r.data_volta.to_s_br%> <%=r.fim.in_time_zone("Brasilia").strftime("%H:%M")%></td>
-					<td>
-						<div class="btn-group">
-							<%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
-
-							<%=link_to link_icone("Cancelar","recycle"), "javascript:;",:class=>"btn btn-xs btn-brown",:id=>"alerta-#{r.id}_confirmada"  %>
-							<%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(r),:class=>"btn btn-green btn-xs" if r.confirmada? or r.finalizada?%>
-
-
-							<script type='text/javascript'>
-								$('#alerta-<%=r.id%>_confirmada').click(function(){
-									bootbox.prompt("Se você realmente deseja cancelar a requisição <%=r.numero%> você precisa informar o Motivo, pois esta requisição já havia sido confirmada anteriormente!", function(result) {
-										if (result === null) {
-										} else {
-											$.post("/gerencia/controle_requisicoes/cancelar_confirmada?requisicao=<%=r.id%>&"+"motivo="+result);
-
-										}
-									});
-								});
-							</script>
-						</div>
-					</td>
-				</tr>
-				
-				<%=modal("detalhes_#{r.id}", "Detalhes da Requisição: #{r.numero}",r) do %>
-                    <dl>
-
-                      <dt>Requisitante</dt>
-                      <dd><%=r.requisitante.nome%></dd>
-                      <dt>Setor</dt>
-                      <dd><%=r.requisitante.departamento.nome%></dd>
-                      <dt>Motivo da Requisição</dt>
-                      <dd><%=r.motivo.nome%></dd>
-                      <dt>Descriçao</dt>
-                      <dd><%=r.descricao%></dd>
-                      <dt>Passageiros</dt>
-                      <dd><%=r.servidores_nome%></dd>
-                      <dt>Destinos</dt>
-                      <dd><%=r.rotas_requisicao%></dd>
-                      <dt>Periodo do Serviço</dt>
-                      <dd><%=r.periodo_da_requisicao%></dd>
-                      <dt>Horas Estimadas</dt>
-                      <dd><%=r.previsao_horas.to_i%></dd>
-                    </dl>
-				<%end%>
-
-				
-
-				<%end%>
-
-			</body>
-		</table>
-
-
-
-
-
-
-    </div>
+  <div class="tab-pane" id="confirmadas">
+    <%=render :partial=>"confirmadas"%>
+  </div>
 </div>
-        
-
-
-
-<%content_for :scripts do%>
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    $('.datatables').dataTable({
-     destroy: true,
-     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-     "sPaginationType": "bootstrap",
-     "oLanguage": {
-      "sLengthMenu": "_MENU_ registros por página",
-      "sSearch": "",
-      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
-      "oPaginate": {
-        "sPrevious": "Anterior",
-        "sNext": "Próxima"
-      },
-      "sZeroRecords":  "Nenhuma requisição encontrada",
-    }
-  });
-    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-    $('.dataTables_length select').addClass('form-control');
-  });
-
-</script>
-
-
-
-<script type="text/javascript">
-
-  $(document).ready(function() {
-    $('.dt_confirmadas').dataTable({
-     destroy: true,
-     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
-     "sPaginationType": "bootstrap",
-     "oLanguage": {
-      "sLengthMenu": "_MENU_ registros por página",
-      "sSearch": "",
-      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
-      "oPaginate": {
-        "sPrevious": "Anterior",
-        "sNext": "Próxima"
-      },
-      "sZeroRecords":  "Nenhuma requisição encontrada",
-    }
-  });
-    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-    $('.dataTables_length select').addClass('form-control');
-  });
-
-</script>
-<%end%>
-<%=link_to link_icone("Nova Requisição Especial","plus"),gerencia_controle_requisicoes_especial_url,:class=>"btn btn-success btn-xs"%>

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::Departamento < ActiveRecord::Base
   belongs_to :entidade,:class_name=>"Empresa"
   belongs_to :responsavel,:class_name=>"Pessoa"

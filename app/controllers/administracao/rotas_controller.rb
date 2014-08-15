@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::RotasController < ApplicationController
   before_action :set_administracao_rota, only: [:show, :edit, :update, :destroy]
   before_action :load_rota, only: :create

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RequisicoesController < ApplicationController
    before_action :set_requisicao, only: [:show, :edit, :update, :destroy]
    before_action :load_requisicao, only: :create

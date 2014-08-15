@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module DelayedCron
   module Jobs
     autoload :DelayedJob, 'delayed_cron/jobs/delayed_job'

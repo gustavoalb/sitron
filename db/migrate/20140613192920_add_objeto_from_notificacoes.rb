@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddObjetoFromNotificacoes < ActiveRecord::Migration
   def change
     add_column :notificacoes, :objeto_type, :string

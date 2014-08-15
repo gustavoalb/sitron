@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoCargos < ActiveRecord::Migration
   def change
     create_table :cargos do |t|

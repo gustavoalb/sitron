@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddContratoFromVeiculos < ActiveRecord::Migration
   def change
     add_reference :veiculos, :contrato, index: true

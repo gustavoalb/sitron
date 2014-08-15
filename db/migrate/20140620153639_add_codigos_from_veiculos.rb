@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddCodigosFromVeiculos < ActiveRecord::Migration
   def change
     add_column :veiculos, :codigo_de_barras_s, :string

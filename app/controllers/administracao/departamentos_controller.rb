@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::DepartamentosController < ApplicationController
    before_action :set_administracao_departamento, only: [:show, :edit, :update, :destroy]
    before_action :load_departamento, only: :create

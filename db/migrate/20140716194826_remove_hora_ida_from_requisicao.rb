@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class RemoveHoraIdaFromRequisicao < ActiveRecord::Migration
   def change
     remove_column :requisicoes, :hora_ida, :time

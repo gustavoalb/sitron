@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddLatitudeLongitudeFromCidades < ActiveRecord::Migration
   def change
     add_column :cidades, :latitude, :float,default: 0.6123044764332252

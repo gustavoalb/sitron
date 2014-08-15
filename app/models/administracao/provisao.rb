@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::Provisao < ActiveRecord::Base
   belongs_to :veiculo
   belongs_to :requisicao

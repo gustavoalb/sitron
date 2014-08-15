@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Posto < ActiveRecord::Base
   belongs_to :veiculo,:class_name=>"Administracao::Veiculo"
   belongs_to :patio,:class_name=>"Administracao::Patio"

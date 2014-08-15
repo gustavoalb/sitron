@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::BancoDeHorasController < ApplicationController
   before_action :set_administracao_banco_de_hora, only: [:show, :edit, :update, :destroy]
 

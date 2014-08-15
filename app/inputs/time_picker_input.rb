@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 
 
 class TimePickerInput < SimpleForm::Inputs::StringInput

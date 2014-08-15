@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::PessoasController < ApplicationController
   before_action :set_administracao_pessoa, only: [:show, :edit, :update, :destroy]
   before_action :load_pessoa, only: :create

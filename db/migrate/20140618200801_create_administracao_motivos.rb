@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoMotivos < ActiveRecord::Migration
   def change
     create_table :motivos do |t|

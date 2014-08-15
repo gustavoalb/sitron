@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'delayed_cron/jobs'
 require 'delayed_cron/railtie'
 

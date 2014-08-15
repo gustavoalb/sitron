@@ -11,7 +11,7 @@
 <div class='row'>
 	<div class='col-md-10'>
 	    <div id='patio'>
-		<%@patios.each do |p|%>
+		<%@postos.each do |p|%>
 		<%=veiculo_patio('#','success',p,p.veiculo)%>
 		<%end%>
 		</div>
@@ -34,32 +34,33 @@
 
 
 <% content_for :scripts do %>
-<%= javascript_tag do %>
-// Sorting the list
 
-$(document).ready(function(){
-$('#patio').sortable({
-axis: 'y',
-dropOnEmpty: false,
-handle: '.handle',
-cursor: 'crosshair',
-items: 'li',
-opacity: 0.4,
-scroll: true,
-update: function(){
-$.ajax({
-type: 'post',
-data: $('#patio').sortable('serialize'),
-dataType: 'script',
-complete: function(request){
-$('#patio').effect('highlight');
-},
-url: "<%=patio_ordernar_veiculo_path(:patio_id=>1)%>"})
-}
-});
-});
-<% end %>
-<script type="text/javascript">
-	$( "#posto_codigo_de_barras" ).focus();
-</script>
+    <%= javascript_tag do %>
+        // Sorting the list
+
+        $(document).ready(function(){
+        $('#patio').sortable({
+        axis: 'y',
+        dropOnEmpty: false,
+        handle: '.handle',
+        cursor: 'crosshair',
+        items: 'li',
+        opacity: 0.4,
+        scroll: true,
+        update: function(){
+        $.ajax({
+        type: 'post',
+        data: $('#patio').sortable('serialize'),
+        dataType: 'script',
+        complete: function(request){
+        $('#patio').effect('highlight');
+        },
+        url: "<%=patio_ordernar_veiculo_path(:patio_id=>1)%>"})
+        }
+        });
+        });
+    <% end %>
+    <script type="text/javascript">
+        $( "#posto_codigo_de_barras" ).focus();
+    </script>
 <% end %>

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class PatioController < ApplicationController
   include ActionController::Live
 

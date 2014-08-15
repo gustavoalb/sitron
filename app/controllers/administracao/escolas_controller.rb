@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::EscolasController < ApplicationController
   before_action :set_administracao_escola, only: [:show, :edit, :update, :destroy]
 

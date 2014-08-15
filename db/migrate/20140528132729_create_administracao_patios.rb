@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoPatios < ActiveRecord::Migration
   def change
     create_table   :patios do |t|

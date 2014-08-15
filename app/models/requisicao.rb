@@ -4,8 +4,11 @@ require 'barby/barcode/code_128'
 require 'barby/outputter/png_outputter'
 class Requisicao < ActiveRecord::Base
 
+  acts_as_list scope: [:tipo_requisicao,:inicio]
   mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
+
+
 
   belongs_to :requisitante,:class_name=>"Administracao::Pessoa"
   belongs_to :posto
@@ -53,6 +56,7 @@ class Requisicao < ActiveRecord::Base
   scope :canceladas,->{where(:state=>"cancelada").order("created_at ASC ")}
   scope :normal_agendada,->{where("tipo_requisicao in (0,2)")}
   scope :urgentes,->{where("tipo_requisicao = 1")}
+  scope :nao_urgentes,->{where("tipo_requisicao <>1")}
   scope :proximas_de_sair,->{joins(:posto).where("requisicoes.state=? and postos.state = ?",'confirmada','saida_proxima').order("created_at ASC ")}
 
 

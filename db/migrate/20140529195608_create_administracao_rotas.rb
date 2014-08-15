@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoRotas < ActiveRecord::Migration
   def change
     create_table :rotas do |t|

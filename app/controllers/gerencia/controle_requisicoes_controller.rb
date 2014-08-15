@@ -1,14 +1,34 @@
+# -*- encoding : utf-8 -*-
 class Gerencia::ControleRequisicoesController < ApplicationController
   before_action :load_requisicao, only: :salvar_requisicao
   def index
+
     authorize! :index,current_user
     @requisicoes = Requisicao.aguardando.urgentes.all
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
     @requisicoes_proximas_de_sair = Requisicao.proximas_de_sair.all
 
-    
+    @urgentes_aguardando = Requisicao.aguardando.urgentes.accessible_by(current_ability)
+    @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
+    @aguardando_hoje = Requisicao.na_data(Time.now).nao_urgentes.aguardando.accessible_by(current_ability)
+    @aguardando_amanha = Requisicao.na_data(Date.tomorrow).aguardando.accessible_by(current_ability)
+    @proximas_de_sair_amanha = Requisicao.proximas_de_sair.na_data(Date.tomorrow).accessible_by(current_ability)
+    @proximas_de_sair_hoje = Requisicao.proximas_de_sair.na_data(Time.now).accessible_by(current_ability)
+
+
+
 
   end
+
+  def ordernar_requisicao
+     @aguardando_hoje = Requisicao.na_data(Time.now).nao_urgentes.aguardando.accessible_by(current_ability)
+     @aguardando_hoje.each do |req|
+        req.position = params[:requisicao].index(req.id.to_s) + 1
+        req.save!
+     end
+     render :nothing => true
+  end
+
 
   def definir_posto
 
@@ -59,6 +79,19 @@ def especial
 
 
 end
+
+  def gerenciar_requisicoes
+
+     @urgentes = Requisicao.aguardando.urgentes.accessible_by(current_ability)
+     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
+     @aguardando_hoje = Requisicao.na_data(Time.now).aguardando.accessible_by(current_ability)
+     @aguardando_amanha = Requisicao.na_data(Date.tomorrow).aguardando.accessible_by(current_ability)
+     @proximas_de_sair_amanha = Requisicao.proximas_de_sair.na_data(Date.tomorrow).accessible_by(current_ability)
+     @proximas_de_sair_hoje = Requisicao.proximas_de_sair.na_data(Time.now).accessible_by(current_ability)
+
+
+
+  end
 
 
 def detalhes_requisicao

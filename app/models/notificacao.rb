@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Notificacao < ActiveRecord::Base
 	belongs_to :origem,:class_name=>"User"
 	belongs_to :entidade,class_name: "Administracao::Empresa"

@@ -1,0 +1,154 @@
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered sorted_table datatables_conf" id="sortable_hoje" data-update_url=<%= gerencia_controle_requisicoes_ordernar_requisicao_path %> >
+  <thead>
+  <tr>
+    <th>Número</th>
+    <th>Requisitante</th>
+    <th>Departamento</th>
+    <th>Saída</th>
+    <th>Previsão de Retorno</th>
+    <th>Ações</th>
+  </tr>
+  <thead>
+  <tbody>
+  <%@requisicoes_proximas_de_sair.each do |r|%>
+
+      <tr data-item_id="<%=r.id%>" class='item' data-item_position="<%=r.position%>">
+        <td><%=r.numero%></td>
+        <td><%=r.requisitante.nome%></td>
+        <td><%=r.requisitante.departamento.sigla%></td>
+        <td><%=r.data_ida.to_s_br%> <%=r.inicio.in_time_zone("Brasilia").strftime("%H:%M")%></td>
+        <td><%=r.data_volta.to_s_br%> <%=r.fim.in_time_zone("Brasilia").strftime("%H:%M")%></td>
+        <td>
+          <div class="btn-group">
+            <%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
+            <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(r),:class=>"btn btn-green btn-xs" if r.confirmada? or r.finalizada?%>
+            <%=link_to link_icone("Cancelar","recycle"), "javascript:;",:class=>"btn btn-xs btn-brown",:id=>"alerta-#{r.id}"  %>
+
+
+            <script type='text/javascript'>
+                $('#alerta-<%=r.id%>').click(function(){
+                    bootbox.prompt("Qual o Motivo para o Cancelamento da Requisição <%=r.numero%>?", function(result) {
+                        if (result === null) {
+                        } else {
+                            $.post("/gerencia/controle_requisicoes/cancelar_requisicao?requisicao=<%=r.id%>&"+"motivo="+result);
+
+                        }
+                    });
+                });
+            </script>
+          </div>
+        </td>
+      </tr>
+
+      <%=modal("detalhes_#{r.id}", "Detalhes da Requisição: #{r.numero}",r) do %>
+          <dl>
+
+            <dt>Requisitante</dt>
+            <dd><%=r.requisitante.nome%></dd>
+            <dt>Setor</dt>
+            <dd><%=r.requisitante.departamento.nome%></dd>
+            <dt>Motivo da Requisição</dt>
+            <dd><%=r.motivo.nome%></dd>
+            <dt>Descriçao</dt>
+            <dd><%=r.descricao%></dd>
+            <dt>Passageiros</dt>
+            <dd><%=r.servidores_nome%></dd>
+            <dt>Destinos</dt>
+            <dd><%=r.rotas_requisicao%></dd>
+            <dt>Periodo do Serviço</dt>
+            <dd><%=r.periodo_completo_da_requisicao%></dd>
+            <dt>Horas Estimadas</dt>
+            <dd><%=r.previsao_horas.to_i%></dd>
+          </dl>
+      <%end%>
+
+      <%=modal("p_#{r.id}", "Definir o Posto para a Requisição: #{r.numero}",r) do %>
+          <dl class="dl-horizontal">
+
+            <dt>Requisitante</dt>
+            <dd><%=r.requisitante.nome%></dd>
+            <dt>Setor</dt>
+            <dd><%=r.requisitante.departamento.nome%></dd>
+            <dt>Motivo da Requisição</dt>
+            <dd><%=r.motivo.nome%></dd>
+            <dt></dt>
+            <dd><%=r.descricao%></dd>
+            <dt>Passageiros</dt>
+            <dd><%=r.servidores_nome%></dd>
+            <dt>Horas Estimadas</dt>
+            <dd><%=r.previsao_horas.to_i%></dd>
+            <hr/>
+          </dl>
+          <%if @postos.count >0%>
+              <h3>Postos Disponíveis no Pátio</h3>
+              <div id='content'>
+                <%@postos.each do |p|%>
+                    <div class='like-block'>
+
+                      <div class='like-counter counter c_odnoklassniki'><%=info_posto_alt(p)%></div>
+                      <%=link_to "Usar esse",gerencia_controle_requisicoes_definir_posto_url(:req_id=>r.id,:posto_id=>p.id),class: 'btn like-button share s_odnoklassniki',:method=>:post,:remote=>:true,:'data-dismiss'=>'modal'%>
+                    </div>
+
+                <%end%>
+
+
+
+              </div>
+          <%else%>
+              <div class="alert alert-dismissable alert-warning">
+                <h3>Aviso!</h3>
+
+                <p>Nenhum Posto disponível no Pátio</p>
+                <br>
+
+              </div>
+          <%end%>
+      <%end%>
+
+  <%end%>
+  </body>
+</table>
+
+
+<%content_for :scripts do%>
+
+    <%=javascript_tag do %>
+        $('.sorted_table').sortable({
+        containerSelector: 'table',
+        itemPath: '> tbody',
+        itemSelector: 'tr',
+        placeholder: '<tr class="placeholder"/>'
+        })
+
+    <%end%>
+
+
+    <script type="text/javascript">
+
+        $(document).ready(function() {
+            $('.datatables_conf').dataTable({
+                destroy: true,
+                "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+                "sPaginationType": "bootstrap",
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ registros por página",
+                    "sSearch": "",
+                    "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+                    "oPaginate": {
+                        "sPrevious": "Anterior",
+                        "sNext": "Próxima"
+                    },
+                    "sZeroRecords":  "Nenhuma requisição encontrada",
+                }
+            });
+            $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+            $('.dataTables_length select').addClass('form-control');
+        });
+
+    </script>
+
+
+
+<%end%>
+
+

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CalendarioController < ApplicationController
   add_breadcrumb "Requisições Agendadas",:calendario_url
   def index

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::ContratosController < ApplicationController
   before_action :set_administracao_contrato, only: [:show, :edit, :update, :destroy]
   before_action :load_contrato, only: :create

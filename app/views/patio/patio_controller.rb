@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class PatioController < FayeRails::Controller
   channel '/patio' do
     subscribe do

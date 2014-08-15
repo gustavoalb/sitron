@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::Contrato < ActiveRecord::Base
   belongs_to :empresa
 

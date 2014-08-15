@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class ChangeDataTypeForRequisicoesIda < ActiveRecord::Migration
   def change
   	change_table :requisicoes do |t|

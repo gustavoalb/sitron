@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class NotificacoesController < ApplicationController
   before_action :set_notificacao, only: [:show, :edit, :update, :destroy]
 

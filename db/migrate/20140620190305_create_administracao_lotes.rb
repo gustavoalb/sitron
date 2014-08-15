@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class CreateAdministracaoLotes < ActiveRecord::Migration
   def change
     create_table :lotes do |t|

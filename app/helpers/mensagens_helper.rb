@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 module MensagensHelper
 
 	def remetente(m)

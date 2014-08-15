@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::Rota < ActiveRecord::Base
   belongs_to :roteavel,:polymorphic=>true
 

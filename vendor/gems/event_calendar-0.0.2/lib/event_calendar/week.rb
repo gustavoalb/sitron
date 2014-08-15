@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class EventCalendar
   
   # Contains an array of days representing a calendar week

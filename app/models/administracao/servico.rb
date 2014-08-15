@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class Administracao::Servico < ActiveRecord::Base
   belongs_to :requisicao
   belongs_to :veiculo
