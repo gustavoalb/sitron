@@ -65,8 +65,8 @@
     <ul class="nav nav-tabs">
       <li class="active"><a href="#aguardando" data-toggle="tab"><%=link_icone("Requisições Aguardando","aguardando")%></a></li>
       <li class=""><a href="#confirmadas" data-toggle="tab"><%=link_icone("Confirmadas e Prontas para Sair","check-circle-o")%></a></li>
+      <li><a href="#ativas" data-toggle="tab"><%=link_icone("Em Serviço","car")%></a></li>
     </ul>
-
 <%end%>
 
 
@@ -91,5 +91,8 @@
 
   <div class="tab-pane" id="confirmadas">
     <%=render :partial=>"confirmadas"%>
+  </div>
+  <div class="tab-pane" id="ativas">
+    <%=render :partial=>"em_servico"%>
   </div>
 </div>

@@ -6,6 +6,8 @@ $('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))
 
 $('#codigo_saida_servico').val('');
 
+window.location = "<%=gerencia_controle_requisicoes_index_path%>" ;
+
 <%else%>
 
 $.pnotify({title: 'Aviso',text: '<%=@mensagem%>',type: 'error',history: false});

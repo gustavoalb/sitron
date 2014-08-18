@@ -23,6 +23,7 @@ Sitron::Application.routes.draw do
     post 'controle_requisicoes/salvar_requisicao'
     get  'controle_requisicoes/gerenciar_requisicoes'
     post  'controle_requisicoes/ordernar_requisicao'
+    post 'controle_requisicoes/chegada_servico'
   end
 
   resources :usuarios do
@@ -116,6 +117,12 @@ Sitron::Application.routes.draw do
     
   end
 
+  namespace :api do
+    namespace :v1  do
+      resources :tokens,:only => [:create, :destroy]
+    end
+  end
+
   namespace :administracao do
     resources :modalidades
   end
@@ -139,6 +146,6 @@ Sitron::Application.routes.draw do
   end
 
   root :to => "home#index"
-  devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_for :users, :controllers => {:registrations => "registrations",sessions: "sessions"}
   resources :users
 end

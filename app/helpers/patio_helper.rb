@@ -47,7 +47,7 @@ module PatioHelper
 		html+="<div class='col-md-2' id='posto_#{posto.id}'>"
 		html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
 		html+="<div class='tiles-heading'>"
-		html+="<div class='pull-left'>#{posto.veiculo.lote.tipo.remover_acentos.upcase}::#{posto.veiculo.placa}::#{posto.veiculo.position}</div>"
+		html+="<div class='pull-left'>#{posto.veiculo.lote.tipo.remover_acentos.upcase}::#{posto.veiculo.position}</div>"
 		html+="<div class='pull-right'></div></div>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
@@ -74,7 +74,7 @@ module PatioHelper
 			html+="<div class='col-md-2' id='posto_#{posto.id}'>"
 			html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
 			html+="<div class='tiles-heading'>"
-			html+="<div class='pull-left'>#{posto.veiculo.lote.tipo.remover_acentos.upcase}::#{posto.veiculo.placa}::#{posto.veiculo.position}</div>"
+			html+="<div class='pull-left'>#{posto.veiculo.lote.tipo.remover_acentos.upcase}::#{posto.veiculo.position}</div>"
 			html+="<div class='pull-right'></div></div>"
 			html+="<div class='tiles-body'>"
 			html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
@@ -103,7 +103,7 @@ module PatioHelper
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month
 		ano = Time.zone.now.year
-		return raw("#{link_icone('',icone_lote(posto))}#{m.periodo_diario}H#{m.dias_mes} #{posto.position}/#{v.lote.numero_postos} HE#{posto.veiculo.horas_extras_semanais(s,ano).to_i}")
+		return raw("#{link_icone('',icone_lote(posto))}#{m.periodo_diario}H#{m.dias_mes} #{v.placa}")
 
   end
 

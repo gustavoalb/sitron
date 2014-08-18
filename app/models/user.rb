@@ -2,6 +2,7 @@
 class User < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
+   acts_as_token_authenticatable
    mount_uploader :avatar, ArtefatoUploader
 
 
@@ -16,10 +17,10 @@ class User < ActiveRecord::Base
 
   devise :database_authenticatable, :registerable,
   :recoverable, :rememberable, :trackable, :validatable
-  
+
   enum role: [:administrador, :useget, :coordenador]
-  
-  
+
+
   after_initialize :set_default_role, :if => :new_record?
 
   validates_uniqueness_of :email
@@ -28,7 +29,7 @@ class User < ActiveRecord::Base
 
   accepts_nested_attributes_for :pessoa
 
-  def set_default_role  
+  def set_default_role
     self.role ||= :coordenador
   end
 

@@ -16,6 +16,7 @@ gem 'ionicons-rails'
 gem 'bootstrap-sass'
 gem "breadcrumbs_on_rails",'2.3.0', :path => "#{File.expand_path(__FILE__)}/../vendor/gems/breadcrumbs_on_rails-2.3.0"
 gem 'devise'
+gem 'simple_token_authentication'
 gem 'figaro', :git=>"https://github.com/laserlemon/figaro"
 gem 'pundit'
 gem 'simple_form'
@@ -93,3 +94,5 @@ gem 'bootstrap-multiselect-rails'
 gem 'rails-simple-search'
 gem 'bootstrap-tour-rails'
 gem 'pace-rails'
+gem 'ranked-model'
+gem 'date_validator'

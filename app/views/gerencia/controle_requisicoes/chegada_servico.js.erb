@@ -1,0 +1,17 @@
+<%if @requisicao and @servico.atendido?%>
+
+<% publish_to "/patio" do %>
+  $('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
+  $("#alerta").html("");
+  $('#ativas').html("<%=escape_javascript(render :partial=>"em_servico")%>");
+<%end%>
+
+<% publish_to "/#{@requisicao.requisitante.user_id}" do %>
+	$.pnotify({title: 'Informação',text: "Esperamos que sua requisição tenha sido atendida com sucesso, não esqueça de nos informar sobre ela clicando no botão 'Avaliar o Serviço' para que possamos melhorar o SITRON cada vez mais!",type: 'info',history: false});
+<%end%>
+
+window.location.reload();
+<%else%>
+	$.pnotify({title: 'Aviso',text: '<%=@mensagem%>',type: 'error',history: false});
+<%end%>
+

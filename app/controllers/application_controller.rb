@@ -1,17 +1,17 @@
 # -*- encoding : utf-8 -*-
 class ApplicationController < ActionController::Base
-  include Pundit
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
-  
+  acts_as_token_authentication_handler_for User, fallback_to_devise: false
+
   protect_from_forgery with: :exception
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :authenticate_user!
   before_action :initialize_variaveis
   before_action :mensagens
-  
 
-  
+
+
 
 
   add_breadcrumb("Início",nil,:icon=>"dashboard")
@@ -26,7 +26,7 @@ class ApplicationController < ActionController::Base
     devise_parameter_sanitizer.for(:account_update) { |u| u.permit(:username, :email, :password,
       :password_confirmation, :current_password, :avatar, :avatar_cache) }
   end
-  
+
 
 
   rescue_from CanCan::AccessDenied do |exception|
@@ -43,8 +43,8 @@ class ApplicationController < ActionController::Base
 
   def initialize_variaveis
     @estados = Estado.all.order(:nome).collect{|e|[e.nome,e.id]}
-    @empresas = Administracao::Empresa.all.order(:nome)    
-    @modalidades = Administracao::Modalidade.all.order(:nome) 
+    @empresas = Administracao::Empresa.all.order(:nome)
+    @modalidades = Administracao::Modalidade.all.order(:nome)
     @combustiveis = Administracao::Combustivel.all.order(:nome)
     @rotas = Administracao::Rota.all.order(:destino)
     @problemas = Avaliacao.where(:tipo=>2).all
@@ -58,7 +58,7 @@ class ApplicationController < ActionController::Base
     #@notificacoesb = Notificacao.nao_vista.all if current_user and current_user.administrador?
     @notificacoes_gerentes = Notificacao.nao_vista.para_gerentes.all if current_user and (current_user.useget? or current_user.administrador?)
     @notificacoes_usuarios = Notificacao.nao_vista.do_usuario(current_user).all if current_user
-    
+
     if current_user and (current_user.useget? or current_user.administrador?)
       @notificacoesb = @notificacoes_gerentes + @notificacoes_usuarios
     else

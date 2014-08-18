@@ -111,9 +111,13 @@ def remover_posto
 
 end
 
-def saida_servico 
+def saida_servico
+  if (params.has_key?(:posto))
   codigo = params[:posto][:codigo_de_barras]
   @requisicao = Requisicao.confirmada.find_by(:codigo=>codigo)
+  else
+    @requisicao = Requisicao.confirmada.find(params[:requisicao_id])
+  end
   @mensagem = nil
 
   
@@ -129,7 +133,7 @@ def saida_servico
       @posto.sair
       @requisicao.data_ida = Time.zone.now
       @requisicao.hora_ida = Time.zone.now
-      @requisicao.save
+      @requisicao.ativar
       
     else
       @mensagem = "A Requisição já foi confirmada!"

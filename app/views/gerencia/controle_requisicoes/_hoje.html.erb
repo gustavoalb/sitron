@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered sorted_table datatables" id="sortable_hoje" data-update_url=<%= gerencia_controle_requisicoes_ordernar_requisicao_path %> >
+<table cellpadding="0" cellspacing="0" border="0" class="table hoje table-striped table-bordered datatables" id="sortable_hoje" data-update_url=<%= gerencia_controle_requisicoes_ordernar_requisicao_path %> >
   <thead>
   <tr>
     <th>Número</th>
@@ -8,16 +8,16 @@
     <th>Previsão de Retorno</th>
     <th>Ações</th>
   </tr>
-  <thead>
+  </thead>
   <tbody>
   <%@aguardando_hoje.each do |r|%>
 
-      <tr data-item_id="<%=r.id%>" class='item' data-item_position="<%=r.position%>">
+      <tr data-item_id="<%=r.id%>" class='item'>
         <td><%=r.numero%></td>
         <td><%=r.requisitante.nome%></td>
         <td><%=r.requisitante.departamento.sigla%></td>
-        <td><%=r.data_ida.to_s_br%> <%=r.inicio.in_time_zone("Brasilia").strftime("%H:%M")%></td>
-        <td><%=r.data_volta.to_s_br%> <%=r.fim.in_time_zone("Brasilia").strftime("%H:%M")%></td>
+        <td><%=r.data_ida.to_s_br%> <%=r.inicio.strftime("%H:%M")%></td>
+        <td><%=r.data_volta.to_s_br%> <%=r.fim.strftime("%H:%M")%></td>
         <td>
           <div class="btn-group">
             <%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
@@ -112,15 +112,7 @@
 
 <%content_for :scripts do%>
 
-    <%=javascript_tag do %>
-        $('.sorted_table').sortable({
-        containerSelector: 'table',
-        itemPath: '> tbody',
-        itemSelector: 'tr',
-        placeholder: '<tr class="placeholder"/>'
-        })
 
-           <%end%>
 
 
     <script type="text/javascript">
@@ -130,6 +122,7 @@
                 destroy: true,
                 "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
                 "sPaginationType": "bootstrap",
+                "autoWidth": true,
                 "oLanguage": {
                     "sLengthMenu": "_MENU_ registros por página",
                     "sSearch": "",
@@ -142,42 +135,45 @@
                 }
             });
             $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
-            $('.dataTables_length select').addClass('form-control');
+
         });
 
     </script>
 
 
-    <%= javascript_tag do %>
-        // Sorting the list
-
-
-        $(document).ready(function(){
-
-        cells = $('.table').find('tr')[0].cells.length;
+    <script type="text/javascript">
+    jQuery(function() {
+        var cells, desired_width;
+        cells = $('#sortable_hoje').find('tr')[0].cells.length;
         desired_width = 940 / cells + 'px';
         $('.table td').css('width', desired_width);
+        return $('#sortable_hoje').sortable({
+          axis: 'y',
+          items: '.item',
+          stop: function(e, ui) {
+            return ui.item.children('td').effect('highlight', {}, 1000);
+          },
+          update: function(e, ui) {
+            var item_id, position;
+            item_id = ui.item.data('item_id');
+            position = ui.item.index();
+            return $.ajax({
+              type: 'POST',
+              url: $(this).data('update_url'),
+              dataType: 'json',
+              data: {
+                id: item_id,
+                requisicao: {
+                  position: position
+                }
+              }
+            });
+          }
+        });
+      });
+</script>
 
-        $('#sortable_hoje').sortable({
-        axis: 'y',
-        dropOnEmpty: false,
-        cursor: 'row-resize',
-        items: '.item',
-        opacity: 0.4,
-        scroll: true,
-        update: function(){
-        $.ajax({
-        type: 'post',
-        data: $('#sortable_hoje').sortable('serialize'),
-        dataType: 'script',
-        complete: function(request){
-        $('#sortable_hoje').effect('highlight');
-        },
-        url: "<%=gerencia_controle_requisicoes_ordernar_requisicao_path%>"})
-        }
-        });
-        });
-    <% end %>
+
 <%end%>
 
 

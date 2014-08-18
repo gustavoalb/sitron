@@ -1,4 +1,4 @@
-<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables_conf" id="sortable_hoje" data-update_url=<%= gerencia_controle_requisicoes_ordernar_requisicao_path %> >
+<table cellpadding="0" cellspacing="0" border="0" class="table table-striped table-bordered datatables_serv" id="sortable_hoje" data-update_url=<%= gerencia_controle_requisicoes_ordernar_requisicao_path %> >
   <thead>
   <tr>
     <th>Número</th>
@@ -10,7 +10,7 @@
   </tr>
   <thead>
   <tbody>
-  <%@requisicoes_proximas_de_sair.each do |r|%>
+  <%@em_servico.each do |r|%>
 
       <tr data-item_id="<%=r.id%>" class='item' data-item_position="<%=r.position%>">
         <td><%=r.numero%></td>
@@ -21,9 +21,8 @@
         <td>
           <div class="btn-group">
             <%=link_to link_icone("Detalhes","eye"), "#detalhes_#{r.id}", :'data-toggle' => "modal",:class=>"btn btn-xs btn-success"  %>
-            <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(r),:class=>"btn btn-green btn-xs" if r.confirmada? or r.finalizada?%>
-            <%=link_to link_icone("Saída Serviço",'car'),saida_servico_patio_index_path(:requisicao_id=>r.id), :class=>"btn btn-sky btn-xs",:remote=>true,:method=>:post if r.confirmada?%>
-            <%=link_to link_icone("Cancelar","recycle"), "javascript:;",:class=>"btn btn-xs btn-brown",:id=>"alerta-#{r.id}"  %>
+            <%=link_to link_icone("Imprimir","print"),requisicao_imprimir_requisicao_path(r),:class=>"btn btn-green btn-xs" if r.confirmada? or r.finalizada? r.ativa?%>
+            <%=link_to link_icone("Retorno do Serviço",'car'),gerencia_controle_requisicoes_chegada_servico_path(:requisicao_id=>r.id), :class=>"btn btn-sky btn-xs",:remote=>true,:method=>:post if r.ativa?%>
 
 
 
@@ -128,7 +127,7 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-            $('.datatables_conf').dataTable({
+            $('.datatables_serv').dataTable({
                 destroy: true,
                 "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
                 "sPaginationType": "bootstrap",

@@ -5,7 +5,7 @@
 	$('#posto_codigo_de_barras').val('');
 <%else%>
 	<%if @nao_existe%>
-		$.pnotify({title: 'Aviso',text: 'Nenhum posto encontrado com esse código de barras!',type: 'error',history: false});
+		$.pnotify({title: 'Aviso',text: 'Nenhum veículo encontrado com esse código de barras!',type: 'error',history: false});
 	<%else%>
 		$.ionSound.play("car_horn");
 		$('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
