@@ -24,6 +24,7 @@ Sitron::Application.routes.draw do
     get  'controle_requisicoes/gerenciar_requisicoes'
     post  'controle_requisicoes/ordernar_requisicao'
     post 'controle_requisicoes/chegada_servico'
+    post 'controle_requisicoes/saida_servico'
   end
 
   resources :usuarios do

@@ -1,0 +1,16 @@
+<%if !@requisicao.nil?%>
+$('#confirmadas').html("<%=escape_javascript(render :partial=>"confirmadas")%>");
+
+
+<% publish_to "/patio" do %>
+$('#patio').html("<%=escape_javascript(veiculo_posto_all(@postos,'#','success'))%>");
+<%end%>
+
+window.location = "<%=gerencia_controle_requisicoes_index_path%>" ;
+
+<%else%>
+
+$.pnotify({title: 'Aviso',text: '<%=@mensagem%>',type: 'error',history: false});
+$('#codigo_saida_servico').val('');
+
+<%end%>

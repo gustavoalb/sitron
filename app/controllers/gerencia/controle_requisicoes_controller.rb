@@ -50,7 +50,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
       else
         @confirmada = false
         @requisicao.errors.each do |e|
-         @mensagem = e
+          @mensagem = e
         end
       end
 
@@ -205,6 +205,47 @@ class Gerencia::ControleRequisicoesController < ApplicationController
   end
 
 
+  def saida_servico
+    @requisicao = Requisicao.confirmada.find(params[:requisicao_id])
+    @mensagem = nil
+
+
+    if @requisicao
+
+      if (params.has_key?(:numero_da_portaria)) and !params[:numero_da_portaria].nil?
+        @requisicao.numero_da_portaria = params[:numero_da_portaria]
+      end
+
+      @patio = Administracao::Patio.na_data(Time.zone.now).first
+      @posto = @requisicao.posto
+      @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")
+
+      if @posto and @posto.saida_proxima?
+
+        @servico = @requisicao.create_servico(:veiculo_id => @posto.veiculo.id, :user_id => @requisicao.requisitante.user_id, :empresa_id => @posto.veiculo.empresa_id, :contrato_id => @posto.veiculo.contrato_id, :lote => @posto.veiculo.lote, :saida => Time.zone.now, :valor_combustivel_centavos => 2.30)
+        @posto.sair
+        @requisicao.data_ida = Time.zone.now
+        @requisicao.hora_ida = Time.zone.now
+        @requisicao.ativar
+        @requisicoes_proximas_de_sair = Requisicao.proximas_de_sair.all
+
+      else
+        @mensagem = "A Requisição já foi confirmada!"
+      end
+
+    else
+      @mensagem = "Nenhuma requisição encontrada com este código ou a requisição já foi finalizada!"
+    end
+
+
+    respond_to do |format|
+      format.js
+    end
+
+
+  end
+
+
   def chegada_servico
 
     @requisicao = Requisicao.em_servico.find(params[:requisicao_id])
@@ -218,31 +259,31 @@ class Gerencia::ControleRequisicoesController < ApplicationController
       @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")
 
       if @posto and @posto.em_transito?
-        @servico = Administracao::Servico.where(:requisicao_id=>@requisicao.id, :veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id).first
+        @servico = Administracao::Servico.where(:requisicao_id => @requisicao.id, :veiculo_id => @posto.veiculo.id, :user_id => @requisicao.requisitante.user_id).first
         @servico.chegada = Time.zone.now
         if @servico.save
-         @posto.estacionar
-         @requisicao.data_volta = Time.zone.now
-         @requisicao.hora_volta = Time.zone.now
-         @requisicao.motivo_cancelamento = "É Só pra saber se está tudo ok!"
-         @requisicao.finalizar
-         @servico.atendido = true
-         @em_servico = Requisicao.em_servico.all
-       else
-        @mensagem = "Erro ao Finalizar o Serviço!"
+          @posto.estacionar
+          @requisicao.data_volta = Time.zone.now
+          @requisicao.hora_volta = Time.zone.now
+          @requisicao.motivo_cancelamento = "É Só pra saber se está tudo ok!"
+          @requisicao.finalizar
+          @servico.atendido = true
+          @em_servico = Requisicao.em_servico.all
+        else
+          @mensagem = "Erro ao Finalizar o Serviço!"
+        end
+
+      else
+        @mensagem = "A Requisição aparentemente já encontra-se finalizada!"
       end
 
     else
-      @mensagem = "A Requisição aparentemente já encontra-se finalizada!"
+      @mensagem = "Este não parece ser um codigo de barras válido ou a Requisição já foi finalizada!"
     end
 
-  else
-    @mensagem = "Este não parece ser um codigo de barras válido ou a Requisição já foi finalizada!"
-  end
-
-  respond_to do |format|
-    format.js
-  end
+    respond_to do |format|
+      format.js
+    end
 
   end
 
