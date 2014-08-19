@@ -10,13 +10,7 @@ class ApplicationController < ActionController::Base
   before_action :initialize_variaveis
   before_action :mensagens
 
-
-
-
-
   add_breadcrumb("Início",nil,:icon=>"dashboard")
-
-
 
   protected
 
@@ -50,7 +44,6 @@ class ApplicationController < ActionController::Base
     @problemas = Avaliacao.where(:tipo=>2).all
     @cargos = Administracao::Cargo.all.order(:nome)
     @departamentos = Administracao::Departamento.all.order(:nome)
-
   end
 
   def mensagens

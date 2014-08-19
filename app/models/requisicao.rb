@@ -4,8 +4,9 @@ require 'barby/barcode/code_128'
 require 'barby/outputter/png_outputter'
 class Requisicao < ActiveRecord::Base
 
-  include RankedModel
-  ranks :position
+#  include RankedModel
+#  ranks :position
+  acts_as_list scope: [:tipo_requisicao,:data_ida]
 
   mount_uploader :qrcode, ArtefatoUploader
   mount_uploader :codigo_de_barras, ArtefatoUploader
@@ -18,15 +19,13 @@ class Requisicao < ActiveRecord::Base
   validates_presence_of :data_ida, :hora_ida, :motivo_id
   validates_presence_of :rota_ids, :message => "Precisa definir ao menos uma rota", if: Proc.new { |req| req.endereco.nil? }
   validates_presence_of :descricao, :message => "Precisa informar com detalhes o caso", if: Proc.new { |req| req.motivo and req.motivo.necessita_descricao? }
-  validates_presence_of :tipo_carga, :message => "Precisa informar o tipo de carga", if: Proc.new { |req| req.motivo and req.motivo.carga? }
+  #validates_presence_of :tipo_carga, :message => "Precisa informar o tipo de carga", if: Proc.new { |req| req.motivo and req.motivo.carga? }
   validates_presence_of :inicio
   validates_inclusion_of :pernoite, :in => [true], :message => "Para pernoite em Macapá, é necessário fazer uma requisição para cada dia.", :if => Proc.new { |req| req.tipo_requisicao=='agendada' }
   validates_presence_of :descricao, if: Proc.new { |req| req.tipo_requisicao=='urgente' }
   validates_inclusion_of :numero_passageiros, in: 1..15, :message => "Número precisa ser informado!", if: Proc.new { |req| req.pessoa_ids.count>0 }
   validates_length_of :descricao, :maximum => 160, :message => "A Descrição não pode ultrapassar 160 caracteres"
   validates_presence_of :requisitante_id, :message => "Precisa definir o Responsável pela requisição"
-  validates :inicio,
-            date: { before: :fim }
   #validate :hora
   validates_presence_of :fim, :if => Proc.new { |record| !record.agenda? }
   has_and_belongs_to_many :tipos
@@ -67,10 +66,11 @@ class Requisicao < ActiveRecord::Base
   scope :validas, -> { where("inicio > (SELECT CURRENT_TIMESTAMP)") }
   scope :na_data, lambda { |data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?", data.day, data.month, data.year) }
   scope :na_hora, lambda { where("(inicio BETWEEN ? and ?)", Time.zone.now, 20.minutes.since) }
-  scope :na_hora_exata, lambda {|hora| where("date_part('hour',inicio) = ?",hora) }
+  scope :na_hora_exata, lambda {|hora| where(:hora=>hora) }
+  scope :do_tipo,lambda{|tipo|where(:tipo_requisicao=>tipo)}
 
   after_create :numero_requisicao, :criar_notificacao
-  after_create :evento, :gerar_code
+  after_create :evento, :gerar_code,:setar_posicao
   #after_validation :setar_distancia
   enum tipo_requisicao: [:normal, :urgente, :agendada, :especial]
   enum tipo_carga: ["Mobiliário Escolar", "Livros Didáticos", "ETC"]
@@ -116,7 +116,7 @@ class Requisicao < ActiveRecord::Base
   end
 
 
-  def hora
+  def validar_hora
     if self.data_ida==Date.today and self.hora_ida < Time.now+1.hour
       errors.add(:hora_ida, "Tempo mínimo entre o requerimento e a hora de partida é de 1 hora")
     end
@@ -421,6 +421,7 @@ class Requisicao < ActiveRecord::Base
     File.delete(file)
 
     self.codigo = codigo
+    self.hora = self.inicio.hour
     self.save
   end
 
@@ -451,6 +452,19 @@ class Requisicao < ActiveRecord::Base
   end
 
   private
+
+
+
+  def setar_posicao
+   requisicoes = Requisicao.na_data(self.data_ida).do_tipo(self.tipo_requisicao)
+
+   if requisicoes and requisicoes.count > 1
+     self.move_to_bottom
+   else
+     self.move_to_top
+   end
+  end
+
 
 
   def numero_requisicao

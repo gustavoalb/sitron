@@ -1,61 +1,72 @@
-<%=titulo_pagina(link_icone("Requisição Especial","external-link"),link_icone("Criar nova Requisição","external-link"))%>
+<%=titulo_pagina(link_icone("Requisição Sitron/SEED",'thumbs-up'),link_icone("Agendamento de viagem", "calendar"))%>
 
 <%content_for :maps do%>
 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 <%=javascript_include_tag("gmaps_autocomplete.js")%>
 <%end%>
-
-<div class='row'>
-    <%= simple_nested_form_for @requisicao,html: {class: 'form-horizontal'},url: gerencia_controle_requisicoes_salvar_requisicao_url do |f| %>
-    <%= f.error_notification %>
-    <%= f.input :requisitante_id,:collection=>@responsaveis,:prompt=>"Selecione o Responsável",:label=>"Responsável pela requisição"%>
-    <%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao",:'data-bootstro-step'=>'0',:'data-bootstro-content'=>'Aqui você vai selecionar o Motivo para sua requisição, atente para selecionar corretamente o motivo',:'data-bootstro-title'=>'Motivo para a Requisição',:class=>'bootstro'}%>
-    <div id="div_carga">
-      <%if f.object.motivo and f.object.motivo.carga?%>
+<%= simple_nested_form_for @requisicao,html: {class: 'form-horizontal'},url: gerencia_controle_requisicoes_salvar_requisicao_url do |f| %>
+<%= f.error_notification %>
+<%= f.input :requisitante_id,:collection=>@responsaveis,:prompt=>"Selecione o Responsável",:label=>"Responsável pela requisição"%>
+<%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao"}%>
+<div id="div_carga">
+ <%if f.object.motivo and f.object.motivo.carga?%>
       <%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
       <%end%>
       <%if f.object.motivo and f.object.motivo.necessita_descricao%>
       <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
+
+
       <%end%>
-    </div>
-
-    <%= f.input :tipo_requisicao,input_html: {value: "especial",readonly: true},as: :hidden%>
- 
-    <%= f.input :data_ida,input_html: {readonly: true,value: 3.days.from_now.to_date.to_s_br},as: :string,:label=>"Saída"  %>
-
-      <%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00",:'data-bootstro-step'=>'1',:'data-bootstro-content'=>'Nesse campo você indica a hora que você precisará do Veículo',:'data-bootstro-title'=>'Hora',:class=>'bootstro'},as: :string,:label=>"Na Hora"  %>
-
-    
-    <%= f.input :data_volta,input_html: {readonly: true,value: 3.days.from_now.to_date.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
-    
-    <%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00",:'data-bootstro-step'=>'2',:'data-bootstro-content'=>'Nesse campo você indica a hora provável da volta',:'data-bootstro-title'=>'Previsão da Hora de Retorno',:class=>'bootstro'},as: :string,:label=>"Previsão da Hora de Retorno"  %>
-
-    <%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros",:'data-bootstro-step'=>'3',:'data-bootstro-content'=>'Aqui você determina no número de passageiros que farão uso do Serviço, Se não haverá necessidade de passageiro, não selecione nenhum valor',:'data-bootstro-title'=>'Número de Passageiros',:class=>'bootstro'}%>
-
-    <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros"),:label=>"Passageiros"%>
-
-   <%=f.association :posto,:collection=>@veiculos.collect{|v| [info_veiculo(v),v.id]},:prompt=>"Selecione o Veículo",:label=>"Veículo" %>
-    
-  <div id='rotas'>
-    <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[sigla_destino(r),r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:label=>"Rota",:hint=>raw("Selecione uma rota")%>
 </div>
-    <%= f.fields_for :endereco%>
-    <div data-bootstro-step='4' data-bootstro-content='Você poderá usar esse opção para criar um destino aleatório, atente para o fato de marcar no mapa EXATAMENTE o local de destino, use a busca para localizar o endereço aproximado' data-bootstro-title='Destino no Mapa' class='bootstro'>
+    <%= f.input :tipo_requisicao,input_html: {value: "especial",readonly: true},as: :hidden%>
+<%= f.input :data_ida,input_html: {readonly: true,value: Date.tomorrow.to_s_br,class: "datepicker"},as: :string,:label=>"Data da Saída"  %>
+<%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
+<%= f.input :data_volta,input_html: {class: "datepicker",readonly: true,value: Date.tomorrow.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
+<%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
+<%=f.association :posto,:collection=>@veiculos,:prompt=>"Selecione o Veículo",:label=>"Veículo" %>
+<%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
+
+<%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
+<div id='rotas'>
+<%=f.input :rota_ids,:collection=>@rotas.collect{|r|[sigla_destino(r),r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:hint=>"Selecione a Rota",:label=>"Rota"%>
+</div>
+
+
+
+<%= f.input :pernoite,
+  :as => :radio_buttons_left_label,
+  :collection => [["Pernoite no Local",true],["Pernoite em Macapá",false]],:label=>"Local de Pernoite"
+%>
+
+  <%= f.fields_for :endereco%>
 
     <%=raw("#{f.link_to_add link_icone('Você pode usar um destino diferente clicando Aqui','sitron-marker'), :endereco,:class=>'btn btn-xs btn-success'}")%>
-  </div>
 
 
-    <%=botoes_form(f,gerencia_controle_requisicoes_index_url)%>
+<%= botoes_form(f)%>
 
-    <% end %>
-</div>
-
+<%end%>
 
 
 
 
+<%=modal_simples("cadastrar_pessoa", "Adicionar um Passageiro" ) do %>
 
+<%= simple_form_for :pessoa,html: {class: "form-horizontal",id: "my_form"},:url=>salvar_pessoa_requisicoes_url(:url_volta=>request.original_url) do |f| %>
+  <%= f.error_notification %>
+
+
+    <%= f.input :nome %>
+    <%= f.input :cpf, input_html: {class: "cpf"} %>
+    <%= f.input :email, as: :email %>
+    <%= f.input :matricula %>
+    <%= f.input :entidade_id,input_html: {value: current_user.pessoa.entidade.id},as: :hidden%>
+    <%= f.input :departamento_id,input_html: {value: current_user.pessoa.departamento.id},as: :hidden    %>
+    <%= f.input :cargo_id,:collection=>Administracao::Cargo.all.collect {|c|[c.nome,c.id]} %>
+    <%=botoes_form_modal(f,"Salvar Pessoa")%>
+
+<% end %>
+<%end%>
 
 
 
@@ -87,9 +98,8 @@ $("#div_carga").html(data);
 
 <script type="text/javascript">
 
-
   $('.datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR',
-    startDate: "today"});  
+    startDate: "today"});
   $('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
     'disableTimeRanges': [
     ['0am', '7am'],
@@ -100,7 +110,7 @@ $("#div_carga").html(data);
 
   $('#timepicker2').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
     'disableTimeRanges': [
-    ['0am', '7am','12pm'],
+    ['0am', '7am'],
     ]
 
   });
@@ -111,8 +121,8 @@ $("#div_carga").html(data);
 
 <script type="text/javascript">
  var np = 0
- 
- $("#npassageiros").change(function(){ 
+
+ $("#npassageiros").change(function(){
   var np = 0
   np = $("#npassageiros").val();
 });
@@ -161,7 +171,7 @@ $("#div_carga").html(data);
       input.prop('disabled', true);
       input.parent('li').addClass('disabled');
     });
-    
+
   }
   else {
     // Enable all checkboxes.
@@ -212,7 +222,7 @@ $('.multiselect_rota').multiselect({
 
   $(function() {
     var fieldsCount,
-    
+
     maxFieldsCount = 0,
     $addLink = $('a.add_nested_fields');
 
@@ -246,7 +256,7 @@ $('.multiselect_rota').multiselect({
       $('#requisicao_endereco_attributes_descricao').val();
       $('#gmaps-output-latitude').val();
       $('#gmaps-output-logitude').val();
-    });  
+    });
 
   // count existing nested fields after page was loaded
   fieldsCount = $('form .fields').length;
@@ -266,9 +276,3 @@ $('.multiselect_rota').multiselect({
 
 
 <%end%>
-
-  
-
-<%content_for :options do %>
-    <%=link_to_function link_icone("Ajuda","question"),"bootstro.start('.bootstro');"%>
- <%end%>

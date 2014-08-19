@@ -1,6 +1,7 @@
 <table cellpadding="0" cellspacing="0" border="0" class="table hoje table-striped table-bordered datatables" id="sortable_hoje" data-update_url=<%= gerencia_controle_requisicoes_ordernar_requisicao_path %> >
   <thead>
   <tr>
+    <th>Ordem</th>
     <th>Número</th>
     <th>Requisitante</th>
     <th>Departamento</th>
@@ -13,6 +14,7 @@
   <%@aguardando_hoje.each do |r|%>
 
       <tr data-item_id="<%=r.id%>" class='item'>
+        <td><%=r.position%></td>
         <td><%=r.numero%></td>
         <td><%=r.requisitante.nome%></td>
         <td><%=r.requisitante.departamento.sigla%></td>
@@ -118,7 +120,7 @@
     <script type="text/javascript">
 
         $(document).ready(function() {
-            $('.datatables').dataTable({
+            $('#sortable_hoje').dataTable({
                 destroy: true,
                 "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
                 "sPaginationType": "bootstrap",
@@ -141,39 +143,6 @@
     </script>
 
 
-    <script type="text/javascript">
-    jQuery(function() {
-        var cells, desired_width;
-        cells = $('#sortable_hoje').find('tr')[0].cells.length;
-        desired_width = 940 / cells + 'px';
-        $('.table td').css('width', desired_width);
-        return $('#sortable_hoje').sortable({
-          axis: 'y',
-          items: '.item',
-          stop: function(e, ui) {
-            return ui.item.children('td').effect('highlight', {}, 1000);
-          },
-          update: function(e, ui) {
-            var item_id, position;
-            item_id = ui.item.data('item_id');
-            position = ui.item.index();
-            return $.ajax({
-              type: 'POST',
-              url: $(this).data('update_url'),
-              dataType: 'json',
-              data: {
-                id: item_id,
-                requisicao: {
-                  position: position
-                }
-              }
-            });
-          }
-        });
-      });
-</script>
 
 
 <%end%>
-
-

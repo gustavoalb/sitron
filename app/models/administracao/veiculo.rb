@@ -29,6 +29,7 @@ class Administracao::Veiculo < ActiveRecord::Base
    :value => Proc.new { |v| v.numero }
 
    scope :nao_entraram,lambda{|ids| where('id not in (?) ',ids)}
+   scope :com_lote,->{where("lote_id IS NOT NULL")}
 
 
 
@@ -46,7 +47,7 @@ class Administracao::Veiculo < ActiveRecord::Base
  #enum lote:  [:"Lote 01",:"Lote 02",:"Lote 03",:"Lote 04",:"Lote 05",:"Lote 06",:"Lote 07",:"Lote 08",:"Lote único"]
 
  after_create :gerar_code
- 
+
  #before_create :gerar_codigo_barras
 
  def lotes
@@ -84,7 +85,7 @@ def validar_horas_extras(horas,semana,mes,ano)
    horas_normais = self.horas_normais_semanais(semana,ano)
 
    if horas_extras > 0
-    if  horas_extras >= 8.0 
+    if  horas_extras >= 8.0
        return false
    else
       if (horas_normais + horas) > 8.0
@@ -104,7 +105,7 @@ end
 
 
 
-def aprovisionado?(data) 
+def aprovisionado?(data)
   if self.provisoes.na_data(data).size > 0
     return true
 else
@@ -142,7 +143,7 @@ end
 
 
 
-#private 
+#private
 
 
 def gerar_code
@@ -153,7 +154,7 @@ def gerar_code
    codigo = "#{ean}#{ean.generate_check_digit}"
 
    qr = RQRCode::QRCode.new(self.codigo, :size => 4, :level => :h )
-   png = qr.to_img 
+   png = qr.to_img
    caminho=%(#{Rails.root}/tmp/#{self.id}.png)
    png.resize(900, 900).save(caminho)
    file = File.open(caminho)
