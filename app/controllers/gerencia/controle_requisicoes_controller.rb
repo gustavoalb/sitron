@@ -77,7 +77,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     @pessoas = Administracao::Pessoa.pode_ser_passageiro.accessible_by(current_ability).all
     @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
     @ary = @postos_comuns.collect { |c| c.veiculo_id }
-    @veiculos = Administracao::Veiculo.com_lote.order(:lote_id,:position).collect{|v|["#{v.lote.tipo.upcase}::#{v.placa.upcase}::#{v.modalidade.periodo_diario}/#{v.modalidade.dias_mes}::#{v.motorista}",v.id]}
+    @veiculos = Administracao::Veiculo.com_lote.order(:lote_id,:position).collect{|v|["#{v.lote.tipo}::#{v.placa}::#{v.modalidade.periodo_diario}/#{v.modalidade.dias_mes}::#{v.motorista}",v.id]}
     resp = Administracao::Departamento.all.collect { |d| d.responsavel_id }
     @responsaveis = User.do_email("seed.ap.gov.br").collect { |u| [u.pessoa.nome, u.pessoa.id] }
   end
