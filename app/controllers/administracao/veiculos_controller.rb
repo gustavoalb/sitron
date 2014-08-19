@@ -70,8 +70,8 @@ class Administracao::VeiculosController < ApplicationController
 
 end
 
-send_data report.generate, filename: 'codigos.pdf', 
-type: 'application/pdf', 
+send_data report.generate, filename: 'codigos.pdf',
+type: 'application/pdf',
 disposition: 'attachment'
 
 end
@@ -122,14 +122,14 @@ end
     def carregar_lotes
       @lotes_veiculos = Administracao::Lote.all.order('nome ASC').collect{|l|["#{l.nome} - #{l.tipo}",l.id]}
     end
-    
+
     def set_administracao_veiculo
       @administracao_veiculo = Administracao::Veiculo.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_veiculo_params
-      params.require(:administracao_veiculo).permit(:especial,:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode,:contrato_id,:lote_id)
+      params.require(:administracao_veiculo).permit(:especial,:placa,:tipo_id, :motor, :direcao, :marca, :modelo, :capacidade_carga, :capacidade_passageiros, :ano_fabricacao, :ano_modelo, :intens_obrigatorios, :observacao, :modalidade_id, :combustivel_id, :turno_id,:empresa_id,:qrcode,:motorista,:contrato_id,:lote_id)
     end
 
     def load_veiculo
