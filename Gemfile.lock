@@ -1,9 +1,18 @@
-GIT
-  remote: https://github.com/laserlemon/figaro
-  revision: 0edf0eb85be3858f15b5d515bf61cd664b12c35d
+PATH
+  remote: vendor/gems/delayed_cron-0.2.0
   specs:
-    figaro (1.0.0.rc1)
-      thor (~> 0.14)
+    delayed_cron (0.2.0)
+
+PATH
+  remote: vendor/gems/breadcrumbs_on_rails-2.3.0
+  specs:
+    breadcrumbs_on_rails (2.3.0)
+
+GIT
+  remote: https://github.com/toretore/barby.git
+  revision: 9adb7e96e2dd8076468ead49a8a2f79c73c4bf89
+  specs:
+    barby (0.6.1)
 
 GIT
   remote: https://github.com/tispratik/bootstrap-timepicker-rails.git
@@ -13,20 +22,11 @@ GIT
       railties (>= 3.0)
 
 GIT
-  remote: https://github.com/toretore/barby.git
-  revision: 9adb7e96e2dd8076468ead49a8a2f79c73c4bf89
+  remote: https://github.com/laserlemon/figaro
+  revision: 0edf0eb85be3858f15b5d515bf61cd664b12c35d
   specs:
-    barby (0.6.1)
-
-PATH
-  remote: vendor/gems/breadcrumbs_on_rails-2.3.0
-  specs:
-    breadcrumbs_on_rails (2.3.0)
-
-PATH
-  remote: vendor/gems/delayed_cron-0.2.0
-  specs:
-    delayed_cron (0.2.0)
+    figaro (1.0.0.rc1)
+      thor (~> 0.14)
 
 GEM
   remote: http://rubygems.org/

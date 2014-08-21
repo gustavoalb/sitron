@@ -5,14 +5,14 @@
       <th>Nome</th>
       <th>Entidade</th>
       <th>Responsavel</th>
-      <th></th>
+      <th>Ações</th>
     </tr>
   </thead>
 
   <tbody>
     <% @administracao_departamentos.each do |administracao_departamento| %>
       <tr>
-        <td><%= administracao_departamento.nome %></td>
+        <td><%=administracao_departamento.sigla.upcase%> - <%= administracao_departamento.nome %></td>
         <td><%= detalhes(administracao_departamento.entidade,:nome)%></td>
         <td><%= detalhes(administracao_departamento.responsavel,:nome)%></td>
         <td><%= link_to link_icone('detalhes'), administracao_departamento,:class=>"btn btn-success btn-xs" %>
