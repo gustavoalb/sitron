@@ -13,8 +13,10 @@
         <%if f.object.motivo and f.object.motivo.carga?%>
             <%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
         <%end%>
+        <%if f.object.motivo and f.object.motivo.necessita_descricao%>
+            <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
+        <%end%>
       </div>
-      <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
 
 
       <%= f.input :tipo_requisicao,input_html: {value: "fim_de_semana",readonly: true},as: :hidden%>
