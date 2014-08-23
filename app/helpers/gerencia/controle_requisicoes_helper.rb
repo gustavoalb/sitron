@@ -74,5 +74,33 @@ module Gerencia::ControleRequisicoesHelper
 		html+="</div>"
 		html+="</div>"
         return raw(html)
-	end
+    end
+
+
+  def tipo_requisicao(r)
+    html=''
+    case r.tipo_requisicao
+      when 'normal'
+        html="<span class='badge badge-success'>Normal</span>"
+      when 'urgente'
+        html="<span class='badge badge-warning'>Urgente</span>"
+      when 'agendada'
+        html="<span class='badge badge-primary'>Agendada</span>"
+      when 'especial'
+        html="<span class='badge badge-info'>Especial</span>"
+      when 'fim_de_semana'
+        html="<span class='badge badge-default'>Fim de Semana</span>"
+    end
+    return raw(html)
+  end
+
+  def info_veiculo_alt(v)
+     m = v.modalidade
+    s = Time.zone.now.strftime("%U")
+    mes = Time.zone.now.month
+    ano = Time.zone.now.year
+    return raw("#{link_icone('',icone_lote(v))}#{m.periodo_diario}H#{m.dias_mes} #{v.placa}")
+
+  end
+
 end

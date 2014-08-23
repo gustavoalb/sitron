@@ -153,7 +153,7 @@ def gerar_code
    ean = "#{self.codigo_carro}#{self.modalidade.codigo_modalidade}#{self.contrato.codigo_contrato}#{self.lote_id}"
    codigo = "#{ean}#{ean.generate_check_digit}"
 
-   qr = RQRCode::QRCode.new(self.codigo, :size => 4, :level => :h )
+   qr = RQRCode::QRCode.new(self.numero, :size => 4, :level => :h )
    png = qr.to_img
    caminho=%(#{Rails.root}/tmp/#{self.id}.png)
    png.resize(900, 900).save(caminho)

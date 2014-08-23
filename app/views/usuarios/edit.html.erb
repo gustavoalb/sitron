@@ -5,7 +5,7 @@
 
   	<h3><span class='label label-info'><%=link_icone("Dados do Usuário","user")%></span></h3>
   	<%= f.input :email %>
-        
+
     <%= f.input :role, :collection => User.roles.keys.map {|role| [role.titleize,role]}, :input_html => {:class=>"input-medium"}, :label=>"Permissoes", :required => true if current_user.administrador?%>
     
     <h3><span class='label label-info'><%=link_icone("Dados da Pessoa",'male')%></span></h3>
@@ -16,14 +16,12 @@
 	    <%= fp.input :email, as: :email %>
 	    <%= fp.input :matricula %>
 
-      <% if current_user.administrador?%>
-	    <%= fp.association :entidade, collection: @empresas.collect{|e| [e.nome, e.id] } %>
-
-	     <%= fp.association :departamento, :collection=>@departamentos,:selected=>@usuario.pessoa.departamento_id %>
-	    </div>
-	    <%= fp.association :cargo,:collection=>@cargos,:selected=>@usuario.pessoa.cargo_id %>
-      <%end%>
-	  <% end %>
+        <%= fp.association :entidade, collection: @empresas.collect{|e| [e.nome, e.id] } %>
+        <div id='departamentos'>
+          <%= fp.association :departamento,:collection=>@departamentos,  input_html: {readonly: true} %>
+        </div>
+        <%= fp.association :cargo,:collection=>@cargos.collect{|c|[c.nome,c.id]} %>
+    <% end %>
 
 
     <br/><br/><br/>

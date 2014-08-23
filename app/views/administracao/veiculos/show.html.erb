@@ -19,7 +19,7 @@
   <dt>Modalidade:</dt>
   <dd><%= @administracao_veiculo.modalidade.nome %></dd>
   <dt>Combustivel:</dt>
-  <dd><%= @administracao_veiculo.combustivel.nome %></dd>
+  <dd><%= detalhes(@administracao_veiculo.combustivel,:nome) %></dd>
   <dt>Placa:</dt>
   <dd><%=@administracao_veiculo.placa%></dd>
     <dt>Número do Veículo:</dt>

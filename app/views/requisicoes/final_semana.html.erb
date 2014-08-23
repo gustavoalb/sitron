@@ -1,0 +1,285 @@
+<%content_for :maps do%>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <%=javascript_include_tag("gmaps_autocomplete.js")%>
+<%end%>
+
+<%=titulo_pagina(link_icone("Requisição Sitron/SEED",'thumbs-up'),link_icone("Requisição para o Final de Semana","calendar-o"))%>
+
+<div class='row'>
+  <%= simple_nested_form_for @requisicao,html: {class: 'form-horizontal'} do |f| %>
+      <%= f.error_notification %>
+      <%= f.association :motivo,:collection=>Administracao::Motivo.normais.collect {|m|[m.nome,m.id]}, :label=>"Motivo da Requisição",:prompt=>'Selecione o seu motivo para a Requisição',:input_html=>{:id=>"motivo_requisicao",:'data-bootstro-step'=>'0',:'data-bootstro-content'=>'Aqui você vai selecionar o Motivo para sua requisição, atente para selecionar corretamente o motivo',:'data-bootstro-title'=>'Motivo para a Requisição',:class=>'bootstro'}%>
+      <div id="div_carga">
+        <%if f.object.motivo and f.object.motivo.carga?%>
+            <%= f.input :tipo_carga, :collection=>Administracao::Motivo.tipo_cargas.keys.map {|tp| [tp.titleize,tp]}, :prompt=>"Selecione o tipo de Carga",input_html: {} %>
+        <%end%>
+      </div>
+      <%= f.input :descricao, :as=>:text,:label=>"Descrição do Caso",:input_html=>{:class=>"mensagem"},:hint=>raw("<span class='contagem_caracteres'></span>")%>
+
+
+      <%= f.input :tipo_requisicao,input_html: {value: "fim_de_semana",readonly: true},as: :hidden%>
+
+      <%= f.input :data_ida,input_html: {readonly: true,value: Time.at(Time.now.end_of_week-1.day).to_date.to_s_br,class: 'datepicker'},as: :string,:label=>"Data da Saída"  %>
+      <%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00",:'data-bootstro-step'=>'1',:'data-bootstro-content'=>'Nesse campo você indica a hora que você precisará do Veículo',:'data-bootstro-title'=>'Hora',:class=>'bootstro'},as: :string,:label=>"Na Hora"  %>
+      <%= f.input :data_volta,input_html: {readonly: true,value: Time.at(Time.now.end_of_week-1.day).to_date.to_s_br,class: 'datepicker'},as: :string,:label=>"Previsão de Retorno"  %>
+
+
+      <%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00",:'data-bootstro-step'=>'2',:'data-bootstro-content'=>'Nesse campo você indica a hora provável da volta',:'data-bootstro-title'=>'Previsão da Hora de Retorno',:class=>'bootstro'},as: :string,:label=>"Previsão da Hora de Retorno"  %>
+
+      <%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros",:'data-bootstro-step'=>'3',:'data-bootstro-content'=>'Aqui você determina no número de passageiros que farão uso do Serviço, Se não haverá necessidade de passageiro, não selecione nenhum valor',:'data-bootstro-title'=>'Número de Passageiros',:class=>'bootstro'}%>
+
+      <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
+
+
+
+      <div id='rotas'>
+        <%=f.input :rota_ids,:collection=>@rotas.collect{|r|[sigla_destino(r),r.id]},input_html: {class: "multiselect_rota",multiple: "multiple"},:label=>"Rota",:hint=>raw("Selecione uma rota")%>
+      </div>
+      <%= f.fields_for :endereco%>
+      <div data-bootstro-step='4' data-bootstro-content='Você poderá usar esse opção para criar um destino aleatório, atente para o fato de marcar no mapa EXATAMENTE o local de destino, use a busca para localizar o endereço aproximado' data-bootstro-title='Destino no Mapa' class='bootstro'>
+
+        <%=raw("#{f.link_to_add link_icone('Você pode usar um destino diferente clicando Aqui','sitron-marker'), :endereco,:class=>'btn btn-xs btn-success'}")%>
+      </div>
+
+
+      <%=botoes_form(f)%>
+
+  <% end %>
+</div>
+
+
+
+
+
+<%=modal_simples("cadastrar_pessoa", "Adicionar um Passageiro" ) do %>
+
+    <%= simple_form_for :pessoa,html: {class: "form-horizontal",id: "my_form"},:url=>salvar_pessoa_requisicoes_url(:url_volta=>request.original_url) do |f| %>
+        <%= f.error_notification %>
+
+        <%= f.input :nome %>
+        <%= f.input :cpf, input_html: {class: "cpf"} %>
+        <%= f.input :email, as: :email %>
+        <%= f.input :entidade_id,input_html: {value: current_user.pessoa.entidade.id},as: :hidden%>
+        <%= f.input :departamento_id,input_html: {value: current_user.pessoa.departamento.id},as: :hidden    %>
+        <%= f.input :cargo_id,:collection=>Administracao::Cargo.all.collect {|c|[c.nome,c.id]},:prompt=>"Selecione o Cargo" %>
+        <%=botoes_form_modal(f,"Salvar Passageiro")%>
+
+    <% end %>
+<%end%>
+
+
+
+
+<%content_for :scripts do%>
+
+    <script type="text/javascript">
+        $(function() {
+            $("#motivo_requisicao").observe_field(0.25, function( ) {
+                $.get("/requisicoes/tipo_carga/?motivo_id="+$("#motivo_requisicao").val(), function(data) {
+// here check_login is the method in our controller.
+                    $("#div_carga").html(data);
+                });
+            });
+        });
+    </script>
+
+
+    <script type="text/javascript">
+        $(function() {
+            $("#gmaps-input-address").observe_field(0.25, function( ) {
+                $("#endereco_real").val($("#gmaps-input-address").val());
+            });
+        });
+    </script>
+
+
+
+
+    <script type="text/javascript">
+
+
+        $('#datepicker').datepicker({format: "dd/mm/yyyy",todayHighlight: true,todayBtn: 'linked',autoclose: true,language: 'pt-BR',
+            startDate: "today"});
+
+        $('#timepicker').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+            'disableTimeRanges': [
+                ['0am', '7am']
+            ]
+
+        });
+
+
+        $('#timepicker2').timepicker({ 'timeFormat': 'H:i:s', 'step': 15 ,
+            'disableTimeRanges': [
+                ['0am', '7am','12pm']
+            ]
+
+        });
+
+    </script>
+
+
+
+    <script type="text/javascript">
+        var np = 0
+
+        $("#npassageiros").change(function(){
+            var np = 0
+            np = $("#npassageiros").val();
+        });
+
+
+        $(document).ready(function() {
+            $('.multiselect_pessoa').multiselect({
+                enableFiltering: true,
+                nonSelectedText: 'Nenhum passageiro Selecionado',
+                maxHeight: 150,
+                numberDisplayed:0,
+                enableCaseInsensitiveFiltering: true,
+                buttonText: function(options, select) {
+                    if (options.length == 0) {
+                        return this.nonSelectedText + ' <b class="caret"></b>';
+                    }
+                    else {
+                        if (options.length > this.numberDisplayed) {
+                            return 'Foram Selecionado(s) ' + ' ' + options.length +' de '+$("#npassageiros").val()+' passageiro(s)'+' <b class="caret"></b>';
+                        }
+                        else {
+                            var selected = '';
+                            options.each(function() {
+                                var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+
+                                selected += "Selecionados" + ', ';
+                            });
+                            return selected.substr(0, selected.length - 2) + ' <b class="caret">Selecionado</b>';
+                        }
+                    }
+                },
+                onChange: function(option, checked) {
+                    // Get selected options.
+                    var selectedOptions = $('.multiselect_pessoa option:selected');
+
+                    if (selectedOptions.length >= $("#npassageiros").val()) {
+                        // Disable all other checkboxes.
+                        var nonSelectedOptions = $('.multiselect_pessoa option').filter(function() {
+                            return !$(this).is(':selected');
+                        });
+
+
+                        var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+                        nonSelectedOptions.each(function() {
+                            var input = $('input[value="' + $(this).val() + '"]');
+                            input.prop('disabled', true);
+                            input.parent('li').addClass('disabled');
+                        });
+
+                    }
+                    else {
+                        // Enable all checkboxes.
+                        var dropdown = $('.multiselect_pessoa').siblings('.multiselect-container');
+                        $('.multiselect_pessoa option').each(function() {
+                            var input = $('input[value="' + $(this).val() + '"]');
+                            input.prop('disabled', false);
+                            input.parent('li').addClass('disabled');
+                        });
+                    }
+                }
+            });
+            $('.multiselect_rota').multiselect({
+                enableFiltering: true,
+                numberDisplayed:00,
+                maxHeight: 200,
+                enableCaseInsensitiveFiltering: true,
+                nonSelectedText: 'Selecione ao Menos uma Rota',
+                buttonText: function(options, select) {
+                    if (options.length == 0) {
+                        return this.nonSelectedText + ' <b class="caret"></b>';
+                    }
+                    else {
+                        if (options.length > this.numberDisplayed) {
+                            return 'Foram Selecionado(s) ' + ' ' + options.length + ' Destino(s)  <b class="caret"></b>';
+                        }
+                        else {
+                            var selected = '';
+                            options.each(function() {
+                                var label = ($(this).attr('label') !== undefined) ? $(this).attr('label') : $(this).html();
+
+                                selected += "Selecionados" + ', ';
+                            });
+                            return selected.substr(0, selected.length - 2) + ' <b class="caret">Selecionado</b>';
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+
+
+
+
+
+    <script type="text/javascript">
+
+
+        $(function() {
+            var fieldsCount,
+
+                    maxFieldsCount = 0,
+                    $addLink = $('a.add_nested_fields');
+
+            function toggleAddLink() {
+                $addLink.toggle(fieldsCount <= maxFieldsCount)
+            }
+
+            $(document).on('nested:fieldAdded', function() {
+                fieldsCount += 1;
+                toggleAddLink();
+
+
+                gmaps_init();
+                autocomplete_init();
+                $('#mapa').removeClass('hide');
+                $('#rotas').addClass('hide');
+                // autocomplete_init();
+                $("#requisicao_rota_ids").multiselect("clearSelection");
+
+            });
+
+            $(document).on('nested:fieldRemoved', function() {
+                fieldsCount -= 1;
+                toggleAddLink();
+                gmaps_init();
+                autocomplete_init();
+                $('#mapa').addClass('hide');
+                $('#rotas').removeClass('hide');
+                $('#endereco_real').val('');
+                $('#gmaps-input-address').val('');
+                $('#requisicao_endereco_attributes_descricao').val();
+                $('#gmaps-output-latitude').val();
+                $('#gmaps-output-logitude').val();
+            });
+
+            // count existing nested fields after page was loaded
+            fieldsCount = $('form .fields').length;
+            toggleAddLink();
+        })
+
+    </script>
+
+
+    <script type="text/javascript">
+
+        if ($('#requisicao_endereco_attributes_descricao').is(":visible"))
+        {
+            $('#mapa').removeClass('hide');
+        }
+    </script>
+
+
+<%end%>
+
+
+
+<%content_for :options do %>
+    <%=link_to_function link_icone("Ajuda","question"),"bootstro.start('.bootstro');"%>
+<%end%>

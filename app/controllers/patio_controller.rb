@@ -169,13 +169,12 @@ def chegada_servico
     if @posto and @posto.em_transito?
       @servico = Administracao::Servico.where(:requisicao_id=>@requisicao.id, :veiculo_id=>@posto.veiculo.id, :user_id=>@requisicao.requisitante.user_id).first
       @servico.chegada = Time.zone.now
+      @servico.atendido = true
       if @servico.save
        @posto.estacionar
        @requisicao.data_volta = Time.zone.now
        @requisicao.hora_volta = Time.zone.now
-       @requisicao.motivo_cancelamento = "É Só pra saber se está tudo ok!"
        @requisicao.finalizar
-       @servico.atendido = true
      else
       @mensagem = "Erro ao Finalizar o Serviço!"
     end

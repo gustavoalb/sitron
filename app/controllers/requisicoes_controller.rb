@@ -106,6 +106,15 @@ class RequisicoesController < ApplicationController
       # @endereco = @requisicao.build_endereco
    end
 
+   def final_semana
+     @requisicao = Requisicao.new
+     @estado = Estado.find_by(:sigla => "AP")
+     @cidades = @estado.cidades.collect { |c| [c.nome, c.id] }
+     # @endereco = @requisicao.build_endereco
+   end
+
+
+
    def listar_rota
       @requisicao = Requisicao.find(params[:requisicao_id])
 
@@ -216,6 +225,8 @@ class RequisicoesController < ApplicationController
                format.html { render :new }
             elsif @tipo=="agendada"
                format.html { render :agendar }
+            elsif @tipo=="fim_de_semana"
+              format.html { render :final_semana }
             elsif @tipo=="urgente"
                format.html { render :requisicao_urgente }
             end

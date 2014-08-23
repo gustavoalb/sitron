@@ -22,7 +22,7 @@ class Requisicao < ActiveRecord::Base
   #validates_presence_of :tipo_carga, :message => "Precisa informar o tipo de carga", if: Proc.new { |req| req.motivo and req.motivo.carga? }
   validates_presence_of :inicio
   validates_inclusion_of :pernoite, :in => [true], :message => "Para pernoite em Macapá, é necessário fazer uma requisição para cada dia.", :if => Proc.new { |req| req.tipo_requisicao=='agendada' }
-  validates_presence_of :descricao, if: Proc.new { |req| req.tipo_requisicao=='urgente' }
+  validates_presence_of :descricao, if: Proc.new { |req| req.tipo_requisicao=='urgente' or req.tipo_requisicao == 'fim_de_semana' }
   validates_inclusion_of :numero_passageiros, in: 1..15, :message => "Número precisa ser informado!", if: Proc.new { |req| req.pessoa_ids.count>0 }
   validates_length_of :descricao, :maximum => 160, :message => "A Descrição não pode ultrapassar 160 caracteres"
   validates_presence_of :requisitante_id, :message => "Precisa definir o Responsável pela requisição"
@@ -57,6 +57,7 @@ class Requisicao < ActiveRecord::Base
   scope :finalizadas, -> { where(:state => "finalizada").order("created_at ASC ") }
   scope :canceladas, -> { where(:state => "cancelada").order("created_at ASC ") }
   scope :normal_agendada, -> { where("tipo_requisicao in (0,2)") }
+  scope :finais_de_semana,->{ where("tipo_requisicao = ?",4)}
   scope :urgentes, -> { where("tipo_requisicao = 1") }
   scope :nao_urgentes, -> { where("tipo_requisicao <>1") }
   scope :proximas_de_sair, -> { joins(:posto).where("requisicoes.state=? and postos.state = ?", 'confirmada', 'saida_proxima').order("created_at ASC ") }
@@ -65,14 +66,15 @@ class Requisicao < ActiveRecord::Base
 
   scope :validas, -> { where("inicio > (SELECT CURRENT_TIMESTAMP)") }
   scope :na_data, lambda { |data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?", data.day, data.month, data.year) }
-  scope :na_hora, lambda { where("(inicio BETWEEN ? and ?)", Time.zone.now, 20.minutes.since) }
+  scope :na_hora, lambda { where("(inicio BETWEEN ? and ?)", Time.now, Time.at(20.minutes.since)) }
+  scope :na_hora2, lambda {|t1,t2| where("(inicio BETWEEN ? and ?)", t1, t2) }
   scope :na_hora_exata, lambda {|hora| where(:hora=>hora) }
   scope :do_tipo,lambda{|tipo|where(:tipo_requisicao=>tipo)}
 
   after_create :numero_requisicao, :criar_notificacao
   after_create :evento, :gerar_code,:setar_posicao
   #after_validation :setar_distancia
-  enum tipo_requisicao: [:normal, :urgente, :agendada, :especial]
+  enum tipo_requisicao: [:normal, :urgente, :agendada, :especial,:fim_de_semana]
   enum tipo_carga: ["Mobiliário Escolar", "Livros Didáticos", "ETC"]
 
   def codigo_requisicao

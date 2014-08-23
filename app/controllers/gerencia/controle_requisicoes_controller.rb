@@ -11,6 +11,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
     @urgentes_aguardando = Requisicao.aguardando.urgentes.accessible_by(current_ability)
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
+    @veiculos = Administracao::Veiculo.all
     @aguardando_hoje = Requisicao.na_data(Time.now).nao_urgentes.aguardando.accessible_by(current_ability).order(:position,:hora)
     @aguardando_amanha = Requisicao.na_data(Date.tomorrow).aguardando.accessible_by(current_ability)
     @proximas_de_sair_amanha = Requisicao.proximas_de_sair.na_data(Date.tomorrow).accessible_by(current_ability)
@@ -57,6 +58,53 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     else
       @confirmada = false
       @mensagem = 'O Posto selecionado Ultrapassará as horas extras permitidas com esta requisição.'
+    end
+
+    @requisicoes = Requisicao.aguardando.all
+    @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
+
+    respond_to do |format|
+      format.js
+    end
+
+  end
+
+
+
+
+  def definir_veiculo_final_semana
+    authorize! :definir_veiculo_final_semana, current_user
+    @requisicao = Requisicao.aguardando.find(params[:req_id])
+
+    @veiculo = Administracao::Veiculo.find(params[:veiculo_id])
+
+    mes = @requisicao.data_ida.month
+    ano = @requisicao.data_ida.year
+    @confirmada = nil
+
+    if @veiculo.validar_horas_extras(@requisicao.previsao_horas, @requisicao.data_ida.strftime("%U"), mes, ano)
+      @patio = Administracao::Patio.na_data(@requisicao.inicio).first || Administracao::Patio.create(:data_entrada=>@requisicao.inicio)
+      @posto = @patio.postos.create!(:codigo=>@veiculo.codigo,:entrada=>@requisicao.inicio,:veiculo_id=>@veiculo.id,:data_entrada=>@requisicao.inicio.to_date,:patio=>@patio,:modalidade_id=>@veiculo.modalidade_id,:empresa_id=>@veiculo.empresa_id,:contrato_id=>@veiculo.contrato_id,:lote=>@veiculo.lote,:turno=>Posto.setar_turno(@requisicao.inicio))
+
+      @requisicao.posto = @posto
+      if @requisicao.confirmar
+         @posto.ligar
+         @confirmada = true
+         @mensagem = "O Posto foi definido com sucesso para a Requisição   #{@requisicao.numero}</strong>"
+         @notificacao = @requisicao.notificacoes.create(:texto => "Requisição Confirmada: #{@requisicao.numero}", :origem => current_user, :user => @requisicao.requisitante.user, :tipo => 2)
+         @notificacoes_recebidas = @requisicao.requisitante.user.notificacoes_recebidas.nao_vista
+         @contador = @notificacoes_recebidas.count
+
+      else
+        @confirmada = false
+        @requisicao.errors.each do |e|
+          @mensagem = e
+        end
+      end
+
+    else
+      @confirmada = false
+      @mensagem = 'O Veículo selecionado Ultrapassará as horas extras permitidas com esta requisição.'
     end
 
     @requisicoes = Requisicao.aguardando.all

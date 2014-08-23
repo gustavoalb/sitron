@@ -54,8 +54,6 @@
 
 <%= simple_form_for :pessoa,html: {class: "form-horizontal",id: "my_form"},:url=>salvar_pessoa_requisicoes_url(:url_volta=>request.original_url) do |f| %>
   <%= f.error_notification %>
-
-
     <%= f.input :nome %>
     <%= f.input :cpf, input_html: {class: "cpf"} %>
     <%= f.input :email, as: :email %>

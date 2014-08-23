@@ -17,6 +17,7 @@ Sitron::Application.routes.draw do
     get 'controle_requisicoes/index'
     get 'controle_requisicoes/detalhes_requisicao'
     post 'controle_requisicoes/definir_posto'
+    post 'controle_requisicoes/definir_veiculo_final_semana'
     post 'controle_requisicoes/cancelar_requisicao'
     post 'controle_requisicoes/cancelar_confirmada'
     get 'controle_requisicoes/especial'
@@ -57,6 +58,7 @@ Sitron::Application.routes.draw do
 
   resources :requisicoes, except: [:edit] do 
     get :agendar,on: :collection
+    get :final_semana,on: :collection
     post :agendar_requisicao,on: :collection
     get :requisicao_urgente,on: :collection
     get :teste,on: :collection
