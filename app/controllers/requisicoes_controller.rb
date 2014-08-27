@@ -17,7 +17,7 @@ class RequisicoesController < ApplicationController
       @requisicoes_finalizadas = Requisicao.finalizadas.accessible_by(current_ability)
    end
 
-
+definir_posto
    # GET /requisicoes/1
    # GET /requisicoes/1.json
    def show

@@ -73,7 +73,7 @@ class Requisicao < ActiveRecord::Base
 
   validates :data_volta,
             :date => {:after => :data_ida, :message => 'Precisa ser depois da Ida'},
-            :on => :create
+            :on => :create, :if => Proc.new { |req| req.tipo_requisicao=='agendada' }
 
   after_create :numero_requisicao, :criar_notificacao
   after_create :evento, :gerar_code,:setar_posicao
