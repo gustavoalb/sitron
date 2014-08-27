@@ -30,7 +30,8 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
 
   def definir_posto
-    authorize! :definir_posto, current_user
+
+
     @requisicao = Requisicao.aguardando.find(params[:req_id])
 
     @posto = Posto.ativo.find(params[:posto_id])
@@ -67,7 +68,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     respond_to do |format|
       format.js
     end
-
+    authorize! :definir_posto, current_user
   end
 
 
