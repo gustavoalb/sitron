@@ -8,7 +8,7 @@ class Ability
 
     if user.useget?
       can [:read,:update], User, {:id=>user.id}
-      can :imprimir_requisicao, Requisicao
+      can :manage, Requisicao
       can [:index,:definir_posto,:detalhes_requisicao,:cancelar_requisicao,:cancelar_confirmada],Requisicao
       can :manage, Administracao::Patio
       can :manage, Administracao::Pessoa, {:departamento_id=>user.pessoa.departamento_id}
