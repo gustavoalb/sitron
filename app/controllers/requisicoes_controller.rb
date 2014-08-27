@@ -103,7 +103,7 @@ class RequisicoesController < ApplicationController
       @requisicao = Requisicao.new
       @estado = Estado.find_by(:sigla => "AP")
       @cidades = @estado.cidades.collect { |c| [c.nome, c.id] }
-      # @endereco = @requisicao.build_endereco
+      #@endereco = @requisicao.build_endereco
    end
 
    def final_semana
