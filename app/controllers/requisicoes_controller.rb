@@ -49,6 +49,7 @@ class RequisicoesController < ApplicationController
 
 
    def imprimir_requisicao
+      authorize! :imprimir_requisicao, current_user
       @requisicao = Requisicao.find(params[:requisicao_id])
       @posto = @requisicao.posto
       @veiculo = @posto.veiculo
