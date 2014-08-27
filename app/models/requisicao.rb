@@ -71,9 +71,7 @@ class Requisicao < ActiveRecord::Base
   scope :na_hora_exata, lambda {|hora| where(:hora=>hora) }
   scope :do_tipo,lambda{|tipo|where(:tipo_requisicao=>tipo)}
 
-  validates :data_volta,
-            :date => {:after => :data_ida, :message => 'Precisa ser depois da Ida', :if => Proc.new { |req| req.tipo_requisicao=='agendada' }},
-            :on => :create
+  #validates :data_volta,:date => {:after => :data_ida, :message => 'Precisa ser depois da Ida'}, :on => :create
 
   after_create :numero_requisicao, :criar_notificacao
   after_create :evento, :gerar_code,:setar_posicao
