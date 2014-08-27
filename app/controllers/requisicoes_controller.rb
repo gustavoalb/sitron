@@ -65,7 +65,7 @@ class RequisicoesController < ApplicationController
          row.values setor_nome: @requisicao.requisitante.departamento.nome
          row.values setor_nome_2: @requisicao.requisitante.departamento.nome
          row.values data_atual: Time.now.to_s_br
-         row.values local_atual: @requisicao.requisitante.departamento.endereco.cidade.nome
+         row.values local_atual: @requisicao.requisitante.departamento.nome
          row.values roteiro_cumprido: @requisicao.rotas_requisicao
          row.values servidores_nome: @requisicao.servidores_nome
          row.values roteiro_cumprido_2: @requisicao.rotas_requisicao
