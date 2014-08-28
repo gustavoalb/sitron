@@ -45,9 +45,10 @@ module PatioHelper
 
 		html = ""
 		html+="<div class='col-md-2' id='posto_#{posto.id}'>"
-		html+="<a href='#{url}' class='info-tiles tiles-#{@tile}'>"
+		html+="<a href='#info_posto_#{posto.id}' class='info-tiles tiles-#{@tile}' data-toggle='modal'>"
 		html+="<div class='tiles-heading'>"
-		html+="<div class='pull-left'>#{posto.veiculo.lote.tipo.remover_acentos.upcase}::#{posto.veiculo.position}</div>"
+		html+="<div class='pull-left'>#{posto.veiculo.lote.tipo.remover_acentos.upcase}::#{posto.veiculo.position}"
+		html+="</div>"
 		html+="<div class='pull-right'></div></div>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
@@ -57,9 +58,53 @@ module PatioHelper
 		html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
 		html+="</a>"
 		html+="</div>"
+
+		html+="<div class='modal fade' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true' id='info_posto_#{posto.id}'>"
+		html+="<div class='modal-dialog'>"
+		html+="<div class='modal-content'>"
+		html+="<div class='modal-header'>"
+		html+="<button type='button' class='close' data-dismiss='modal'><span aria-hidden='true'>&times;</span><span class='sr-only'>Close</span></button>"
+		html+="<h4 class='modal-title' id='myModalLabel'>Informações do Posto #{info_posto(posto)} no dia #{Time.now.day} de #{Time.now.strftime('%B')} de #{Time.now.year}</h4></div>"
+		html+="<div class='modal-body'>"
+		html+="<dl class='dl-vertical'>"
+		html+=informacao('Tipo do Veículo',posto.veiculo.lote.tipo)
+		html+=informacao('Placa do Veículo',posto.veiculo.placa)
+		html+=informacao('Motorista',posto.veiculo.motorista)
+		html+=informacao('Horas Normais na Semana',posto.veiculo.horas_normais_semanais(Time.now.strftime("%U"),Time.now.year).round(2))
+		html+=informacao('Horas Extras na Semana',posto.veiculo.horas_extras_semanais(Time.now.strftime("%U"),Time.now.year).round(2))
+		if posto.saida_proxima? or posto.em_transito? 
+			r = Requisicao.do_posto(posto).first
+			if r
+				html+="<h4>Informações da Requisição <small>#{r.numero}</small></h4>"
+				html+="<hr/>"
+				html+=informacao("Requisitante",r.requisitante.nome)
+				html+=informacao("Departamento",detalhes(r.requisitante.departamento,:nome))
+				html+=informacao("Período",r.periodo_completo_da_requisicao)
+				html+=informacao("Motivo da Requisição",r.motivo.nome)
+				html+=informacao("Descrição da Requisição",r.descricao)
+				html+=link_to link_icone("Saída para Serviço", 'car'), gerencia_controle_requisicoes_saida_servico_path(:requisicao_id => r.id), :class => "btn btn-sky btn-xs", :remote => true, :method => :post if r.confirmada?
+				html+=link_to link_icone("Retorno do Serviço",'car'),gerencia_controle_requisicoes_chegada_servico_path(:requisicao_id=>r.id), :class=>"btn btn-sky btn-xs",:remote=>true,:method=>:post if r.ativa?
+			end
+		end
+		html+="</dl>"
+		html+="</div>"
+		html+="<div class='modal-footer'>"
+		html+="<button type='button' class='btn btn-default' data-dismiss='modal'>Fechar</button>"
+		html+="</div>"
+		html+="</div>"
+		html+="</div>"
+		html+="</div>"
+		
+
 		return raw(html)
 	end
 
+
+	def informacao(titulo,info)
+		html="<dt>#{titulo}</dt>"
+		html+="<dd>#{info}</dd>"
+		return raw(html)
+	end
 
 
 	def veiculo_posto_all(postos,url,tile)
@@ -84,6 +129,7 @@ module PatioHelper
 			html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
 			html+="</a>"
 			html+="</div>"
+
 		end
 		return raw(html)
 	end
@@ -105,23 +151,23 @@ module PatioHelper
 		ano = Time.zone.now.year
 		return raw("#{link_icone('',icone_lote(posto))}#{m.periodo_diario}H#{m.dias_mes} #{v.placa}")
 
-  end
+	end
 
 
 
-  def info_posto_print(posto)
-    v = posto.veiculo
-    m = v.modalidade
-    s = Time.zone.now.strftime("%U")
-    mes = Time.zone.now.month
-    ano = Time.zone.now.year
-    return raw("#{posto.veiculo.lote.tipo.upcase}#{m.periodo_diario}H#{m.dias_mes} #{v.position}/#{v.lote.numero_postos}")
+	def info_posto_print(posto)
+		v = posto.veiculo
+		m = v.modalidade
+		s = Time.zone.now.strftime("%U")
+		mes = Time.zone.now.month
+		ano = Time.zone.now.year
+		return raw("#{posto.veiculo.lote.tipo.upcase}#{m.periodo_diario}H#{m.dias_mes} #{v.position}/#{v.lote.numero_postos}")
 
-  end
+	end
 
 
 
-  def info_veiculo(veiculo)
+	def info_veiculo(veiculo)
 		m = veiculo.modalidade
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month
@@ -138,7 +184,7 @@ module PatioHelper
 		posto = veiculo.postos.na_data(Time.now).last
 		html = ""
 		html+="<div class='col-md-2' id='posto_#{veiculo.id}'>"
-		html+="<a href='#' class='shortcut-tiles tiles-success'>"
+		html+="<a href='po' class='shortcut-tiles tiles-success'>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='fa fa-car'></i></div>"
 		html+="<div class='pull-right'><span class='badge'>#{posto.position}</span><span class='badge'>#{veiculo.tipo.nome}</span><span class='badge'>#{veiculo.placa}</span></div>"
@@ -147,6 +193,7 @@ module PatioHelper
 		html+="<div class='tiles-footer'>#{veiculo.empresa.nome}</div>"
 		html+="</a>"
 		html+="</div>"
+
 		return raw(html)
 	end
 
@@ -175,4 +222,28 @@ module PatioHelper
 		end
 		return html
 	end
+
+	def menu_nav(sub=nil,&block)
+		if sub 
+			html="<ul id='menu3' class='dropdown-menu' role='menu' aria-labelledby='drop6'>"
+		else
+			html="<ul class='nav nav-pills'>"
+		end
+		html+=capture(&block)
+		html+="</ul>"
+		return raw(html)
+	end
+
+	def menu_item_nav(titulo, url,&block)
+		html = "<li class='dropdown'>"
+		if block_given?
+			html+=link_to titulo, url, role: "button",:'data-toggle'=>"dropdown"
+			html+=capture(&block)
+		else
+			html+=link_to titulo,url,role: "menuitem",tabindex: "-1"
+		end
+		html+="</li>"
+		return raw(html)
+	end
+
 end

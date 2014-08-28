@@ -70,6 +70,7 @@ class Requisicao < ActiveRecord::Base
   scope :na_hora2, lambda {|t1,t2| where("(inicio BETWEEN ? and ?)", t1, t2) }
   scope :na_hora_exata, lambda {|hora| where(:hora=>hora) }
   scope :do_tipo,lambda{|tipo|where(:tipo_requisicao=>tipo)}
+  scope :do_posto,lambda{|posto|joins(:posto).where("(requisicoes.state=? or requisicoes.state=?) and postos.id=?", 'confirmada', 'ativa',posto.id) }
 
   after_create :numero_requisicao, :criar_notificacao
   after_create :evento, :gerar_code,:setar_posicao

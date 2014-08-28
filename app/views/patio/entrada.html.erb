@@ -93,7 +93,14 @@
 </div>
 
 <div class='row'>
- 
+	<%=menu_nav do %>
+	<%=menu_item_nav('Sistema de Pátio', 'sfsfs') do %>
+	<%=menu_nav(true) do %>
+	<%=menu_item_nav(link_icone('Sistema de Pátio','eye'), 'sfsfs')%>
+	<%end%>
+	<%end%>
+	<%end%>
+
 </div>
 
 <% content_for :scripts do %>
@@ -124,6 +131,10 @@ url: "<%=patio_ordernar_veiculo_path(:patio_id=>1)%>"})
 <% end %>
 <script type="text/javascript">
 	$( "#posto_codigo_de_barras" ).focus();
+	$("#posto_403").customContextMenu(function(){
+		$('#teste').modal('show');
+	});
+
 </script>
 
 

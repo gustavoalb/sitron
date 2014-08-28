@@ -28,3 +28,13 @@ $(document).ready(function(){
 
 
 });
+
+
+$.fn.customContextMenu = function(callBack){
+    $(this).each(function(){
+        $(this).bind("contextmenu",function(e){
+             e.preventDefault();
+             callBack();
+        });
+    }); 
+}

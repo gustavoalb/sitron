@@ -23,7 +23,7 @@
 <%= f.input :hora_ida,input_html: {id: "timepicker",value: "#{(Time.now+1.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
 <%= f.input :data_volta,input_html: {class: "datepicker",readonly: true,value: Date.tomorrow.to_s_br},as: :string,:label=>"Previsão de Retorno"  %>
 <%= f.input :hora_volta,input_html: {id: "timepicker2",value: "#{(Time.now+2.hour).hour}:00:00"},as: :string,:label=>"Na Hora"  %>
-<%=f.association :posto,:collection=>@veiculos,:prompt=>"Selecione o Veículo",:label=>"Veículo" %>
+<%=f.association :posto,:collection=>@postos_comuns,:prompt=>"Selecione o Veículo",:label=>"Veículo" %>
 <%= f.input :numero_passageiros,:collection=>1..15, :label=>"Número de passageiros",:include_blank=>"Selecione o numero de passageiros",input_html: {id: "npassageiros"}%>
 
 <%=f.input :pessoa_ids,:collection=>@pessoas.collect{|p|[p.nome.camelcase,p.id]},input_html: {class: "multiselect_pessoa",multiple: "multiple"},:hint=>raw("Selecione os Passageiros ou #{link_cadastro_modal(link_icone('Clique aqui','user'),'#cadastrar_pessoa')} para cadastrar uma pessoa"),:label=>"Passageiros"%>
