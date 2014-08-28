@@ -60,6 +60,8 @@
             <dd><%=r.rotas_requisicao%></dd>
             <dt>Periodo do Serviço</dt>
             <dd><%=r.periodo_completo_da_requisicao%></dd>
+                      <dt>Veículo disponibilizado para o Serviço</dt>
+            <dd><%=r.posto.veiculo.lote.tipo%> <%=r.posto.veiculo.placa%> - <%=info_posto(r.posto)%> Motorista: <%=r.posto.veiculo.motorista%></dd>
             <dt>Horas Estimadas</dt>
             <dd><%=r.previsao_horas.to_i%></dd>
           </dl>

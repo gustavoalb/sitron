@@ -85,7 +85,7 @@ PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
                 <%end%>
             <% end %>
 
-            <% if can? :manage, Requisicao %>
+            <% if can? :manage, Requisicao && !current_user.useget? %>
                 <%=nav_item(requisicoes_url,'Requisições de Transporte','requisicoes','index','requisicao')%>
             <% end %>
 

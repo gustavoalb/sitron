@@ -4,7 +4,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
   def index
 
-    authorize! :index, current_user
+
     @requisicoes = Requisicao.aguardando.urgentes.all
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
     @requisicoes_proximas_de_sair = Requisicao.proximas_de_sair.all
@@ -30,7 +30,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
 
   def definir_posto
-
+  #  authorize! :definir_posto, current_user
 
     @requisicao = Requisicao.aguardando.find(params[:req_id])
 
@@ -68,14 +68,14 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     respond_to do |format|
       format.js
     end
-    authorize! :definir_posto, current_user
+
+
   end
 
 
 
 
   def definir_veiculo_final_semana
-    authorize! :definir_veiculo_final_semana, current_user
     @requisicao = Requisicao.aguardando.find(params[:req_id])
 
     @veiculo = Administracao::Veiculo.find(params[:veiculo_id])
@@ -203,7 +203,6 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
 
   def cancelar_requisicao
-    authorize! :cancelar_requisicao, current_user
     @requisicao = Requisicao.find(params[:requisicao])
 
     @requisicao.motivo_cancelamento = params[:motivo]
