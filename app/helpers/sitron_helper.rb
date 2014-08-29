@@ -48,9 +48,13 @@ module SitronHelper
 
   def sigla_destino(destino)
     if destino.roteavel.respond_to? "sigla" and  destino.roteavel.sigla
-      return destino.roteavel.sigla.upcase 
+      return destino.roteavel.sigla.upcase
     else
-      destino.destino.downcase.camelcase
+      if destino.roteavel_type == 'Administracao::Escola'
+         return "#{destino.destino.downcase.camelcase} - #{destino.roteavel.endereco.cidade.nome}"
+      else
+        return destino.destino.downcase.camelcase
+      end 
     end
   end
 
