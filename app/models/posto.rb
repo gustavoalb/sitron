@@ -85,6 +85,7 @@ state_machine :initial => :estacionado do
   veiculo = posto.veiculo
   tempo = Time.zone.now
   Administracao::BancoDeHora.definir_horas_extras(veiculo,tempo.day,tempo.strftime("%U"),tempo.month,tempo.year,servico.chegada.beginning_of_week,tempo.end_of_week,self.horas_normais)
+  puts "Espero que tenha dado Certo"
 end
 
 
