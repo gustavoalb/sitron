@@ -257,7 +257,6 @@ class Requisicao < ActiveRecord::Base
 
 
   def previsao_horas
-
     segundos = 0.0
     minutos = 0.0
     saida = self.inicio
@@ -270,8 +269,6 @@ class Requisicao < ActiveRecord::Base
     minutos = segundos / 60
     horas = minutos / 60
     return horas
-
-
   end
 
 

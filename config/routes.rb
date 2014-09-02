@@ -112,6 +112,8 @@ Sitron::Application.routes.draw do
     get   :entrada,on: :collection
     get   :saida,on: :collection
     get   :controle_manual,on: :collection
+    get   :relatorio_presencial,on: :collection
+    get   :imprimir_relatorio,on: :collection
     post  :saida_servico,on: :collection
     post  :chegada_servico,on: :collection
     post  :saida_veiculo,on: :collection

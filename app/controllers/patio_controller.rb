@@ -2,7 +2,7 @@
 class PatioController < ApplicationController
   include ActionController::Live
 
- 
+
 
   def index
 
@@ -10,31 +10,122 @@ class PatioController < ApplicationController
 
   end
 
-  def controle_manual
-   @patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
-
-   @postos_comuns = @patio.postos.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
-   @postos_especiais = @patio.postos.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
-   @postos_no_patio = @postos_comuns + @postos_especiais
-   ary = @postos_no_patio.collect{|c|c.veiculo_id}
-   
-   @postos_fora = Administracao::Veiculo.nao_entraram(ary)
-
-
-
+  def relatorio_presencial
   end
 
+  def imprimir_relatorio
+    @veiculos = Administracao::Veiculo.order(:contrato_id)
+    inicio = params[:relatorio][:inicio]
+    fim = params[:relatorio][:fim]
+    presenca = 0
+    ausencia = 0
+    @datas = {}
+    @turno = {}
+    dias = 1
+    t = 1
+    horas_normais = 0
+    horas_extras = 0
 
-  def entrada
-   @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
-   @postos_especiais = Posto.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
-   @postos = @postos_comuns + @postos_especiais
+
+
+    report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'relatorio_semanal.tlf')
+
+
+    
+    report.start_new_page 
+   
+
+    (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
+
+      @datas.merge!(dias.to_s=>Time.at(date).to_date.to_s_br)
+      dias +=1
+    end
+
+    report.list.header.item(:data1).value(@datas['1'].to_s)
+    report.list.header.item(:data2).value(@datas['2'].to_s)
+    report.list.header.item(:data3).value(@datas['3'].to_s)
+    report.list.header.item(:data4).value(@datas['4'].to_s)
+    report.list.header.item(:data5).value(@datas['5'].to_s)
+    report.list.header.item(:data6).value(@datas['6'].to_s)
+    report.list.header.item(:data7).value(@datas['7'].to_s)
+
+     report.list.header.item(:periodo1).value(@datas['1'].to_s)
+    report.list.header.item(:periodo2).value(@datas['7'].to_s)
+
+    @veiculos.each do |v|
+
+      horas_extras = v.horas_extras_semanais(inicio.to_date.strftime('%U'),inicio.to_date.year).round(2)
+      horas_normais = v.horas_normais_semanais(inicio.to_date.strftime('%U'),inicio.to_date.year).round(2)
+
+
+ 
+
+    report.list.add_row do |row|
+      row.values placa: v.placa
+      row.values contrato: v.contrato.numero
+      (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
+        p = Posto.na_data(Time.at(date).to_date).find_by(:veiculo_id=>v.id)
+        if p
+         presenca +=1
+         if p.manha?
+          row.values "m#{t}".to_sym=>File.join(Rails.root, 'app','assets','images','check.png')
+        elsif p.tarde?
+          row.values "t#{t}".to_sym=>File.join(Rails.root, 'app','assets','images','check.png')
+        elsif p.noite?
+          row.values "n#{t}".to_sym=>File.join(Rails.root, 'app','assets','images','check.png')
+        end
+        t+=1
+      else
+        ausencia +=1        
+      end
+    end
+
+    row.values presenca: presenca
+    row.values faltas: ausencia
+    row.values horas_e: horas_extras
+    row.values horas_n: horas_normais
+    row.values diarias: 0
+  end
+  presenca = 0
+  ausencia = 0
+  t = 1
+   #  @turno = {}
  end
 
 
- def saida
+ send_data report.generate, filename: "#{inicio.to_date.to_s}ate#{fim.to_date.to_s}.pdf",
+ type: 'application/pdf',
+ disposition: 'attachment'
+ 
+end
+
+
+
+def controle_manual
+ @patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
+
+ @postos_comuns = @patio.postos.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
+ @postos_especiais = @patio.postos.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
+ @postos_no_patio = @postos_comuns + @postos_especiais
+ ary = @postos_no_patio.collect{|c|c.veiculo_id}
+
+ @postos_fora = Administracao::Veiculo.nao_entraram(ary)
+
+
+
+end
+
+
+def entrada
+ @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC")
+ @postos_especiais = Posto.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
+ @postos = @postos_comuns + @postos_especiais
+end
+
+
+def saida
   @postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
- end
+end
 
 
 
@@ -113,8 +204,8 @@ end
 
 def saida_servico
   if (params.has_key?(:posto))
-  codigo = params[:posto][:codigo_de_barras]
-  @requisicao = Requisicao.confirmada.find_by(:codigo=>codigo)
+    codigo = params[:posto][:codigo_de_barras]
+    @requisicao = Requisicao.confirmada.find_by(:codigo=>codigo)
   else
     @requisicao = Requisicao.confirmada.find(params[:requisicao_id])
   end
