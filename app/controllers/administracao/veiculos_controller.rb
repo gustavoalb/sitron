@@ -3,7 +3,7 @@ class Administracao::VeiculosController < ApplicationController
   before_action :set_administracao_veiculo, only: [:show, :edit, :update, :destroy]
   before_action :load_veiculo, only: :create
   before_action :carregar_lotes
-  load_and_authorize_resource :class=>"Administracao::Veiculo", except: :create
+  load_and_authorize_resource :class=>"Administracao::Veiculo", except: [:create,:remover_posto]
 
 
   # GET /administracao/veiculos
@@ -25,6 +25,30 @@ class Administracao::VeiculosController < ApplicationController
   # GET /administracao/veiculos/1/edit
   def edit
   end
+
+  def remover_posto
+   
+
+   veiculo = Administracao::Veiculo.find(params[:veiculo_id])
+   patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
+   posto = patio.postos.find_by(:veiculo_id=>veiculo.id)
+   authorize! :remover_posto,veiculo
+  if posto 
+    posto.saida = Time.zone.now
+    posto.sair_do_patio
+    Administracao::BancoDeHora.definir_horas_extras(veiculo,posto.saida.day,posto.saida.strftime("%U"),posto.saida.month,posto.saida.year,posto.saida.beginning_of_week,posto.saida.end_of_week,posto.horas_normais)
+    @mensagem = "O Veículo #{veiculo.placa} foi removido do Pátio"
+  else
+    @mensagem = "Nenhum posto foi encontrado"
+  end
+
+  redirect_to administracao_veiculos_url,:alert=>@mensagem
+
+
+end
+
+
+
 
   def listar_lotes
     m = Administracao::Modalidade.find(params[:modalidade_id])

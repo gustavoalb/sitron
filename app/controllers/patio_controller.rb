@@ -160,7 +160,7 @@ def adicionar_posto
     @ja_adicionado = true
   else
 
-    veiculo = Administracao::Veiculo.where(:codigo=>codigo).first || Administracao::Veiculo.where(:codigo_s=>codigo).first
+    veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
     if veiculo
       @posto = @patio.postos.create!(:codigo=>codigo,:entrada=>Time.zone.now,:veiculo_id=>veiculo.id,:data_entrada=>Time.zone.now.to_date,:patio=>@patio,:modalidade_id=>veiculo.modalidade_id,:empresa_id=>veiculo.empresa_id,:contrato_id=>veiculo.contrato_id,:lote=>veiculo.lote,:turno=>Posto.setar_turno(Time.zone.now))
       @postos = Posto.ativo.na_data(Time.now).order("position ASC")
@@ -200,6 +200,9 @@ def remover_posto
 
 
 end
+
+
+
 
 def saida_servico
   if (params.has_key?(:posto))

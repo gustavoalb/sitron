@@ -6,10 +6,9 @@
     <tr>
     <th></th>
     <th>Número do Veículo</th>
-      <th>Modalidade</th>
       <th>Tipo</th>
-      <th>Capacidade passageiros</th>
       <th>Placa</th>
+      <th>Motorista</th>
       <th></th>
     </tr>
   </thead>
@@ -19,13 +18,14 @@
       <tr>
         <td><%=administracao_veiculo.lote_id%></td>
         <td><%=administracao_veiculo.position%></td>
-        <td><%= administracao_veiculo.modalidade.nome %></td>
         <td><%= administracao_veiculo.lote.tipo %></td>
-        <td><%= administracao_veiculo.capacidade_passageiros %></td>
-        <td><%= administracao_veiculo.placa%></td>
-        <td><%= link_to link_icone('detalhes'), administracao_veiculo,:class=>"btn btn-success btn-xs" %>
-        <%= link_to link_icone('editar'), edit_administracao_veiculo_path(administracao_veiculo),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  %>
-        <%= link_to link_icone('apagar'), administracao_veiculo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" %></td>
+        <td><%= administracao_veiculo.placa %></td>
+        <td><%= administracao_veiculo.motorista %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_veiculo,:class=>"btn btn-success btn-xs" if can? :manage, Administracao::Veiculo%>
+        <%= link_to link_icone('editar'), edit_administracao_veiculo_path(administracao_veiculo),class: "btn btn-warning btn-xs",data: { no_turbolink: true }  if can? :manage, Administracao::Veiculo%>
+        <%= link_to link_icone('apagar'), administracao_veiculo, method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-xs" if can? :manage, Administracao::Veiculo%>
+        <%=posto_veiculo(administracao_veiculo) if can? :remover_posto, Administracao::Veiculo%>
+        </td>
       </tr>
     <% end %>
   </tbody>

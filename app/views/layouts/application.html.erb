@@ -77,10 +77,10 @@ PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
                 <%=nav_item(administracao_pessoas_url,'Cadastro de Pessoas','administracao_pessoas','index','users')%>
             <% end %>
 
-            <% if can? :manage, Administracao::Veiculo %>
+            <% if can? :manage, Administracao::Veiculo or can? :remover_posto, Administracao::Veiculo%>
                 <%=nav_item_menu('Cadastro de Veículos','administracao_veiculos','car') do%>
                     <%=nav_item(administracao_veiculos_url,'Listagem de Veículos','administracao_veiculos','index','car')%>
-                    <%=nav_item(new_administracao_veiculo_url,'Cadastrar Veículo','administracao_veiculos','new','plus')%>
+                    <%=nav_item(new_administracao_veiculo_url,'Cadastrar Veículo','administracao_veiculos','new','plus') if can? :manage, Administracao::Veiculo%>
                     <%=yield :menu_veiculo%>
                 <%end%>
             <% end %>
@@ -133,6 +133,10 @@ PrivatePub.subscribe("/<%=current_user.id%>", function(data, channel) {
 
                 <% if can? :manage, Administracao::Motivo %>
                     <%=nav_item(administracao_motivos_url,'Motivos','administracao_motivos','index','indent')%>
+                <% end %>
+
+                 <% if can? :manage, Administracao::RelatoriosDiario %>
+                    <%=nav_item(administracao_relatorios_diarios_url,'Rel. Diários','administracao_relatorios_diarios','index','tasks')%>
                 <% end %>
             </ul>
         </li>

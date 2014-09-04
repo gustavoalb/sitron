@@ -164,23 +164,23 @@ def salvar_requisicao
     @posto = @requisicao.posto
 
 
-   respond_to do |format|
-    if @requisicao.save
-      @requisicao.confirmar
-      @posto.ligar
-      @servico = @requisicao.create_servico(:veiculo_id => @posto.veiculo.id, :user_id => @requisicao.requisitante.user_id, :empresa_id => @posto.veiculo.empresa_id, :contrato_id => @posto.veiculo.contrato_id, :lote => @posto.veiculo.lote, :saida => Time.zone.now, :valor_combustivel_centavos => 2.30, :atendido => true)
+    respond_to do |format|
+      if @requisicao.save
+        @requisicao.confirmar
+        @posto.ligar
+        @servico = @requisicao.create_servico(:veiculo_id => @posto.veiculo.id, :user_id => @requisicao.requisitante.user_id, :empresa_id => @posto.veiculo.empresa_id, :contrato_id => @posto.veiculo.contrato_id, :lote => @posto.veiculo.lote, :saida => Time.zone.now, :valor_combustivel_centavos => 2.30, :atendido => true)
 
-      format.html { redirect_to gerencia_controle_requisicoes_index_url, notice: 'A Requisicao foi Criada com Sucesso' }
-      format.json { render :show, status: :created, location: @requisicao }
-    else
-      @estado = Estado.find_by(:sigla => "AP")
-      @cidades = @estado.cidades.collect { |c| [c.nome, c.id] }
-      @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
-      @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC").collect{|p|["#{p.veiculo.lote.tipo} - #{p.veiculo.placa} - #{p.veiculo.motorista}",p.id]}
+        format.html { redirect_to gerencia_controle_requisicoes_index_url, notice: 'A Requisicao foi Criada com Sucesso' }
+        format.json { render :show, status: :created, location: @requisicao }
+      else
+        @estado = Estado.find_by(:sigla => "AP")
+        @cidades = @estado.cidades.collect { |c| [c.nome, c.id] }
+        @pessoas = Administracao::Pessoa.pode_ser_passageiro.all
+        @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC").collect{|p|["#{p.veiculo.lote.tipo} - #{p.veiculo.placa} - #{p.veiculo.motorista}",p.id]}
 
-      @responsaveis = User.do_email("seed.ap.gov.br").collect { |u| [u.pessoa.nome, u.pessoa.id] }
-      format.html { render :especial, alert: 'A Requisicao não foi criada!' }
-      format.html { redirect_to gerencia_controle_requisicoes_index_url, alert: 'A Requisição não foi criada' }
+        @responsaveis = User.do_email("seed.ap.gov.br").collect { |u| [u.pessoa.nome, u.pessoa.id] }
+        format.html { render :especial, alert: 'A Requisicao não foi criada!' }
+        format.html { redirect_to gerencia_controle_requisicoes_index_url, alert: 'A Requisição não foi criada' }
 
         # format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
@@ -231,6 +231,16 @@ def salvar_requisicao
       format.js
     end
 
+  end
+
+  def cancelar_posto
+    @requisicao = Requisicao.find(params[:requisicao_id])
+    @posto = @requisicao.posto
+    @posto.estacionar
+    @requisicao.posto_id = nil
+    @requisicao.aguardar
+
+    redirect_to gerencia_controle_requisicoes_index_path,:alert=>"O Posto para a Requisição n.º #{@requisicao.numero} foi desfeito, defina outro posto ou cancele a requsição"
   end
 
 
@@ -295,7 +305,7 @@ def salvar_requisicao
          @servico.atendido = true
          @em_servico = Requisicao.em_servico.all
          
-      else
+       else
         @mensagem = "Erro ao Finalizar o Serviço!"
       end
 

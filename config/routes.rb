@@ -30,6 +30,7 @@ Sitron::Application.routes.draw do
     post  'controle_requisicoes/ordernar_requisicao'
     post 'controle_requisicoes/chegada_servico'
     post 'controle_requisicoes/saida_servico'
+     post 'controle_requisicoes/cancelar_posto'
   end
 
   resources :usuarios do
@@ -151,6 +152,7 @@ Sitron::Application.routes.draw do
     resources :veiculos do 
       get :imprimir_codigos, on: :collection
        get "listar_lotes",on: :collection
+       post :remover_posto
     end
   end
 

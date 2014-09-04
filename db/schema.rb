@@ -367,9 +367,12 @@ ActiveRecord::Schema.define(version: 20140903195137) do
     t.integer  "tipo"
     t.string   "descricao"
     t.datetime "data"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "relatorios_diarios", ["user_id"], name: "index_relatorios_diarios_on_user_id", using: :btree
 
   create_table "requisicoes", force: true do |t|
     t.string   "numero"

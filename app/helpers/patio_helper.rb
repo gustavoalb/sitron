@@ -83,9 +83,13 @@ module PatioHelper
 				html+=informacao("Motivo da Requisição",r.motivo.nome)
 				html+=informacao("Descrição da Requisição",r.descricao)
 				html+=link_to link_icone("Saída para Serviço", 'car'), gerencia_controle_requisicoes_saida_servico_path(:requisicao_id => r.id), :class => "btn btn-sky btn-xs", :remote => true, :method => :post if r.confirmada?
+				html+=link_to link_icone("Desfazer Definição de Posto", 'thumbs-down'), gerencia_controle_requisicoes_cancelar_posto_path(:requisicao_id => r.id), :class => "btn btn-danger btn-xs", :method => :post
 				html+=link_to link_icone("Retorno do Serviço",'car'),gerencia_controle_requisicoes_chegada_servico_path(:requisicao_id=>r.id), :class=>"btn btn-sky btn-xs",:remote=>true,:method=>:post if r.ativa?
 			end
 		end
+
+
+
 		html+="</dl>"
 		html+="</div>"
 		html+="<div class='modal-footer'>"

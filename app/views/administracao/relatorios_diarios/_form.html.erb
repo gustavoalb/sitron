@@ -4,8 +4,9 @@
 
 
      <%= f.input :tipo, :collection => Administracao::RelatoriosDiario.tipos.keys.map {|tipo| [tipo.titleize,tipo]}, :input_html => {:class=>"input-medium"}, :label=>"Origem do Problema",:prompt=>"Selecione a Origem do Problema"%>
-    <%= f.input :descricao,:label=>"Descrição do Problema" %>
+    <%= f.input :descricao,:label=>"Descrição do Problema",input_html: {:class=>"mensagem"},as: :text %>
     <%= f.input :data,input_html: {value: Time.zone.now},:as=>:hidden %>
+    <%= f.input :user_id,input_html: {value: current_user.id},:as=>:hidden %>
 
 
     <br/><br/><br/>

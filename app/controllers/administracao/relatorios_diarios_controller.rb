@@ -69,6 +69,6 @@ class Administracao::RelatoriosDiariosController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def administracao_relatorios_diario_params
-      params.require(:administracao_relatorios_diario).permit(:tipo, :descricao, :data)
+      params.require(:administracao_relatorios_diario).permit(:tipo, :descricao, :data,:user_id)
     end
 end

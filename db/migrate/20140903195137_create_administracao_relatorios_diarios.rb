@@ -4,6 +4,7 @@ class CreateAdministracaoRelatoriosDiarios < ActiveRecord::Migration
       t.integer :tipo
       t.string :descricao
       t.column :data,'timestamp with time zone'
+      t.belongs_to :user, index: true
 
       t.timestamps
     end
