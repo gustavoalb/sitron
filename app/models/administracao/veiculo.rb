@@ -57,7 +57,7 @@ class Administracao::Veiculo < ActiveRecord::Base
 
  def esta_no_patio?
    patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
-   posto = patio.postos.find_by(:veiculo_id=>self.id)
+   posto = patio.postos.find_by(:veiculo_id=>self.id,:turno=>Posto.setar_turno(Time.zone.now))
    if posto
     return true
   else
@@ -68,7 +68,7 @@ end
 
  def pode_sair_do_patio?
    patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
-   posto = patio.postos.find_by(:veiculo_id=>self.id)
+   posto = patio.postos.find_by(:veiculo_id=>self.id,:turno=>Posto.setar_turno(Time.zone.now))
    if posto
     if posto.estacionado?
        return true
