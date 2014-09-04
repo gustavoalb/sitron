@@ -15,8 +15,8 @@ class PatioController < ApplicationController
 
   def imprimir_relatorio
     @veiculos = Administracao::Veiculo.order(:contrato_id)
-    inicio = params[:relatorio][:inicio]
-    fim = params[:relatorio][:fim]
+    inicio = "#{params[:relatorio][:inicio].to_date}  00:00:00 -0300"
+    fim = "#{params[:relatorio][:fim].to_date}  00:00:00 -0300"
     presenca = 0
     ausencia = 0
     @datas = {}
@@ -36,8 +36,7 @@ class PatioController < ApplicationController
    
 
     (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
-
-      @datas.merge!(dias.to_s=>Time.at(date).to_date.to_s_br)
+      @datas.merge!(dias.to_s=>Time.at(date).to_date.to_s_br,"s#{dias}"=>Time.at(date).strftime("%a"))
       dias +=1
     end
 
@@ -49,8 +48,8 @@ class PatioController < ApplicationController
     report.list.header.item(:data6).value(@datas['6'].to_s)
     report.list.header.item(:data7).value(@datas['7'].to_s)
 
-     report.list.header.item(:periodo1).value(@datas['1'].to_s)
-    report.list.header.item(:periodo2).value(@datas['7'].to_s)
+     report.list.header.item(:periodo1).value(inicio.to_date.to_s_br)
+    report.list.header.item(:periodo2).value(fim.to_date.to_s_br)
 
     @veiculos.each do |v|
 

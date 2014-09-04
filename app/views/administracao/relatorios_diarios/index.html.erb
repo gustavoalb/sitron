@@ -1,0 +1,53 @@
+<%=titulo_pagina(link_icone("Relatórios Diários","tasks"),link_icone("Listagem de Problemas","tasks"))%>
+<table class="table table-striped datatables">
+  <thead>
+    <tr>
+      <th>Tipo</th>
+      <th>Descricao</th>
+      <th>Data</th>
+      <th></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @administracao_relatorios_diarios.each do |administracao_relatorios_diario| %>
+      <tr>
+        <td><%= administracao_relatorios_diario.tipo %></td>
+        <td><%= administracao_relatorios_diario.descricao %></td>
+        <td><%= administracao_relatorios_diario.data.to_s_br %></td>
+        <td><%= link_to link_icone('detalhes'), administracao_relatorios_diario,:class=>"btn btn-success btn-sm" %>
+        <%= link_to link_icone('editar'), edit_administracao_relatorios_diario_path(administracao_relatorios_diario),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %>
+        <%= link_to link_icone('apagar'), administracao_relatorios_diario, method: :delete, data: { confirm: 'Você tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+<br>
+
+
+
+<%= link_to link_icone('Cadastrar Problema','plus'), new_administracao_relatorios_diario_path, :class=>"btn btn-large btn-success",data: { no_turbolink: true }  %>
+<%content_for :scripts do%>
+<script type="text/javascript">
+
+  $(document).ready(function() {
+    $('.datatables').dataTable({
+     destroy: true,
+     "sDom": "<'row'<'col-xs-6'l><'col-xs-6'f>r>t<'row'<'col-xs-6'i><'col-xs-6'p>>",
+     "sPaginationType": "bootstrap",
+     "oLanguage": {
+      "sLengthMenu": "_MENU_ registros por página",
+      "sSearch": "",
+      "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+      "oPaginate": {
+        "sPrevious": "Anterior",
+        "sNext": "Próxima"
+      }
+    }
+  });
+    $('.dataTables_filter input').addClass('form-control').attr('placeholder','Buscar...');
+    $('.dataTables_length select').addClass('form-control');
+  });
+
+</script>
+<%end%>

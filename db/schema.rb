@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140819192838) do
+ActiveRecord::Schema.define(version: 20140903195137) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,7 +52,7 @@ ActiveRecord::Schema.define(version: 20140819192838) do
     t.float    "minutos"
     t.float    "horas_normais",        default: 0.0
     t.float    "horas_extras",         default: 0.0
-    t.float    "acumulo_horas_extras", default: 0.0
+    t.float    "acumulo_horas_extras"
   end
 
   add_index "banco_de_horas", ["posto_id"], name: "index_banco_de_horas_on_posto_id", using: :btree
@@ -362,6 +362,14 @@ ActiveRecord::Schema.define(version: 20140819192838) do
 
   add_index "provisoes", ["requisicao_id"], name: "index_provisoes_on_requisicao_id", using: :btree
   add_index "provisoes", ["veiculo_id"], name: "index_provisoes_on_veiculo_id", using: :btree
+
+  create_table "relatorios_diarios", force: true do |t|
+    t.integer  "tipo"
+    t.string   "descricao"
+    t.datetime "data"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "requisicoes", force: true do |t|
     t.string   "numero"

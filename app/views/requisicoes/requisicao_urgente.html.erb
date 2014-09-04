@@ -46,7 +46,7 @@
 <script type="text/javascript">
   $(function() {
     $("#motivo_requisicao").observe_field(0.25, function( ) {
-     $.get("/requisicoes/tipo_carga/?motivo_id="+$("#motivo_requisicao").val(), function(data) {
+     $.get("/requisicoes/tipo_carga/?motivo_id="+$("#motivo_requisicao").val()+"&tipo="+$("#requisicao_tipo_requisicao").val(), function(data) {
 // here check_login is the method in our controller.
 $("#div_carga").html(data);
 });

@@ -95,8 +95,8 @@ class RequisicoesController < ApplicationController
       end
 
       send_data report.generate, filename: 'requisicao.pdf',
-                type: 'application/pdf',
-                disposition: 'attachment'
+      type: 'application/pdf',
+      disposition: 'attachment'
    end
 
    # GET /requisicoes/new
@@ -112,65 +112,65 @@ class RequisicoesController < ApplicationController
      @estado = Estado.find_by(:sigla => "AP")
      @cidades = @estado.cidades.collect { |c| [c.nome, c.id] }
      # @endereco = @requisicao.build_endereco
-   end
+  end
 
 
 
-   def listar_rota
-      @requisicao = Requisicao.find(params[:requisicao_id])
+  def listar_rota
+   @requisicao = Requisicao.find(params[:requisicao_id])
 
 
-      kml = KMLFile.new
+   kml = KMLFile.new
 
-      folder = KML::Folder.new(:name => "Destino da Requisição: #{@requisicao.numero}", :description => "Esta é uma Descrição")
-      if @requisicao.rotas.count > 0
+   folder = KML::Folder.new(:name => "Destino da Requisição: #{@requisicao.numero}", :description => "Esta é uma Descrição")
+   if @requisicao.rotas.count > 0
 
-         @requisicao.rotas.each do |r|
-            point = KML::Point.new :coordinates => {:lat => r.latitude,
-                                                    :lng => r.longitude}
-            place = KML::Placemark.new :geometry => point, :name => r.destino
-            folder.features << place
-         end
+      @requisicao.rotas.each do |r|
+         point = KML::Point.new :coordinates => {:lat => r.latitude,
+          :lng => r.longitude}
+          place = KML::Placemark.new :geometry => point, :name => r.destino
+          folder.features << place
+       end
 
-      elsif !@requisicao.endereco.nil?
-         point = KML::Point.new :coordinates => {:lat => @requisicao.endereco.latitude,
-                                                 :lng => @requisicao.endereco.longitude}
-         place = KML::Placemark.new :geometry => point, :name => @requisicao.endereco.descricao
-         folder.features << place
-      end
-      kml.objects << folder
+    elsif !@requisicao.endereco.nil?
+      point = KML::Point.new :coordinates => {:lat => @requisicao.endereco.latitude,
+       :lng => @requisicao.endereco.longitude}
+       place = KML::Placemark.new :geometry => point, :name => @requisicao.endereco.descricao
+       folder.features << place
+    end
+    kml.objects << folder
 
-      @requisicao.kml = kml.render
-      @requisicao.save
+    @requisicao.kml = kml.render
+    @requisicao.save
 
-      send_data @requisicao.kml
-
-
-   end
-
-   def lat_lng_cidade
-      @cidade = Cidade.find(params[:cidade_id])
-      response = []
-      response << {:latitude => @cidade.latitude, :longitude => @cidade.longitude}
-      render :json => {:response => response.compact}.as_json
-   end
+    send_data @requisicao.kml
 
 
-   def agendar
-      @requisicao = Requisicao.new
-      @estado = Estado.find_by(:sigla => "AP")
-   end
+ end
 
-   def requisicao_urgente
-      @requisicao = Requisicao.new
-      @estado = Estado.find_by(:sigla => "AP")
-   end
+ def lat_lng_cidade
+   @cidade = Cidade.find(params[:cidade_id])
+   response = []
+   response << {:latitude => @cidade.latitude, :longitude => @cidade.longitude}
+   render :json => {:response => response.compact}.as_json
+end
 
 
-   def teste
-      @requisicao = Requisicao.new
-      @estado = Estado.find_by(:sigla => "AP")
-   end
+def agendar
+   @requisicao = Requisicao.new
+   @estado = Estado.find_by(:sigla => "AP")
+end
+
+def requisicao_urgente
+   @requisicao = Requisicao.new
+   @estado = Estado.find_by(:sigla => "AP")
+end
+
+
+def teste
+   @requisicao = Requisicao.new
+   @estado = Estado.find_by(:sigla => "AP")
+end
 
 
    # GET /requisicoes/1/edit
@@ -228,46 +228,46 @@ class RequisicoesController < ApplicationController
                format.html { render :agendar }
             elsif @tipo=="fim_de_semana"
               format.html { render :final_semana }
-            elsif @tipo=="urgente"
-               format.html { render :requisicao_urgente }
-            end
-
-            format.json { render json: @requisicao.errors, status: :unprocessable_entity }
+           elsif @tipo=="urgente"
+            format.html { render :requisicao_urgente }
          end
+
+         format.json { render json: @requisicao.errors, status: :unprocessable_entity }
       end
    end
+end
 
-   def salvar_pessoa
-      url=params[:url_volta]
+def salvar_pessoa
+   url=params[:url_volta]
 #  @pessoa = Administracao::Pessoa.new(params[:pessoa])
-      @tipo = nil
-      @mensagem = nil
+@tipo = nil
+@mensagem = nil
 
-      if @pessoa.save
-         @tipo = :notice
-         @mensagem = "A Pessoa #{@pessoa.nome} foi Salva com sucesso!"
-      else
-         @tipo = :alert
-         @mensagem = "Não foi Possível Salvar, Tente novamente"
-      end
-      redirect_to url, @tipo => @mensagem
+if @pessoa.save
+   @tipo = :notice
+   @mensagem = "A Pessoa #{@pessoa.nome} foi Salva com sucesso!"
+else
+   @tipo = :alert
+   @mensagem = "Não foi Possível Salvar, Tente novamente"
+end
+redirect_to url, @tipo => @mensagem
+end
+
+def avaliar
+   @requisicao = Requisicao.find(params[:requisicao_id])
+   @avaliacao = @requisicao.avaliacoes.new(:texto => params[:avaliar][:texto], :tipo => params[:avaliar][:tipo], :avaliador => current_user)
+   @mensagem = nil
+   @tipo = nil
+   if @avaliacao.save
+      @mensagem = "Avaliação Efetuada"
+      @tipo=:notice
+   else
+      @mensagem = "Erro ao fazer a Avaliação"
+      @tipo=:alert
    end
 
-   def avaliar
-      @requisicao = Requisicao.find(params[:requisicao_id])
-      @avaliacao = @requisicao.avaliacoes.new(:texto => params[:avaliar][:texto], :tipo => params[:avaliar][:tipo], :avaliador => current_user)
-      @mensagem = nil
-      @tipo = nil
-      if @avaliacao.save
-         @mensagem = "Avaliação Efetuada"
-         @tipo=:notice
-      else
-         @mensagem = "Erro ao fazer a Avaliação"
-         @tipo=:alert
-      end
-
-      redirect_to requisicoes_url, @tipo => @mensagem
-   end
+   redirect_to requisicoes_url, @tipo => @mensagem
+end
 
    # PATCH/PUT /requisicoes/1
    # PATCH/PUT /requisicoes/1.json
@@ -294,15 +294,29 @@ class RequisicoesController < ApplicationController
    end
 
    def tipo_carga
+      if(params.has_key?(:tipo))
+         @tipo = params[:tipo]
+         puts "TIPO: #{@tipo}"
+      end
       if params[:motivo_id] and !params[:motivo_id].blank?
          @motivo = Administracao::Motivo.find(params[:motivo_id])
       end
       if @motivo and @motivo.carga? and !@motivo.necessita_descricao?
          render :partial => "partial_carga"
       elsif @motivo and @motivo.carga? and @motivo.necessita_descricao?
-         render :partial => "carga_descricao"
+
+         if @tipo and @tipo == 'urgente'
+            render :nothing => true
+         else
+            render :partial => "carga_descricao"
+         end
+         
       elsif @motivo and @motivo.necessita_descricao?
-         render :partial => "descricao"
+         if @tipo and @tipo == 'urgente'
+            render :nothing => true
+         else
+            render :partial => "descricao"
+         end
       elsif !@motivo or !@motivo.carga? or params[:motivo_id].blank?
          render :nothing => true
       end
@@ -330,8 +344,8 @@ class RequisicoesController < ApplicationController
       end
 
       send_data report.generate, filename: 'relatorio_horas.pdf',
-                type: 'application/pdf',
-                disposition: 'attachment'
+      type: 'application/pdf',
+      disposition: 'attachment'
    end
 
    private

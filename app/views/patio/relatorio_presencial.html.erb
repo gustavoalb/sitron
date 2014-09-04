@@ -1,7 +1,9 @@
+<%=titulo_pagina(link_icone("Relatório Presencial de Veículos no Pátio","check"),link_icone("Relatório presencial de Veículos no Pátio - Parâmetros","check-circle"))%>
+
 <%=simple_form_for :relatorio, html: {class: 'form-horizontal'},:method=>:get,:url=>imprimir_relatorio_patio_index_path do |f|%>
 
-<%=f.input :inicio,input_html: {id: "inicio",value: Time.now.beginning_of_week.to_date.to_s_br,readonly: true},:as=>:string%>
-<%=f.input :fim,input_html: {id: "fim",value: Time.now.end_of_week.to_date.to_s_br,readonly: true},:as=>:string%>
+<%=f.input :inicio,input_html: {id: "inicio",value: Time.now.beginning_of_week.to_date.to_s_br,readonly: true},:as=>:string,:label=>"Início do Período"%>
+<%=f.input :fim,input_html: {id: "fim",value: Time.now.end_of_week.to_date.to_s_br,readonly: true},:as=>:string,:label=>"Final do Período"%>
 <%= button_tag(type: 'submit', class: 'btn btn-default btn-sm') do %>
     Imprimir Relatório <i class='fa fa-print'></i>
 <% end %>

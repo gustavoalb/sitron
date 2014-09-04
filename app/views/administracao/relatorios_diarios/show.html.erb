@@ -1,0 +1,13 @@
+<%= titulo_pagina(link_icone("Detalhes do Problema",'tasks'), link_icone('Detalhes'))%>
+
+<dl class="dl-horizontal"> 
+  <dt>Tipo:</dt>
+  <dd><%= @administracao_relatorios_diario.tipo %></dd>
+  <dt>Descricao:</dt>
+  <dd><%= @administracao_relatorios_diario.descricao %></dd>
+  <dt>Data:</dt>
+  <dd><%= @administracao_relatorios_diario.data.to_s_br %></dd>
+</dl>
+
+<%= link_to link_icone('editar'), edit_administracao_relatorios_diario_path(@administracao_relatorios_diario),class: "btn btn-warning btn-sm" %> |
+<%= link_to link_icone('voltar'), administracao_relatorios_diarios_path, class: "btn btn-sm btn-default" %>
