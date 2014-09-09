@@ -67,18 +67,52 @@ class RequisicoesController < ApplicationController
 
 
  report.layout.config.list(:default) do
+     @nn = {} 
+   @nu = {}
+   @na = {}
+   @ne = {}
+   @nf = {}
+
    @normais = Requisicao.do_tipo('0').no_periodo(inicio,fim).count
    @urgentes = Requisicao.do_tipo('1').no_periodo(inicio,fim).count 
    @agendadas = Requisicao.do_tipo('2').no_periodo(inicio,fim).count
    @especiais = Requisicao.do_tipo('3').no_periodo(inicio,fim).count
    @finais_semana = Requisicao.do_tipo('4').no_periodo(inicio,fim).count
+
+
+   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+     normais = Requisicao.do_tipo('0').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+     @nn.merge!(Time.at(date).strftime('%b').to_s=>normais.count)
+   end
+
+   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+    urgentes = Requisicao.do_tipo('1').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+    @nu.merge!(Time.at(date).strftime('%b').to_s=>urgentes.count)
+  end
+
+  (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+   agendadas = Requisicao.do_tipo('2').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+   @na.merge!(Time.at(date).strftime('%b').to_s=>agendadas.count)
+ end
+
+ (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+   especiais = Requisicao.do_tipo('3').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+   @ne.merge!(Time.at(date).strftime('%b').to_s=>especiais.count)
+ end
+
+ (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+   fsemanas = Requisicao.do_tipo('4').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+   @nf.merge!(Time.at(date).strftime('%b').to_s=>fsemanas.count)
+ end
+
+
    events.on :page_footer_insert do |e|
-    e.section.item(:qnt_n).value(@normais)
-    e.section.item(:qnt_u).value(@urgentes)
-    e.section.item(:qnt_a).value(@agendadas)
-    e.section.item(:qnt_e).value(@especiais)
-    e.section.item(:qnt_f).value(@finais_semana)
-    e.section.item(:total).value(@normais+@urgentes+@agendadas+@especiais+@finais_semana)
+    e.section.item(:qnt_n).value(@nn.values.sum)
+    e.section.item(:qnt_u).value(@nu.values.sum)
+    e.section.item(:qnt_a).value(@na.values.sum)
+    e.section.item(:qnt_e).value(@ne.values.sum)
+    e.section.item(:qnt_f).value(@nf.values.sum)
+    e.section.item(:total).value(@nn.values.sum+@nu.values.sum+@na.values.sum+@ne.values.sum+@nf.values.sum)
   end
 end
 
