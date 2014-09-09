@@ -15,8 +15,8 @@
 
 
   $('#inicio').daterangepicker({ timePicker: true, timePickerIncrement: 7, format: 'MM/DD/YYYY h:mm A' },function(start, end) {
-        $('#inicio').val(start.format('DD/MM/YYYY'));
-        $('#fim').val(end.format('DD/MM/YYYY'));
+        $('#inicio').val(moment(start).startOf('month').format('DD/MM/YYYY'));
+        $('#fim').val(moment(end).endOf('month').format('DD/MM/YYYY'));
     });
 
 </script>
