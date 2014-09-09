@@ -239,6 +239,7 @@ def imprimir_requisicao
   row.values servico_executado: @requisicao.servico_executado
   row.values deslocamento: @requisicao.tipo_requisicao.camelcase
   row.values veiculo: PatioController.helpers.info_posto_print(@posto)
+  row.values motorista: @posto.veiculo.motorista
   if @requisicao.numero_da_portaria
     row.item(:portaria).show
     row.values numero_da_portaria: @requisicao.numero_da_portaria

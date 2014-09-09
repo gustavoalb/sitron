@@ -165,7 +165,7 @@ module PatioHelper
 		s = Time.zone.now.strftime("%U")
 		mes = Time.zone.now.month
 		ano = Time.zone.now.year
-		return raw("#{posto.veiculo.lote.tipo.upcase}#{m.periodo_diario}H#{m.dias_mes} #{v.position}/#{v.lote.numero_postos}")
+		return raw("Placa: #{v.placa} #{posto.veiculo.lote.tipo.upcase}#{m.periodo_diario}H#{m.dias_mes} #{v.position}/#{v.lote.numero_postos}")
 
 	end
 
