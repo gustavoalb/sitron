@@ -49,7 +49,7 @@ class PatioController < ApplicationController
     report.list.header.item(:data7).value(@datas['7'].to_s)
 
      report.list.header.item(:periodo1).value(inicio.to_date.to_s_br)
-    report.list.header.item(:periodo2).value(fim.to_date.to_s_br)
+     report.list.header.item(:periodo2).value(fim.to_date.to_s_br)
 
     @veiculos.each do |v|
 

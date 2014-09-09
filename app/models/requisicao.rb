@@ -66,12 +66,12 @@ class Requisicao < ActiveRecord::Base
 
   scope :validas, -> { where("inicio > (SELECT CURRENT_TIMESTAMP)") }
   scope :na_data, lambda { |data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?", data.day, data.month, data.year) }
-  scope :na_hora, lambda { where("(inicio BETWEEN ? and ?)", Time.now, Time.at(20.minutes.since)) }
+  scope :na_hora, lambda { where("(inicio BETWEEN ? and ?)", Time.now, Time.at(20.minutes.since)) } 
   scope :na_hora2, lambda {|t1,t2| where("(inicio BETWEEN ? and ?)", t1, t2) }
   scope :na_hora_exata, lambda {|hora| where(:hora=>hora) }
   scope :do_tipo,lambda{|tipo|where(:tipo_requisicao=>tipo)}
   scope :do_posto,lambda{|posto|joins(:posto).where("(requisicoes.state=? or requisicoes.state=?) and postos.id=?", 'confirmada', 'ativa',posto.id) }
-
+  scope :no_periodo,lambda{|inicio,fim|where("inicio >= ? and inicio < ?",inicio,fim)}
   after_create :numero_requisicao, :criar_notificacao
   after_create :evento, :gerar_code,:setar_posicao
   #after_validation :setar_distancia
