@@ -128,7 +128,7 @@ def especial
   @postos_comuns = Posto.ativo.na_data(Time.zone.now).order("lote_id, position ASC").collect{|p|["#{p.veiculo.lote.tipo} - #{p.veiculo.placa} - #{p.veiculo.motorista}",p.id]}
 
   resp = Administracao::Departamento.all.collect { |d| d.responsavel_id }
-  @responsaveis = User.do_email("seed.ap.gov.br").collect { |u| [u.pessoa.nome, u.pessoa.id] }
+  @responsaveis = User.do_email("seed.ap.gov.br").collect { |u| ["#{u.pessoa.departamento.sigla} - #{u.pessoa.nome}", u.pessoa.id] }
 end
 
 def gerenciar_requisicoes

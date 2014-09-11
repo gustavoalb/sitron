@@ -126,6 +126,7 @@ Sitron::Application.routes.draw do
     post  :saida_veiculo,on: :collection
     post  :remover_posto, on: :collection
     post :chat,on: :collection
+    post :sair_patio,on: :collection
     
   end
 

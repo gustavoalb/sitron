@@ -2,15 +2,14 @@
 class PatioController < ApplicationController
   include ActionController::Live
 
-
+  before_action :patio_hoje
 
   def index
-
   	@postos = Posto.ativo.na_data(Time.zone.now).order("position ASC")
-
   end
 
   def relatorio_presencial
+
   end
 
   def imprimir_relatorio
@@ -147,6 +146,12 @@ def ordernar_veiculo
   render :nothing => true
 end
 
+def sair_patio
+  @posto = Posto.find(params[:posto_id])
+  @posto.saida = Time.zone.now
+  @posto.sair_do_patio
+  redirect_to entrada_patio_index_url
+end
 
 def adicionar_posto
 
@@ -181,15 +186,20 @@ def remover_posto
   cod = params[:posto][:codigo_de_barras]
   codigo = "0#{cod[0,cod.size-1]}"
   veiculo = Administracao::Veiculo.where(:codigo=>codigo).first
-  @patio = Administracao::Patio.na_data(Time.zone.now).first
-  @postos = @patio.postos.ativo.na_data(Time.zone.now).order("position ASC")  
+  @postos = @patio.postos.na_data(Time.zone.now).order("position ASC")  
   @posto = @patio.postos.find_by(:codigo=>codigo)
 
+
   if @posto 
+    puts "TEM POSTO"
     @posto.saida = Time.zone.now
-    @posto.sair_do_patio
+    if @posto.sair_do_patio
     veiculo = @posto.veiculo
     Administracao::BancoDeHora.definir_horas_extras(veiculo,@posto.saida.day,@posto.saida.strftime("%U"),@posto.saida.month,@posto.saida.year,@posto.saida.beginning_of_week,@posto.saida.end_of_week,@posto.horas_normais)
+  else
+    puts "PORQUE ESSA MERDA NAO SAI: #{@posto.errors}"
+  end
+
   else
     @mensagem = "Nenhum posto foi encontrado com este código"
   end
@@ -287,7 +297,11 @@ end
 end
 
 
+private
 
+def patio_hoje
+   @patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
+end
 
 
 

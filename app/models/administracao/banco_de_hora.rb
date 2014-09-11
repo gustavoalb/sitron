@@ -49,13 +49,13 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 
 
 
-				banco_horas2.save!
+				banco_horas2.save
 
 
 			else 
 
 				banco_horas2.horas_normais+=horas
-				banco_horas2.save!
+				banco_horas2.save
 
 			end
 

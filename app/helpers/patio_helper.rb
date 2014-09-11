@@ -72,6 +72,9 @@ module PatioHelper
 		html+=informacao('Motorista',posto.veiculo.motorista)
 		html+=informacao('Horas Normais na Semana',posto.veiculo.horas_normais_semanais(Time.now.strftime("%U"),Time.now.year).round(2))
 		html+=informacao('Horas Extras na Semana',posto.veiculo.horas_extras_semanais(Time.now.strftime("%U"),Time.now.year).round(2))
+		if posto.estacionado?
+  		    html+=link_to link_icone("Sair do Pátio", 'car'), sair_patio_patio_index_path(:posto_id=>posto.id), :class => "btn btn-orange btn-xs", :method => :post 
+		end
 		if posto.saida_proxima? or posto.em_transito? 
 			r = Requisicao.do_posto(posto).first
 			if r

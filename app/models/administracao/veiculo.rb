@@ -207,6 +207,13 @@ def gerar_code
  self.save!
 end
 
+def atualizar_codigo
+
+  self.codigo = self.barcode.data_with_checksum
+  self.save
+
+end
+
 
 
 
