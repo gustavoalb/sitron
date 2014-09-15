@@ -40,7 +40,7 @@
     <%= endereco.input :longitude,:input_html=>{:class=>"gllpLongitude",:readonly=>true},:as=>:string%>
 	<%end%>
    <%=f.input :e_um_destino,as: :inline_checkbox,:label=>"É um Destino?"%>
-
+   <%=f.input :usa_moto,as: :inline_checkbox,:label=>"Moto é Preferencial?"%>
 
     <br/><br/><br/>
     <%=botoes_form(f)%>

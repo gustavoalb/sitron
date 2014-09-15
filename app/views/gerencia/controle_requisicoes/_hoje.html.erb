@@ -66,48 +66,7 @@
           </dl>
       <%end%>
 
-      <%=modal("p_#{r.id}", "Definir o Posto para a Requisição: #{r.numero}",r) do %>
-          <dl class="dl-horizontal">
-
-            <dt>Requisitante</dt>
-            <dd><%=r.requisitante.nome%></dd>
-            <dt>Setor</dt>
-            <dd><%=r.requisitante.departamento.nome%></dd>
-            <dt>Motivo da Requisição</dt>
-            <dd><%=r.motivo.nome%></dd>
-            <dt></dt>
-            <dd><%=r.descricao%></dd>
-            <dt>Passageiros</dt>
-            <dd><%=r.servidores_nome%></dd>
-            <dt>Horas Estimadas</dt>
-            <dd><%=r.previsao_horas.to_i%></dd>
-            <hr/>
-          </dl>
-          <%if @postos.count >0%>
-              <h3>Postos Disponíveis no Pátio</h3>
-              <div id='content'>
-                <%@postos.each do |p|%>
-                    <div class='like-block'>
-
-                      <div class='like-counter counter c_odnoklassniki'><%=info_posto_alt(p)%></div>
-                      <%=link_to "Usar esse",gerencia_controle_requisicoes_definir_posto_url(:req_id=>r.id,:posto_id=>p.id),class: 'btn like-button share s_odnoklassniki',:method=>:post,:remote=>:true,:'data-dismiss'=>'modal'%>
-                    </div>
-
-                <%end%>
-
-
-
-              </div>
-          <%else%>
-              <div class="alert alert-dismissable alert-warning">
-                <h3>Aviso!</h3>
-
-                <p>Nenhum Posto disponível no Pátio</p>
-                <br>
-
-              </div>
-          <%end%>
-      <%end%>
+          <%=render :partial=>"definir_posto",:locals=>{:r=>r}%>
 
   <%end%>
   </body>
