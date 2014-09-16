@@ -20,107 +20,149 @@ class RequisicoesController < ApplicationController
   def relatorio_requisicoes_periodo
   end
 
-  def imprimir_relatorio
+  def relatorio_detalhado
+  end
+
+  def imprimir_relatorio_detalhado
    inicio = "#{params[:relatorio_periodo][:inicio].to_date}  00:00:00 -0300"
    fim = "#{params[:relatorio_periodo][:fim].to_date}  00:00:00 -0300"
+
+   report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'requisicoes_por_periodo.tlf')
+
+   report.start_new_page 
+   
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
+
+  reqs = Requisicao.na_data_exata(Time.at(date)).finalizadas.do_tipo(3)
+  
+
+  report.page.list do |list|
+    reqs.each do |r|
+      list.add_row do |row|
+      row.values :data => r.inicio.to_s_br
+      row.values :departamento => r.requisitante.departamento.sigla.upcase
+      row.values :placa=>r.posto.veiculo.placa 
+      row.values :retorno => r.fim.to_s_br
+      row.values :rota => r.rotas_municipio
+    end
+  end
+  end
+
+end
+
+  send_data report.generate, filename: "#{inicio.to_date.to_s}ate#{fim.to_date.to_s}.pdf",
+  type: 'application/pdf',
+  disposition: 'attachment'
+
+
+end
+
+
+
+
+
+def imprimir_relatorio
+ inicio = "#{params[:relatorio_periodo][:inicio].to_date}  00:00:00 -0300"
+ fim = "#{params[:relatorio_periodo][:fim].to_date}  00:00:00 -0300"
   #  inicio = Time.zone.now.beginning_of_year
   # fim = Time.zone.now.end_of_year
-   @nn = {} 
-   @nu = {}
-   @na = {}
-   @ne = {}
-   @nf = {}
+  @nn = {} 
+  @nu = {}
+  @na = {}
+  @ne = {}
+  @nf = {}
 
 
-
-   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-     normais = Requisicao.do_tipo('0').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-     @nn.merge!(Time.at(date).strftime('%b').to_s=>normais.count)
-   end
-
-   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-    urgentes = Requisicao.do_tipo('1').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-    @nu.merge!(Time.at(date).strftime('%b').to_s=>urgentes.count)
-  end
 
   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-   agendadas = Requisicao.do_tipo('2').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-   @na.merge!(Time.at(date).strftime('%b').to_s=>agendadas.count)
+   normais = Requisicao.do_tipo('0').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+   @nn.merge!(Time.at(date).strftime('%b').to_s=>normais.count)
  end
 
  (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-   especiais = Requisicao.do_tipo('3').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-   @ne.merge!(Time.at(date).strftime('%b').to_s=>especiais.count)
+  urgentes = Requisicao.do_tipo('1').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+  @nu.merge!(Time.at(date).strftime('%b').to_s=>urgentes.count)
+end
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+ agendadas = Requisicao.do_tipo('2').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+ @na.merge!(Time.at(date).strftime('%b').to_s=>agendadas.count)
+end
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+ especiais = Requisicao.do_tipo('3').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+ @ne.merge!(Time.at(date).strftime('%b').to_s=>especiais.count)
+end
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+ fsemanas = Requisicao.do_tipo('4').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+ @nf.merge!(Time.at(date).strftime('%b').to_s=>fsemanas.count)
+end
+
+
+
+
+
+report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'relatorio_quantidade_requisicoes.tlf')
+
+
+
+report.layout.config.list(:default) do
+ @nn = {} 
+ @nu = {}
+ @na = {}
+ @ne = {}
+ @nf = {}
+
+ @normais = Requisicao.do_tipo('0').no_periodo(inicio,fim).count
+ @urgentes = Requisicao.do_tipo('1').no_periodo(inicio,fim).count 
+ @agendadas = Requisicao.do_tipo('2').no_periodo(inicio,fim).count
+ @especiais = Requisicao.do_tipo('3').no_periodo(inicio,fim).count
+ @finais_semana = Requisicao.do_tipo('4').no_periodo(inicio,fim).count
+
+
+ (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+   normais = Requisicao.do_tipo('0').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+   @nn.merge!(Time.at(date).strftime('%b').to_s=>normais.count)
  end
 
  (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-   fsemanas = Requisicao.do_tipo('4').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-   @nf.merge!(Time.at(date).strftime('%b').to_s=>fsemanas.count)
- end
+  urgentes = Requisicao.do_tipo('1').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+  @nu.merge!(Time.at(date).strftime('%b').to_s=>urgentes.count)
+end
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+ agendadas = Requisicao.do_tipo('2').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+ @na.merge!(Time.at(date).strftime('%b').to_s=>agendadas.count)
+end
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+ especiais = Requisicao.do_tipo('3').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+ @ne.merge!(Time.at(date).strftime('%b').to_s=>especiais.count)
+end
+
+(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
+ fsemanas = Requisicao.do_tipo('4').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
+ @nf.merge!(Time.at(date).strftime('%b').to_s=>fsemanas.count)
+end
 
 
-
-
-
- report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'relatorio_quantidade_requisicoes.tlf')
-
-
-
- report.layout.config.list(:default) do
-     @nn = {} 
-   @nu = {}
-   @na = {}
-   @ne = {}
-   @nf = {}
-
-   @normais = Requisicao.do_tipo('0').no_periodo(inicio,fim).count
-   @urgentes = Requisicao.do_tipo('1').no_periodo(inicio,fim).count 
-   @agendadas = Requisicao.do_tipo('2').no_periodo(inicio,fim).count
-   @especiais = Requisicao.do_tipo('3').no_periodo(inicio,fim).count
-   @finais_semana = Requisicao.do_tipo('4').no_periodo(inicio,fim).count
-
-
-   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-     normais = Requisicao.do_tipo('0').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-     @nn.merge!(Time.at(date).strftime('%b').to_s=>normais.count)
-   end
-
-   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-    urgentes = Requisicao.do_tipo('1').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-    @nu.merge!(Time.at(date).strftime('%b').to_s=>urgentes.count)
-  end
-
-  (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-   agendadas = Requisicao.do_tipo('2').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-   @na.merge!(Time.at(date).strftime('%b').to_s=>agendadas.count)
- end
-
- (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-   especiais = Requisicao.do_tipo('3').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-   @ne.merge!(Time.at(date).strftime('%b').to_s=>especiais.count)
- end
-
- (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.month) do |date|
-   fsemanas = Requisicao.do_tipo('4').no_periodo(Time.at(date).to_datetime.beginning_of_month,Time.at(date).to_datetime.end_of_month)
-   @nf.merge!(Time.at(date).strftime('%b').to_s=>fsemanas.count)
- end
-
-
-   events.on :page_footer_insert do |e|
-    e.section.item(:qnt_n).value(@nn.values.sum)
-    e.section.item(:qnt_u).value(@nu.values.sum)
-    e.section.item(:qnt_a).value(@na.values.sum)
-    e.section.item(:qnt_e).value(@ne.values.sum)
-    e.section.item(:qnt_f).value(@nf.values.sum)
-    e.section.item(:total).value(@nn.values.sum+@nu.values.sum+@na.values.sum+@ne.values.sum+@nf.values.sum)
-  end
+events.on :page_footer_insert do |e|
+  e.section.item(:qnt_n).value(@nn.values.sum)
+  e.section.item(:qnt_u).value(@nu.values.sum)
+  e.section.item(:qnt_a).value(@na.values.sum)
+  e.section.item(:qnt_e).value(@ne.values.sum)
+  e.section.item(:qnt_f).value(@nf.values.sum)
+  e.section.item(:total).value(@nn.values.sum+@nu.values.sum+@na.values.sum+@ne.values.sum+@nf.values.sum)
+end
 end
 
 report.start_new_page 
 report.list.add_row do |row|
   row.values tipo_requisicao: "Normal"
   @nn.each do |key,value|
-      row.values key.downcase.to_sym=> value
+    row.values key.downcase.to_sym=> value
   end
 end
 

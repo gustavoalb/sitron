@@ -74,6 +74,8 @@ Sitron::Application.routes.draw do
     post :salvar_pessoa,on: :collection
     get :relatorio_horas,on: :collection
     get :relatorio_requisicoes_periodo, on: :collection
+    get :relatorio_detalhado,on: :collection
+    get :imprimir_relatorio_detalhado,on: :collection
     get :imprimir_relatorio, on: :collection
     get 'lat_lng_cidade',on: :collection
     get :listar_rota
