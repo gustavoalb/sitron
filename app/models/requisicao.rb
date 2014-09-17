@@ -154,7 +154,7 @@ class Requisicao < ActiveRecord::Base
       end
     else
       if self.endereco
-        ary.push self.endereco.cidade.nome if r.roteavel.endereco.cidade
+        ary.push self.endereco.cidade.nome if self.endereco.cidade.nome
       end
     end
     ary.compact.join(', ')
