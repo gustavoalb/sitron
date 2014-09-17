@@ -150,11 +150,11 @@ class Requisicao < ActiveRecord::Base
     ary = []
     if self.rotas.count > 0
       self.rotas.each do |r|
-        ary.push r.roteavel.endereco.cidade.nome
+        ary.push r.roteavel.endereco.cidade.nome if r.roteavel.endereco.cidade
       end
     else
       if self.endereco
-        ary.push self.endereco.cidade.nome
+        ary.push self.endereco.cidade.nome if r.roteavel.endereco.cidade
       end
     end
     ary.compact.join(', ')
