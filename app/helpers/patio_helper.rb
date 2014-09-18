@@ -62,7 +62,7 @@ module PatioHelper
 		html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.horas_extras_semanais(s,ano).to_i}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
-		html+="<div class='tiles-footer'>#{info_posto(posto)} :: #{posto.veiculo.placa}</div>"
+		html+="<div class='tiles-footer'>#{info_posto(posto)}:#{posto.veiculo.placa}</div>"
 		html+="</a>"
 		html+="</div>"
 
