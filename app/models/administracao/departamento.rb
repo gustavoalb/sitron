@@ -8,7 +8,7 @@ class Administracao::Departamento < ActiveRecord::Base
 
   
 
-  attr_accessor :nome_responsavel,:cidade_nome,:bairro_nome
+  attr_accessor :cidade_nome,:bairro_nome
 
   after_create :adicionar_rota
   after_update :editar_rota

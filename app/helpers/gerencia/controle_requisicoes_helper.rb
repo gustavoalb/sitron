@@ -14,13 +14,13 @@ module Gerencia::ControleRequisicoesHelper
 
 		html += "</ol>"
 		html += "</div>"
-           
+
 		raw(html)
 	end
 
 
 	def modal(id,titulo_modal,r,&block)
-        html=""
+		html=""
 		html+="<div style='display: none;' class='modal fade' id='#{id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>"
 		html+="<div class='modal-dialog modal-lg'>"
 		html+="<div class='modal-content'>"
@@ -36,11 +36,11 @@ module Gerencia::ControleRequisicoesHelper
 		html+="</div>"
 		html+="</div>"
 		html+="</div>"
-        return raw(html)
+		return raw(html)
 	end
 
-		def modal_sm(id,titulo_modal,r,&block)
-        html=""
+	def modal_sm(id,titulo_modal,r,&block)
+		html=""
 		html+="<div style='display: none;' class='modal fade' id='#{id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>"
 		html+="<div class='modal-dialog modal-sm'>"
 		html+="<div class='modal-content'>"
@@ -56,13 +56,13 @@ module Gerencia::ControleRequisicoesHelper
 		html+="</div>"
 		html+="</div>"
 		html+="</div>"
-        return raw(html)
+		return raw(html)
 	end
 
 
 
-		def modal_simples(id,titulo_modal,&block)
-        html=""
+	def modal_simples(id,titulo_modal,&block)
+		html=""
 		html+="<div style='display: none;' class='modal fade' id='#{id}' tabindex='-1' role='dialog' aria-labelledby='myModalLabel' aria-hidden='true'>"
 		html+="<div class='modal-dialog modal-lg'>"
 		html+="<div class='modal-content'>"
@@ -73,34 +73,51 @@ module Gerencia::ControleRequisicoesHelper
 		html+="</div>"
 		html+="</div>"
 		html+="</div>"
-        return raw(html)
-    end
+		return raw(html)
+	end
 
 
-  def tipo_requisicao(r)
-    html=''
-    case r.tipo_requisicao
-      when 'normal'
-        html="<span class='badge badge-success'>Normal</span>"
-      when 'urgente'
-        html="<span class='badge badge-warning'>Urgente</span>"
-      when 'agendada'
-        html="<span class='badge badge-primary'>Agendada</span>"
-      when 'especial'
-        html="<span class='badge badge-info'>Especial</span>"
-      when 'fim_de_semana'
-        html="<span class='badge badge-default'>Fim de Semana</span>"
-    end
-    return raw(html)
-  end
+	def postos_disponiveis(p,r)
+		html=""
 
-  def info_veiculo_alt(v)
-     m = v.modalidade
-    s = Time.zone.now.strftime("%U")
-    mes = Time.zone.now.month
-    ano = Time.zone.now.year
-    return raw("#{link_icone('',icone_lote(v))}#{m.periodo_diario}H#{m.dias_mes} #{v.placa}")
+		html+="<div class='like-block'>"
+		
+		if p.veiculo.especial?
+			html+="<div class='like-counter-alt counter'>#{info_posto_alt(p)}</div>"
+		else
+			html+="<div class='like-counter counter'>#{info_posto_alt(p)}</div>"
+		end
+		
+		html+=link_to "Usar esse",gerencia_controle_requisicoes_definir_posto_url(:req_id=>r.id,:posto_id=>p.id),class: 'btn like-button share s_odnoklassniki',:method=>:post,:remote=>:true,:'data-dismiss'=>'modal'
+		html+="</div>"
+		return raw(html)
+	end
 
-  end
+
+	def tipo_requisicao(r)
+		html=''
+		case r.tipo_requisicao
+		when 'normal'
+			html="<span class='badge badge-success'>Normal</span>"
+		when 'urgente'
+			html="<span class='badge badge-warning'>Urgente</span>"
+		when 'agendada'
+			html="<span class='badge badge-primary'>Agendada</span>"
+		when 'especial'
+			html="<span class='badge badge-info'>Especial</span>"
+		when 'fim_de_semana'
+			html="<span class='badge badge-default'>Fim de Semana</span>"
+		end
+		return raw(html)
+	end
+
+	def info_veiculo_alt(v)
+		m = v.modalidade
+		s = Time.zone.now.strftime("%U")
+		mes = Time.zone.now.month
+		ano = Time.zone.now.year
+		return raw("#{link_icone('',icone_lote(v))}#{m.periodo_diario}H#{m.dias_mes} #{v.placa}")
+
+	end
 
 end

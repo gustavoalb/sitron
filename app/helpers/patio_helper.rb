@@ -18,10 +18,10 @@ module PatioHelper
 	def cor_posto(posto)
 		if posto.veiculo.especial
 			case posto.state
-			when "em_transito"
-				@tile = 'warning'
 			when "saida_proxima"
-				@tile = 'primary'
+				@tile = 'indigo'
+		    when "em_transito"
+				@tile = 'orange'
 			else
 				@tile = "green"
 			end
@@ -59,10 +59,10 @@ module PatioHelper
 		html+="<div class='pull-right'></div></div>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
-		html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.placa}</span></div>"
+		html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.horas_extras_semanais(s,ano).to_i}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
-		html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
+		html+="<div class='tiles-footer'>#{info_posto(posto)} :: #{posto.veiculo.placa}</div>"
 		html+="</a>"
 		html+="</div>"
 

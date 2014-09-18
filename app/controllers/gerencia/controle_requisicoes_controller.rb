@@ -20,7 +20,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     @finalizadas = Requisicao.finalizadas
     @postos_especiais = Posto.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
-    @postos = @postos +  @postos_especiais
+    @postos_gerais = @postos +  @postos_especiais
 
   end
 
@@ -46,6 +46,8 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
   if @veiculo.validar_horas_extras(@requisicao.previsao_horas, @requisicao.data_ida.strftime("%U"), mes, ano)
     @requisicao.posto = @posto
+
+
     if @requisicao.confirmar
       @posto.ligar
       @confirmada = true

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140903195137) do
+ActiveRecord::Schema.define(version: 20140918170111) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,8 +131,10 @@ ActiveRecord::Schema.define(version: 20140903195137) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "sigla"
-    t.boolean  "e_um_destino",   default: false
-    t.boolean  "usa_moto",       default: false
+    t.boolean  "e_um_destino",     default: false
+    t.boolean  "usa_moto",         default: false
+    t.boolean  "usa_especial",     default: false
+    t.string   "nome_responsavel"
   end
 
   add_index "departamentos", ["entidade_id"], name: "index_departamentos_on_entidade_id", using: :btree

@@ -22,7 +22,7 @@
   <%= f.input :nome %>
   <%= f.input :sigla%>
     <%= f.association :entidade,:collection=>@empresas.collect {|e|[e.nome,e.id]} %>
-    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id"},:label=>"Nome do Responsável"%>
+    <%= f.input :nome_responsavel, :url=>autocomplete_pessoa_nome_administracao_departamentos_path, :as => :autocomplete, :input_html => {:id_element => "#administracao_departamento_responsavel_id",:value=>detalhes(@administracao_departamento,:nome_responsavel)},:label=>"Nome do Responsável"%>
     <%=f.input :responsavel_id,as: :hidden%>
     <%=f.fields_for :endereco do |endereco|%>
       <%= endereco.input :estado_id,:collection=>@estados,:prompt=>"Selecione o Estado",:input_html=>{:class=>"form-control"},:selected=>@administracao_departamento.endereco.estado_id %>
@@ -41,6 +41,7 @@
   <%end%>
    <%=f.input :e_um_destino,as: :inline_checkbox,:label=>"É um Destino?"%>
    <%=f.input :usa_moto,as: :inline_checkbox,:label=>"Moto é Preferencial?"%>
+   <%=f.input :usa_especial,as: :inline_checkbox,:label=>"Pode usar veículos especiais?"%>
 
     <br/><br/><br/>
     <%=botoes_form(f)%>
