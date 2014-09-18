@@ -20,6 +20,7 @@ class Posto < ActiveRecord::Base
   scope :em_transito, ->{ where(state: "em_transito")}
   scope :proximo_de_sair,->{where(state: "saida_proxima")}
   scope :ativo, -> {joins(:veiculo).where("postos.state not in ('liberado') and veiculos.especial = false")}
+  scope :ativos_especiais, -> {joins(:veiculo).where("postos.state not in ('liberado')")}
   scope :especiais, -> {joins(:veiculo).where("postos.state not in ('liberado') and veiculos.especial = true")}
   scope :do_tipo,lambda{|lote| joins(:veiculo).where("veiculos.lote_id = ? ",lote)}
   scope :no_turno,lambda{|turno|where(:turno=>turno)}

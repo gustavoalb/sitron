@@ -6,11 +6,11 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
 
     @requisicoes = Requisicao.aguardando.urgentes.all
-    @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
+
+
     @requisicoes_proximas_de_sair = Requisicao.proximas_de_sair.all
 
     @urgentes_aguardando = Requisicao.aguardando.urgentes.accessible_by(current_ability)
-    @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
     @veiculos = Administracao::Veiculo.all
     @aguardando_hoje = Requisicao.na_data(Time.now).nao_urgentes.aguardando.accessible_by(current_ability).order(:position,:hora)
     @aguardando_amanha = Requisicao.na_data(Date.tomorrow).aguardando.accessible_by(current_ability)
@@ -18,6 +18,9 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     @proximas_de_sair_hoje = Requisicao.proximas_de_sair.na_data(Time.now).accessible_by(current_ability)
     @em_servico = Requisicao.em_servico.all
     @finalizadas = Requisicao.finalizadas
+    @postos_especiais = Posto.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
+    @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
+    @postos = @postos +  @postos_especiais
 
   end
 
@@ -34,7 +37,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
 
   @requisicao = Requisicao.aguardando.find(params[:req_id])
 
-  @posto = Posto.ativo.find(params[:posto_id])
+  @posto = Posto.ativos_especiais.find(params[:posto_id])
 
   @veiculo = @posto.veiculo
   mes = @requisicao.data_ida.month

@@ -17,7 +17,14 @@ module PatioHelper
 
 	def cor_posto(posto)
 		if posto.veiculo.especial
-			@tile = "green"
+			case posto.state
+			when "em_transito"
+				@tile = 'warning'
+			when "saida_proxima"
+				@tile = 'primary'
+			else
+				@tile = "green"
+			end
 		else
 			case posto.state
 			when "estacionado"
@@ -52,7 +59,7 @@ module PatioHelper
 		html+="<div class='pull-right'></div></div>"
 		html+="<div class='tiles-body'>"
 		html+="<div class='pull-left'><i class='#{icone_lote(posto)}'></i></div>"
-		html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.horas_extras_semanais(s,ano).to_i}</span></div>"
+		html+="<div class='pull-right'><span class='badge badge-#{@tile}'>#{posto.veiculo.placa}</span></div>"
 		html+="<div class='pull-right'></div>"
 		html+="</div>"
 		html+="<div class='tiles-footer'>#{info_posto(posto)}</div>"
@@ -73,7 +80,7 @@ module PatioHelper
 		html+=informacao('Horas Normais na Semana',posto.veiculo.horas_normais_semanais(Time.now.strftime("%U"),Time.now.year).round(2))
 		html+=informacao('Horas Extras na Semana',posto.veiculo.horas_extras_semanais(Time.now.strftime("%U"),Time.now.year).round(2))
 		if posto.estacionado?
-  		    html+=link_to link_icone("Sair do Pátio", 'car'), sair_patio_patio_index_path(:posto_id=>posto.id), :class => "btn btn-orange btn-xs", :method => :post 
+			html+=link_to link_icone("Sair do Pátio", 'car'), sair_patio_patio_index_path(:posto_id=>posto.id), :class => "btn btn-orange btn-xs", :method => :post 
 		end
 		if posto.saida_proxima? or posto.em_transito? 
 			r = Requisicao.do_posto(posto).first
