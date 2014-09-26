@@ -63,6 +63,11 @@ GEM
     addressable (2.3.6)
     afm (0.2.2)
     arel (5.0.1.20140414130214)
+    audited (4.0.0)
+      rails-observers (~> 0.1.2)
+    audited-activerecord (4.0.0)
+      activerecord (~> 4.0)
+      audited (= 4.0.0)
     bcrypt (3.1.7)
     better_errors (1.1.0)
       coderay (>= 1.0.0)
@@ -299,6 +304,8 @@ GEM
       railties (= 4.1.1)
       sprockets-rails (~> 2.0)
     rails-bootstrap-daterangepicker (0.1.0)
+    rails-observers (0.1.2)
+      activemodel (~> 4.0)
     rails-simple-search (0.9.8)
     rails3-jquery-autocomplete (1.0.14)
       rails (>= 3.0)
@@ -416,6 +423,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_list
+  audited-activerecord (~> 4.0)
   barby!
   better_errors
   binding_of_caller

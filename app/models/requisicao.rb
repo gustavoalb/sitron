@@ -4,6 +4,8 @@ require 'barby/barcode/code_128'
 require 'barby/outputter/png_outputter'
 class Requisicao < ActiveRecord::Base
 
+  audited on: [:update, :destroy]
+
 #  include RankedModel
 #  ranks :position
   acts_as_list scope: [:tipo_requisicao,:data_ida]

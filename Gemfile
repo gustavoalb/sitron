@@ -96,3 +96,4 @@ gem 'bootstrap-tour-rails'
 gem 'pace-rails'
 gem 'ranked-model'
 gem 'date_validator'
+gem "audited-activerecord", "~> 4.0"
