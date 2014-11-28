@@ -69,7 +69,7 @@ class Requisicao < ActiveRecord::Base
   scope :validas, -> { where("inicio > (SELECT CURRENT_TIMESTAMP)") }
   scope :na_data, lambda { |data| where("DATE_PART('DAY',data_ida) = ? and DATE_PART('MONTH',data_ida)=? and DATE_PART('YEAR',data_ida)=?", data.day, data.month, data.year) }
   scope :na_data_exata, lambda { |data| where("DATE_PART('DAY',inicio) = ? and DATE_PART('MONTH',inicio)=? and DATE_PART('YEAR',inicio)=?", data.day, data.month, data.year) }
-  scope :no_periodo_data ,lambda{|inicio,fim| where("inicio >= to_date(?,'YYYY-MM-DD') AND inicio <= to_date(?,'YYYY-MM-DD')",inicio,fim)}
+  scope :no_periodo_data ,lambda{|inicio,fim| joins(:posto).where("inicio >= to_date(?,'YYYY-MM-DD') AND inicio <= to_date(?,'YYYY-MM-DD')",inicio,fim).order("postos.lote_id ASC ")}
   scope :na_hora, lambda { where("(inicio BETWEEN ? and ?)", Time.now, Time.at(20.minutes.since)) } 
   scope :na_hora2, lambda {|t1,t2| where("(inicio BETWEEN ? and ?)", t1, t2) }
   scope :na_hora_exata, lambda {|hora| where(:hora=>hora) }
