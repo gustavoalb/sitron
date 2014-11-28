@@ -4,8 +4,12 @@
 
 <%=f.input :inicio,input_html: {id: "inicio",value: Time.now.beginning_of_month.to_date.to_s_br,readonly: true},:as=>:string,:label=>"Início do Período"%>
 <%=f.input :fim,input_html: {id: "fim",value: Time.now.end_of_month.to_date.to_s_br,readonly: true},:as=>:string,:label=>"Final do Período"%>
-<%= button_tag(type: 'submit', class: 'btn btn-default btn-sm') do %>
+<%= button_tag(type: 'submit', :value=>"imprimir",class: 'btn btn-default btn-sm') do %>
     Imprimir Relatório <i class='fa fa-print'></i>
+<% end %>
+
+<%= button_tag(type: 'submit',:value=>"excel", class: 'btn btn-default btn-sm') do %>
+    Exportar para o Excel <i class='fa fa-file-excel-o'></i>
 <% end %>
 <%end%>
 

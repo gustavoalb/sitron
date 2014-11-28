@@ -37,6 +37,7 @@ gem 'bootstrap-timepicker-rails', :require => 'bootstrap-timepicker-rails', :git
 
 gem 'bootstrap-select-rails'
 gem 'bootbox-rails'
+gem 'to_xls-rails'# Last officially released gem
 
 
 gem 'carrierwave'
@@ -65,7 +66,6 @@ group :development do
   gem 'rb-readline'
 end
 group :development, :test do
-
   gem 'thin'
 end
 group :production do
@@ -97,3 +97,4 @@ gem 'pace-rails'
 gem 'ranked-model'
 gem 'date_validator'
 gem "audited-activerecord", "~> 4.0"
+gem 'blorgh',path: '#{File.expand_path(__FILE__)}/../vendor/gems/blorgh'

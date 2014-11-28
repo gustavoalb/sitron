@@ -1,0 +1,26 @@
+<%=titulo_pagina(link_icone("Relatório de Requisições Por Período","calendar"),link_icone("Selecione o Período Desejado","calendar"))%>
+
+<%=simple_form_for :relatorio_periodo, html: {class: 'form-horizontal'},:method=>:get,:url=>exportar_excel_requisicoes_path do |f|%>
+
+<%=f.input :inicio,input_html: {id: "inicio",value: Time.now.beginning_of_month.to_date.to_s_br,readonly: true},:as=>:string,:label=>"Início do Período"%>
+<%=f.input :fim,input_html: {id: "fim",value: Time.now.end_of_month.to_date.to_s_br,readonly: true},:as=>:string,:label=>"Final do Período"%>
+
+<%= button_tag(type: 'submit',:value=>"excel", class: 'btn btn-default btn-sm') do %>
+    Exportar para o Excel <i class='fa fa-file-excel-o'></i>
+<% end %>
+
+<%end%>
+
+<%content_for :scripts do%>
+
+<script type="text/javascript">
+
+
+  $('#inicio').daterangepicker({ timePicker: true, timePickerIncrement: 7, format: 'MM/DD/YYYY h:mm A' },function(start, end) {
+        $('#inicio').val(start.format('DD/MM/YYYY'));
+        $('#fim').val(end.format('DD/MM/YYYY'));
+    });
+
+</script>
+
+<%end%>

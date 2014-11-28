@@ -1,6 +1,8 @@
 # -*- encoding : utf-8 -*-
 #require 'resque/server' 
 Sitron::Application.routes.draw do
+    
+  mount Blorgh::Engine, at: "/blog"
 
   namespace :administracao do
     resources :relatorios_diarios
@@ -77,8 +79,11 @@ Sitron::Application.routes.draw do
     get :relatorio_detalhado,on: :collection
     get :imprimir_relatorio_detalhado,on: :collection
     get :imprimir_relatorio, on: :collection
+    get :exportar_excel,on: :collection
     get 'lat_lng_cidade',on: :collection
     get :listar_rota
+    get :relatorio_excel, on: :collection
+
   end
 
   namespace :administracao do

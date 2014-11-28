@@ -32,24 +32,24 @@ class RequisicoesController < ApplicationController
    report.start_new_page 
    
 
-(inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
+   (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
 
-  reqs = Requisicao.na_data_exata(Time.at(date)).finalizadas.do_tipo(3)
-  
+    reqs = Requisicao.na_data_exata(Time.at(date)).finalizadas.do_tipo(3)
 
-  report.page.list do |list|
-    reqs.each do |r|
-      list.add_row do |row|
-      row.values :data => r.inicio.to_s_br
-      row.values :departamento => r.requisitante.departamento.sigla.upcase
-      row.values :placa=>r.posto.veiculo.placa 
-      row.values :retorno => r.fim.to_s_br
-      row.values :rota => r.rotas_municipio
+
+    report.page.list do |list|
+      reqs.each do |r|
+        list.add_row do |row|
+          row.values :data => r.inicio.to_s_br
+          row.values :departamento => r.requisitante.departamento.sigla.upcase
+          row.values :placa=>r.posto.veiculo.placa 
+          row.values :retorno => r.fim.to_s_br
+          row.values :rota => r.rotas_municipio
+        end
+      end
     end
-  end
-  end
 
-end
+  end
 
   send_data report.generate, filename: "#{inicio.to_date.to_s}ate#{fim.to_date.to_s}.pdf",
   type: 'application/pdf',
@@ -58,7 +58,19 @@ end
 
 end
 
+def exportar_excel
+  inicio = "#{params[:relatorio_periodo][:inicio].to_date}  00:00:00 -0300"
+  fim = "#{params[:relatorio_periodo][:fim].to_date}  00:00:00 -0300"
 
+  @requisicoes = Requisicao.no_periodo_data(inicio.to_date,fim.to_date).finalizadas
+
+
+
+send_data @requisicoes.to_xls(:only => [:lote_veiculo, :numero,:inicio_br,:departamento_nome,:departamento_sigla,:rotas_municipio,:requisitante_nome]), filename: "#{inicio.to_date.to_s_br} ate #{fim.to_date.to_s_br}.xls",
+type: "application/excel; charset=utf-8; header=present",
+disposition: 'attachment'
+#{r.numero};#{r.inicio.to_s_br};#{r.requisitante.departamento.nome};#{r.requisitante.departamento.sigla};#{r.rotas_municipio};#{r.requisitante.nome
+end
 
 
 
@@ -241,6 +253,7 @@ end
 
 
 end
+
 
 
 def imprimir_requisicao

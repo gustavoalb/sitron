@@ -118,7 +118,6 @@ class UsuariosController < ApplicationController
   def load_user
     @usuario = User.new(user_params)
   end
-
-
-
+    
+    
 end
