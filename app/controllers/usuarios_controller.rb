@@ -106,7 +106,17 @@ class UsuariosController < ApplicationController
      format.html { redirect_to usuarios_url }
      format.json { head :no_content }
    end
- end
+  end
+
+  def redefinir_senha
+    @usuario = User.find(params[:usuario_id])
+    @usuario.password = @usuario.password_confirmation = "@sitron2015"
+    if @usuario.save(:validate=>false)
+      redirect_to usuarios_url, notice: 'Senha redefinida com sucesso. Nova Senha = @sitron2015'
+    else
+      redirect_to usuarios_url, alert: 'Senha não foi redefinida, favor checar o cadastro.'
+    end
+  end
 
  private
   # Never trust parameters from the scary internet, only allow the white list through.

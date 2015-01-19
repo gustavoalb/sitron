@@ -17,6 +17,7 @@
         <td><%= usuario.role %></td>
         <td><%= link_to link_icone('detalhes'), usuario_path(usuario),:class=>"btn btn-success btn-sm" %>
         <%= link_to link_icone('editar'), edit_usuario_path(usuario),class: "btn btn-warning btn-sm",data: { no_turbolink: true }  %>
+        <%= link_to 'Resetar Senha', usuario_redefinir_senha_path(usuario), :class=>"btn btn-danger btn-sm", data: { confirm: 'Você está certo disso?' } %>
         <%= link_to link_icone('apagar'), usuario_path(usuario), method: :delete, data: { confirm: 'Tem certeza que deseja excluir?' },:class=>"btn btn-danger btn-sm" %></td>
       </tr>
     <% end %>
