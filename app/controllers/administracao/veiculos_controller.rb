@@ -50,7 +50,7 @@ end
 def resetar_horas
   i = 0
   Administracao::Veiculo.all.each do |v|
-    if v.resetar_horas
+    if v.resetar_horas == true
        i+=1
     end
   end

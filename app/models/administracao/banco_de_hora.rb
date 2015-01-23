@@ -10,11 +10,13 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 
 
 	def self.resetar_horas_semana(veiculo,numero_semana,mes,ano)
-		banco_hora = Administracao::BancoDeHora.find_by(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano)
+		banco_hora = Administracao::BancoDeHora.where(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano)
 		if banco_hora
-			banco_hora.horas_normais = 0.0
-			banco_hora.horas_extras = 0.0
-			banco_hora.save!
+			banco_hora.each do |h|
+				h.horas_normais = 0
+				h.horas_extras = 0
+				h.save
+			end
 			return true
 		else
 			return false
