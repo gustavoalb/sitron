@@ -15,9 +15,9 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 			banco_hora.horas_normais = 0.0
 			banco_hora.horas_extras = 0.0
 			banco_hora.save!
-			return "HORAS RESETADAS"
+			return true
 		else
-			return "NENHUMA HORA EXTRA ENCONTRADA"
+			return false
 		end
 	end
 

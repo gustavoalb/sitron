@@ -164,6 +164,7 @@ Sitron::Application.routes.draw do
       get :imprimir_codigos, on: :collection
        get "listar_lotes",on: :collection
        post :remover_posto
+       post :resetar_horas
     end
   end
 

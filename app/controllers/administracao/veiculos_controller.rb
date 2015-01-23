@@ -27,13 +27,13 @@ class Administracao::VeiculosController < ApplicationController
   end
 
   def remover_posto
-   
+
 
    veiculo = Administracao::Veiculo.find(params[:veiculo_id])
    patio = Administracao::Patio.na_data(Time.zone.now).first || Administracao::Patio.create(:data_entrada=>Time.now)
    posto = patio.postos.find_by(:veiculo_id=>veiculo.id)
    authorize! :remover_posto,veiculo
-  if posto 
+   if posto 
     posto.saida = Time.zone.now
     posto.sair_do_patio
     Administracao::BancoDeHora.definir_horas_extras(veiculo,posto.saida.day,posto.saida.strftime("%U"),posto.saida.month,posto.saida.year,posto.saida.beginning_of_week,posto.saida.end_of_week,posto.horas_normais)
@@ -47,25 +47,37 @@ class Administracao::VeiculosController < ApplicationController
 
 end
 
-
-
-
-  def listar_lotes
-    m = Administracao::Modalidade.find(params[:modalidade_id])
-    @lotes = m.lotes.order('nome ASC')
-
-    response = []
-    @lotes.each do |lote|
-      response << {:id => lote.id, :n => "#{lote.nome} - #{lote.tipo}"}
+def resetar_horas
+  i = 0
+  Administracao::Veiculo.all.each do |v|
+    if v.resetar_horas
+       i+=1
     end
-    render :json => {:response => response.compact}.as_json
   end
 
-  def imprimir_codigos
-    i = 1
-    n = 1
-    report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
-    report.start_new_page
+  redirect_to :back,notice: "Horas de #{i} veículos Resetadas com Sucesso."
+
+
+end
+
+
+
+def listar_lotes
+  m = Administracao::Modalidade.find(params[:modalidade_id])
+  @lotes = m.lotes.order('nome ASC')
+
+  response = []
+  @lotes.each do |lote|
+    response << {:id => lote.id, :n => "#{lote.nome} - #{lote.tipo}"}
+  end
+  render :json => {:response => response.compact}.as_json
+end
+
+def imprimir_codigos
+  i = 1
+  n = 1
+  report = ThinReports::Report.new layout: File.join(Rails.root, 'app', 'relatorios', 'codigos.tlf')
+  report.start_new_page
  #  report.page.values printed_at: Time.zone.now
  @veiculos = Administracao::Veiculo.all
  Administracao::Lote.all.each do |l|
@@ -85,12 +97,12 @@ end
      row.values codigo_barras_n: v.codigo_de_barras.file.file
      row.values codigo_n: "#{v.codigo}".upcase
     # row.values codigo_n: "#{m.periodo_diario}H#{m.dias_mes}d#{v.lote.tipo}".upcase
-     row.values contrato_n: "#{v.contrato.numero}"
-     row.values vigencia_n: v.contrato.vigencia
-     row.values qrcodes_n:  v.qrcode.file.file
-     row.values n_n: v.position
-   end
- end
+    row.values contrato_n: "#{v.contrato.numero}"
+    row.values vigencia_n: v.contrato.vigencia
+    row.values qrcodes_n:  v.qrcode.file.file
+    row.values n_n: v.position
+  end
+end
 
 end
 
