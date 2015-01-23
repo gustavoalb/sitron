@@ -9,13 +9,26 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 	scope :na_semana,lambda{|semana| where(:numero_semana=>semana)}
 
 
+	def self.resetar_horas_semana(veiculo,numero_semana,mes,ano)
+		banco_hora = Administracao::BancoDeHora.find_by(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano)
+		if banco_hora
+			banco_hora.horas_normais = 0.0
+			banco_hora.horas_extras = 0.0
+			banco_hora.save!
+			return "HORAS RESETADAS"
+		else
+			return "NENHUMA HORA EXTRA ENCONTRADA"
+		end
+	end
+
+
 
 	def self.definir_horas_extras(veiculo,dia,numero_semana,mes,ano,inicio_semana,fim_semana,minutos)
 		horas = (minutos/60)
 		mins = minutos
 
 		banco_hora = Administracao::BancoDeHora.find_by(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano)
-        semanais =  Administracao::BancoDeHora.where(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano).all
+		semanais =  Administracao::BancoDeHora.where(veiculo_id: veiculo.id, numero_semana: numero_semana, mes: mes,ano: ano).all
 		
 		if banco_hora
 			banco_horas2 = Administracao::BancoDeHora.where(veiculo_id: veiculo.id, dia: dia,numero_semana: numero_semana, mes: mes,ano: ano).first
@@ -25,8 +38,8 @@ class Administracao::BancoDeHora < ActiveRecord::Base
 			horas_extras_semanais = 0.0
 
 			semanais.each do |h|
-			   horas_extras_semanais += h.horas_extras
-            end
+				horas_extras_semanais += h.horas_extras
+			end
 
 
 			if (horas_normais+horas) > 8

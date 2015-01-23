@@ -138,6 +138,10 @@ def aprovisionado?(data)
   end
 end
 
+def resetar_horas
+  Administracao::BancoDeHora.resetar_horas_semana(self,Time.now.to_date.strftime('%U'),Time.now.month, Time.now.year)
+end
+
 
 def codigo_carro
 
