@@ -12,9 +12,9 @@ class RequisicoesController < ApplicationController
 
    def index
     @requisicoes = Requisicao.aguardando.accessible_by(current_ability)
-    @requisicoes_confirmadas = Requisicao.confirmada.accessible_by(current_ability)
-    @requisicoes_canceladas = Requisicao.canceladas.accessible_by(current_ability)
-    @requisicoes_finalizadas = Requisicao.finalizadas.accessible_by(current_ability)
+    @requisicoes_confirmadas = Requisicao.confirmada.accessible_by(current_ability)#.paginate(:page => params[:page], :per_page=>params[:per_page])
+    @requisicoes_canceladas = Requisicao.canceladas.accessible_by(current_ability)#.paginate(:page => params[:page], :per_page=>params[:per_page])
+    @requisicoes_finalizadas = Requisicao.finalizadas.accessible_by(current_ability).page(params[:page]).per(50)
   end
 
   def relatorio_requisicoes_periodo

@@ -17,7 +17,7 @@ class Gerencia::ControleRequisicoesController < ApplicationController
     @proximas_de_sair_amanha = Requisicao.proximas_de_sair.na_data(Date.tomorrow).accessible_by(current_ability)
     @proximas_de_sair_hoje = Requisicao.proximas_de_sair.na_data(Time.now).accessible_by(current_ability)
     @em_servico = Requisicao.em_servico.all
-    @finalizadas = Requisicao.finalizadas
+    @finalizadas = Requisicao.finalizadas.page().per(10)
     @postos_especiais = Posto.especiais.na_data(Time.zone.now).order("lote_id, position ASC")
     @postos = Posto.ativo.disponivel.na_data(Time.zone.now).order("position ASC")
     @postos_gerais = @postos +  @postos_especiais
