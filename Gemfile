@@ -97,4 +97,3 @@ gem 'pace-rails'
 gem 'ranked-model'
 gem 'date_validator'
 gem "audited-activerecord", "~> 4.0"
-gem 'blorgh',path: '#{File.expand_path(__FILE__)}/../vendor/gems/blorgh'

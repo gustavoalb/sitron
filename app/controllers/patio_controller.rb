@@ -59,7 +59,7 @@ class PatioController < ApplicationController
 
 
       report.list.add_row do |row|
-        row.values placa: v.placa
+        #row.values placa: v.placa
         row.values contrato: v.contrato.numero
         (inicio.to_datetime.to_i .. fim.to_datetime.to_i).step(1.day) do |date|
           p = Posto.na_data(Time.at(date).to_date).find_by(:veiculo_id=>v.id)

@@ -2,7 +2,6 @@
 #require 'resque/server' 
 Sitron::Application.routes.draw do
     
-  mount Blorgh::Engine, at: "/blog"
 
   namespace :administracao do
     resources :relatorios_diarios
