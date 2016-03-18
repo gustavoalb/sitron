@@ -69,7 +69,6 @@ def exportar_excel
 send_data @requisicoes.to_xls(:only => [:lote_veiculo, :numero,:inicio_br,:departamento_nome,:departamento_sigla,:rotas_municipio,:requisitante_nome]), filename: "#{inicio.to_date.to_s_br} ate #{fim.to_date.to_s_br}.xls",
 type: "application/excel; charset=utf-8; header=present",
 disposition: 'attachment'
-#{r.numero};#{r.inicio.to_s_br};#{r.requisitante.departamento.nome};#{r.requisitante.departamento.sigla};#{r.rotas_municipio};#{r.requisitante.nome
 end
 
 

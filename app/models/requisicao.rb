@@ -152,7 +152,7 @@ class Requisicao < ActiveRecord::Base
     ary = []
     if self.rotas.count > 0
       self.rotas.each do |r|
-        ary.push "#{r.destino} - #{r.roteavel.endereco.cidade.nome}" if r.roteavel.endereco.cidade
+        ary.push "#{r.destino} - #{r.roteavel.endereco.cidade.nome}" if r.roteavel and r.roteavel.endereco.cidade
       end
     else
       if self.endereco
