@@ -2,5 +2,5 @@
 *.java linguist-detectable=false
 *.rb linguist-detectable=true 
 *.js linguist-detectable=false
-*.html linguist-detectable=false linguist-language=Ruby
+*.html linguist-language=Ruby
 *.xml linguist-detectable=false 
