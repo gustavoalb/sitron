@@ -1,148 +1,25 @@
-Sitron
-=========
+# SITRON - NUINFO's Online Transport Management System
+[![Logo sitron](https://i.imgur.com/r7mWlqg.png "Logo sitron")](https://i.imgur.com/r7mWlqg.png "Logo sitron")
 
-This application was generated with the [rails_apps_composer](https://github.com/RailsApps/rails_apps_composer) gem
-provided by the [RailsApps Project](http://railsapps.github.io/).
+[Read this in Brazilian Portuguese](README-PT-br.md) 
 
-Diagnostics
------------
+  This was a system developed to manage the utilization of official vehicles in 
+  State Department of Education of Amapá, Brazil. It's objective was to organize
+  vehicle booking, see current locations, routes and gas cost, avoiding misuse, 
+  combustible theft, disorganization of the schedule and unecessary work in the
+  Transport and Service Management Unit.
+  It was active from 2014 to 2017, being discontinued after the department decided
+  to outsource its transportation services.
 
-This application was built with recipes that are NOT known to work together.
+## Stack
 
-This application was built with preferences that are NOT known to work
-together.
+- Ruby 2.1.1
+- Rails 4.2.11
+- PostgreSQL 9.4
+- jQuery
+- Bootstrap 2 & 3
 
-If the application doesn’t work as expected, please [report an issue](https://github.com/RailsApps/rails_apps_composer/issues)
-and include these diagnostics:
-
-We’d also like to know if you’ve found combinations of recipes or
-preferences that do work together.
-
-Recipes:
-
-* controllers
-* core
-* deployment
-* email
-* extras
-* frontend
-* gems
-* git
-* init
-* learn_rails
-* models
-* prelaunch
-* rails_bootstrap
-* rails_devise
-* rails_devise_pundit
-* rails_foundation
-* rails_omniauth
-* rails_signup_download
-* railsapps
-* readme
-* routes
-* saas
-* setup
-* testing
-* tests4
-* views
-
-Preferences:
-
-* git: true
-* apps4: none
-* dev_webserver: thin
-* prod_webserver: passenger_standalone
-* database: sqlite
-* templates: erb
-* tests: none
-* frontend: bootstrap3
-* email: gmail
-* authentication: devise
-* devise_modules: default
-* authorization: pundit
-* form_builder: simple_form
-* starter_app: admin_app
-* rvmrc: false
-* quiet_assets: true
-* local_env_file: figaro
-* better_errors: true
-* pry: true
-* ban_spiders: true
-* jsruntime: true
-
-Ruby on Rails
--------------
-
-This application requires:
-
--   Ruby
--   Rails
-
-Learn more about [Installing Rails](http://railsapps.github.io/installing-rails.html).
-
-Database
---------
-
-This application uses SQLite with ActiveRecord.
-
-Development
------------
-
--   Template Engine: ERB
--   Testing Framework: Test::Unit
--   Front-end Framework: Bootstrap 3.0 (Sass)
--   Form Builder: SimpleForm
--   Authentication: Devise
--   Authorization: None
--   Admin: None
-
-Email
------
-
-The application is configured to send email using a Gmail account.
-
-Email delivery is disabled in development.
-
-Getting Started
----------------
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-Documentation and Support
--------------------------
-
-This is the only documentation.
-
-#### Issues
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-Similar Projects
-----------------
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-Contributing
-------------
-
-If you make improvements to this application, please share with others.
-
--   Fork the project on GitHub.
--   Make your feature addition or bug fix.
--   Commit with Git.
--   Send the author a pull request.
-
-If you add functionality to this application, create an alternative
-implementation, or build an application that is similar, please contact
-me and I’ll add a note to the README so that others can find your work.
-
-Credits
--------
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-License
--------
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+## Comments
+- The frontend style didn't age well, considering that it is from the Web 2.0 era
+- Although the project was a success, this is legacy code, so there are performance issues, long queries, discontinued gems and outdated concepts.
+  It is here just to show you my first practical application, please take this into consideration when evaluating.

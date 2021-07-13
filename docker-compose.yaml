@@ -1,0 +1,33 @@
+version: "2.4"
+services:
+  app:
+    build: .
+    entrypoint: /myapp/docker-entrypoint.sh
+    command:  bundle exec rails server -b '0.0.0.0'
+    environment:
+      #- RAILS_ENV=docker
+      - BUNDLE_PATH=/bundle/vendor
+      - LANG=C.UTF-8
+      - LC_ALL=C.UTF-8
+    volumes:
+      - .:/myapp
+      - bundle_path:/bundle
+    ports:
+      - "3000:3000"
+    links:
+      - postgres
+  postgres:
+    image: postgres:9
+    volumes: 
+      - db_data:/var/lib/postgresql
+      - ../:/mnt/backups
+    ports:
+      - "5432:5432"
+    environment:
+      #- POSTGRESQL_USER=siged
+      - POSTGRES_PASSWORD=sitron
+    #command: ["mongod", "--verbose"]
+volumes:
+  db_data:
+    external: true
+  bundle_path:
